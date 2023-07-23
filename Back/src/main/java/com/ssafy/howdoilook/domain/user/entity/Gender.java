@@ -1,6 +1,6 @@
 package com.ssafy.howdoilook.domain.user.entity;
 
-public enum SocialType {
+public enum Gender {
 
-    X, KAKAO, NAVER, GOOGLE
+    X, MALE, FEMALE
 }
