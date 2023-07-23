@@ -1,5 +1,5 @@
 package com.ssafy.howdoilook.domain.userLike.entity;
 
-public enum Type {
+public enum UserLikeType {
     LOVELY, NATURAL, MODERN, SEXY
 }
