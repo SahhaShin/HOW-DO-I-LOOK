@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController {
 
-//    private final UserService userService;
-//
-//    @ApiOperation(value = "일반 회원 가입")
-//    @PostMapping("/signup")
-//    public ResponseEntity<?> signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) throws Exception {
-//
-//        return ResponseEntity.ok()
-//                .body(userService.signUp(userSignUpRequestDto));
-//    }
-//
-//    @ApiOperation(value = "JWT 토큰 테스트", notes = "추후 삭제 예정")
-//    @GetMapping("/jwt")
-//    public ResponseEntity<?> jwtTest() {
-//
-//        return ResponseEntity.ok()
-//                .body("JWT Test 통과!");
-//    }
+    private final UserService userService;
+
+    @ApiOperation(value = "일반 회원 가입")
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) throws Exception {
+
+        return ResponseEntity.ok()
+                .body(userService.signUp(userSignUpRequestDto));
+    }
+
+    @ApiOperation(value = "JWT 토큰 테스트", notes = "추후 삭제 예정")
+    @GetMapping("/jwt")
+    public ResponseEntity<?> jwtTest() {
+
+        return ResponseEntity.ok()
+                .body("JWT Test 통과!");
+    }
 }
