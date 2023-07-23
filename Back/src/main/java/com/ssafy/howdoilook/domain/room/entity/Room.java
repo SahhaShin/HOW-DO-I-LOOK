@@ -1,6 +1,8 @@
 package com.ssafy.howdoilook.domain.room.entity;
 
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
+import com.ssafy.howdoilook.domain.user.entity.Gender;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +12,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Room extends BaseTimeEntity {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "romm_no")
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_no")
     private Long id;
 
     @Column(name = "room_code")

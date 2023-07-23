@@ -2,6 +2,7 @@ package com.ssafy.howdoilook.domain.feedPhoto.entity;
 
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +11,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "feed_photo")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class FeedPhoto extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feed_photo_no")
     private Long id;
 
@@ -22,7 +23,7 @@ public class FeedPhoto extends BaseTimeEntity {
     @JoinColumn(name = "feed_no")
     private Feed feed;
 
-    @Column(name ="feed_photo_link")
+    @Column(name = "feed_photo_link")
     private String link;
 
     @Builder
