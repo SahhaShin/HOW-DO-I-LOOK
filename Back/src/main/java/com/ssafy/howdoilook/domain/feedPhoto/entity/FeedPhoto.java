@@ -2,6 +2,7 @@ package com.ssafy.howdoilook.domain.feedPhoto.entity;
 
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,11 @@ public class FeedPhoto extends BaseTimeEntity {
 
     @Column(name ="feed_photo_link")
     private String link;
+
+    @Builder
+    public FeedPhoto(Long id, Feed feed, String link) {
+        this.id = id;
+        this.feed = feed;
+        this.link = link;
+    }
 }

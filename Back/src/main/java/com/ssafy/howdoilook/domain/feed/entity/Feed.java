@@ -2,6 +2,7 @@ package com.ssafy.howdoilook.domain.feed.entity;
 
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.user.entity.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +24,10 @@ public class Feed extends BaseTimeEntity {
     @Column(name = "feed_content")
     private String content;
 
-
-
-
+    @Builder
+    public Feed(Long id, User user, String content) {
+        this.id = id;
+        this.user = user;
+        this.content = content;
+    }
 }
