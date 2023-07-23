@@ -2,7 +2,6 @@ package com.ssafy.howdoilook.domain.feed.entity;
 
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.user.entity.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Feed extends BaseTimeEntity {
-    @Id@GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feed_no")
     private Long id;
 
