@@ -1,0 +1,65 @@
+/* 날씨 컨테이너*/
+
+.weatherContainer{
+
+    /* 전체 크기 */
+    width: 100%;
+    height: 100%;
+
+    /* 위치조정 */
+    position: relative;
+    margin : 0 auto;
+    margin-top : 5%;
+}
+
+.weatherImg{
+
+    /* 전체 크기 */
+    width: 600px;
+    height: 200px;
+    border-radius: 10px 10px 10px 10px; 
+
+
+    /* 배경 */
+    background-color: black;
+    background-image: url(../../../../public/img/weather_bg.jpg);  
+    filter: brightness(80%); /*사진을 까만색 투명으로 입혀줌*/
+    background-size: 100%;
+
+    vertical-align:middle;
+}
+.weatherContent{
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    font-size: 40px;
+    font-weight: 900;
+    color: white;
+
+
+    /* 위치조정 */
+    position: absolute;
+    text-align: center;
+    transform: translate(160px, -60px);
+
+
+    /* 크기조정 */
+    width: 300px;
+}
+
+.weatherContent > div > p:nth-child(1){
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    font-size: 30px;
+    font-weight: 900;
+    color: white;
+
+
+    /* 위치조정 */
+    position: absolute;
+    text-align: center;
+    transform: translate(-320px, -110px);
+
+
+    /* 크기조정 */
+    width: 300px;
+}
