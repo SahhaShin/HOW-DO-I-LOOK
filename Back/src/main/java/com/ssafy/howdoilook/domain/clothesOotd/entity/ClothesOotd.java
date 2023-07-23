@@ -3,6 +3,7 @@ package com.ssafy.howdoilook.domain.clothesOotd.entity;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.ootd.entity.Ootd;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,11 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "clothes_ootd")
 public class ClothesOotd extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "clothes_ootd_no")
     private Long id;
 
