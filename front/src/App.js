@@ -5,14 +5,14 @@ import './App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 //페이지 선언
-import OOTDWeather from './components/user/closet/OOTDWeather.tsx';
+import Closet from "./pages/user/closet/Closet";
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/Weather" element={<OOTDWeather/>}/>
+          <Route path="/closet" element={<Closet/>}/>
         </Routes>
       </Router>
     </div>

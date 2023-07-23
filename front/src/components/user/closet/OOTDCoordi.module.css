@@ -1,0 +1,106 @@
+:root {
+  --primary-light: #8abdff;
+  --primary: #6d5dfc;
+  --primary-dark: #5b0eeb;
+  --white: #ffffff;
+  --greyLight-1: #e4ebf5;
+  --greyLight-2: #c8d0e7;
+  --greyLight-3: #bec8e4;
+  --greyDark: #9baacf;
+  --signiture: #4570F5;
+}
+
+.totalArea{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.oneCloset{
+  width: 400px;
+  height: 700px;
+  display: flex;
+  /* margin: auto; */
+  margin-top: 5%;
+  margin-left: 5%;
+  box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+  border-radius: 1rem;
+}
+.ootd{
+  margin-top: 15%;
+  margin-left: 15%;
+  width: 150px;
+  height: 300px;
+}
+.carousal{
+  width:150px;
+  margin-top: -2%;
+}
+.carousal:nth-child(2){
+  margin-top: -20%;
+}
+
+
+.slide{
+  width:30%;
+  height:30%;
+}
+
+.slide > img{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+
+.ootd_etc{
+  margin-top: 15%;
+  width: 100px;
+  height: 100px;
+}
+
+.carousal_etc{
+  width:150%;
+}
+
+
+.slide_etc{
+  width: 10%;
+  height: 10%;
+}
+
+
+.slide_etc > img{
+  width: 70%;
+  height: 70%;
+  margin: auto;
+}
+
+/* 버튼 */
+.btn {
+  width: 10rem;
+  height: 3rem;
+  border-radius: 1rem;
+  box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top:5%;
+  transition: 0.3s ease;
+}
+.btn__secondary {
+  color: var(--greyDark);
+}
+.btn__secondary:hover {
+  color: var(--signiture);
+}
+.btn__secondary:active {
+  box-shadow: inset 0.2rem 0.2rem 0.5rem var(--greyLight-2), inset -0.2rem -0.2rem 0.5rem var(--white);
+}
+.btn p {
+  /* 폰트 */
+  font-family: 'Pretendard-Regular';
+  font-size: 1rem;
+}

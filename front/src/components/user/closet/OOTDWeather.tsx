@@ -56,7 +56,7 @@ const OOTDWeather = () => {
                         }
                     </div> : 
                     
-                    <div>데이터를 받아오는 중입니다.</div>
+                    <div style={{fontSize:"30px", marginTop:"-10%", marginLeft:"20%", width:"500px"}}>데이터를 받아오는 중입니다.</div>
                 }
             </div>
         </div>

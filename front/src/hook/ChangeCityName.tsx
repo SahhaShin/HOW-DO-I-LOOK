@@ -47,14 +47,17 @@ const ChangeCityName = ()=>{
               },
             )
             .then(response => {
-              const location = response.data.documents[0];
+              if(location.loaded){
+                const location = response.data.documents[0];
 
-              //내 위치의 도시 다시 셋팅
-              setCity({
-                si: location.address.region_1depth_name,
-                gu: location.address.region_2depth_name,
-                dong: location.address.region_3depth_name,
-              });
+                //내 위치의 도시 다시 셋팅
+                setCity({
+                  si: location.address.region_1depth_name,
+                  gu: location.address.region_2depth_name,
+                  dong: location.address.region_3depth_name,
+                });
+              }
+              
             });
         } catch (error) {
           console.log(error);
@@ -63,7 +66,7 @@ const ChangeCityName = ()=>{
 
       useEffect(()=>{
         mapApi()
-      },[latitude])
+      },[location.loaded])
 
       return city;
 }
