@@ -3,6 +3,7 @@ package com.ssafy.howdoilook.domain.feedPhotoHashtag.entity;
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
 import com.ssafy.howdoilook.domain.hashtag.entity.Hashtag;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,4 +28,10 @@ public class FeedPhotoHashtag extends BaseTimeEntity {
     @JoinColumn(name = "hashtag_no")
     private Hashtag hashtag;
 
+    @Builder
+    public FeedPhotoHashtag(Long id, FeedPhoto feedPhoto, Hashtag hashtag) {
+        this.id = id;
+        this.feedPhoto = feedPhoto;
+        this.hashtag = hashtag;
+    }
 }
