@@ -3,6 +3,7 @@ package com.ssafy.howdoilook.domain.feedLike.entity;
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.user.entity.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.util.Lazy;
@@ -32,4 +33,11 @@ public class FeedLike extends BaseTimeEntity {
     @Column(name = "feed_like_type")
     private FeedLikeType type;
 
+    @Builder
+    public FeedLike(Long id, User user, Feed feed, FeedLikeType type) {
+        this.id = id;
+        this.user = user;
+        this.feed = feed;
+        this.type = type;
+    }
 }

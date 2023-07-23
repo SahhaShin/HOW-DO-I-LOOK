@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.hashtag.entity;
 
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,4 +18,10 @@ public class Hashtag extends BaseTimeEntity {
 
     @Column(name = "hashtag_content")
     private String content;
+
+    @Builder
+    public Hashtag(Long id, String content) {
+        this.id = id;
+        this.content = content;
+    }
 }
