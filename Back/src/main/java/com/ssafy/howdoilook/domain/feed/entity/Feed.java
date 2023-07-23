@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Feed extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feed_no")
     private Long id;
 
@@ -23,4 +23,11 @@ public class Feed extends BaseTimeEntity {
 
     @Column(name = "feed_content")
     private String content;
+
+    @Builder
+    public Feed(Long id, User user, String content) {
+        this.id = id;
+        this.user = user;
+        this.content = content;
+    }
 }

@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.roomUser.entity;
+package com.ssafy.howdoilook.domain.userLike.entity;
 
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.room.entity.Room;
@@ -12,24 +12,33 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "room_user")
-public class RoomUser extends BaseTimeEntity {
+@Table(name = "user_like")
+public class UserLike extends BaseTimeEntity {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_user_no")
+    @Column(name = "user_like_no")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no")
+    @JoinColumn(name = "target_user_no")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_no")
     private Room room;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_like_type")
+    private UserLikeType type;
+
+    @Column(name = "user_like_score")
+    private int score;
+
     @Builder
-    public RoomUser(Long id, User user, Room room) {
+    public UserLike(Long id, User user, Room room, UserLikeType type, int score) {
         this.id = id;
         this.user = user;
         this.room = room;
+        this.type = type;
+        this.score = score;
     }
 }
