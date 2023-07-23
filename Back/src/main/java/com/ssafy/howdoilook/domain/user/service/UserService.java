@@ -2,6 +2,7 @@ package com.ssafy.howdoilook.domain.user.service;
 
 import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
 import com.ssafy.howdoilook.domain.user.entity.Role;
+import com.ssafy.howdoilook.domain.user.entity.SocialType;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    // 일단 에러나는데 추후 고칠 예정
     private final PasswordEncoder passwordEncoder;
 
     /*
@@ -38,6 +38,7 @@ public class UserService {
                 .age(userSignUpRequestDto.getAge())
                 .gender(userSignUpRequestDto.getGender())
                 .role(Role.USER)
+                .socialType(SocialType.X)
                 .build();
 
         user.passwordEncode(passwordEncoder);

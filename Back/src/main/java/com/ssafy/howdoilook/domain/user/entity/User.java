@@ -45,8 +45,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
+    private String socialId;
+
     @Builder
-    public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType) {
+    public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -57,6 +59,7 @@ public class User {
         this.profileImg = profileImg;
         this.role = role;
         this.socialType = socialType;
+        this.socialId = socialId;
     }
 
     /*

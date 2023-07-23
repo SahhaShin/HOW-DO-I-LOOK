@@ -12,7 +12,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Feed extends BaseTimeEntity {
-    @Id@GeneratedValue
+
+    @Id @GeneratedValue
     @Column(name = "feed_no")
     private Long id;
 
@@ -22,8 +23,4 @@ public class Feed extends BaseTimeEntity {
 
     @Column(name = "feed_content")
     private String content;
-
-
-
-
 }
