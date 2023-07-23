@@ -12,8 +12,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Feed extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feed_no")
     private Long id;
 
