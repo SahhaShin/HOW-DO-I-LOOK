@@ -1,10 +1,12 @@
 package com.ssafy.howdoilook.domain.user.api;
 
+import com.ssafy.howdoilook.domain.user.dto.request.UserSearchCondition;
 import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
 import com.ssafy.howdoilook.domain.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +34,27 @@ public class UserController {
                 .body("JWT Test 통과!");
     }
 
-    @ApiOperation(value = "로그아웃", notes = "추후 삭제 예정")
+    @ApiOperation(value = "로그아웃", notes = "Header로 AccessToken 필요 (Authorization : Bearer {token})")
     @GetMapping("/logout/{email}")
     public ResponseEntity<?> logout(@RequestHeader String authorization, @PathVariable String email) {
 
         return ResponseEntity.ok()
                 .body(userService.logout(authorization, email));
+    }
+
+    @ApiOperation(value = "유저 검색", notes = "NonPaging")
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUsers(UserSearchCondition condition) {
+
+        return ResponseEntity.ok()
+                .body(userService.searchUsers(condition));
+    }
+
+    @ApiOperation(value = "유저 검색(페이징)", notes = "Paging")
+    @GetMapping("/search/paging")
+    public ResponseEntity<?> searchPagedUsers(UserSearchCondition condition, Pageable pageable) {
+
+        return ResponseEntity.ok()
+                .body(userService.searchPagedUsers(condition, pageable));
     }
 }
