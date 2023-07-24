@@ -49,12 +49,15 @@ dependencies {
     // JWT
     implementation 'com.auth0:java-jwt:4.2.1'
 
-    // p6spy
-    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    // Swagger 3.0.0
-    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
-    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+    // p6spy
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
+
+    // Swagger
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 }
 
 tasks.named('test') {
