@@ -44,7 +44,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         // Redis에 RefreshToken 저장
         if(user.isPresent())
-            redisRefreshTokenService.setRedisValue(refreshToken, email);
+            redisRefreshTokenService.setRedisRefreshToken(refreshToken, email);
         else
             throw new NullPointerException("해당 유저가 존재하지 않습니다.");
     }

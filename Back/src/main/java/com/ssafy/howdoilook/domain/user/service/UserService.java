@@ -5,6 +5,8 @@ import com.ssafy.howdoilook.domain.user.entity.Role;
 import com.ssafy.howdoilook.domain.user.entity.SocialType;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.redis.service.RedisAccessTokenService;
+import com.ssafy.howdoilook.global.redis.service.RedisRefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final RedisRefreshTokenService redisRefreshTokenService;
+
+    private final RedisAccessTokenService redisAccessTokenService;
+
 
     /*
     * 일반 회원 가입
@@ -46,5 +53,12 @@ public class UserService {
         userRepository.save(user);
 
         return user.getId();
+    }
+
+    public String logout(String accessToken, String email) {
+        redisRefreshTokenService.deleteRefreshToken(email);
+        redisAccessTokenService.setRedisAccessToken(accessToken);
+        
+        return "로그아웃 성공(accessToken blacklist 추가 및 refreshToken 삭제)";
     }
 }

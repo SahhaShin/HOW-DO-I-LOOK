@@ -154,7 +154,7 @@ public class JwtService {
         Optional<User> user = userRepository.findByEmail(email);
 
         if(user.isPresent())
-            redisRefreshTokenService.setRedisValue(refreshToken, email);
+            redisRefreshTokenService.setRedisRefreshToken(refreshToken, email);
         else
             throw new IllegalArgumentException("해당 회원이 존재하지 않습니다.");
     }

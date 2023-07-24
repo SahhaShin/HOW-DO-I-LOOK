@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 /*
 * JWT 인증 필터
@@ -76,11 +77,20 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     * AccessToken / RefreshToken 재발급 메서드
     * */
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse httpServletResponse, String refreshToken) {
-        String redisEmail = redisRefreshTokenService.getRedisValue(refreshToken);
+        String redisEmail = redisRefreshTokenService.getRedisEmail(refreshToken);
 
         if(redisEmail != null) {
-            User user = userRepository.findByEmail(redisEmail)
-                    .orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 존재하지 않습니다."));
+            Optional<User> user = userRepository.findByEmail(redisEmail);
+
+            if(user.isPresent()) {
+                String reIssuedRefreshToken = reIssueRefreshToken(user.get());
+
+                jwtService.sendAccessAndRefreshToken(
+                        httpServletResponse,
+                        jwtService.createAccessToken(user.get().getEmail()),
+                        reIssuedRefreshToken
+                );
+            }
         }
         else
             throw new NullPointerException("Redis에 해당 RefreshToken이 존재하지 않습니다.");
@@ -92,7 +102,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     public String reIssueRefreshToken(User user) {
         String reIssuedRefreshToken = jwtService.createRefreshToken();
 
-        redisRefreshTokenService.setRedisValue(reIssuedRefreshToken, user.getEmail());
+        redisRefreshTokenService.setRedisRefreshToken(reIssuedRefreshToken, user.getEmail());
 
         return reIssuedRefreshToken;
     }

@@ -16,7 +16,7 @@ public class UserController {
 
     private final UserService userService;
 
-//    @ApiOperation(value = "일반 회원 가입")
+    @ApiOperation(value = "일반 회원 가입")
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) throws Exception {
 
@@ -24,11 +24,19 @@ public class UserController {
                 .body(userService.signUp(userSignUpRequestDto));
     }
 
-//    @ApiOperation(value = "JWT 토큰 테스트", notes = "추후 삭제 예정")
+    @ApiOperation(value = "JWT 토큰 테스트", notes = "추후 삭제 예정")
     @GetMapping("/jwt")
     public ResponseEntity<?> jwtTest() {
 
         return ResponseEntity.ok()
                 .body("JWT Test 통과!");
+    }
+
+    @ApiOperation(value = "로그아웃", notes = "추후 삭제 예정")
+    @GetMapping("/logout/{email}")
+    public ResponseEntity<?> logout(@RequestHeader String authorization, @PathVariable String email) {
+
+        return ResponseEntity.ok()
+                .body(userService.logout(authorization, email));
     }
 }
