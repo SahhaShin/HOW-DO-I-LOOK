@@ -34,7 +34,7 @@ const TodayWether = ()=>{
     //날씨 정보 불러오기 ${ymd}로 바꿔야함. 새벽에는 날씨가 안나와서 데이터를 못가져오는 에러가 있음
     const apiKey:string = String(process.env.REACT_APP_WEATHER);
     const url = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&numOfRows=10&pageNo=1
-    &base_date=20230723&base_time=0500&nx=${nx}&ny=${ny}&dataType=JSON`;
+    &base_date=${ymd}&base_time=0500&nx=${nx}&ny=${ny}&dataType=JSON`;
     const wetherApi = async () => {await axios.get(url).then((res)=>{
         console.log(res);
         if(geoloaction.loaded){

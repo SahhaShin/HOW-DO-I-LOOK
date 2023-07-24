@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 //페이지 선언
 import Closet from "./pages/user/closet/Closet";
+import CLOSETMenu from "./components/user/closet/CLOSETMenu";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/closet" element={<Closet/>}/>
+          <Route path="/closetMenu" element={<CLOSETMenu/>}/>
         </Routes>
       </Router>
     </div>

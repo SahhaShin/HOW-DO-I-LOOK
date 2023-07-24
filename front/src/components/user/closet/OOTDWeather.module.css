@@ -42,7 +42,7 @@
     /* 위치조정 */
     position: absolute;
     text-align: center;
-    transform: translate(-30px, -75px);
+    transform: translate(-30px, -55px);
 
 
     /* 크기조정 */
@@ -65,4 +65,22 @@
 
     /* 크기조정 */
     width: 300px;
+}
+
+.weatherContent > div > p:nth-child(2){
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    font-size: 50px;
+    font-weight: 900;
+    color: white;
+
+
+    /* 위치조정 */
+    position: absolute;
+    text-align: center;
+    transform: translate(100px, -50px);
+
+
+    /* 크기조정 */
+    width: 100%;
 }
