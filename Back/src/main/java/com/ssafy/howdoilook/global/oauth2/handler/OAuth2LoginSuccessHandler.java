@@ -56,13 +56,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
                 // Redis에 저장
                 if(findUser.isPresent())
-<<<<<<< HEAD
-                    redisRefreshTokenService.setRedisValue(refreshToken, oAuth2User.getEmail());
-                else
-=======
                     redisRefreshTokenService.setRedisRefreshToken(refreshToken, oAuth2User.getEmail());
-                else 
->>>>>>> 7198542e7298def248041c953a07e9f2d37635f0
+                else
                     throw new NullPointerException("해당 유저가 존재하지 않습니다.");
             }
             else

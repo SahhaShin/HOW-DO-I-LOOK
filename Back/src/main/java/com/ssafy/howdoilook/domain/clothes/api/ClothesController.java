@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.clothes.api;
 
+import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesSaveRequestDto;
 import com.ssafy.howdoilook.domain.clothes.service.ClothesService;
 import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
 import lombok.Getter;
@@ -16,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/clothes")
 public class ClothesController {
 
-//    private final ClothesService clothesService;
-//
-//    @PostMapping("/")
-//    public ResponseEntity<?> saveClothes(@RequestBody ClothesRegistRequestDto clothesRegistRequestDto) throws Exception {
-//
-//        return ResponseEntity.ok()
-//                .body(clothesService.regist(userSignUpRequestDto));
-//    }
+    private final ClothesService clothesService;
+
+    @PostMapping("")
+    public ResponseEntity<?> saveClothes(@RequestBody ClothesSaveRequestDto clothesSaveRequestDto) throws Exception {
+
+        return ResponseEntity.ok()
+                .body(clothesService.saveClothes(clothesSaveRequestDto));
+    }
 }
