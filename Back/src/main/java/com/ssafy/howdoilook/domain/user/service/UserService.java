@@ -77,4 +77,9 @@ public class UserService {
 
         return userRepository.searchPage(condition, pageable);
     }
+
+    public List<UserSearchResponseDto> searchScrollPagedUsers(UserSearchCondition condition, int scrollOffset, int pageSize) {
+
+        return userRepository.searchScrollPage(condition, scrollOffset, pageSize);
+    }
 }

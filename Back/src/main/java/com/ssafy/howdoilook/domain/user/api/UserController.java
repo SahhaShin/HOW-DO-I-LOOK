@@ -57,4 +57,12 @@ public class UserController {
         return ResponseEntity.ok()
                 .body(userService.searchPagedUsers(condition, pageable));
     }
+
+    @ApiOperation(value = "유저 검색(스크롤페이징)", notes = "ScrollPaging")
+    @GetMapping("/search/scroll")
+    public ResponseEntity<?> searchScrollPagedUsers(UserSearchCondition condition, int scrollOffset, int pageSize) {
+
+        return ResponseEntity.ok()
+                .body(userService.searchScrollPagedUsers(condition, scrollOffset, pageSize));
+    }
 }
