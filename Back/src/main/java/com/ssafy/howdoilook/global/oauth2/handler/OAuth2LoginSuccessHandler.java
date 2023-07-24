@@ -53,11 +53,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 jwtService.sendAccessAndRefreshToken(httpServletResponse, accessToken, refreshToken);
 
                 Optional<User> findUser = userRepository.findByEmail(oAuth2User.getEmail());
-                
+
                 // Redis에 저장
                 if(findUser.isPresent())
                     redisRefreshTokenService.setRedisRefreshToken(refreshToken, oAuth2User.getEmail());
-                else 
+                else
                     throw new NullPointerException("해당 유저가 존재하지 않습니다.");
             }
             else
