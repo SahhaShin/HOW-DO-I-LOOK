@@ -24,11 +24,12 @@ public class BlackList extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_user_no")
-    private User target_user;
+    private User targetUser;
+
     @Builder
-    public BlackList(Long id, User user, User target_user) {
+    public BlackList(Long id, User user, User targetUser) {
         this.id = id;
         this.user = user;
-        this.target_user = target_user;
+        this.targetUser = targetUser;
     }
 }
