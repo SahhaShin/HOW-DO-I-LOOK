@@ -1,0 +1,92 @@
+:root {
+    --primary-light: #8abdff;
+    --primary: #6d5dfc;
+    --primary-dark: #5b0eeb;
+    --white: #ffffff;
+    --greyLight-1: #e4ebf5;
+    --greyLight-2: #c8d0e7;
+    --greyLight-3: #bec8e4;
+    --greyDark: #9baacf;
+    --signiture: #4570F5;
+}
+
+
+.modal{
+    /* 위치 */
+    margin: 0 auto;
+    margin-top: 5%;
+
+    /* 크기 */
+    width: 500px;
+    height: 700px;
+    border-radius: 1rem;
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+
+    /* 컬러 */
+    background-color: white;
+}
+
+.modalHeader{
+    /* 위치 */
+    display: flex;
+    justify-content: space-between;
+    padding: 5%;
+    align-items: center;
+
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    font-weight: 700;
+}
+
+.modalHeader >img{
+    width: 5%;
+    height: 5%;
+}
+
+/* 이미지 */
+.imgRegist{
+    /* 요소 한가운데 정렬 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 그림자 */
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+    
+    /* 크기 */
+    width: 200px;
+    height: 200px;
+    border-radius: 1rem;
+    margin: 0 auto;
+    padding: 3%;
+}
+
+.imgRegist > input{
+    width: 100%;
+    text-align-last: center;
+    margin: 0 auto;
+}
+
+
+.select{
+    width: 60%;
+    height: 25px;
+    border-radius: 1rem;
+}
+
+.line{
+    display: flex;
+    align-items: center;
+    margin-top: 10%;
+    margin-left: 10%;
+    
+}
+
+.line > p{
+    font-family: 'Pretendard-Regular';
+    margin-right: 3%;
+}
+
+.line:nth-child(1)>input{
+    margin-left: 1px;
+}
