@@ -99,6 +99,11 @@ public class SecurityConfig {
         httpSecurity.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         httpSecurity.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
 
+
+        // 로그아웃
+        
+
+
         return httpSecurity.build();
     }
 

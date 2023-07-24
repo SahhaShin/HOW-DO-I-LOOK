@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.global.redis.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -19,27 +20,41 @@ public class RedisRefreshTokenService {
     * Key-Value 설정
     * */
     @Transactional
-    public void setRedisValue(String refreshToken, String email) {
+    public void setRedisRefreshToken(String refreshToken, String email) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
-        valueOperations.set(refreshToken, email, Duration.ofMinutes(20160));
+        valueOperations.set("[RefreshToken] : " + refreshToken, email, Duration.ofMinutes(20160));
+        valueOperations.set(email, "[RefreshToken] : " + refreshToken, Duration.ofMinutes(20160));
     }
 
     /*
     * Key-Value 삭제
     * */
     @Transactional
-    public void deleteValues(String refreshToken) {
+    public void deleteRefreshToken(String email) {
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+
+        String refreshToken = valueOperations.get(email);
+
         redisTemplate.delete(refreshToken);
+        redisTemplate.delete(email);
     }
 
     /*
     * Key로 Value 조회
     * */
-    public String getRedisValue(String refreshToken) {
+    public String getRedisEmail(String refreshToken) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
-        return valueOperations.get(refreshToken);
+        return valueOperations.get("[RefreshToken] : " + refreshToken);
+    }
+
+    public String getRedisRefreshToken(String email) {
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+
+        String RefreshToken = valueOperations.get(email);
+
+        return RefreshToken.replace("[RefreshToken] : ", "");
     }
 
 }

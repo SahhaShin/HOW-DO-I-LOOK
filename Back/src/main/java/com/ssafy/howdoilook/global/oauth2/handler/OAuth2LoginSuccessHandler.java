@@ -47,7 +47,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 httpServletResponse.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
 
                 // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
-                httpServletResponse.sendRedirect("oauth2/sign-up");
+//                httpServletResponse.sendRedirect("oauth2/sign-up");
 
                 // Header에 AccessToken / RefreshToken 담기
                 jwtService.sendAccessAndRefreshToken(httpServletResponse, accessToken, refreshToken);
@@ -56,8 +56,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
                 // Redis에 저장
                 if(findUser.isPresent())
+<<<<<<< HEAD
                     redisRefreshTokenService.setRedisValue(refreshToken, oAuth2User.getEmail());
                 else
+=======
+                    redisRefreshTokenService.setRedisRefreshToken(refreshToken, oAuth2User.getEmail());
+                else 
+>>>>>>> 7198542e7298def248041c953a07e9f2d37635f0
                     throw new NullPointerException("해당 유저가 존재하지 않습니다.");
             }
             else
