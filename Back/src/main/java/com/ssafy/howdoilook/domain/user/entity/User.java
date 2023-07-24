@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.user.entity;
 
+import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "users")
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_no")
@@ -45,8 +46,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
+    private String socialId;
+
     @Builder
-    public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType) {
+    public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -57,6 +60,7 @@ public class User {
         this.profileImg = profileImg;
         this.role = role;
         this.socialType = socialType;
+        this.socialId = socialId;
     }
 
     /*
