@@ -30,7 +30,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     public List<UserSearchResponseDto> search(UserSearchCondition condition) {
         return jpaQueryFactory
                 .select(new QUserSearchResponseDto(
-                        user.id.as("userId"),
+                        user.id.as("userNo"),
                         user.email,
                         user.name,
                         user.nickname,
@@ -56,7 +56,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     public Page<UserSearchResponseDto> searchPage(UserSearchCondition condition, Pageable pageable) {
         List<UserSearchResponseDto> content = jpaQueryFactory
                 .select(new QUserSearchResponseDto(
-                        user.id.as("userId"),
+                        user.id.as("userNo"),
                         user.email,
                         user.name,
                         user.nickname,
@@ -97,6 +97,33 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
+    public List<UserSearchResponseDto> searchScrollPage(UserSearchCondition condition, int scrollOffset, int pageSize) {
+        List<UserSearchResponseDto> content = jpaQueryFactory
+                .select(new QUserSearchResponseDto(
+                        user.id.as("userNo"),
+                        user.email,
+                        user.name,
+                        user.nickname,
+                        user.gender,
+                        user.age,
+                        user.socialType
+                ))
+                .from(user)
+                .where(
+                        emailEq(condition.getEmail()),
+                        nameEq(condition.getName()),
+                        nicknameEq(condition.getNickname()),
+                        genderEq(condition.getGender()),
+                        socialTypeEq(condition.getSocialType()),
+                        ageGoe(condition.getAgeGoe()),
+                        ageLoe(condition.getAgeLoe())
+                )
+                .offset(scrollOffset)
+                .limit(pageSize)
+                .fetch();
+
+        return content;
+    }
     // 동적 쿼리 용 메서드
 
     private BooleanExpression emailEq(String email) {

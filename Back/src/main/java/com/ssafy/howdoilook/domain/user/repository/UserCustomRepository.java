@@ -12,4 +12,6 @@ public interface UserCustomRepository {
     List<UserSearchResponseDto> search(UserSearchCondition condition);
 
     Page<UserSearchResponseDto> searchPage(UserSearchCondition condition, Pageable pageable);
+
+    List<UserSearchResponseDto> searchScrollPage(UserSearchCondition condition, int scrollOffset, int pageSize);
 }
