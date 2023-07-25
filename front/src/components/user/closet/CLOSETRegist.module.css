@@ -10,15 +10,19 @@
     --signiture: #4570F5;
 }
 
+*{
+    font-family: 'Pretendard-Regular';
+}
 
 .modal{
     /* 위치 */
     margin: 0 auto;
-    margin-top: 5%;
+    margin-top: 3%;
+    margin-bottom: 3%;
 
     /* 크기 */
     width: 500px;
-    height: 700px;
+    height: 750px;
     border-radius: 1rem;
     box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
 
@@ -34,7 +38,6 @@
     align-items: center;
 
     /* 폰트 */
-    font-family: 'Pretendard-Regular';
     font-weight: 700;
 }
 
@@ -62,31 +65,89 @@
 }
 
 .imgRegist > input{
+    /* 크기 */
     width: 100%;
+}
+
+.selectFile{
+    /* 위치 */
     text-align-last: center;
     margin: 0 auto;
+    margin-top: 5%;
 }
 
 
 .select{
-    width: 60%;
+    /* 크기 */
+    width: 307.2px;
     height: 25px;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
+}
+.select:focus{
+    border-color: var(--signiture);
+    outline: none;
+}
+.input{
+    /* 크기 */
+    width: 300px;
+    height: 25px;
+    /* border-radius: 1rem; */
+}
+.input:focus{
+    border-color: var(--signiture);
+    outline: none;
 }
 
+
 .line{
+    /* 위치 */
     display: flex;
     align-items: center;
-    margin-top: 10%;
+    margin-top: 5%;
     margin-left: 10%;
     
 }
 
 .line > p{
-    font-family: 'Pretendard-Regular';
+    /* 위치 */
     margin-right: 3%;
 }
 
 .line:nth-child(1)>input{
     margin-left: 1px;
+}
+
+
+/* 버튼 */
+.buttons{
+    /* 위치 */
+    display: flex;
+    justify-content:flex-end;
+    margin-top: 5%;
+    margin-right: 8%;
+}
+
+.buttons > button{
+    /* 크기 */
+    width: 70px;
+    height: 30px;
+    border-radius: 1rem;
+
+    /* 위치 */
+    margin-right: 2%;
+}
+
+.buttons > button:hover{
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+}
+
+
+/* 이미지 */
+.img{
+    /* 틀 안에 이미지가 빠져나오지 않게 맞추기 */
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
 }
