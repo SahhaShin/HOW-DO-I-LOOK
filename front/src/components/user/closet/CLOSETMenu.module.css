@@ -1,0 +1,101 @@
+:root {
+    --primary-light: #8abdff;
+    --primary: #6d5dfc;
+    --primary-dark: #5b0eeb;
+    --white: #ffffff;
+    --greyLight-1: #e4ebf5;
+    --greyLight-2: #c8d0e7;
+    --greyLight-3: #bec8e4;
+    --greyDark: #9baacf;
+    --signiture: #4570F5;
+}
+
+.navbarContainer {
+    /* 위치 */
+    position: relative;
+}
+    
+.navbar {
+    /* 크기 */
+    width: 700px;
+    height: 60px;
+
+    /* 위치 */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+
+    /* 컬러 */
+    background-color: #f0f0f0;
+}
+    
+.activeMenuBlock {
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+
+    /* 위치 */
+    position: absolute;
+    top: 0;
+
+    /* 크기 */
+    height: 100%;
+    width: 20%;
+
+    /* 컬러 */
+    background-color: var(--signiture);
+
+    /* 동적요소 */
+    transition: left 0.3s ease;
+}
+    
+.activeMenuBlock.active {
+    z-index: 0;
+}
+  
+.activeMenuBlock.active h2 {
+
+    /* 컬러 */
+    color: #ffffff;
+
+    /* 위치 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    /* 동적 */
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+
+    /* 폰트 */
+    font-size: 15px;
+}
+    
+/* Hide the text when the block is not active */
+.activeMenuBlock h2 {
+    /* 컬러 */
+    color: #ffffff;
+
+    /* 폰트 */
+    font-size: 15px;
+
+    /* 위치 */
+    padding: 5%;;
+}
+    
+  
+  
+/* 버튼 */
+button{
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    font-weight: 700;
+
+    /* border */
+    border: none;
+
+    /* 폰트 */
+    font-size: 15px;
+}
