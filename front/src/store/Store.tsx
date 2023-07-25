@@ -1,12 +1,12 @@
 // 메인 스토어
 
 import { configureStore } from "@reduxjs/toolkit";
-import closet from "./ClosetSlice";
+import ClosetSlice from "./ClosetSlice";
 
 
 //reducer 등록
-export default configureStore({
+export const store = configureStore({
     reducer:{
-        closet : closet.reducer,
-    },
+        closet:ClosetSlice,
+    }
 });

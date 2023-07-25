@@ -12,8 +12,14 @@
 
 /* 헤더 */
 .header{
+    /* 크기 */
     height: 70px;
+
+    /* 컬러 */
     background-color: antiquewhite;
+
+    /* 위치 */
+    margin-bottom: 5%;
 }
 
 
@@ -92,6 +98,7 @@
     height: 400px;
     display: flex;
     flex-wrap: wrap;
+    margin-left: 2%;
 }
 
 .paginationContainer{
@@ -99,8 +106,21 @@
     margin-bottom: 10%;
 }
 
+.createModal{
+    position: absolute;
+    margin-left: 30%;
+    margin-top: -1800px;
+    z-index: 10;
+}
+
 /* 푸터 */
 .footer{
+    /* 크기 */
     height: 200px;
+
+    /* 컬러 */
     background-color: antiquewhite;
+
+    /* 위치 */
+    margin-top: 10%;
 }
