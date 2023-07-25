@@ -24,7 +24,6 @@
     width: 500px;
     height: 750px;
     border-radius: 1rem;
-    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
 
     /* 컬러 */
     background-color: white;
@@ -44,6 +43,7 @@
 .modalHeader >img{
     width: 5%;
     height: 5%;
+    cursor: pointer;
 }
 
 /* 이미지 */
