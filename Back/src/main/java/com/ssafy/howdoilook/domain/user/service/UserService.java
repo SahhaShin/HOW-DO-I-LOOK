@@ -33,8 +33,8 @@ public class UserService {
 
 
     /*
-    * 일반 회원 가입
-    * */
+     * 일반 회원 가입
+     * */
     @Transactional
     public Long signUp(UserSignUpRequestDto userSignUpRequestDto) throws Exception {
         if(userRepository.findByEmail(userSignUpRequestDto.getEmail()).isPresent())

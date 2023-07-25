@@ -19,7 +19,7 @@ import java.util.List;
 public class FeedPhoto extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "feed_photo_no")
+    @Column(name = "feed_photo_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -18,10 +18,14 @@ public interface UserRepository
     Optional<User> findByNickname(String nickname);
 
     /*
-    * 소셜 타입 & 소셜 식별 값으로 회원을 찾는 메서드
-    * 소셜 로그인 시 추가 정보를 입력받지 않은 상태에서 사용
-    * */
+     * 소셜 타입 & 소셜 식별 값으로 회원을 찾는 메서드
+     * 소셜 로그인 시 추가 정보를 입력받지 않은 상태에서 사용
+     * */
     Optional<User> findBySocialTypeAndSocialId(SocialType socialType, String socialId);
+
+    @EntityGraph(attributePaths = {})
+    @Override
+    Optional<User> findById(Long aLong);
 
     @EntityGraph(attributePaths = {})
     @Override

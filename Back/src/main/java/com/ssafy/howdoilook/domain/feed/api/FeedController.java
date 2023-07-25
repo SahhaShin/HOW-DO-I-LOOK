@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.feed.api;
 
-import com.ssafy.howdoilook.domain.feed.dto.request.FeedRequestDto;
+import com.ssafy.howdoilook.domain.feed.dto.request.FeedSaveRequestDto;
+import com.ssafy.howdoilook.domain.feed.dto.request.FeedUpdateRequestDto;
 import com.ssafy.howdoilook.domain.feed.service.FeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,12 @@ public class FeedController {
     public final FeedService feedService;
 
     @PostMapping("/")
-    public Long saveFeed(@RequestBody FeedRequestDto feedRequestDto){
+    public Long saveFeed(@RequestBody FeedSaveRequestDto feedRequestDto){
         return feedService.saveFeed(feedRequestDto);
+    }
+
+    @PutMapping("/")
+    public Long updateFeed(@RequestBody FeedUpdateRequestDto feedUpdateRequestDto){
+
     }
 }

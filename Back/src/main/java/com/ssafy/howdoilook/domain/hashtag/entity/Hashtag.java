@@ -14,10 +14,11 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "hashtag")
 public class Hashtag extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "hashtag_no")
+    @Column(name = "hashtag_id")
     private Long id;
 
     @Column(name = "hashtag_content")

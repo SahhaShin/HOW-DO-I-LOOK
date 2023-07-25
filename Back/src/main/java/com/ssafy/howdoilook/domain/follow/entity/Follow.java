@@ -12,10 +12,11 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "follow")
 public class Follow extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="follow_no")
+    @Column(name ="follow_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

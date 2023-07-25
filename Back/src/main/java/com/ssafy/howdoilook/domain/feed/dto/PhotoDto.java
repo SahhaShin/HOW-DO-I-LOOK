@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.feed.dto.request;
+package com.ssafy.howdoilook.domain.feed.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PhotoDto {
+    private Long id;
     private String link;
     private List<String> hashtagList;
 }

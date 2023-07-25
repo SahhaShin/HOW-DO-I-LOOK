@@ -15,10 +15,11 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "feed")
 public class Feed extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "feed_no")
+    @Column(name = "feed_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,5 +39,7 @@ public class Feed extends BaseTimeEntity {
         this.user = user;
         this.content = content;
     }
-
+    public void updateContent(String content){
+        this.content = content;
+    }
 }

@@ -28,7 +28,6 @@ public class HashTagService {
     public HashTagResponseDto findByHashTagId(Long id) {
         Hashtag findHashTag = hashTagRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 hashtag가 존재하지 않습니다."));
-
         return new HashTagResponseDto(findHashTag);
     }
 
@@ -46,6 +45,7 @@ public class HashTagService {
         }
         return findAllHashTagResponseDto;
     }
+
     public HashTagResponseDto findByHashTagContent(String content){
         Hashtag findHashTag = hashTagRepository.findByContent(content)
                 .orElseThrow(() -> new IllegalArgumentException("해당 hashtag가 존재하지 않습니다."));
@@ -69,6 +69,13 @@ public class HashTagService {
         }
         else{
             return findHashTag.get().getId();
+        }
+    }
+    @Transactional
+    public void removeHashTag(String content) {
+        Optional<Hashtag> findHashTag = hashTagRepository.findByContent(content);
+        if (findHashTag.isPresent()){
+            hashTagRepository.delete(findHashTag.get());
         }
     }
 }

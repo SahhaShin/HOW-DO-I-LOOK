@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -43,5 +45,12 @@ public class FeedPhotoHashtagService {
         return feedPhotoHashtagRepository.save(entity).getId();
     }
 
+    @Transactional
+    public void removeFeedPhotoHashtag(Long id){
+        Optional<FeedPhotoHashtag> findFeedPhotoHashTag = feedPhotoHashtagRepository.findById(id);
+        if (findFeedPhotoHashTag.isPresent()) {
+            feedPhotoHashtagRepository.delete(findFeedPhotoHashTag.get());
+        }
+    }
 
 }

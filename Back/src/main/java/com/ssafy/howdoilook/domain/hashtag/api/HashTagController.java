@@ -30,12 +30,4 @@ public class HashTagController {
         return ResponseEntity.ok()
                 .body(findHashTag);
     }
-
-//    @PostMapping("/")
-//    public Long saveHashTag(@RequestBody HashTagSaveRequestDto hashTagRequestDto){
-//        System.out.println("hashTagService = " + hashTagService);
-//        return hashTagService.savaHashTag(hashTagRequestDto);
-//    }
-
-
 }

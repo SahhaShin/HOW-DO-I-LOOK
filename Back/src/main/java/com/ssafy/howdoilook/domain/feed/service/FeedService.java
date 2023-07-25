@@ -1,9 +1,11 @@
 package com.ssafy.howdoilook.domain.feed.service;
 
-import com.ssafy.howdoilook.domain.feed.dto.request.FeedRequestDto;
-import com.ssafy.howdoilook.domain.feed.dto.request.PhotoDto;
+import com.ssafy.howdoilook.domain.feed.dto.request.FeedSaveRequestDto;
+import com.ssafy.howdoilook.domain.feed.dto.PhotoDto;
+import com.ssafy.howdoilook.domain.feed.dto.request.FeedUpdateRequestDto;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.repository.FeedRepository;
+import com.ssafy.howdoilook.domain.feedPhoto.dto.response.FeedPhotoResponseDto;
 import com.ssafy.howdoilook.domain.feedPhoto.service.FeedPhotoService;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.service.FeedPhotoHashtagService;
 import com.ssafy.howdoilook.domain.hashtag.service.HashTagService;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,7 +31,7 @@ public class FeedService {
 
 
     @Transactional
-    public Long saveFeed(FeedRequestDto feedRequestDto) {
+    public Long saveFeed(FeedSaveRequestDto feedRequestDto) {
         //넘어온 회원찾기
         User findUser = userRepository.findById(feedRequestDto.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 회원입니다."));
@@ -42,15 +45,22 @@ public class FeedService {
 
         List<PhotoDto> photoDtoList = feedRequestDto.getPhotoDtoList();
         for (PhotoDto photoDto : photoDtoList) {
-            String link = photoDto.getLink();
-
-            Long photoId = feedPhotoService.saveFeedPhoto(feedEntity.getId(),link);
-            List<String> hashtagList = photoDto.getHashtagList();
-            for (String hashtag : hashtagList) {
-                Long hashTagId = hashTagService.savaHashTag(hashtag);
-                Long feedPhotoHashtagId = feedPhotoHashtagService.saveFeedPhotoHashtag(photoId, hashTagId);
-            }
+            feedPhotoService.saveFeedPhoto(feedEntity.getId(), photoDto);
         }
         return feedEntity.getId();
+    }
+
+    @Transactional
+    public Long updateFeed(FeedUpdateRequestDto feedUpdateRequestDto){
+        //넘어온 회원찾기
+        Feed findFeed = feedRepository.findById(feedUpdateRequestDto.getFeedId()).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 피드입니다."));
+        findFeed.updateContent(feedUpdateRequestDto.getContent());
+        List<PhotoDto> photoDtoList = feedUpdateRequestDto.getPhotoDtoList();
+        for (PhotoDto photoDto : photoDtoList) {
+            FeedPhotoResponseDto byId = feedPhotoService.findById(photoDto.getId());
+//            feedPhotoService.updateFeedPhoto(photoDto);
+        }
+        return findFeed.getId();
     }
 }
