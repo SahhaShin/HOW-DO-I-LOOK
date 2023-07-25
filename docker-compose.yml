@@ -6,24 +6,28 @@ services:
       - "81:80"
     depends_on:
       - back
-    # front-end 서비스에 대한 설정들...
 
   back:
     image: parkseyun/howdoilook:back
     ports:
       - "8081:8080"
-    # back-end 서비스에 대한 설정들...
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://<EC2_IP_ADDRESS>:3306/howdoilook?serverTimezone=Asia/Seoul
+      SPRING_DATASOURCE_USERNAME: howdoilook
+      SPRING_DATASOURCE_PASSWORD: 6how6do6i6look6
 
-#  mysql:
-#    image: mysql:8.0.33
-#    container_name: mysql
-#    ports:
-#      - 3306:3306 # HOST:CONTAINER
-#    environment:
-#      MYSQL_ROOT_PASSWORD:
-#    command:
-#      - --character-set-server=utf8mb4
-#      - --collation-server=utf8mb4_unicode_ci
+  mysql:
+    image: mysql:8.0.33
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 6how6do6i6look6
+      MYSQL_DATABASE: howdoilook
+      MYSQL_USER: howdoilook
+      MYSQL_PASSWORD: 6how6do6i6look6
+
+# 다른 서비스들의 주석 처리는 유지합니다.
 
 #  redis_container:
 #    image: redis:latest
