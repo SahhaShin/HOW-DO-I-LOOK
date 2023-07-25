@@ -11,43 +11,54 @@
 }
 
 .totalArea{
+  /* 위치 */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .oneCloset{
-  width: 400px;
-  height: 700px;
+  /* 크기 */
+  width: 330px;
+  height: 550px;
+  border-radius: 1rem;
+
+  /* 위치 */
   display: flex;
-  /* margin: auto; */
   margin-top: 5%;
   margin-left: 5%;
   box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
-  border-radius: 1rem;
 }
 .ootd{
+  /* 위치 */
   margin-top: 15%;
   margin-left: 15%;
-  width: 150px;
+
+  /* 크기 */
+  width: 120px;
   height: 300px;
 }
 .carousal{
-  width:150px;
+  /* 크기 */
+  width:130px;
+
+  /* 위치 */
   margin-top: -2%;
 }
 .carousal:nth-child(2){
+  /* 위치 */
   margin-top: -20%;
 }
 
 
 .slide{
+  /* 크기 */
   width:30%;
   height:30%;
 }
 
 .slide > img{
-  width: 100%;
+  width: 90%;
   height: 100%;
   margin: auto;
 }
@@ -60,7 +71,7 @@
 }
 
 .carousal_etc{
-  width:150%;
+  width:130%;
 }
 
 
@@ -71,8 +82,8 @@
 
 
 .slide_etc > img{
-  width: 70%;
-  height: 70%;
+  width: 60%;
+  height: 60%;
   margin: auto;
 }
 
@@ -80,7 +91,6 @@
 .btn {
   width: 10rem;
   height: 3rem;
-  border-radius: 1rem;
   box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
   justify-self: center;
   display: flex;
@@ -88,17 +98,13 @@
   justify-content: center;
   cursor: pointer;
   margin-top:5%;
-  transition: 0.3s ease;
 }
-.btn__secondary {
-  color: var(--greyDark);
+
+.btn:hover{
+  background-color: var(--signiture);
+  color: white;
 }
-.btn__secondary:hover {
-  color: var(--signiture);
-}
-.btn__secondary:active {
-  box-shadow: inset 0.2rem 0.2rem 0.5rem var(--greyLight-2), inset -0.2rem -0.2rem 0.5rem var(--white);
-}
+
 .btn p {
   /* 폰트 */
   font-family: 'Pretendard-Regular';
