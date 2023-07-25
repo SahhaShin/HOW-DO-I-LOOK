@@ -3,55 +3,11 @@ services:
   front:
     image: parkseyun/howdoilook:front
     ports:
-      - "80:80"
+      - "3000:3000"
     depends_on:
       - back
-    # front-end 서비스에 대한 설정들...
 
   back:
     image: parkseyun/howdoilook:back
     ports:
-      - "8080:8080"
-    # back-end 서비스에 대한 설정들...
-
-#  mysql:
-#    image: mysql:8.0.33
-#    container_name: mysql
-#    ports:
-#      - 3306:3306 # HOST:CONTAINER
-#    environment:
-#      MYSQL_ROOT_PASSWORD:
-#    command:
-#      - --character-set-server=utf8mb4
-#      - --collation-server=utf8mb4_unicode_ci
-
-#  redis_container:
-#    image: redis:latest
-#
-#    container_name: redis_test
-#
-#    ports:
-#      - 6000:6000
-#
-## 스토리지 마운트(볼륨) 설정
-#    volumes:
-#      - ./redis/data:/data
-#      - ./redis/conf/redis.conf:/usr/local/conf/redis.conf
-#
-## 컨테이너에 docker label을 이용하여 메타 데이터 추가
-#    labels:
-#      - "name=redis"
-#      - "mode=standalone"
-#
-#
-## 컨테이너 종료 시 재 시작 여부 설정
-#    restart:
-#      always
-#
-#    command:
-#      redis-server /usr/local/conf/redis.conf
-#
-#  nginx:
-#    image: nginx:latest
-#    ports:
-#      - "8080:80"
+      - "8081:8081"
