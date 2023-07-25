@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,11 @@ public class FileController {
         List<String> imagePathList = new ArrayList<>();
 
         String originalName = multipartFile.getOriginalFilename(); // 파일 이름
+
+        // 파일명 중복을 피하기위해 날짜 추가
+        String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("/yyyy-MM-dd HH:mm"));
+        String fileName = originalName + formatDate;
+
         long size = multipartFile.getSize(); // 파일 크기
 
         ObjectMetadata objectMetaData = new ObjectMetadata();
@@ -35,11 +42,11 @@ public class FileController {
 
         // S3에 업로드
         amazonS3Client.putObject(
-                new PutObjectRequest(S3Bucket, originalName, multipartFile.getInputStream(), objectMetaData)
+                new PutObjectRequest(S3Bucket, fileName, multipartFile.getInputStream(), objectMetaData)
                         .withCannedAcl(CannedAccessControlList.PublicRead)
         );
 
-        String imagePath = amazonS3Client.getUrl(S3Bucket, originalName).toString(); // 접근가능한 URL 가져오기
+        String imagePath = amazonS3Client.getUrl(S3Bucket, fileName).toString(); // 접근가능한 URL 가져오기
         imagePathList.add(imagePath);
 
         return ResponseEntity.ok().body(imagePathList);
