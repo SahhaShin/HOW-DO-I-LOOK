@@ -3,13 +3,11 @@ services:
   front:
     image: parkseyun/howdoilook:front
     ports:
-      - "81:81"
+      - "3000:3000"
     depends_on:
       - back
-    # front-end 서비스에 대한 설정들...
 
   back:
     image: parkseyun/howdoilook:back
     ports:
       - "8081:8081"
-    # back-end 서비스에 대한 설정들...
