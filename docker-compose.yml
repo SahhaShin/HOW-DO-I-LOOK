@@ -3,7 +3,7 @@ services:
   front:
     image: parkseyun/howdoilook:front
     ports:
-      - "80:80"
+      - "81:80"
     depends_on:
       - back
     # front-end 서비스에 대한 설정들...
@@ -11,7 +11,7 @@ services:
   back:
     image: parkseyun/howdoilook:back
     ports:
-      - "8080:8080"
+      - "8081:8080"
     # back-end 서비스에 대한 설정들...
 
 #  mysql:
@@ -25,13 +25,13 @@ services:
 #      - --character-set-server=utf8mb4
 #      - --collation-server=utf8mb4_unicode_ci
 
-#  redis_container:
-#    image: redis:latest
-#
-#    container_name: redis_test
-#
-#    ports:
-#      - 6000:6000
+  redis_container:
+    image: redis:latest
+
+    container_name: redis_test
+
+    ports:
+      - 6000:6379
 #
 ## 스토리지 마운트(볼륨) 설정
 #    volumes:
