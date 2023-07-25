@@ -4,7 +4,16 @@ import React, { useState, useRef, useCallback } from 'react';
 import closetRegistStyle from "../closet/CLOSETRegist.module.css";
 import { AnyAaaaRecord } from 'dns';
 
+//redux
+import { useSelector, useDispatch } from "react-redux"; 
+import {changeModalOpen} from "../../../store/ClosetSlice";
+
+
 const CLOSETRegist = () => {
+
+    //redux 관리
+    let state = useSelector((state:any)=>state.closet);
+    let dispatch = useDispatch();
 
 
     // 파일등록 관련 코드
@@ -88,7 +97,7 @@ const CLOSETRegist = () => {
                 {/* 옷등록, 닫기버튼 */}
                 <div className={`${closetRegistStyle.modalHeader}`}>
                     <p>옷 등록</p>
-                    <img src={process.env.PUBLIC_URL+`/img/clothes/closeBtn.png`}/>
+                    <img src={process.env.PUBLIC_URL+`/img/clothes/closeBtn.png`} onClick={()=>{dispatch(changeModalOpen(false))}}/>
                 </div>
 
                 {/* 모달 바디 */}
@@ -97,12 +106,14 @@ const CLOSETRegist = () => {
                     <div className={`${closetRegistStyle.imgRegist}`}>
                         {imgSrc?<img className={`${closetRegistStyle.img}`} src={imgSrc}/>:""}
                     </div>
-                    <input className={`${closetRegistStyle.selectFile}`} type="file" accept="image/*" ref={inputRef} onChange={(e)=>{onUploadImage(e.target.files[0])}} />
+
+                    {/* 파일선택 */}
+                    {state.mode===1 || state.mode===3?<input className={`${closetRegistStyle.selectFile}`} type="file" accept="image/*" ref={inputRef} onChange={(e)=>{onUploadImage(e.target.files[0])}} />:null}
 
                     {/* input */}
                     <div>
                         {/* 드롭다운 라인 */}
-                        <div className={closetRegistStyle.line}>
+                        {state.mode===1 || state.mode===3?<div className={closetRegistStyle.line}>
                             <p>옷 구분</p>
                             <select style={{marginLeft:"2%"}} className={closetRegistStyle.select} onChange={handleSelect} value={selected}>
                                     {selectList.map((item:ClothesType) => {
@@ -114,32 +125,51 @@ const CLOSETRegist = () => {
                                         
                                     })}
                             </select>
-                        </div>
+                        </div>:
+                        // 이 부분 value는 데이터 오는 거에 따라 달라지는 걸로 변경해야함
+                        <div className={closetRegistStyle.line} onChange={handleClothesName} style={{marginTop:"5%"}}>
+                            <p>옷 구분 </p>
+                            <input style={{marginLeft:"2%"}} className={closetRegistStyle.input} readOnly value="상의"></input>
+                        </div>}
+
 
                         {/* 옷이름 라인 */}
-                        <div className={closetRegistStyle.line} onChange={handleClothesName} style={{marginTop:"-1%"}}>
+                        {state.mode===1 || state.mode===3?<div className={closetRegistStyle.line} onChange={handleClothesName} style={{marginTop:"-1%"}}>
                             <p>옷 이름 </p>
                             <input style={{marginLeft:"2%"}} className={closetRegistStyle.input}></input>
-                        </div>
+                        </div>:<div className={closetRegistStyle.line} onChange={handleClothesName} style={{marginTop:"-1%"}}>
+                            <p>옷 이름 </p>
+                            <input style={{marginLeft:"2%"}} className={closetRegistStyle.input} value="꽃무늬 옷" readOnly/>
+                        </div>}
 
                         {/* 브랜드명 라인 */}
-                        <div className={closetRegistStyle.line} onChange={handleClothesBrand} style={{marginTop:"-1%"}}>
+                        {state.mode===1 || state.mode===3?<div className={closetRegistStyle.line} onChange={handleClothesBrand} style={{marginTop:"-1%"}}>
                             <p>브랜드명 </p>
                             <input className={closetRegistStyle.input}></input>
-                        </div>
+                        </div>:<div className={closetRegistStyle.line} onChange={handleClothesBrand} style={{marginTop:"-1%"}}>
+                            <p>브랜드명 </p>
+                            <input className={closetRegistStyle.input} value="보세" readOnly/>
+                        </div>}
 
                         {/* 특이사항 라인 */}
-                        <div className={closetRegistStyle.line} onChange={handleSpecialContent} style={{}}>
+                        {state.mode===1 || state.mode===3?<div className={closetRegistStyle.line} onChange={handleSpecialContent} style={{}}>
                             <p>특이사항</p>
                             <textarea className={closetRegistStyle.input} style={{height:"100px"}}/>
-                        </div>
+                        </div>:<div className={closetRegistStyle.line} onChange={handleSpecialContent} style={{}}>
+                            <p>특이사항</p>
+                            <textarea className={closetRegistStyle.input} style={{height:"100px"}} value="보풀이 조금 있어요" readOnly/>
+                        </div>}
                     </div>
                 </div>
 
                 {/* 버튼 2개 */}
                 <div className={`${closetRegistStyle.buttons}`}>
-                    <button>취소</button>
-                    <button>업로드</button>
+                    {state.mode===1 || state.mode===3?<button onClick={()=>{dispatch(changeModalOpen(false))}}>취소</button>:
+                    <button onClick={()=>{dispatch(changeModalOpen(false))}}>닫기</button>}
+
+                    {state.mode===1?<button onClick={()=>{dispatch(changeModalOpen(false))}}>업로드</button>: 
+                    (state.mode===2?null:<button onClick={()=>{dispatch(changeModalOpen(false))}}>수정</button>)
+                    }
                 </div>
 
 
