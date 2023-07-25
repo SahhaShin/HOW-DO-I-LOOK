@@ -1,7 +1,7 @@
 # Docker 이미지의 베이스 이미지를 선택합니다
-# FROM openjdk:11-jre
+FROM openjdk:11-jre
 # FROM amazoncorretto:11
-FROM azul/zulu-openjdk:11
+#FROM azul/zulu-openjdk:11
 
 # 포트번호
 EXPOSE 8080
