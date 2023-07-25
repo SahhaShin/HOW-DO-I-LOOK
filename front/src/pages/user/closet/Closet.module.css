@@ -1,0 +1,64 @@
+:root {
+    --primary-light: #8abdff;
+    --primary: #6d5dfc;
+    --primary-dark: #5b0eeb;
+    --white: #ffffff;
+    --greyLight-1: #e4ebf5;
+    --greyLight-2: #c8d0e7;
+    --greyLight-3: #bec8e4;
+    --greyDark: #9baacf;
+    --signiture: #4570F5;
+}
+
+/* 헤더 */
+.header{
+    height: 70px;
+    background-color: antiquewhite;
+}
+
+
+/* 메인 컨텐츠 */
+.main{
+    display: flex;
+}
+
+.menuArea{
+    width: 300px;
+    background-color: bisque;
+}
+
+.closetContainer{
+    display: flex;
+}
+
+.closetContainer > .closet{
+    margin-right: 15%;
+}
+
+.title{
+    /* 사이즈 */
+    width: 200px;
+    height: 50px;
+    border-radius: 2rem;
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+    
+    /* 위치 조정 */
+    line-height: 50px;
+    
+    /* 폰트 */
+    font-size: 20px;
+    font-weight: 900;
+    font-family: 'Pretendard-Regular';
+
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+    
+}
+
+
+/* 푸터 */
+.footer{
+    height: 200px;
+    background-color: antiquewhite;
+}
