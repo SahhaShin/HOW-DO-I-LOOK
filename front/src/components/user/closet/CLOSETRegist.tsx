@@ -97,7 +97,7 @@ const CLOSETRegist = () => {
                 {/* 옷등록, 닫기버튼 */}
                 <div className={`${closetRegistStyle.modalHeader}`}>
                     <p>옷 등록</p>
-                    <img src={process.env.PUBLIC_URL+`/img/clothes/closeBtn.png`} onClick={()=>{dispatch(changeCreateModalOpen(false))}}/>
+                    <img src={process.env.PUBLIC_URL+`/img/clothes/closeBtn.png`} onClick={()=>{dispatch(changeModalOpen(false))}}/>
                 </div>
 
                 {/* 모달 바디 */}
