@@ -32,6 +32,7 @@ public class User extends BaseTimeEntity {
     private String nickname;
 
     @Column(name = "user_gender")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column(name = "user_age")
