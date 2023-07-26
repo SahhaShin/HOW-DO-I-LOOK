@@ -3,9 +3,9 @@ package com.ssafy.howdoilook.domain.feed.service;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedSaveRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.PhotoDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedUpdateRequestDto;
+import com.ssafy.howdoilook.domain.feed.dto.response.FeedSelectResponseDto;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.repository.FeedRepository;
-import com.ssafy.howdoilook.domain.feedPhoto.dto.response.FeedPhotoResponseDto;
 import com.ssafy.howdoilook.domain.feedPhoto.service.FeedPhotoService;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.service.FeedPhotoHashtagService;
 import com.ssafy.howdoilook.domain.hashtag.service.HashTagService;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,7 +27,11 @@ public class FeedService {
     private final FeedPhotoHashtagService feedPhotoHashtagService;
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
-
+    public List<FeedSelectResponseDto> selectAll(){
+        List<FeedSelectResponseDto> feedSelectResponseDtos = feedRepository.selectFeedAll();
+        System.out.println("feedSelectResponseDtos = " + feedSelectResponseDtos);
+        return feedSelectResponseDtos;
+    }
 
     @Transactional
     public Long saveFeed(FeedSaveRequestDto feedRequestDto) {
