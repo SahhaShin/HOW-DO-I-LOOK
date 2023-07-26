@@ -19,7 +19,7 @@ public class Alarm extends BaseTimeEntity {
     @Column(name = "alarm_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_no")
     private User user;
 

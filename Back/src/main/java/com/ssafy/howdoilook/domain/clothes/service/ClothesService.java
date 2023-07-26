@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.clothes.service;
 
 import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesSaveRequestDto;
+import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesUpdateDto;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
@@ -35,6 +36,16 @@ public class ClothesService {
         clothesRepository.save(clothes);
 
         return clothes.getId();
+
+    }
+
+    @Transactional
+    public Long updateClothes(Long clothesId, ClothesUpdateDto clothesUpdateDto) {
+
+        Clothes findClothes = clothesRepository.findById(clothesId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 옷이 존재하지 않습니다."));
+
+        return findClothes.update(clothesUpdateDto);
 
     }
 }
