@@ -22,8 +22,8 @@ public class Feed extends BaseTimeEntity {
     @Column(name = "feed_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "feed_content")

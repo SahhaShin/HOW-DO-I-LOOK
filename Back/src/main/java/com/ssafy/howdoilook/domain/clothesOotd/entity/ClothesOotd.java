@@ -20,12 +20,12 @@ public class ClothesOotd extends BaseTimeEntity {
     @Column(name = "clothes_ootd_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clothes_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "clothes_id")
     private Clothes clothes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ootd_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ootd_id")
     private Ootd ootd;
 
     @Builder

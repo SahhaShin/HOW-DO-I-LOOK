@@ -5,6 +5,7 @@ import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.request.UserBySocialUpdateRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSearchResponseDto;
+import com.ssafy.howdoilook.domain.user.dto.response.UserSimpleResponseDto;
 import com.ssafy.howdoilook.domain.user.entity.Role;
 import com.ssafy.howdoilook.domain.user.entity.SocialType;
 import com.ssafy.howdoilook.domain.user.entity.User;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,16 +47,7 @@ public class UserService {
         if(userRepository.findByNickname(userSignUpRequestDto.getNickname()).isPresent())
             throw new Exception("이미 존재하는 닉네임입니다.");
 
-        User user = User.builder()
-                .email(userSignUpRequestDto.getEmail())
-                .password(userSignUpRequestDto.getPassword())
-                .name(userSignUpRequestDto.getName())
-                .nickname(userSignUpRequestDto.getNickname())
-                .age(userSignUpRequestDto.getAge())
-                .gender(userSignUpRequestDto.getGender())
-                .role(Role.USER)
-                .socialType(SocialType.X)
-                .build();
+        User user = userSignUpRequestDto.toEntity();
 
         user.passwordEncode(passwordEncoder);
 
@@ -91,6 +84,23 @@ public class UserService {
         return "로그아웃 성공(accessToken blacklist 추가 및 refreshToken 삭제)";
     }
 
+    public UserSimpleResponseDto getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        return new UserSimpleResponseDto(user);
+    }
+
+    public List<UserSimpleResponseDto> getUserList() {
+        List<User> userList = userRepository.findAll();
+
+        List<UserSimpleResponseDto> userDtoList = new ArrayList<>();
+
+        for (User user : userList)
+            userDtoList.add(new UserSimpleResponseDto(user));
+
+        return userDtoList;
+    }
     
     /*
     * 유저 검색 (페이징 X)
