@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+
 @SpringBootApplication(
         exclude = {
                 org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration.class,
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
                 org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration.class
         }
 )
+
 @EnableJpaAuditing
 public class HowDoILookApplication {
 

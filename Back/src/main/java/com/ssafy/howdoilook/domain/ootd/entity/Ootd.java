@@ -11,9 +11,10 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor (access = AccessLevel.PROTECTED)
+@Table(name = "ootd")
 public class Ootd extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ootd_no")
+    @Column(name = "ootd_id")
     private Long id;
 }
