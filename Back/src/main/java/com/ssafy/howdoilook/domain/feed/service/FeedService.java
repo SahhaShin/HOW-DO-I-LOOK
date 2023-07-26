@@ -52,14 +52,16 @@ public class FeedService {
 
     @Transactional
     public Long updateFeed(FeedUpdateRequestDto feedUpdateRequestDto){
-        //넘어온 회원찾기
+        //넘어온 피드찾기
         Feed findFeed = feedRepository.findById(feedUpdateRequestDto.getFeedId()).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 피드입니다."));
+        //피드 내용 업데이트
         findFeed.updateContent(feedUpdateRequestDto.getContent());
+        //피드에 딸린 사진 가져오기
         List<PhotoDto> photoDtoList = feedUpdateRequestDto.getPhotoDtoList();
         for (PhotoDto photoDto : photoDtoList) {
-            FeedPhotoResponseDto byId = feedPhotoService.findById(photoDto.getId());
-//            feedPhotoService.updateFeedPhoto(photoDto);
+            //사진별로 업데이트 하기
+            feedPhotoService.updateFeedPhoto(photoDto);
         }
         return findFeed.getId();
     }

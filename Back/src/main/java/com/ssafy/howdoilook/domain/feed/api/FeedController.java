@@ -14,11 +14,12 @@ public class FeedController {
 
     @PostMapping("/")
     public Long saveFeed(@RequestBody FeedSaveRequestDto feedRequestDto){
+        System.out.println(1);
         return feedService.saveFeed(feedRequestDto);
     }
 
     @PutMapping("/")
     public Long updateFeed(@RequestBody FeedUpdateRequestDto feedUpdateRequestDto){
-
+        return feedService.updateFeed(feedUpdateRequestDto);
     }
 }

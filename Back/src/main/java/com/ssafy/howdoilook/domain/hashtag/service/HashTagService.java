@@ -71,6 +71,7 @@ public class HashTagService {
             return findHashTag.get().getId();
         }
     }
+
     @Transactional
     public void removeHashTag(String content) {
         Optional<Hashtag> findHashTag = hashTagRepository.findByContent(content);

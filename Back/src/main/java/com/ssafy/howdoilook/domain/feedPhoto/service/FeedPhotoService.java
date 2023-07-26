@@ -48,8 +48,8 @@ public class FeedPhotoService {
                 .feed(findFeed)
                 .link(photoDto.getLink())
                 .build();
-        //사진 엔티티 저장
 
+        //사진 엔티티 저장
         Long feedPhotoId = feedPhotoRepository.save(feedPhoto).getId();
         List<String> hashtagList = photoDto.getHashtagList();
         //사진에 저장된 해시태그 저장
@@ -67,10 +67,11 @@ public class FeedPhotoService {
         //새로 저장할 해시태그리스트
         List<String> hashtagList = photoDto.getHashtagList();
 
+        //업데이트하려는 사진 찾으면
         if (feedPhoto.isPresent()) {
 
             FeedPhoto findFeedPhoto = feedPhoto.get();
-
+            //사진해시태그연결테이블결과리스트
             List<FeedPhotoHashtag> list = findFeedPhoto.getList();
             //feedphotohashtag테이블 전부 삭제
             for (FeedPhotoHashtag feedPhotoHashtag : list) {
@@ -82,7 +83,9 @@ public class FeedPhotoService {
                 feedPhotoHashtagService.saveFeedPhotoHashtag(findFeedPhoto.getId(), hashtagId);
             }
             return findFeedPhoto.getId();
-        } else {
+        }
+        //업데이트 하려하는 사진 못찾으면
+        else {
             return 0L;
         }
     }
