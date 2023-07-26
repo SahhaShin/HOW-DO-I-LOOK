@@ -25,5 +25,9 @@ public interface UserRepository
 
     @EntityGraph(attributePaths = {})
     @Override
+    Optional<User> findById(Long aLong);
+
+    @EntityGraph(attributePaths = {})
+    @Override
     <S extends User> S save(S entity);
 }
