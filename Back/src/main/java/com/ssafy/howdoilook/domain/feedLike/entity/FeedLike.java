@@ -17,15 +17,15 @@ import javax.persistence.*;
 public class FeedLike extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="feed_like_no")
+    @Column(name ="feed_like_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feed_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "feed_id")
     private Feed feed;
 
     @Enumerated(EnumType.STRING)

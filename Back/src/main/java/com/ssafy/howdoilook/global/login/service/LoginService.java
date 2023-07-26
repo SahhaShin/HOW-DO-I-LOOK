@@ -19,7 +19,7 @@ public class LoginService implements UserDetailsService {
     /*
     * UserDetails 객체 생성
     * */
-    
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)

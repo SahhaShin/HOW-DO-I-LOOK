@@ -13,24 +13,25 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "comment")
 public class Comment extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="comment_no")
+    @Column(name ="comment_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "feed_id")
     private Feed feed;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name ="user_id")
     private User user;
 
     @Column(name = "comment_content")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "comment_parent")
     private Comment parent;
 

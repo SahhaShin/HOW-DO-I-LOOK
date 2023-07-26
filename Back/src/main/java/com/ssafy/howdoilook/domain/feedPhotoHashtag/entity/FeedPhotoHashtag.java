@@ -17,16 +17,16 @@ import javax.persistence.*;
 public class FeedPhotoHashtag extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="feed_photo_hashtag_no")
+    @Column(name="feed_photo_hashtag_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feed_photo_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "feed_photo_id")
     private FeedPhoto feedPhoto;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hashtag_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
 
     @Builder

@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.clothes.entity;
 
+import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesUpdateDto;
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import lombok.AccessLevel;
@@ -12,14 +13,15 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "clothes")
 public class Clothes extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "clothes_no")
+    @Column(name = "clothes_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Enumerated(EnumType.STRING)
@@ -48,4 +50,15 @@ public class Clothes extends BaseTimeEntity {
         this.brand = brand;
         this.info = info;
     }
+
+    public Long update(ClothesUpdateDto clothesUpdateDto) {
+        this.type = ClothesType.valueOf(clothesUpdateDto.getType());
+        this.name = clothesUpdateDto.getName();
+        this.brand = clothesUpdateDto.getBrand();
+        this.info = clothesUpdateDto.getInfo();
+        this.photoLink = clothesUpdateDto.getPhotoLink();
+
+        return this.id;
+    }
+
 }

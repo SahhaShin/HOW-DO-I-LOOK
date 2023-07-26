@@ -17,15 +17,15 @@ import javax.persistence.*;
 public class RoomUser extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_user_no")
+    @Column(name = "room_user_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_id")
     private Room room;
 
     @Builder
