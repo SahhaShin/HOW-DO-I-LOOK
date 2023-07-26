@@ -50,4 +50,10 @@ public class ClothesController {
 
         return ResponseEntity.ok().body(deleteId);
     }
+
+    @GetMapping("list/{clothesType}")
+    public ResponseEntity<?> findClothesList(@PathVariable("clothesType") String clothesType) {
+
+        return ResponseEntity.ok().body(clothesService.findClothesList(clothesType));
+    }
 }
