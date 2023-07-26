@@ -10,6 +10,7 @@ import { store } from "./store/store";
 
 //페이지 선언
 import Closet from "./pages/user/closet/Closet";
+import ChatList from "./pages/chat/chatting/ChatList";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/closet" element={<Closet/>}/>
+            <Route path="/chatlist" element={<ChatList/>}/>
           </Routes>
         </Router>
       </div>

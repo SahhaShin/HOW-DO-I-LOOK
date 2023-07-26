@@ -33,7 +33,7 @@ const Closet = () => {
 
     return(
         <>
-            <div>
+            <div className={`${closetStyle.total}`}>
                 <div className={`${closetStyle.header}`}>header</div>
                 
                 <div className={`${closetStyle.main}`}>

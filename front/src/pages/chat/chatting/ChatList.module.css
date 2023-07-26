@@ -40,24 +40,18 @@
     background-color: bisque;
 }
 
-.closetContainer{
-    display: flex;
-}
-
-.closetContainer > .closet{
-    margin-right: 15%;
-}
 
 .title{
     /* 사이즈 */
     width: 120px;
     height: 30px;
     border-radius: 2rem;
-    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+    /* box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white); */
     
     /* 위치 조정 */
     line-height: 30px;
     margin-bottom: 3%;
+    margin-left: 50px;
     
     /* 폰트 */
     font-size: 15px;
@@ -70,55 +64,31 @@
     
 }
 
-.addBtnContainer{
-    /* 위치 */
-    display: flex;
-    justify-content: end;
-    margin-top: 3%;
+
+.onechat{
     margin-bottom: 3%;
-
-    /* 크기 */
-    width: 800px;
-    height: 50px;
-}
-.addBtn{
-    /* 크기 */
-    width: 100px;
-    height: 100%;
-
-    /* 컬러 */
-    background-color: #f0f0f0;
-
-    /* 커서 */
-    cursor: pointer;
 }
 
-.addBtn:hover{
-    /* 컬러 */
-    background-color: var(--signiture);
-    color:white;
-}
 
-.closetList{
-    /* 크기 */
-    width: 800px;
-    height: 400px;
+.list{
     display: flex;
-    flex-wrap: wrap;
-    margin-left: 2%;
+    flex-direction: column;
+    text-align: -webkit-center;
 }
 
 .paginationContainer{
     width: 800px;
+    margin-top: 5%;
     margin-bottom: 10%;
 }
 
-.createModal{
-    position: absolute;
-    margin-left: 30%;
-    margin-top: -1800px;
-    z-index: 10;
+
+/* 우측 팔로잉 영역 */
+.followArea{
+    width: 500px;
+    background-color: bisque;
 }
+
 
 /* 푸터 */
 .footer{
