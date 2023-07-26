@@ -13,10 +13,11 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "comment")
 public class Comment extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="comment_no")
+    @Column(name ="comment_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

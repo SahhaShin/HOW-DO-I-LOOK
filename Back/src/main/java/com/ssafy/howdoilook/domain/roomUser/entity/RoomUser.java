@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class RoomUser extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_user_no")
+    @Column(name = "room_user_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

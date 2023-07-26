@@ -12,10 +12,11 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "blacklist")
 public class BlackList extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "blacklist_no")
+    @Column(name = "blacklist_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
