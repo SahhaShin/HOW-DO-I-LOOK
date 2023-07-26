@@ -1,0 +1,20 @@
+version: '3'
+services:
+  front:
+    image: parkseyun/howdoilook:front
+    ports:
+      - "3000:3000"
+    depends_on:
+      - back
+
+  back:
+    image: parkseyun/howdoilook:back
+    ports:
+      - "8081:8081"
+
+  redis:
+    image: redis
+    container_name: my-redis
+    ports:
+      - 6000:6000
+    restart: always
