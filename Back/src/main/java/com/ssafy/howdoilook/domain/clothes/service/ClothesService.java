@@ -48,4 +48,13 @@ public class ClothesService {
         return findClothes.update(clothesUpdateDto);
 
     }
+
+    public Long deleteClothes(Long clothesId) {
+
+        Clothes findClothes = clothesRepository.findById(clothesId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 옷이 존재하지 않습니다."));
+
+        clothesRepository.deleteById(clothesId);
+        return clothesId;
+    }
 }
