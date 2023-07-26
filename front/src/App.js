@@ -6,7 +6,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 // redux
 import { Provider } from "react-redux";
-import { store } from "./store/store";
+import { store } from "./store/Store";
 
 //페이지 선언
 import Closet from "./pages/user/closet/Closet";

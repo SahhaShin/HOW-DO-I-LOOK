@@ -85,7 +85,7 @@
 
 /* 우측 팔로잉 영역 */
 .followArea{
-    width: 500px;
+    width: 100%;
     background-color: bisque;
 }
 
