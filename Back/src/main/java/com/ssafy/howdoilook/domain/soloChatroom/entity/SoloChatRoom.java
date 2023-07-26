@@ -19,11 +19,11 @@ public class SoloChatRoom extends BaseTimeEntity {
     @Column(name = "solo_chatroom_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userA_id")
     private User userA;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userB_id")
     private User userB;
 
