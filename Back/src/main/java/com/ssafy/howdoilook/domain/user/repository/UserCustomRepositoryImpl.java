@@ -30,7 +30,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     public List<UserSearchResponseDto> search(UserSearchCondition condition) {
         return jpaQueryFactory
                 .select(new QUserSearchResponseDto(
-                        user.id.as("userNo"),
+                        user.id.as("userId"),
                         user.email,
                         user.name,
                         user.nickname,
@@ -56,7 +56,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     public Page<UserSearchResponseDto> searchPage(UserSearchCondition condition, Pageable pageable) {
         List<UserSearchResponseDto> content = jpaQueryFactory
                 .select(new QUserSearchResponseDto(
-                        user.id.as("userNo"),
+                        user.id.as("userId"),
                         user.email,
                         user.name,
                         user.nickname,
@@ -100,7 +100,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     public List<UserSearchResponseDto> searchScrollPage(UserSearchCondition condition, int scrollOffset, int pageSize) {
         List<UserSearchResponseDto> content = jpaQueryFactory
                 .select(new QUserSearchResponseDto(
-                        user.id.as("userNo"),
+                        user.id.as("userId"),
                         user.email,
                         user.name,
                         user.nickname,

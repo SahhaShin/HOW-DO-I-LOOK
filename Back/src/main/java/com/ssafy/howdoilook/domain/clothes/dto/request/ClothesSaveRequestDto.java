@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClothesSaveRequestDto {
 
-    private Long userNo;
+    private Long userId;
     private String type;
     private String photoLink;
     private String name;

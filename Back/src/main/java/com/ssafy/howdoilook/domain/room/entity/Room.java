@@ -1,7 +1,10 @@
 package com.ssafy.howdoilook.domain.room.entity;
 
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
+import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
+import com.ssafy.howdoilook.domain.user.entity.User;
+import com.ssafy.howdoilook.domain.userLike.entity.UserLike;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +12,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,8 +35,9 @@ public class Room extends BaseTimeEntity {
     @Column(name = "room_type")
     private RoomType type;
 
-    @Column(name = "room_host")
-    private Long host;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "host_id")
+    private User host;
 
     @Column(name = "room_min_age")
     private int minAge;
@@ -49,8 +55,15 @@ public class Room extends BaseTimeEntity {
     @Column(name = "chatroom_code")
     private String chatCode;
 
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    private List<RoomUser> roomUserList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    private List<UserLike> userLikeList = new ArrayList<>();
+
+
     @Builder
-    public Room(Long id, String code, String title, RoomType type, Long host, int minAge, int maxAge, Gender gender, LocalDateTime endedDate, String chatCode) {
+    public Room(Long id, String code, String title, RoomType type, User host, int minAge, int maxAge, Gender gender, LocalDateTime endedDate, String chatCode, List<RoomUser> roomUserList) {
         this.id = id;
         this.code = code;
         this.title = title;
@@ -61,5 +74,6 @@ public class Room extends BaseTimeEntity {
         this.gender = gender;
         this.endedDate = endedDate;
         this.chatCode = chatCode;
+        this.roomUserList = roomUserList;
     }
 }

@@ -72,7 +72,7 @@ public class FeedPhotoService {
 
             FeedPhoto findFeedPhoto = feedPhoto.get();
             //사진해시태그연결테이블결과리스트
-            List<FeedPhotoHashtag> list = findFeedPhoto.getList();
+            List<FeedPhotoHashtag> list = findFeedPhoto.getFeedPhotoHashtagList();
             //feedphotohashtag테이블 전부 삭제
             for (FeedPhotoHashtag feedPhotoHashtag : list) {
                 feedPhotoHashtagService.removeFeedPhotoHashtag(feedPhotoHashtag.getId());
