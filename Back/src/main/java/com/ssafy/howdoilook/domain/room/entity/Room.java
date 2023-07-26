@@ -35,7 +35,6 @@ public class Room extends BaseTimeEntity {
     @Column(name = "room_type")
     private RoomType type;
 
-    @Column(name = "room_host")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "host_id")
     private User host;
