@@ -51,10 +51,11 @@ public class ClothesController {
         return ResponseEntity.ok().body(deleteId);
     }
 
-    @GetMapping("list/{clothesType}")
-    public ResponseEntity<?> findClothesList(@PathVariable("clothesType") String clothesType, @RequestParam(value = "page") int page) {
+    @GetMapping("list")
+    public ResponseEntity<?> findClothesList(@RequestParam(value = "type") String type,
+                                             @RequestParam(value = "userId") Long userId,
+                                             @RequestParam(value = "page") int page) {
 
-        System.out.println(page);
-        return ResponseEntity.ok().body(clothesService.findClothesList(clothesType, page));
+        return ResponseEntity.ok().body(clothesService.findClothesList(type, userId, page));
     }
 }

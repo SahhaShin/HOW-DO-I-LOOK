@@ -67,12 +67,14 @@ public class ClothesService {
         return clothesId;
     }
 
-    public List<ClothesListResponseDto> findClothesList(String type, int page) {
+    public List<ClothesListResponseDto> findClothesList(String type, Long userId, int page) {
+
         List<ClothesListResponseDto> findClothesListResponseDtoList = new ArrayList<>();
         PageRequest pageRequest = PageRequest.of(page, 8);
 
         if(type.equals("ALL")) {
-            List<Clothes> findClothesList = clothesRepository.findAll();
+            System.out.println(userId);
+            List<Clothes> findClothesList = clothesRepository.findByUser_Id(userId);
 
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
@@ -80,7 +82,7 @@ public class ClothesService {
         } else {
             ClothesType clothesType = ClothesType.valueOf(type);
             System.out.println(clothesType);
-            Page<Clothes> findClothesList = clothesRepository.findByType(clothesType, pageRequest);
+            Page<Clothes> findClothesList = clothesRepository.findByTypeAndUser_Id(clothesType, userId, pageRequest);
 
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
