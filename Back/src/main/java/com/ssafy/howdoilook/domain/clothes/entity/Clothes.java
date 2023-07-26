@@ -1,6 +1,8 @@
 package com.ssafy.howdoilook.domain.clothes.entity;
 
 import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesUpdateDto;
+import com.ssafy.howdoilook.domain.clothesOotd.entity.ClothesOotd;
+import com.ssafy.howdoilook.domain.clothesOotd.entity.QClothesOotd;
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import lombok.AccessLevel;
@@ -9,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,6 +43,9 @@ public class Clothes extends BaseTimeEntity {
 
     @Column(name = "clothes_info")
     private String info;
+
+    @OneToMany(mappedBy = "clothes", cascade = CascadeType.ALL)
+    List<ClothesOotd> clothesOotdList = new ArrayList<>();
 
     @Builder
     public Clothes(Long id, User user, ClothesType type, String photoLink, String name, String brand, String info) {

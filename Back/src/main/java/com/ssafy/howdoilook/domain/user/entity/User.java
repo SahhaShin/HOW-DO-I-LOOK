@@ -1,8 +1,18 @@
 package com.ssafy.howdoilook.domain.user.entity;
 
+import com.ssafy.howdoilook.domain.alarm.entity.Alarm;
+import com.ssafy.howdoilook.domain.blacklist.entity.BlackList;
+import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
+import com.ssafy.howdoilook.domain.comment.entity.Comment;
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
+import com.ssafy.howdoilook.domain.feed.entity.Feed;
+import com.ssafy.howdoilook.domain.feedLike.entity.FeedLike;
+import com.ssafy.howdoilook.domain.follow.entity.Follow;
+import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
+import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChatRoom;
 import com.ssafy.howdoilook.domain.user.dto.request.UserBySocialUpdateRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateRequestDto;
+import com.ssafy.howdoilook.domain.userLike.entity.UserLike;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +20,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -44,12 +56,54 @@ public class User extends BaseTimeEntity {
     private String profileImg;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
     private Role role;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "user_social_type")
     private SocialType socialType;
 
+    @Column(name = "user_social_id")
     private String socialId;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Alarm> alarmList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<BlackList> blackList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "targetUser", cascade = CascadeType.ALL)
+    List<BlackList> targetBlackList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Clothes> clothesList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Feed> feedList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<FeedLike> feedLikeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
+    List<Follow> followerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "followee", cascade = CascadeType.ALL)
+    List<Follow> followeeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<RoomUser> roomUserList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userA", cascade = CascadeType.ALL)
+    List<SoloChatRoom> soloAChatRoomList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userB", cascade = CascadeType.ALL)
+    List<SoloChatRoom> soloBChatRoomList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<UserLike> userLikeList = new ArrayList<>();
 
     @Builder
     public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId) {
