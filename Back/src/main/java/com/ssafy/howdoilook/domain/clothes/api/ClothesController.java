@@ -52,8 +52,9 @@ public class ClothesController {
     }
 
     @GetMapping("list/{clothesType}")
-    public ResponseEntity<?> findClothesList(@PathVariable("clothesType") String clothesType) {
+    public ResponseEntity<?> findClothesList(@PathVariable("clothesType") String clothesType, @RequestParam(value = "page") int page) {
 
-        return ResponseEntity.ok().body(clothesService.findClothesList(clothesType));
+        System.out.println(page);
+        return ResponseEntity.ok().body(clothesService.findClothesList(clothesType, page));
     }
 }

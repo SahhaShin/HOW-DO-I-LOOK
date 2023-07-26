@@ -10,6 +10,8 @@ import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.global.s3upload.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,17 +67,20 @@ public class ClothesService {
         return clothesId;
     }
 
-    public List<ClothesListResponseDto> findClothesList(String clothesType) {
+    public List<ClothesListResponseDto> findClothesList(String type, int page) {
         List<ClothesListResponseDto> findClothesListResponseDtoList = new ArrayList<>();
+        PageRequest pageRequest = PageRequest.of(page, 8);
 
-        if(clothesType.equals("ALL")) {
+        if(type.equals("ALL")) {
             List<Clothes> findClothesList = clothesRepository.findAll();
 
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
             }
         } else {
-            List<Clothes> findClothesList = clothesRepository.findByType(clothesType);
+            ClothesType clothesType = ClothesType.valueOf(type);
+            System.out.println(clothesType);
+            Page<Clothes> findClothesList = clothesRepository.findByType(clothesType, pageRequest);
 
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));

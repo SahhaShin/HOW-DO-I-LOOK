@@ -32,7 +32,7 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
                         , feedPhoto.id, feedPhoto.link, hashtag.content))
                 .from(feed)
                 .leftJoin(feed.feedPhotoList, feedPhoto)
-                .leftJoin(feedPhoto.list, feedPhotoHashtag)
+                .leftJoin(feedPhoto.feedPhotoHashtagList, feedPhotoHashtag)
                 .leftJoin(feedPhotoHashtag.hashtag, hashtag)
                 .orderBy(feed.createdDate.desc())
                 .fetch();
