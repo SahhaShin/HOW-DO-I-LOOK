@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class SoloChatRoom extends BaseTimeEntity {
 
     @Id @GeneratedValue
-    @Column(name = "solo_chatroom_no")
+    @Column(name = "solo_chatroom_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
