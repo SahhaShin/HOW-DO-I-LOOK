@@ -16,15 +16,15 @@ import javax.persistence.*;
 public class SoloChatRoom extends BaseTimeEntity {
 
     @Id @GeneratedValue
-    @Column(name = "solo_chatroom_no")
+    @Column(name = "solo_chatroom_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userA_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "userA_id")
     private User userA;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userB_no")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "userB_id")
     private User userB;
 
     @Column(name = "solo_chatroom_code")

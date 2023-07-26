@@ -13,10 +13,11 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "room")
 public class Room extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_no")
+    @Column(name = "room_id")
     private Long id;
 
     @Column(name = "room_code")

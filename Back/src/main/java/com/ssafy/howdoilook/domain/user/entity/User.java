@@ -1,6 +1,8 @@
 package com.ssafy.howdoilook.domain.user.entity;
 
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
+import com.ssafy.howdoilook.domain.user.dto.request.UserBySocialUpdateRequestDto;
+import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +18,7 @@ import javax.persistence.*;
 public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_no")
+    @Column(name = "user_id")
     private Long id;
 
     @Column(name = "user_email", unique = true)
@@ -32,6 +34,7 @@ public class User extends BaseTimeEntity {
     private String nickname;
 
     @Column(name = "user_gender")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column(name = "user_age")
@@ -75,5 +78,29 @@ public class User extends BaseTimeEntity {
     * */
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
+    }
+
+    /*
+    * 소셜 로그인 유저 추가 정보 업데이트
+    * */
+    public Long socialUserInfoUpdate(UserBySocialUpdateRequestDto userBySocialUpdateRequestDto) {
+        this.age = userBySocialUpdateRequestDto.getAge();
+        this.nickname = userBySocialUpdateRequestDto.getNickname();
+        this.gender = userBySocialUpdateRequestDto.getGender();
+        this.role = Role.USER;
+
+        return this.id;
+    }
+
+    /*
+    * 유저 정보 수정
+    * */
+    public Long updateUserInfo(UserUpdateRequestDto userUpdateRequestDto) {
+        this.age = userUpdateRequestDto.getAge();
+        this.gender = userUpdateRequestDto.getGender();
+        this.nickname = userUpdateRequestDto.getNickname();
+        this.name = userUpdateRequestDto.getName();
+
+        return this.id;
     }
 }
