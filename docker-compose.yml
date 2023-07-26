@@ -11,3 +11,10 @@ services:
     image: parkseyun/howdoilook:back
     ports:
       - "8081:8081"
+
+  redis:
+    image: redis
+    container_name: my-redis
+    ports:
+      - 6000:6000
+    restart: always
