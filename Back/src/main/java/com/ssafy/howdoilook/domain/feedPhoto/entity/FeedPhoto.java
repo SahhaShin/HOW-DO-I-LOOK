@@ -29,6 +29,7 @@ public class FeedPhoto extends BaseTimeEntity {
     @Column(name = "feed_photo_link")
     private String link;
 
+
     @OneToMany(mappedBy ="feedPhoto")
     List<FeedPhotoHashtag> list = new ArrayList<>();
 

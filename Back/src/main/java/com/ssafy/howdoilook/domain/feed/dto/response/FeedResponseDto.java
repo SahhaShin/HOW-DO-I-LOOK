@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Data
-public class FeedSelectResponseDto {
+public class FeedResponseDto {
     private Long userId;
     private Long feedId;
     private String feedContent;
@@ -17,7 +17,7 @@ public class FeedSelectResponseDto {
     private String hashtagContent;
 
     @QueryProjection
-    public FeedSelectResponseDto(Long userId, Long feedId, String feedContent, LocalDateTime feedCreatedDate, LocalDateTime feedUpdateDate, Long feedPhotoId, String feedPhotoLink, String hashtagContent) {
+    public FeedResponseDto(Long userId, Long feedId, String feedContent, LocalDateTime feedCreatedDate, LocalDateTime feedUpdateDate, Long feedPhotoId, String feedPhotoLink, String hashtagContent) {
         this.userId = userId;
         this.feedId = feedId;
         this.feedContent = feedContent;
