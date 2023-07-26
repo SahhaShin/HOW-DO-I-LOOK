@@ -52,6 +52,22 @@ public class UserController {
                 .body(userService.logout(authorization, id));
     }
 
+    @ApiOperation(value = "특정 유저 한명 조회")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+
+        return ResponseEntity.ok()
+                .body(userService.getUserById(id));
+    }
+
+    @ApiOperation(value = "전체 유저 조회")
+    @GetMapping("/list")
+    public ResponseEntity<?> getUserList() {
+
+        return ResponseEntity.ok()
+                .body(userService.getUserList());
+    }
+
     @ApiOperation(value = "유저 검색", notes = "NonPaging")
     @GetMapping("/search")
     public ResponseEntity<?> searchUsers(UserSearchCondition condition) {
