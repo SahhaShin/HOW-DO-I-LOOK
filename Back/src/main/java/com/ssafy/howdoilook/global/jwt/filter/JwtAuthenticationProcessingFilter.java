@@ -116,10 +116,19 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         // AccessToken 추출
         jwtService.extractAccessToken(httpServletRequest)
-                .filter(jwtService::isTokenValid) // 추출한 AccessToken이 유효한가
-                .ifPresent(accessToken -> jwtService.extractEmail(accessToken) // AccessToken에서 email(Claim) 추출
-                .ifPresent(email -> userRepository.findByEmail(email)
-                .ifPresent(this::saveAuthentication))); // 인증 처리
+                .ifPresent(accessToken -> {
+                    if (jwtService.isTokenValid(accessToken)) {
+                        // AccessToken이 유효한 경우 email(Claim) 추출
+                        jwtService.extractEmail(accessToken)
+                                .ifPresent(email -> userRepository.findByEmail(email)
+                                        .ifPresent(this::saveAuthentication)); // 인증 처리
+                    } else {
+                        // AccessToken이 유효하지 않은 경우, 예외를 던집니다.
+                        throw new RuntimeException("해당 토큰은 유효하지 않습니다.");
+                    }
+                });
+
+
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
