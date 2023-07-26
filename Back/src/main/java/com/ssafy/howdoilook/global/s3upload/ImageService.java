@@ -54,10 +54,7 @@ public class ImageService {
     }
 
     public List<String> updateImage(String imageUrl, MultipartFile multipartFile) throws IOException {
-        // 이미지가 존재하면 버킷에서 해당 이미지를 삭제합니다.
-        String existFile = extractFileNameFromUrl(imageUrl);
-        System.out.println(existFile);
-        amazonS3Client.deleteObject(S3Bucket, existFile);
+        deleteImage(imageUrl);
 
         return saveImage(multipartFile);
     }
@@ -66,5 +63,12 @@ public class ImageService {
     private String extractFileNameFromUrl(String imageUrl) {
         // URL의 마지막 슬래시 이후의 문자열
         return imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+    }
+
+    public void deleteImage(String imageUrl) {
+        // 이미지가 존재하면 버킷에서 해당 이미지를 삭제
+        String existFile = extractFileNameFromUrl(imageUrl);
+        System.out.println(existFile);
+        amazonS3Client.deleteObject(S3Bucket, existFile);
     }
 }
