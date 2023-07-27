@@ -16,13 +16,13 @@ const FollwSlot = () => {
                 </div>
                 {/* 중앙 */}
                 <div className={`${followSlotStyle.content}`}>
-                    {/* 닉네임, 시간 */}
+                    {/* 닉네임*/}
                     <div>
                         <p>User3</p>
                     </div>
                 </div>
 
-                {/* 우측 : 입장 버튼 */}
+                {/* 우측 : 대화, 라이브 버튼 */}
                 <div className={`${followSlotStyle.enterBnt}`}>
                     <button>대화</button>
                     <button>라이브</button>    

@@ -69,6 +69,11 @@ const ChatList = () => {
                     <div className={`${chatStyle.menuArea}`}>
                         {/* floating menu start */}
                         <div className={`${chatStyle.followArea}`}>
+                            <div className={`${chatStyle.followAreaTitle}`}>Following</div>
+                            <FollowSlot/>
+                            <FollowSlot/>
+                            <FollowSlot/>
+                            <FollowSlot/>
                             <FollowSlot/>
                         </div>
                     </div>

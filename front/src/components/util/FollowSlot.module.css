@@ -21,8 +21,8 @@
     flex-direction: row;
 
     /* 크기 */
-    width: 400px;
-    height: 100px;
+    width: 220px;
+    height: 90px;
 
     /* border */
     border-bottom: 1px solid #f0f0f0;
@@ -47,7 +47,7 @@
     flex-direction: column;
     justify-content: center;
     text-align: left;
-    margin-left: 50px;
+    margin-left: 20px;
 }
 
 .content > div > p{
@@ -57,20 +57,9 @@
 
 .content > div:nth-child(1)>p:nth-child(1){
     /* 유저 닉네임 영역 */
-    margin-right: 10px;
-    font-size: 15px;
+    /* margin-right: 10px; */
+    font-size: 12px;
     font-weight: 900;
-}
-
-.content > div:nth-child(1)>p:nth-child(2){
-    /* 채팅 세부 시간 영역 */
-    margin-right: 10px;
-    color: gray;
-}
-
-.content > div:nth-child(2){
-    color:grey;
-    margin-top: 5px;
 }
 
 
@@ -79,8 +68,8 @@
     /* 여자 프로필 이미지 */
 
     /* 위치 */
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 
     /* 크기 */
     border-radius: 10rem;
@@ -110,18 +99,20 @@
 
 /* 우측 */
 .enterBnt{
-    /* 입장 버튼 위치 */
+    /* 대화/라이브버튼 */
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    padding: 30px;
     align-items: center;
 }
 .enterBnt> button{
     /* 버튼 크기 */
-    width: 70px;
-    height: 30px;
+    width: 60px;
+    height: 20px;
     border-radius: 30px;
     margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 10px;
 }
 
 .enterBnt> button:hover{
