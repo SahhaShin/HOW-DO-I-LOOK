@@ -22,7 +22,7 @@ services:
     restart: always
 
   nginx:
-    image: nginx:latest
+    image: nginx
     container_name: nginx
     ports:
       - "9080:80"
