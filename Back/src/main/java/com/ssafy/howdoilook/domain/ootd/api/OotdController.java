@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.ootd.api;
 
 import com.ssafy.howdoilook.domain.ootd.dto.request.OotdSaveRequestDto;
+import com.ssafy.howdoilook.domain.ootd.service.OotdService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/ootd")
 public class OotdController {
 
+    private final OotdService ootdService;
+
 //    @PostMapping("")
 //    public ResponseEntity<?> saveOotd(@RequestBody OotdSaveRequestDto ootdSaveRequestDto){
 //
 //    }
 
-//    @GetMapping("list/{OotdId}")
-//    public ResponseEntity<?> getOotdList(@PathVariable)
+    @GetMapping("list/{userId}")
+    public ResponseEntity<?> getOotdList(@PathVariable("userId") Long userId) {
+
+        return ResponseEntity.ok().body(ootdService.findOotdList(userId));
+    }
 }

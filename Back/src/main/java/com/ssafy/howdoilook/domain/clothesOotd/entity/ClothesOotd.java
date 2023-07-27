@@ -28,10 +28,14 @@ public class ClothesOotd extends BaseTimeEntity {
     @JoinColumn(name = "ootd_id")
     private Ootd ootd;
 
+    @JoinColumn(name = "ootd_position")
+    private int position;
+
     @Builder
-    public ClothesOotd(Long id, Clothes clothes, Ootd ootd) {
+    public ClothesOotd(Long id, Clothes clothes, Ootd ootd, int position) {
         this.id = id;
         this.clothes = clothes;
         this.ootd = ootd;
+        this.position = position;
     }
 }
