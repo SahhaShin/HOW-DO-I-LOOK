@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@RequiredArgsConstructor
+
 public class CommentCustomRepositoryImpl implements CommentCustomRepository{
     private final JPAQueryFactory jpaQueryFactory;
 

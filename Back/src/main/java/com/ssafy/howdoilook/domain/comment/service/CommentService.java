@@ -13,11 +13,8 @@ import com.ssafy.howdoilook.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -67,6 +64,7 @@ public class CommentService {
     }
 
     private CommentResponseDto entityToDto(Comment comment){
+        System.out.println("comment = " + comment);
         CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                 .userId(comment.getUser().getId())
                 .feedId(comment.getFeed().getId())
