@@ -3,7 +3,8 @@ package com.ssafy.howdoilook.domain.feed.service;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedSaveRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.PhotoDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedUpdateRequestDto;
-import com.ssafy.howdoilook.domain.feed.dto.response.FeedSelectResponseDto;
+import com.ssafy.howdoilook.domain.feed.dto.response.FeedDto;
+import com.ssafy.howdoilook.domain.feed.dto.response.FeedResponseDto;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.repository.FeedRepository;
 import com.ssafy.howdoilook.domain.feedPhoto.service.FeedPhotoService;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,10 +29,79 @@ public class FeedService {
     private final FeedPhotoHashtagService feedPhotoHashtagService;
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
-    public List<FeedSelectResponseDto> selectAll(){
-        List<FeedSelectResponseDto> feedSelectResponseDtos = feedRepository.selectFeedAll();
-        System.out.println("feedSelectResponseDtos = " + feedSelectResponseDtos);
-        return feedSelectResponseDtos;
+    public List<FeedDto> selectAll(){
+        List<FeedResponseDto> feedResponseDtoList = feedRepository.selectFeedAll();
+        List<FeedDto> feedDtoList = new ArrayList<>();
+        long feedId = 0;
+        long photoId = 0;
+        for (FeedResponseDto feedResponseDto : feedResponseDtoList) {
+            //피드 새로만들어야 되는 것
+            if (feedResponseDto.getFeedId()!=feedId){
+                feedId = feedResponseDto.getFeedId();
+                FeedDto feedDto = FeedDto.builder()
+                        .userId(feedResponseDto.getUserId())
+                        .feedId(feedResponseDto.getFeedId())
+                        .feedContent(feedResponseDto.getFeedContent())
+                        .feedCreatedDate(feedResponseDto.getFeedCreatedDate())
+                        .feedUpdateDate(feedResponseDto.getFeedUpdateDate())
+                        .photoDtoList(new ArrayList<PhotoDto>())
+                        .build();
+                    feedDtoList.add(feedDto);
+            }
+            int feedListSize = feedDtoList.size();
+            if (photoId!=feedResponseDto.getFeedPhotoId()) {
+                photoId=feedResponseDto.getFeedPhotoId();
+                PhotoDto photoDto = PhotoDto.builder()
+                        .id(feedResponseDto.getFeedPhotoId())
+                        .link(feedResponseDto.getFeedPhotoLink())
+                        .hashtagList(new ArrayList<>())
+                        .build();
+                feedDtoList.get(feedListSize - 1).getPhotoDtoList().add(photoDto);
+            }
+            int photoListSize = feedDtoList.get(feedListSize - 1).getPhotoDtoList().size();
+
+            feedDtoList.get(feedListSize - 1).getPhotoDtoList()
+                    .get(photoListSize - 1).getHashtagList()
+                    .add(feedResponseDto.getHashtagContent());
+        }
+        return feedDtoList;
+    }
+    public List<FeedDto> selectByHashTag(List<String> hashtagList){
+        List<FeedResponseDto> feedResponseDtoList = feedRepository.selectFeedByHashTag(hashtagList);
+        List<FeedDto> feedDtoList = new ArrayList<>();
+        long feedId = 0;
+        long photoId = 0;
+        for (FeedResponseDto feedResponseDto : feedResponseDtoList) {
+            //피드 새로만들어야 되는 것
+            if (feedResponseDto.getFeedId()!=feedId){
+                feedId = feedResponseDto.getFeedId();
+                FeedDto feedDto = FeedDto.builder()
+                        .userId(feedResponseDto.getUserId())
+                        .feedId(feedResponseDto.getFeedId())
+                        .feedContent(feedResponseDto.getFeedContent())
+                        .feedCreatedDate(feedResponseDto.getFeedCreatedDate())
+                        .feedUpdateDate(feedResponseDto.getFeedUpdateDate())
+                        .photoDtoList(new ArrayList<PhotoDto>())
+                        .build();
+                feedDtoList.add(feedDto);
+            }
+            int feedListSize = feedDtoList.size();
+            if (photoId!=feedResponseDto.getFeedPhotoId()) {
+                photoId=feedResponseDto.getFeedPhotoId();
+                PhotoDto photoDto = PhotoDto.builder()
+                        .id(feedResponseDto.getFeedPhotoId())
+                        .link(feedResponseDto.getFeedPhotoLink())
+                        .hashtagList(new ArrayList<>())
+                        .build();
+                feedDtoList.get(feedListSize - 1).getPhotoDtoList().add(photoDto);
+            }
+            int photoListSize = feedDtoList.get(feedListSize - 1).getPhotoDtoList().size();
+
+            feedDtoList.get(feedListSize - 1).getPhotoDtoList()
+                    .get(photoListSize - 1).getHashtagList()
+                    .add(feedResponseDto.getHashtagContent());
+        }
+        return feedDtoList;
     }
 
     @Transactional

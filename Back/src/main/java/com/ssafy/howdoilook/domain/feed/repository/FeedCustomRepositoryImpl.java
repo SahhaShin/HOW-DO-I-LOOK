@@ -1,8 +1,10 @@
 package com.ssafy.howdoilook.domain.feed.repository;
 
+import com.fasterxml.jackson.databind.util.ArrayBuilders;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.howdoilook.domain.feed.dto.response.FeedSelectResponseDto;
-import com.ssafy.howdoilook.domain.feed.dto.response.QFeedSelectResponseDto;
+import com.ssafy.howdoilook.domain.feed.dto.response.FeedResponseDto;
+import com.ssafy.howdoilook.domain.feed.dto.response.QFeedResponseDto;
 import com.ssafy.howdoilook.domain.feed.entity.QFeed;
 import com.ssafy.howdoilook.domain.feedPhoto.entity.QFeedPhoto;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.entity.QFeedPhotoHashtag;
@@ -26,15 +28,48 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
     }
 
     @Override
-    public List<FeedSelectResponseDto> selectFeedAll() {
-        List<FeedSelectResponseDto> feedSelectedList = jpaQueryFactory.select(new QFeedSelectResponseDto(
+    public List<FeedResponseDto> selectFeedAll() {
+
+        List<FeedResponseDto> feedSelectedList = jpaQueryFactory.select(new QFeedResponseDto(
+                        feed.user.id, feed.id, feed.content, feed.createdDate, feed.modifiedDate
+                        , feedPhoto.id, feedPhoto.link, hashtag.content))
+                .from(feed)
+                .leftJoin(feed.feedPhotoList, feedPhoto)
+                .leftJoin(feedPhoto.list, feedPhotoHashtag)
+                .leftJoin(feedPhotoHashtag.hashtag, hashtag)
+                .orderBy(feed.id.desc(),feedPhoto.id.asc())
+                .fetch();
+        return feedSelectedList;
+    }
+
+    @Override
+    public List<FeedResponseDto> selectFeedByHashTag(List<String> hashTagList) {
+        BooleanBuilder builder = new BooleanBuilder();
+        for (String s : hashTagList) {
+            builder.or(hashtag.content.eq(s));
+        }
+        List<Long> findFeedIdList = jpaQueryFactory.select(feed.id)
+                .from(feed)
+                .leftJoin(feed.feedPhotoList, feedPhoto)
+                .leftJoin(feedPhoto.list, feedPhotoHashtag)
+                .leftJoin(feedPhotoHashtag.hashtag, hashtag)
+                .where(builder)
+                .distinct()
+                .fetch();
+        builder = new BooleanBuilder();
+        for (Long aLong : findFeedIdList) {
+            builder.or(feed.id.eq(aLong));
+        }
+        List<FeedResponseDto> feedSelectedList = jpaQueryFactory.select(new QFeedResponseDto(
                         feed.user.id, feed.id, feed.content, feed.createdDate, feed.modifiedDate
                         , feedPhoto.id, feedPhoto.link, hashtag.content))
                 .from(feed)
                 .leftJoin(feed.feedPhotoList, feedPhoto)
                 .leftJoin(feedPhoto.feedPhotoHashtagList, feedPhotoHashtag)
                 .leftJoin(feedPhotoHashtag.hashtag, hashtag)
-                .orderBy(feed.createdDate.desc())
+                .where(builder)
+                .distinct()
+                .orderBy(feed.id.desc(),feedPhoto.id.asc())
                 .fetch();
         return feedSelectedList;
     }
