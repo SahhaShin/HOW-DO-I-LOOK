@@ -8,14 +8,16 @@ import UserVideoComponent from './UserVideoComponent';
 const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4443/';
 const Authorization = 'Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU';
 
+const userId = 'Participant' + Math.floor(Math.random() * 100);
+
 class App extends Component {
     constructor(props) {
         super(props);
 
         // These properties are in the state's component in order to re-render the HTML whenever their values change
         this.state = {
-            mySessionId: 'SessionA',  //toDo : 자신의 닉네임으로 자동으로 입장되도록 
-            myUserName: 'Participant' + Math.floor(Math.random() * 100),
+            mySessionId: userId,  //toDo : 자신의 닉네임으로 자동으로 입장되도록 
+            myUserName: userId, //toDo : 자신의 id가 되도록 
             session: undefined,
             //toDo : host로 되도록 함. 만약 자신이 호스트라면 publisher, 아니라면 host닉네임을 가진 subscribers
             mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
@@ -183,11 +185,14 @@ class App extends Component {
         this.setState({
             session: undefined,
             subscribers: [],
-            mySessionId: 'SessionA',
-            myUserName: 'Participant' + Math.floor(Math.random() * 100),
+            mySessionId: userId, //toDo 자신의 아이디로 나가도록 
+            myUserName: userId,  //toDo : 일단 자신의 이름이 되도록 
             mainStreamManager: undefined,
             publisher: undefined
         });
+
+        //toDo : state를 end로 해서 chat으로 화상회의 종료 메세지를 보내도록 함. 
+
     }
 
     async switchCamera() {
@@ -231,6 +236,15 @@ class App extends Component {
 
         return (
             <div className="container">
+                {userId}
+                {/* 
+                
+                만약 세션 id가 undifined라면 2가지가능성이 있다. 
+                1. host가 session을 종료했을 시 
+                2. url을 통해서 화상회의 페이지에 들어왔을 시 
+
+                둘다 방이 종료되었습니다로 표시되도록 함. 
+                */}
                 {this.state.session === undefined ? (
                     <div id="join">
                         <div id="img-div">
@@ -333,6 +347,7 @@ class App extends Component {
      */
     async getToken() {
         const sessionId = await this.createSession(this.state.mySessionId);
+        //todo session id
         return await this.createToken(sessionId);
     }
 
@@ -340,17 +355,18 @@ class App extends Component {
         const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions', { customSessionId: sessionId }, {
             headers: { 
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU',
+                'Authorization': 'Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU', //toDo 나중에 토큰 비밀번호 바꾸기 
              },
         });
         return response.data; // The sessionId
     }
 
     async createToken(sessionId) {
-        const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', {}, {
+        const url = APPLICATION_SERVER_URL + 'api/sessions/' + this.state.mySessionId + '/connections'
+        const response = await axios.post(url, {}, {
             headers: { 
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU',
+                'Authorization': 'Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU', //toDo 나중에 토큰 비밀번호 바꾸기 
              },
         });
         return response.data; // The token
