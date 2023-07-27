@@ -1,6 +1,6 @@
 package com.ssafy.howdoilook.domain.feed.repository;
 
-import com.fasterxml.jackson.databind.util.ArrayBuilders;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.howdoilook.domain.feed.dto.response.FeedResponseDto;
