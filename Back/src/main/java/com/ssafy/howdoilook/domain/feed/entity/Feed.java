@@ -1,6 +1,8 @@
 package com.ssafy.howdoilook.domain.feed.entity;
 
+import com.ssafy.howdoilook.domain.comment.entity.Comment;
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
+import com.ssafy.howdoilook.domain.feedLike.entity.FeedLike;
 import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import lombok.AccessLevel;
@@ -22,16 +24,21 @@ public class Feed extends BaseTimeEntity {
     @Column(name = "feed_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "feed_content")
     private String content;
 
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
+    List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "feed")
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
     List<FeedPhoto> feedPhotoList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
+    List<FeedLike> feedLikeList = new ArrayList<>();
 
     @Builder
     public Feed(Long id, User user, String content) {

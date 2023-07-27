@@ -13,7 +13,7 @@ public class UserSearchResponseDto {
 
     // User
 
-    private Long userNo;
+    private Long userId;
 
     private String email;
 
@@ -37,8 +37,8 @@ public class UserSearchResponseDto {
     // Comment
 
     @QueryProjection
-    public UserSearchResponseDto(Long userNo, String email, String name, String nickname, Gender gender, int age, SocialType socialType) {
-        this.userNo = userNo;
+    public UserSearchResponseDto(Long userId, String email, String name, String nickname, Gender gender, int age, SocialType socialType) {
+        this.userId = userId;
         this.email = email;
         this.name = name;
         this.nickname = nickname;

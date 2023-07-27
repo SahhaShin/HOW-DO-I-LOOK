@@ -22,7 +22,7 @@ public class FeedPhoto extends BaseTimeEntity {
     @Column(name = "feed_photo_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feed_id")
     private Feed feed;
 
@@ -30,8 +30,10 @@ public class FeedPhoto extends BaseTimeEntity {
     private String link;
 
 
-    @OneToMany(mappedBy ="feedPhoto")
-    List<FeedPhotoHashtag> list = new ArrayList<>();
+
+    @OneToMany(mappedBy ="feedPhoto", cascade = CascadeType.ALL)
+    List<FeedPhotoHashtag> feedPhotoHashtagList = new ArrayList<>();
+
 
     @Builder
     public FeedPhoto(Long id, Feed feed, String link) {

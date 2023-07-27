@@ -24,8 +24,8 @@ public class Hashtag extends BaseTimeEntity {
     @Column(name = "hashtag_content")
     private String content;
 
-    @OneToMany(mappedBy = "hashtag")
-    private List<FeedPhotoHashtag> list = new ArrayList<>();
+    @OneToMany(mappedBy = "hashtag", cascade = CascadeType.ALL)
+    private List<FeedPhotoHashtag> feedPhotoHashtagList = new ArrayList<>();
 
     @Builder
     public Hashtag(Long id, String content) {
