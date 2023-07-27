@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.repository.FeedRepository;
 import com.ssafy.howdoilook.domain.feedLike.dto.request.FeedLikeDeleteRequestDto;
 import com.ssafy.howdoilook.domain.feedLike.dto.request.FeedLikeSaveRequestDto;
+import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
 import com.ssafy.howdoilook.domain.feedLike.entity.FeedLike;
 import com.ssafy.howdoilook.domain.feedLike.entity.FeedLikeType;
 import com.ssafy.howdoilook.domain.feedLike.repository.FeedLikeRepository;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,4 +50,8 @@ public class FeedLikeService {
         FeedLike findFeedLike = feedLikeRepository.findFeedLikeByUserIdAndFeedIdAndType(findUser, findFeed, feedLikeDeleteRequestDto.getType());
         feedLikeRepository.delete(findFeedLike);
     }
+    public FeedLikeCountResponseDto countFeedLike(Long feedId){
+        return feedLikeRepository.countFeedLike(feedId);
+    }
+    
 }

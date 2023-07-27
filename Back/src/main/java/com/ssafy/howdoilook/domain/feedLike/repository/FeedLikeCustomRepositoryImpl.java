@@ -3,6 +3,7 @@ package com.ssafy.howdoilook.domain.feedLike.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.entity.QFeed;
+import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
 import com.ssafy.howdoilook.domain.feedLike.entity.FeedLike;
 import com.ssafy.howdoilook.domain.feedLike.entity.FeedLikeType;
 import com.ssafy.howdoilook.domain.feedLike.entity.QFeedLike;
@@ -28,5 +29,31 @@ public class FeedLikeCustomRepositoryImpl implements FeedLikeCustomRepository{
                         feedLike.feed.id.eq(feed.getId())).and(
                         feedLike.type.eq(FeedLikeType.valueOf(type)))).fetchOne();
         return findFeedLike;
+    }
+
+    @Override
+    public FeedLikeCountResponseDto countFeedLike(Long feedId) {
+        Long lovelyCount = jpaQueryFactory.select(feedLike.count())
+                .from(feedLike)
+                .where(feedLike.feed.id.eq(feedId).and(feedLike.type.eq(FeedLikeType.LOVELY)))
+                .fetchOne();
+        Long naturalCount = jpaQueryFactory.select(feedLike.count())
+                .from(feedLike)
+                .where(feedLike.feed.id.eq(feedId).and(feedLike.type.eq(FeedLikeType.NATURAL)))
+                .fetchOne();
+        Long modernCount = jpaQueryFactory.select(feedLike.count())
+                .from(feedLike)
+                .where(feedLike.feed.id.eq(feedId).and(feedLike.type.eq(FeedLikeType.MODERN)))
+                .fetchOne();
+        Long sexyCount = jpaQueryFactory.select(feedLike.count())
+                .from(feedLike)
+                .where(feedLike.feed.id.eq(feedId).and(feedLike.type.eq(FeedLikeType.SEXY)))
+                .fetchOne();
+        return FeedLikeCountResponseDto.builder()
+                .LOVELY(lovelyCount)
+                .NATURAL(naturalCount)
+                .MODERN(modernCount)
+                .SEXY(sexyCount)
+                .build();
     }
 }
