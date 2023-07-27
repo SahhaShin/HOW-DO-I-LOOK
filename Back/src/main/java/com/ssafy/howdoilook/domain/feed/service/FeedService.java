@@ -31,77 +31,11 @@ public class FeedService {
     private final UserRepository userRepository;
     public List<FeedDto> selectAll(){
         List<FeedResponseDto> feedResponseDtoList = feedRepository.selectFeedAll();
-        List<FeedDto> feedDtoList = new ArrayList<>();
-        long feedId = 0;
-        long photoId = 0;
-        for (FeedResponseDto feedResponseDto : feedResponseDtoList) {
-            //피드 새로만들어야 되는 것
-            if (feedResponseDto.getFeedId()!=feedId){
-                feedId = feedResponseDto.getFeedId();
-                FeedDto feedDto = FeedDto.builder()
-                        .userId(feedResponseDto.getUserId())
-                        .feedId(feedResponseDto.getFeedId())
-                        .feedContent(feedResponseDto.getFeedContent())
-                        .feedCreatedDate(feedResponseDto.getFeedCreatedDate())
-                        .feedUpdateDate(feedResponseDto.getFeedUpdateDate())
-                        .photoDtoList(new ArrayList<PhotoDto>())
-                        .build();
-                    feedDtoList.add(feedDto);
-            }
-            int feedListSize = feedDtoList.size();
-            if (photoId!=feedResponseDto.getFeedPhotoId()) {
-                photoId=feedResponseDto.getFeedPhotoId();
-                PhotoDto photoDto = PhotoDto.builder()
-                        .id(feedResponseDto.getFeedPhotoId())
-                        .link(feedResponseDto.getFeedPhotoLink())
-                        .hashtagList(new ArrayList<>())
-                        .build();
-                feedDtoList.get(feedListSize - 1).getPhotoDtoList().add(photoDto);
-            }
-            int photoListSize = feedDtoList.get(feedListSize - 1).getPhotoDtoList().size();
-
-            feedDtoList.get(feedListSize - 1).getPhotoDtoList()
-                    .get(photoListSize - 1).getHashtagList()
-                    .add(feedResponseDto.getHashtagContent());
-        }
-        return feedDtoList;
+        return slicingAndCapsule(feedResponseDtoList);
     }
     public List<FeedDto> selectByHashTag(List<String> hashtagList){
         List<FeedResponseDto> feedResponseDtoList = feedRepository.selectFeedByHashTag(hashtagList);
-        List<FeedDto> feedDtoList = new ArrayList<>();
-        long feedId = 0;
-        long photoId = 0;
-        for (FeedResponseDto feedResponseDto : feedResponseDtoList) {
-            //피드 새로만들어야 되는 것
-            if (feedResponseDto.getFeedId()!=feedId){
-                feedId = feedResponseDto.getFeedId();
-                FeedDto feedDto = FeedDto.builder()
-                        .userId(feedResponseDto.getUserId())
-                        .feedId(feedResponseDto.getFeedId())
-                        .feedContent(feedResponseDto.getFeedContent())
-                        .feedCreatedDate(feedResponseDto.getFeedCreatedDate())
-                        .feedUpdateDate(feedResponseDto.getFeedUpdateDate())
-                        .photoDtoList(new ArrayList<PhotoDto>())
-                        .build();
-                feedDtoList.add(feedDto);
-            }
-            int feedListSize = feedDtoList.size();
-            if (photoId!=feedResponseDto.getFeedPhotoId()) {
-                photoId=feedResponseDto.getFeedPhotoId();
-                PhotoDto photoDto = PhotoDto.builder()
-                        .id(feedResponseDto.getFeedPhotoId())
-                        .link(feedResponseDto.getFeedPhotoLink())
-                        .hashtagList(new ArrayList<>())
-                        .build();
-                feedDtoList.get(feedListSize - 1).getPhotoDtoList().add(photoDto);
-            }
-            int photoListSize = feedDtoList.get(feedListSize - 1).getPhotoDtoList().size();
-
-            feedDtoList.get(feedListSize - 1).getPhotoDtoList()
-                    .get(photoListSize - 1).getHashtagList()
-                    .add(feedResponseDto.getHashtagContent());
-        }
-        return feedDtoList;
+        return slicingAndCapsule(feedResponseDtoList);
     }
 
     @Transactional
@@ -138,5 +72,49 @@ public class FeedService {
             feedPhotoService.updateFeedPhoto(photoDto);
         }
         return findFeed.getId();
+    }
+
+    /**
+     * 내부에서만 사용하는 메서드
+     * repository에서 필요한 정보를 전부 가져오면
+     * 프론트로 보내기 좋게 슬라이싱하고 캡슐화하는 메서드
+     * @param feedResponseDtoList
+     * @return
+     */
+    private List<FeedDto> slicingAndCapsule(List<FeedResponseDto> feedResponseDtoList){
+        List<FeedDto> feedDtoList = new ArrayList<>();
+        long feedId = 0;
+        long photoId = 0;
+        for (FeedResponseDto feedResponseDto : feedResponseDtoList) {
+            //피드 새로만들어야 되는 것
+            if (feedResponseDto.getFeedId()!=feedId){
+                feedId = feedResponseDto.getFeedId();
+                FeedDto feedDto = FeedDto.builder()
+                        .userId(feedResponseDto.getUserId())
+                        .feedId(feedResponseDto.getFeedId())
+                        .feedContent(feedResponseDto.getFeedContent())
+                        .feedCreatedDate(feedResponseDto.getFeedCreatedDate())
+                        .feedUpdateDate(feedResponseDto.getFeedUpdateDate())
+                        .photoDtoList(new ArrayList<PhotoDto>())
+                        .build();
+                feedDtoList.add(feedDto);
+            }
+            int feedListSize = feedDtoList.size();
+            if (photoId!=feedResponseDto.getFeedPhotoId()) {
+                photoId=feedResponseDto.getFeedPhotoId();
+                PhotoDto photoDto = PhotoDto.builder()
+                        .id(feedResponseDto.getFeedPhotoId())
+                        .link(feedResponseDto.getFeedPhotoLink())
+                        .hashtagList(new ArrayList<>())
+                        .build();
+                feedDtoList.get(feedListSize - 1).getPhotoDtoList().add(photoDto);
+            }
+            int photoListSize = feedDtoList.get(feedListSize - 1).getPhotoDtoList().size();
+
+            feedDtoList.get(feedListSize - 1).getPhotoDtoList()
+                    .get(photoListSize - 1).getHashtagList()
+                    .add(feedResponseDto.getHashtagContent());
+        }
+        return feedDtoList;
     }
 }
