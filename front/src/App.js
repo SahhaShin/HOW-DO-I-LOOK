@@ -11,6 +11,7 @@ import { store } from "./store/Store";
 //페이지 선언
 import Closet from "./pages/user/closet/Closet";
 import ChatList from "./pages/chat/chatting/ChatList";
+import ChatRoom from "./pages/chat/chatting/ChatRoom";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/closet" element={<Closet/>}/>
             <Route path="/chatlist" element={<ChatList/>}/>
+            <Route path="/chatroom/:otherId/:roomId" element={<ChatRoom/>}/>
           </Routes>
         </Router>
       </div>

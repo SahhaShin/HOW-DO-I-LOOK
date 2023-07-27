@@ -1,0 +1,128 @@
+:root {
+    --primary-light: #8abdff;
+    --primary: #6d5dfc;
+    --primary-dark: #5b0eeb;
+    --white: #ffffff;
+    --greyLight-1: #e4ebf5;
+    --greyLight-2: #c8d0e7;
+    --greyLight-3: #bec8e4;
+    --greyDark: #9baacf;
+    --signiture: #4570F5;
+}
+
+.total{
+    width: 100%;
+    height: 100%;
+}
+
+/* 헤더 */
+.header{
+    /* 크기 */
+    width: 100%;
+    height: 70px;
+
+    /* 컬러 */
+    background-color: antiquewhite;
+
+    /* 위치 */
+    margin-bottom: 5%;
+}
+
+/* 메인 컨텐츠 */
+.main{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.menuArea{
+    width: 300px;
+    background-color: bisque;
+    flex-shrink: 1;
+}
+
+/* 중앙 컴포 */
+.mid{
+    display: flex;
+    flex-direction: column;
+}
+
+.mid > div:nth-child(1){
+    margin-left: 50px;
+    margin-bottom: 1%;
+    display: flex;
+    justify-content:space-around;
+    width: 800px;
+}
+
+.nickname{
+    width: 100%;
+    text-align: left;
+    font-size: 30px;
+    font-weight: 900;
+    margin-left: 30px;
+}
+.exit{
+    width: 80px;
+    height: 40px;
+    border-radius:1rem;
+}
+.exit:hover{
+    background-color: var(--signiture);
+    color: white;
+}
+
+.chatArea{
+    /* 가운데에 있는 리스트 */
+    margin-left: 50px;
+    padding: 3%;
+
+    flex-shrink: 3;
+    /* overflow: scroll; */
+
+    width: 800px;
+    border: 1px solid lightgrey;
+
+    border-radius: 1rem;
+}
+
+.chatting{
+    padding: 3%;
+    overflow: auto;
+    border: 1px solid lightgrey;
+    /* background-color: var(--primary-light); */
+}
+
+/* 메세지 보내기 영역 */
+.sendArea{
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+}
+
+.sendArea>input{
+    width: 50%;
+    height: 50px;
+    margin-right: 50px;
+}
+
+.sendArea>button{
+    width: 50px;
+    height: 50px;
+    background-color: var(--signiture);
+    color: white;
+    border-radius: 5%;
+}
+
+
+/* 푸터 */
+.footer{
+    /* 크기 */
+    height: 200px;
+
+    /* 컬러 */
+    background-color: antiquewhite;
+
+    /* 위치 */
+    margin-top: 10%;
+}
