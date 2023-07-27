@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.comment.api;
 
 import com.ssafy.howdoilook.domain.comment.dto.request.CommentSaveRequestDto;
+import com.ssafy.howdoilook.domain.comment.dto.request.CommentUpdateRequestDto;
 import com.ssafy.howdoilook.domain.comment.dto.response.CommentResponseDto;
 import com.ssafy.howdoilook.domain.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,14 @@ public class CommentController {
             , @PathVariable(name = "parentCommentId") Long parentCommetId){
         List<CommentResponseDto> commentResponseDtoList = commentService.selectCommentByFeedIdAndParentCommentId(feedId, parentCommetId);
         return ResponseEntity.ok().body(commentResponseDtoList);
+    }
+    @PutMapping("/{commentId}")
+    public Long updateComment(@PathVariable(name = "commentId") Long commentId, @RequestBody CommentUpdateRequestDto commentUpdateRequestDto){
+        return commentService.updateComment(commentId, commentUpdateRequestDto);
+    }
+    @DeleteMapping("/{commentId}")
+    public Long deleteComment(@PathVariable(name = "commentId") Long commentId){
+        commentService.deleteComment(commentId);
+        return commentId;
     }
 }

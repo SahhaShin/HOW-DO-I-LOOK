@@ -27,8 +27,8 @@ public class FeedController {
         return ResponseEntity.ok().body(feedResponseDtoList);
     }
     @PostMapping("/")
-    public Long saveFeed(@RequestBody FeedSaveRequestDto feedRequestDto){
-        return feedService.saveFeed(feedRequestDto);
+    public Long saveFeed(@RequestBody FeedSaveRequestDto feedSaveRequestDto){
+        return feedService.saveFeed(feedSaveRequestDto);
     }
 
     @PutMapping("/")
