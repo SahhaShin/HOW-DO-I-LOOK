@@ -21,7 +21,7 @@ import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.Session;
 import io.openvidu.java.client.SessionProperties;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://localhost:3000/", "http://192.168.31.19:3000/"})
 @RestController
 public class Controller {
 

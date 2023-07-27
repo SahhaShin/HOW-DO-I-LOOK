@@ -17,6 +17,7 @@ class App extends Component {
         // These properties are in the state's component in order to re-render the HTML whenever their values change
         this.state = {
             mySessionId: userId,  //toDo : 자신의 닉네임으로 자동으로 입장되도록 
+            myToken: undefined,//token 값을 저장하기 
             myUserName: userId, //toDo : 자신의 id가 되도록 
             session: undefined,
             //toDo : host로 되도록 함. 만약 자신이 호스트라면 publisher, 아니라면 host닉네임을 가진 subscribers
@@ -30,6 +31,8 @@ class App extends Component {
         this.joinSession = this.joinSession.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
         this.switchCamera = this.switchCamera.bind(this);
+        this.offCamera = this.offCamera.bind(this);
+        this.offMic = this.offMic.bind(this);
         this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
         this.handleChangeUserName = this.handleChangeUserName.bind(this);
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
@@ -124,7 +127,10 @@ class App extends Component {
                 // --- 4) Connect to the session with a valid user token ---
 
                 // Get a token from the OpenVidu deployment
-                this.getToken().then((token) => {
+                this.getToken().then(() => {
+                    console.log("this.state.myToken : " + this.state.myToken)
+
+                    var token = this.state.myToken
                     // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
                     // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
                     mySession.connect(token, { clientData: this.state.myUserName })
@@ -180,6 +186,8 @@ class App extends Component {
             mySession.disconnect();
         }
 
+        //toDo : 만약 자신이 host라면 state를 end로 해서 chat으로 화상회의 종료 메세지를 보내도록 함. 
+        
         // Empty all properties...
         this.OV = null;
         this.setState({
@@ -187,12 +195,10 @@ class App extends Component {
             subscribers: [],
             mySessionId: userId, //toDo 자신의 아이디로 나가도록 
             myUserName: userId,  //toDo : 일단 자신의 이름이 되도록 
+            myToken: undefined,
             mainStreamManager: undefined,
             publisher: undefined
         });
-
-        //toDo : state를 end로 해서 chat으로 화상회의 종료 메세지를 보내도록 함. 
-
     }
 
     async switchCamera() {
@@ -228,6 +234,14 @@ class App extends Component {
         } catch (e) {
             console.error(e);
         }
+    }
+
+    async offCamera() {
+        console.log("Camera off")
+    }
+
+    async offMic() {
+        console.log("Mic off")
     }
 
     render() {
@@ -301,6 +315,22 @@ class App extends Component {
                                 onClick={this.switchCamera}
                                 value="Switch Camera"
                             />
+                            {/* toDo 마이크 끄기 버튼 */}
+                            <input
+                                className="btn btn-large btn-success"
+                                type="button"
+                                id="buttonOffMic" 
+                                onClick={this.offMic}
+                                value="mic off"
+                            />
+                            {/* toDo 카메라 끄기 버튼 */}
+                            <input
+                                className="btn btn-large btn-success"
+                                type="button"
+                                id="buttonOffCamera"
+                                onClick={this.offCamera}
+                                value="camera off"
+                            />
                         </div>
 
                         {this.state.mainStreamManager !== undefined ? (
@@ -346,9 +376,12 @@ class App extends Component {
      * more about the integration of OpenVidu in your application server.
      */
     async getToken() {
-        const sessionId = await this.createSession(this.state.mySessionId);
-        //todo session id
-        return await this.createToken(sessionId);
+        var sessionId = this.state.mySessionId;
+        if(this.state.mySessionId == this.state.myUserName){
+            sessionId = await this.createSession(this.state.mySessionId);
+        }
+        const token = await this.createToken(sessionId);
+        return token;
     }
 
     async createSession(sessionId) {
@@ -362,15 +395,40 @@ class App extends Component {
     }
 
     async createToken(sessionId) {
-        const url = APPLICATION_SERVER_URL + 'api/sessions/' + this.state.mySessionId + '/connections'
+        //sessionId를 그대로 받아서 사용할 시 웹 페이지에서 객체를 받지 못하여 [object Object]로 나타남. 
+        //이를 해결하기위해 document에서 mySessionId를 받아서 사용함 
+
+        const url = APPLICATION_SERVER_URL + 'api/sessions/' + this.state.mySessionId + '/connection'
+        // ----/[object%]/connection
         const response = await axios.post(url, {}, {
             headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': 'Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU', //toDo 나중에 토큰 비밀번호 바꾸기 
              },
         });
+        this.setState({
+            myToken: response.data.token,
+        });
+        console.log("create connect : " + this.state.myToken)
         return response.data; // The token
     }
+
+    //toDo closeSession 위에 붙이기 
+    async closeSession(sessionId) {
+        //sessionId를 그대로 받아서 사용할 시 웹 페이지에서 객체를 받지 못하여 [object Object]로 나타남. 
+        //이를 해결하기위해 document에서 mySessionId를 받아서 사용함 
+
+        const url = APPLICATION_SERVER_URL + 'api/sessions/' + this.state.mySessionId 
+        // ----/[object%]
+        const response = await axios.delete(url, {}, {
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU', //toDo 나중에 토큰 비밀번호 바꾸기 
+             },
+        });
+        return 
+    }
+
 }
 
 export default App;
