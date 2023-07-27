@@ -29,11 +29,11 @@ public class FeedPhoto extends BaseTimeEntity {
     @Column(name = "feed_photo_link")
     private String link;
 
-    @Column(name = "feed_photo_sequence")
-    private Integer sequence;
+
 
     @OneToMany(mappedBy ="feedPhoto", cascade = CascadeType.ALL)
     List<FeedPhotoHashtag> feedPhotoHashtagList = new ArrayList<>();
+
 
     @Builder
     public FeedPhoto(Long id, Feed feed, String link) {

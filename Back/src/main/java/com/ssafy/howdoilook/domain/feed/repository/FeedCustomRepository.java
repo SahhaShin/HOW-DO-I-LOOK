@@ -1,12 +1,12 @@
 package com.ssafy.howdoilook.domain.feed.repository;
 
 
-import com.ssafy.howdoilook.domain.feed.dto.response.FeedSelectResponseDto;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.ssafy.howdoilook.domain.feed.dto.response.FeedResponseDto;
 
 import java.util.List;
 
 public interface FeedCustomRepository {
-    List<FeedSelectResponseDto> selectFeedAll();
+    List<FeedResponseDto> selectFeedAll();
+
+    List<FeedResponseDto> selectFeedByHashTag(List<String> hashTagList);
 }
