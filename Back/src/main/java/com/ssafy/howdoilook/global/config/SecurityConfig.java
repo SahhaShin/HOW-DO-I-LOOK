@@ -77,10 +77,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .requiresChannel()
-                .anyRequest().requiresSecure()   // https
+                // https
+//                .requiresChannel()
+//                .anyRequest().requiresSecure()
 
-                .and()
+//                .and()
 
                 .formLogin().disable() // FormLogin 사용 X
                 .httpBasic().disable() // httpBasic 사용 X
@@ -96,7 +97,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
 
-                .antMatchers("/", "/favicon.ico", "/api/swagger-ui/index.html", "/api/user/**").permitAll()
+                .antMatchers("/", "/favicon.ico").permitAll()
                 .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 .antMatchers("/api/user/signup").permitAll() // 회원가입 접근 OK
                 .anyRequest().authenticated() // 그 외 경로는 모두 인증된 사
