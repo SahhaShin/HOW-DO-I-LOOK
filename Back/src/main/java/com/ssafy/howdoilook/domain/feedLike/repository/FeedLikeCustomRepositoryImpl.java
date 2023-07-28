@@ -3,6 +3,7 @@ package com.ssafy.howdoilook.domain.feedLike.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.entity.QFeed;
+import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCheckResponseDto;
 import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
 import com.ssafy.howdoilook.domain.feedLike.entity.FeedLike;
 import com.ssafy.howdoilook.domain.feedLike.entity.FeedLikeType;
@@ -55,5 +56,38 @@ public class FeedLikeCustomRepositoryImpl implements FeedLikeCustomRepository{
                 .MODERN(modernCount)
                 .SEXY(sexyCount)
                 .build();
+    }
+
+    /**
+     * 하드코딩인데 이거 맞나? ㅜㅜ
+     * @param userId
+     * @param feedId
+     * @return
+     */
+    @Override
+    public FeedLikeCheckResponseDto checkFeedLike(Long userId, Long feedId) {
+        List<FeedLike> feedLikeList = jpaQueryFactory.selectFrom(feedLike)
+                .where(feedLike.user.id.eq(userId).and(feedLike.feed.id.eq(feedId)))
+                .fetch();
+        FeedLikeCheckResponseDto feedLikeCheckResponseDto = new FeedLikeCheckResponseDto();
+        for (FeedLike like : feedLikeList) {
+            if (like.getType()!=null) {
+                switch (like.getType()){
+                    case LOVELY:
+                        feedLikeCheckResponseDto.setLOVELY(true);
+                        break;
+                    case NATURAL:
+                        feedLikeCheckResponseDto.setNATURAL(true);
+                        break;
+                    case MODERN:
+                        feedLikeCheckResponseDto.setMODERN(true);
+                        break;
+                    case SEXY:
+                        feedLikeCheckResponseDto.setSEXY(true);
+                        break;
+                }
+            }
+        }
+        return feedLikeCheckResponseDto;
     }
 }

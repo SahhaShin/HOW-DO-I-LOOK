@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.repository.FeedRepository;
 import com.ssafy.howdoilook.domain.feedLike.dto.request.FeedLikeDeleteRequestDto;
 import com.ssafy.howdoilook.domain.feedLike.dto.request.FeedLikeSaveRequestDto;
+import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCheckResponseDto;
 import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
 import com.ssafy.howdoilook.domain.feedLike.entity.FeedLike;
 import com.ssafy.howdoilook.domain.feedLike.entity.FeedLikeType;
@@ -52,6 +53,9 @@ public class FeedLikeService {
     }
     public FeedLikeCountResponseDto countFeedLike(Long feedId){
         return feedLikeRepository.countFeedLike(feedId);
+    }
+    public FeedLikeCheckResponseDto checkFeedLike(Long userId, Long feedId){
+        return feedLikeRepository.checkFeedLike(userId, feedId);
     }
     
 }
