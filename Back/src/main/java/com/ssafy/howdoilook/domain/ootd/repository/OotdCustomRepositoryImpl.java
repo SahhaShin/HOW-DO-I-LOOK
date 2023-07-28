@@ -57,11 +57,15 @@ public class OotdCustomRepositoryImpl implements OotdCustomRepository {
     public List<ClothesTypeListDto> findOotdIdList(Long userId, String type, Long ootdId) {
 
         List<ClothesTypeListDto> ootdList = jpaQueryFactory.select(new QClothesTypeListDto(
-                        c.clothes.id, c.photoLink, co.ootd.id))
+                        c.clothes.id, c.photoLink, co.id))
                 .from(c)
                 .leftJoin(c.clothesOotdList, co)
 //                .on(c.id.eq(co.id))
-                .where(c.user.id.eq(userId), c.type.eq(ClothesType.valueOf(type)), co.id.eq(ootdId).or(co.id.isNotNull()))
+                .where(
+                        c.user.id.eq(userId),
+                        c.type.eq(ClothesType.valueOf(type)),
+                        co.ootd.id.eq(ootdId)
+                )
                 .fetch();
 
         return ootdList;
@@ -73,12 +77,12 @@ public class OotdCustomRepositoryImpl implements OotdCustomRepository {
          List<ClothesTypeListDto> ootdList = jpaQueryFactory.select(new QClothesTypeListDto(
                  c.clothes.id, c.photoLink, co.id))
                 .from(c)
-                .leftJoin(co)
-                .on(c.id.eq(co.id))
+                .leftJoin(c.clothesOotdList, co)
+//                .on(c.id.eq(co.id))
                 .where(
                         c.user.id.eq(userId),
                         c.type.eq(ClothesType.valueOf(type)),
-                        co.id.notIn(ootdId).or(co.id.isNull())
+                        co.ootd.id.notIn(ootdId).or(co.id.isNull())
                 )
                  .orderBy(co.ootd.id.desc())
                  .fetch();

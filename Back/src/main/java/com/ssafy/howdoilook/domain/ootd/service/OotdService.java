@@ -20,33 +20,43 @@ public class OotdService {
 
     private final OotdRepository ootdRepository;
 
-    public List<ClothesTypeListDto> findOotdList(Long userId) {
+    public List<OotdDto> findOotdList(Long userId) {
 
-//        List<OotdDto> ootds = new ArrayList<>();
-//
-//        List<Ootd> ootdIds = ootdRepository.findByUser_id(userId);
-//        for(int i = 0; i < 2; i++){
-//            OotdDto ootd = new OotdDto();
-//            Long ootdId = ootdIds.get(i).getId();
-//            ootd.setOotdId(ootdId);
-//            ootd.setTops(ootdRepository.findOotdIdList(userId, "TOP", ootdId));
-//            ootd.setBottoms(ootdRepository.findOotdIdList(userId, "BOTTOM", ootdId));
-//            ootd.setShoes(ootdRepository.findOotdIdList(userId, "SHOE", ootdId));
-//            ootd.setAccessories1(ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId).subList(0, 1));
-//            ootd.setAccessories1(ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId).subList(1, 2));
-//            ootd.setAccessories1(ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId).subList(2, 3));
-//
-//            ootd.getTops().addAll(ootdRepository.findClothesList(userId, "TOP", ootdId));
-//            ootd.getBottoms().addAll(ootdRepository.findClothesList(userId, "BOTTOM", ootdId));
-//            ootd.getShoes().addAll(ootdRepository.findClothesList(userId, "SHOE", ootdId));
-//            ootd.getAccessories1().addAll(ootdRepository.findClothesList(userId, "ACCESSORY", ootdId));
-//            ootd.getAccessories2().addAll(ootdRepository.findClothesList(userId, "ACCESSORY", ootdId));
-//            ootd.getAccessories3().addAll(ootdRepository.findClothesList(userId, "ACCESSORY", ootdId));
-//            ootds.add(ootd);
-//        }
-//        return ootds;
+        List<OotdDto> ootds = new ArrayList<>();
 
-        return ootdRepository.findOotdIdList(userId, "ACCESSORY", 2L);
-//        List<ClothesTypeListDto> findOotdIdList(Long userId, String type, Long ootdId)
+        List<Ootd> ootdIds = ootdRepository.findByUser_id(userId);
+
+        for(int i = 0; i < 2; i++){
+            OotdDto ootd = new OotdDto();
+
+            Long ootdId = ootdIds.get(i).getId();
+
+            ootd.setOotdId(ootdId);
+            ootd.setTops(ootdRepository.findOotdIdList(userId, "TOP", ootdId));
+            ootd.setBottoms(ootdRepository.findOotdIdList(userId, "BOTTOM", ootdId));
+            ootd.setShoes(ootdRepository.findOotdIdList(userId, "SHOE", ootdId));
+
+            List<ClothesTypeListDto> accessories1 = new ArrayList<>();
+            accessories1.add(ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId).get(0));
+            ootd.setAccessories1(accessories1);
+
+            List<ClothesTypeListDto> accessories2 = new ArrayList<>();
+            accessories2.add(ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId).get(1));
+            ootd.setAccessories2(accessories2);
+
+            List<ClothesTypeListDto> accessories3 = new ArrayList<>();
+            accessories3.add(ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId).get(2));
+            ootd.setAccessories3(accessories3);
+
+            ootd.getTops().addAll(ootdRepository.findClothesList(userId, "TOP", ootdId));
+            ootd.getBottoms().addAll(ootdRepository.findClothesList(userId, "BOTTOM", ootdId));
+            ootd.getShoes().addAll(ootdRepository.findClothesList(userId, "SHOE", ootdId));
+            ootd.getAccessories1().addAll(ootdRepository.findClothesList(userId, "ACCESSORY", ootdId));
+            ootd.getAccessories2().addAll(ootdRepository.findClothesList(userId, "ACCESSORY", ootdId));
+            ootd.getAccessories3().addAll(ootdRepository.findClothesList(userId, "ACCESSORY", ootdId));
+
+            ootds.add(ootd);
+        }
+        return ootds;
     }
 }

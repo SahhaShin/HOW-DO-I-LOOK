@@ -29,7 +29,7 @@ public class FeedService {
     private final UserRepository userRepository;
     public List<FeedSelectResponseDto> selectAll(){
         List<FeedSelectResponseDto> feedSelectResponseDtos = feedRepository.selectFeedAll();
-        System.out.println("feedSelectResponseDtos = " + feedSelectResponseDtos);
+//        System.out.println("feedSelectResponseDtos = " + feedSelectResponseDtos);
         return feedSelectResponseDtos;
     }
 

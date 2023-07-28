@@ -10,6 +10,7 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 public class OotdDto {
+
     private Long ootdId;
     private List<ClothesTypeListDto> tops;
     private List<ClothesTypeListDto> bottoms;
