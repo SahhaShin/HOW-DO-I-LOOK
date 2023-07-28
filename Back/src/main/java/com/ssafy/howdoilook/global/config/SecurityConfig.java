@@ -77,6 +77,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .requiresChannel()
+                .anyRequest().requiresSecure()   // https
+
+                .and()
+
                 .formLogin().disable() // FormLogin 사용 X
                 .httpBasic().disable() // httpBasic 사용 X
                 .csrf().disable() // csrf 보안 사용 X
@@ -110,11 +115,6 @@ public class SecurityConfig {
 
 
         // 로그아웃
-        
-
-        .and()
-                .requiresChannel()
-                .anyRequest().requiresSecure()   // https
 
         return httpSecurity.build();
     }
