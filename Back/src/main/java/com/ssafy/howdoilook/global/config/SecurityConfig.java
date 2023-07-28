@@ -92,7 +92,7 @@ public class SecurityConfig {
 
                 .antMatchers("/", "/favicon.ico", "/api/swagger-ui/index.html", "/api/user/**").permitAll()
                 .antMatchers(PERMIT_URL_ARRAY).permitAll()
-                .antMatchers("/api/user/signup").permitAll() // 회원가입 접근 OK
+//                .antMatchers("/api/user/signup").permitAll() // 회원가입 접근 OK
                 .anyRequest().authenticated() // 그 외 경로는 모두 인증된 사용자만 접근 가능
                 .and()
 
