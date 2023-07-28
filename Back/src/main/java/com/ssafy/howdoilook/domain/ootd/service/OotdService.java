@@ -1,15 +1,17 @@
 package com.ssafy.howdoilook.domain.ootd.service;
 
+import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import com.ssafy.howdoilook.domain.ootd.dto.response.ClothesTypeListDto;
-import com.ssafy.howdoilook.domain.ootd.dto.response.OotdDto;
-import com.ssafy.howdoilook.domain.ootd.dto.response.OotdListResponseDto;
+import com.ssafy.howdoilook.domain.ootd.dto.response.GetOotdListDto;
 import com.ssafy.howdoilook.domain.ootd.entity.Ootd;
+import com.ssafy.howdoilook.domain.ootd.entity.OotdType;
 import com.ssafy.howdoilook.domain.ootd.repository.OotdRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -20,14 +22,15 @@ public class OotdService {
 
     private final OotdRepository ootdRepository;
 
-    public List<OotdDto> findOotdList(Long userId) {
+    public List<GetOotdListDto> findOotdList(Long userId) {
 
-        List<OotdDto> ootds = new ArrayList<>();
+        List<GetOotdListDto> ootds = new ArrayList<>();
 
         List<Ootd> ootdIds = ootdRepository.findByUser_id(userId);
+        List<OotdType> typeList = Arrays.asList(OotdType.TOP, OotdType.BOTTOM, OotdType.SHOE, OotdType.ACCESSORY1, OotdType.ACCESSORY2, OotdType.ACCESSORY3);
 
-        for(int i = 0; i < 2; i++){
-            OotdDto ootd = new OotdDto();
+        for(int i = 0; i < ootdIds.size(); i++){
+            GetOotdListDto ootd = new GetOotdListDto();
 
             Long ootdId = ootdIds.get(i).getId();
 

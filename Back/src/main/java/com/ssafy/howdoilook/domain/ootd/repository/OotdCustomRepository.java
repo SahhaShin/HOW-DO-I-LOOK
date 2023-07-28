@@ -1,7 +1,6 @@
 package com.ssafy.howdoilook.domain.ootd.repository;
 
 import com.ssafy.howdoilook.domain.ootd.dto.response.ClothesTypeListDto;
-import com.ssafy.howdoilook.domain.ootd.dto.response.OotdListResponseDto;
 
 import java.util.List;
 
