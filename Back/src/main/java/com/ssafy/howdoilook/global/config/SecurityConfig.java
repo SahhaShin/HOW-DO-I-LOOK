@@ -112,6 +112,9 @@ public class SecurityConfig {
         // 로그아웃
         
 
+        .and()
+                .requiresChannel()
+                .anyRequest().requiresSecure()   // https
 
         return httpSecurity.build();
     }
