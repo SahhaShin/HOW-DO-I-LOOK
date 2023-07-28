@@ -8,12 +8,12 @@ import { useSelector, useDispatch } from "react-redux";
 import {changeModalOpen,changeMode} from "../../../store/ClosetSlice";
 
 //컴포넌트
-import OOTDWeather from "../../../components/user/closet/OOTDWeather";
-import OOTDCoordi from "../../../components/user/closet/OOTDCoordi";
-import CLOSETMenu from "../../../components/user/closet/CLOSETMenu";
-import CLOSETSlot from "../../../components/user/closet/CLOSETSlot";
+import OOTDWeather from "../../../components/user/closet/OotdWeather";
+import OOTDCoordi from "../../../components/user/closet/OotdCoordi";
+import CLOSETMenu from "../../../components/user/closet/ClosetMenu";
+import CLOSETSlot from "../../../components/user/closet/ClosetSlot";
 import Pagination from "../../../components/util/Pagination";
-import CLOSETRegist from "../../../components/user/closet/CLOSETRegist";
+import CLOSETRegist from "../../../components/user/closet/ClosetRegist";
 
 
 
