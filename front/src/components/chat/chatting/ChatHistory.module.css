@@ -56,6 +56,7 @@
     flex-direction: column;
     align-items: center;
 
+
     /* 폰트 */
     font-size: 10px;
     color: grey;
@@ -162,7 +163,7 @@
     margin-bottom: 1%;
 
     /* 크기 */
-    width: 750px;
+    width: 900px;
     height: 100%;
 }
 
@@ -172,6 +173,7 @@
 }
 .mid2>div{
     text-align: left;
+    /* padding: 3%; */
 }
 
 .date{

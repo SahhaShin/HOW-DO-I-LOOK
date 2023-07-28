@@ -40,7 +40,44 @@ const ChatHistory = () => {
             content:"좋아요! 팔로우해요!",
             time:"오전 8:10"
         },
-        
+        {
+            date:"2023년 7월 16일 일요일",
+            id:"ssafy",
+            nickname:"미팅만 50번",
+            // profile:null,
+            content:"좋게 봐주셔서 감사합니다!!",
+            time:"오전 8:11"
+        },
+        {
+            date:"2023년 7월 16일 토요일",
+            id:"user3",
+            nickname:"user3",
+            // profile:null,
+            content:"꺅 너무 감사합니다 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ",
+            time:"오후 3:12"
+        },{
+            date:"2023년 7월 17일 일요일",
+            id:"ssafy",
+            nickname:"미팅만 50번",
+            // profile:null,
+            content:"저번에 해드린 코디는 어떠셨나요?",
+            time:"오전 8:10"
+        },{
+            date:"2023년 7월 17일 일요일",
+            id:"ssafy",
+            nickname:"미팅만 50번",
+            // profile:null,
+            content:"반응이 좋았나요?",
+            time:"오전 8:10"
+        },
+        {
+            date:"2023년 7월 17일 일요일",
+            id:"ssafy",
+            nickname:"미팅만 50번",
+            // profile:null,
+            content:"반응이 좋았나요?",
+            time:"오전 8:10"
+        },
     ]);
 
     // 현재 채팅이 들어오는 날짜

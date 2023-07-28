@@ -23,16 +23,19 @@ const ChatRoom = () => {
 
                 {/* 우측 채팅하는 ui */}
                 <div className={`${chatRoomStyle.mid}`}>
-                    <div>
-                        <div className={`${chatRoomStyle.nickname}`}>{nickname}</div>
-                        <div><button className={`${chatRoomStyle.exit}`}>나가기</button></div>
-                    </div>
                     <div className={`${chatRoomStyle.chatArea}`}>
+                        <div>
+                            <div className={`${chatRoomStyle.chatHeader}`}>
+                                <div className={`${chatRoomStyle.nickname}`}>{nickname}</div>
+                                <div className={`${chatRoomStyle.exitWrapper}`}><button className={`${chatRoomStyle.exit}`}>나가기</button></div>
+                            </div>
+                            
+                        </div>
                         <div className={`${chatRoomStyle.chatting}`}><ChatHistory/></div>
 
                         {/* input과 전송 */}
                         <div className={`${chatRoomStyle.sendArea}`}>
-                            <input type="text"/>
+                            <input type="text" placeholder="메세지를 입력하세요."/>
                             <button>전송</button>
                         </div>
                     </div>

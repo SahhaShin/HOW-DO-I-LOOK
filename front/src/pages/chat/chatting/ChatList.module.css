@@ -38,7 +38,6 @@
 
 .menuArea{
     width: 500px;
-    /* background-color: bisque; */
     flex-shrink: 1;
 }
 
@@ -53,7 +52,6 @@
     width: 120px;
     height: 30px;
     border-radius: 2rem;
-    /* box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white); */
     
     /* 위치 조정 */
     line-height: 30px;
