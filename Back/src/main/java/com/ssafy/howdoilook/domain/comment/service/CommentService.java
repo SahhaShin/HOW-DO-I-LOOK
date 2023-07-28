@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.comment.service;
 
 import com.ssafy.howdoilook.domain.comment.dto.request.CommentSaveRequestDto;
+import com.ssafy.howdoilook.domain.comment.dto.request.CommentUpdateRequestDto;
 import com.ssafy.howdoilook.domain.comment.dto.response.CommentResponseDto;
 import com.ssafy.howdoilook.domain.comment.entity.Comment;
 import com.ssafy.howdoilook.domain.comment.repository.CommentRepository;
@@ -46,11 +47,28 @@ public class CommentService {
         commentRepository.save(comment);
         return comment.getId();
     }
+    @Transactional
+    public Long updateComment(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto){
+        Comment findComment = commentRepository.findById(commentId).orElseThrow(
+                ()->new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        findComment.updateContent(commentUpdateRequestDto.getContent());
+        return findComment.getId();
+    }
+    @Transactional
+    public void deleteComment(Long commentId){
+        commentRepository.deleteById(commentId);
+    }
     public List<CommentResponseDto> selectCommentByFeedId(Long feedId){
         List<Comment> commentList = commentRepository.selectCommentByFeedId(feedId);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         for (Comment comment : commentList) {
-            commentResponseDtoList.add((entityToDto(comment)));
+            CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .userId(comment.getUser().getId())
+                    .feedId(comment.getFeed().getId())
+                    .content(comment.getContent())
+                    .build();
+            commentResponseDtoList.add(commentResponseDto);
         }
         return commentResponseDtoList;
     }
@@ -58,22 +76,15 @@ public class CommentService {
         List<Comment> commentList = commentRepository.selectCommentByFeedIdAndParentCommentId(feedId, parentCommentId);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         for (Comment comment : commentList) {
-            commentResponseDtoList.add((entityToDto(comment)));
+            CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .userId(comment.getUser().getId())
+                    .feedId(comment.getFeed().getId())
+                    .parentCommentId(comment.getParent().getId())
+                    .content(comment.getContent())
+                    .build();
+            commentResponseDtoList.add(commentResponseDto);
         }
         return commentResponseDtoList;
     }
-
-    private CommentResponseDto entityToDto(Comment comment){
-        System.out.println("comment = " + comment);
-        CommentResponseDto commentResponseDto = CommentResponseDto.builder()
-                .userId(comment.getUser().getId())
-                .feedId(comment.getFeed().getId())
-                .parentCommentId(comment.getParent().getId())
-                .content(comment.getContent())
-                .build();
-        return commentResponseDto;
-    }
-//    public Long updateComment(CommentSaveRequestDto commentSaveRequestDto) {
-//
-//    }
 }
