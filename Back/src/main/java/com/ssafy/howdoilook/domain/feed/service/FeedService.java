@@ -7,6 +7,8 @@ import com.ssafy.howdoilook.domain.feed.dto.response.FeedDto;
 import com.ssafy.howdoilook.domain.feed.dto.response.FeedResponseDto;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.repository.FeedRepository;
+import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
+import com.ssafy.howdoilook.domain.feedLike.service.FeedLikeService;
 import com.ssafy.howdoilook.domain.feedPhoto.service.FeedPhotoService;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.service.FeedPhotoHashtagService;
 import com.ssafy.howdoilook.domain.hashtag.service.HashTagService;
@@ -27,15 +29,26 @@ public class FeedService {
     private final HashTagService hashTagService;
     private final FeedPhotoService feedPhotoService;
     private final FeedPhotoHashtagService feedPhotoHashtagService;
+    private final FeedLikeService feedLikeService;
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
     public List<FeedDto> selectAll(){
         List<FeedResponseDto> feedResponseDtoList = feedRepository.selectFeedAll();
-        return slicingAndCapsule(feedResponseDtoList);
+        List<FeedDto> feedDtoList = slicingAndCapsule(feedResponseDtoList);
+        for (FeedDto feedDto : feedDtoList) {
+            FeedLikeCountResponseDto feedLikeCountResponseDto = feedLikeService.countFeedLike(feedDto.getFeedId());
+            feedDto.setFeedLikeCountResponseDto(feedLikeCountResponseDto);
+        }
+        return feedDtoList;
     }
     public List<FeedDto> selectByHashTag(List<String> hashtagList){
         List<FeedResponseDto> feedResponseDtoList = feedRepository.selectFeedByHashTag(hashtagList);
-        return slicingAndCapsule(feedResponseDtoList);
+        List<FeedDto> feedDtoList = slicingAndCapsule(feedResponseDtoList);
+        for (FeedDto feedDto : feedDtoList) {
+            FeedLikeCountResponseDto feedLikeCountResponseDto = feedLikeService.countFeedLike(feedDto.getFeedId());
+            feedDto.setFeedLikeCountResponseDto(feedLikeCountResponseDto);
+        }
+        return feedDtoList;
     }
 
     @Transactional
