@@ -173,12 +173,11 @@
 }
 .mid2>div{
     text-align: left;
-    /* padding: 3%; */
 }
 
 .date{
     /* 크기 */
-    width: 750px;
+    width: 950px;
     height: 100%;
     text-align: -webkit-center;
 
@@ -190,7 +189,7 @@
     width: 200px;
     
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: lightgrey;
     color: white;
     border-radius: 1rem;
 }

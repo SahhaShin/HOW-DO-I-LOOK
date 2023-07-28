@@ -97,7 +97,7 @@
     flex-direction: column;
 
     /* 크기 */
-    width: 1000px;
+    width: 1010px;
 
     /* border */
     border: 1px solid lightgrey;
@@ -130,14 +130,10 @@
     overflow: auto;
     border: 1px solid lightgrey;
     height: 500px;
+    margin-top: 5%;
 }
 
-.chatting::-webkit-scrollbar-thumb {
-    height: 30%; /* 스크롤바의 길이 */
-    background: #217af4; /* 스크롤바의 색상 */
-    
-    border-radius: 10px;
-}
+
 
 /* 메세지 보내기 영역 */
 .sendArea{
