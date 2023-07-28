@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 
 //css
-import closetRegistStyle from "../closet/CLOSETRegist.module.css";
+import closetRegistStyle from "../closet/ClosetRegist.module.css";
 import { AnyAaaaRecord } from 'dns';
 
 //redux

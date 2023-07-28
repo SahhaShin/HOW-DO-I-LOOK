@@ -2,7 +2,7 @@
 // 공공데이터 포탈 기상청_단기예보 ((구)_동네예보) 조회서비스를 이용합니다.
 
 import { useEffect, useState } from "react";
-import useGeolocation from "./useGeolocation";
+import useGeolocation from "./UseGeolocation";
 import axios from "axios";
 
 const TodayWether = ()=>{

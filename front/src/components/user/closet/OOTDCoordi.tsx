@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 // css
-import coordiStyle from "./OOTDCoordi.module.css";
+import coordiStyle from "./OotdCoordi.module.css";
 import styled from "styled-components";
 
 //부트스트랩
