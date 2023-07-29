@@ -15,10 +15,12 @@ public class OotdController {
 
     private final OotdService ootdService;
 
-//    @PostMapping("")
-//    public ResponseEntity<?> saveOotd(@RequestBody OotdSaveRequestDto ootdSaveRequestDto){
-//
-//    }
+    @PostMapping("")
+    public ResponseEntity<?> saveOotd(@RequestBody OotdSaveRequestDto ootdSaveRequestDto){
+
+        return ResponseEntity.ok()
+                .body(ootdService.saveOotd(ootdSaveRequestDto));
+    }
 
     @GetMapping("list/{userId}")
     public ResponseEntity<?> getOotdList(@PathVariable("userId") Long userId) {

@@ -28,10 +28,16 @@ public class ClothesOotd extends BaseTimeEntity {
     @JoinColumn(name = "ootd_id")
     private Ootd ootd;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "slot_type")
+    private SlotType type;
+
     @Builder
-    public ClothesOotd(Long id, Clothes clothes, Ootd ootd) {
+    public ClothesOotd(Long id, Clothes clothes, Ootd ootd, SlotType type) {
         this.id = id;
         this.clothes = clothes;
         this.ootd = ootd;
+        this.type = type;
     }
+
 }

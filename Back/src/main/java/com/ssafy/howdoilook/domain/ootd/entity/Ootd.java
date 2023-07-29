@@ -23,12 +23,16 @@ public class Ootd extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "ootd_order")
+    private Long order;
+
     @OneToMany(mappedBy = "ootd", cascade = CascadeType.ALL)
     List<ClothesOotd> clothesOotdList = new ArrayList<>();
 
     @Builder
-    public Ootd(Long id, User user) {
+    public Ootd(Long id, User user, Long order) {
         this.id = id;
         this.user = user;
+        this.order = order;
     }
 }

@@ -10,5 +10,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OotdSaveRequestDto {
     private Long userId;
-    private List<OotdSaveSlotDto> slots;
+    private Long order;
+    private Long topId;
+    private Long bottomId;
+    private Long shoeId;
+    private Long accessory1Id;
+    private Long accessory2Id;
+    private Long accessory3Id;
 }

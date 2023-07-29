@@ -10,5 +10,7 @@ public interface OotdRepository
         extends JpaRepository<Ootd, Long>,
         OotdCustomRepository, QuerydslPredicateExecutor<Ootd> {
 
-    List<Ootd> findByUser_id(Long userId);
+    List<Ootd> findByUser_Id(Long userId);
+
+    List<Ootd> findByUser_IdAndOrder(Long userId, Long order);
 }
