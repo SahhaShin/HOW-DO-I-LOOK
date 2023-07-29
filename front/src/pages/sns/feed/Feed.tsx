@@ -8,6 +8,8 @@ import IntroArea from '../../../components/sns/feed/IntroArea';
 
 const Feed = () => {
 
+    let [feedList, setFeedList] = useState<any>([1,2,3,4,5,6,7,8,9,10]);
+
     return(
         <>
             <div className={`${feedStyle.total}`}>
@@ -45,9 +47,15 @@ const Feed = () => {
                         </div>
 
                         {/* 피드 리스트 */}
-                        <div className={`${feedStyle.list}`}>
-                           <FeedSlot/>
-                        </div>
+                        {
+                            feedList.map(()=>{
+                                return(
+                                    <div className={`${feedStyle.list}`}>
+                                        <FeedSlot/>
+                                    </div>
+                                );
+                            })
+                        }
                         
 
                     </div>
