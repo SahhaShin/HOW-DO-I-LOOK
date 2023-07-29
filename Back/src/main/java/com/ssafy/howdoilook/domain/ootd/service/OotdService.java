@@ -1,17 +1,14 @@
 package com.ssafy.howdoilook.domain.ootd.service;
 
-import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import com.ssafy.howdoilook.domain.ootd.dto.response.ClothesTypeListDto;
 import com.ssafy.howdoilook.domain.ootd.dto.response.GetOotdListDto;
 import com.ssafy.howdoilook.domain.ootd.entity.Ootd;
-import com.ssafy.howdoilook.domain.ootd.entity.OotdType;
 import com.ssafy.howdoilook.domain.ootd.repository.OotdRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -27,38 +24,38 @@ public class OotdService {
         List<GetOotdListDto> ootds = new ArrayList<>();
 
         List<Ootd> ootdIds = ootdRepository.findByUser_id(userId);
-        List<OotdType> typeList = Arrays.asList(OotdType.TOP, OotdType.BOTTOM, OotdType.SHOE, OotdType.ACCESSORY1, OotdType.ACCESSORY2, OotdType.ACCESSORY3);
 
         for(int i = 0; i < ootdIds.size(); i++){
-            GetOotdListDto ootd = new GetOotdListDto();
 
             Long ootdId = ootdIds.get(i).getId();
 
-            ootd.setOotdId(ootdId);
-            ootd.setTops(ootdRepository.findOotdIdList(userId, "TOP", ootdId));
-            ootd.setBottoms(ootdRepository.findOotdIdList(userId, "BOTTOM", ootdId));
-            ootd.setShoes(ootdRepository.findOotdIdList(userId, "SHOE", ootdId));
+            List<ClothesTypeListDto> topsList = ootdRepository.findOotdIdList(userId, "TOP", ootdId);
+            List<ClothesTypeListDto> bottomsList = ootdRepository.findOotdIdList(userId, "BOTTOM", ootdId);
+            List<ClothesTypeListDto> shoesList = ootdRepository.findOotdIdList(userId, "SHOE", ootdId);
+            List<ClothesTypeListDto> ootdAccessories = ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId);
+            List<ClothesTypeListDto> accessories1List = new ArrayList<>(List.of(ootdAccessories.get(0)));
+            List<ClothesTypeListDto> accessories2List = new ArrayList<>(List.of(ootdAccessories.get(1)));
+            List<ClothesTypeListDto> accessories3List = new ArrayList<>(List.of(ootdAccessories.get(2)));
 
-            List<ClothesTypeListDto> accessories1 = new ArrayList<>();
-            accessories1.add(ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId).get(0));
-            ootd.setAccessories1(accessories1);
+            topsList.addAll(ootdRepository.findClothesList(userId, "TOP", ootdId));
+            bottomsList.addAll(ootdRepository.findClothesList(userId, "BOTTOM", ootdId));
+            shoesList.addAll(ootdRepository.findClothesList(userId, "SHOE", ootdId));
+            List<ClothesTypeListDto> allAccessories = ootdRepository.findClothesList(userId, "ACCESSORY", ootdId);
+            accessories1List.addAll(allAccessories);
+            accessories2List.addAll(allAccessories);
+            accessories3List.addAll(allAccessories);
 
-            List<ClothesTypeListDto> accessories2 = new ArrayList<>();
-            accessories2.add(ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId).get(1));
-            ootd.setAccessories2(accessories2);
+            GetOotdListDto getOotdListDto = GetOotdListDto.builder()
+                    .ootdId(ootdId)
+                    .tops(topsList)
+                    .bottoms(bottomsList)
+                    .shoes(shoesList)
+                    .accessories1(accessories1List)
+                    .accessories2(accessories2List)
+                    .accessories3(accessories3List)
+                    .build();
 
-            List<ClothesTypeListDto> accessories3 = new ArrayList<>();
-            accessories3.add(ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId).get(2));
-            ootd.setAccessories3(accessories3);
-
-            ootd.getTops().addAll(ootdRepository.findClothesList(userId, "TOP", ootdId));
-            ootd.getBottoms().addAll(ootdRepository.findClothesList(userId, "BOTTOM", ootdId));
-            ootd.getShoes().addAll(ootdRepository.findClothesList(userId, "SHOE", ootdId));
-            ootd.getAccessories1().addAll(ootdRepository.findClothesList(userId, "ACCESSORY", ootdId));
-            ootd.getAccessories2().addAll(ootdRepository.findClothesList(userId, "ACCESSORY", ootdId));
-            ootd.getAccessories3().addAll(ootdRepository.findClothesList(userId, "ACCESSORY", ootdId));
-
-            ootds.add(ootd);
+            ootds.add(getOotdListDto);
         }
         return ootds;
     }

@@ -3,10 +3,7 @@ package com.ssafy.howdoilook.domain.ootd.entity;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.ClothesOotd;
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.user.entity.User;
-import lombok.AccessLevel;
-import lombok.Cleanup;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,4 +25,10 @@ public class Ootd extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "ootd", cascade = CascadeType.ALL)
     List<ClothesOotd> clothesOotdList = new ArrayList<>();
+
+    @Builder
+    public Ootd(Long id, User user) {
+        this.id = id;
+        this.user = user;
+    }
 }
