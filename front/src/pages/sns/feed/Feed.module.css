@@ -145,6 +145,7 @@
     overflow: auto;
     text-align: -webkit-center;
     margin-left: 5%;
+    margin-top: -50px;
     
     /* 크기 */
     width: 250px;
@@ -167,6 +168,14 @@
 
     /* 폰트 */
     font-weight: 900;
+}
+
+/* 상세보기 모달 */
+.detailModal{
+    position: fixed;
+    margin-top: 5%;
+    margin-left: 15%;
+    z-index: 10;
 }
 
 

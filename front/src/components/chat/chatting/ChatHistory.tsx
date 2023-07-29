@@ -32,7 +32,8 @@ const ChatHistory = () => {
             // profile:null,
             content:"저랑 팔로우 해요!",
             time:"오후 3:13"
-        },{
+        },
+        {
             date:"2023년 7월 16일 일요일",
             id:"ssafy",
             nickname:"미팅만 50번",
