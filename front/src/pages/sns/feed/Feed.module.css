@@ -144,6 +144,7 @@
     position: fixed;
     overflow: auto;
     text-align: -webkit-center;
+    margin-left: 5%;
     
     /* 크기 */
     width: 250px;
