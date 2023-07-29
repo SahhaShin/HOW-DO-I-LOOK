@@ -1,0 +1,178 @@
+:root {
+    --primary-light: #8abdff;
+    --primary: #6d5dfc;
+    --primary-dark: #5b0eeb;
+    --white: #ffffff;
+    --greyLight-1: #e4ebf5;
+    --greyLight-2: #c8d0e7;
+    --greyLight-3: #bec8e4;
+    --greyDark: #9baacf;
+    --signiture: #4570F5;
+}
+
+.total{
+    /* 크기 */
+    width: 100%;
+    height: 100%;
+}
+
+/* 헤더 */
+.header{
+    /* 크기 */
+    width: 100%;
+    height: 70px;
+
+    /* 컬러 */
+    background-color: antiquewhite;
+
+    /* 위치 */
+    margin-bottom: 5%;
+}
+
+/* 메인 컨텐츠 */
+.main{
+    /* 크기 */
+    width: 100%;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: row;
+}
+
+.menuArea{
+    /* 크기 */
+    width: 300px;
+
+    /* 컬러 */
+    background-color: bisque;
+}
+
+/* 중앙 컴포 */
+.mid{
+/* nothing */
+}
+
+.nickname{
+    /* 위치 */
+    display: inline;
+    width: 100%;
+    text-align: left;
+    padding-left: 3%;
+
+    /* 폰트 */
+    font-size: 30px;
+    font-weight: 900;
+}
+.exit{
+    /* 위치 */
+    display: inline;
+
+    /* 크기 */
+    width: 80px;
+    height: 40px;
+    border-radius:1rem;
+
+    /* 컬러 */
+    background-color: white;
+}
+.exit:hover{
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+}
+
+.exitWrapper{
+    display: inline;
+    padding-right: 3%;
+}
+
+
+
+.chatArea{
+    /* 가운데에 있는 리스트 */
+
+    /* 위치 */
+    margin-left: 50px;
+    display: flex;
+    flex-direction: column;
+
+    /* 크기 */
+    width: 1010px;
+
+    /* border */
+    border: 1px solid lightgrey;
+}
+
+.chatArea > div:nth-child(1){
+    /* 유저이름과 나가기 버튼 */
+
+    /* 위치 */
+    display: absolute;
+    margin-bottom: -70px;
+
+    /* 크기 */
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+
+    /* 컬러 */
+    background-color: #dfe1e2;
+    opacity: 0.95;
+}
+
+.chatHeader{
+    display: flex;
+}
+
+.chatting{
+    /* 위치 */
+    padding: 3%;
+    overflow: auto;
+    border: 1px solid lightgrey;
+    height: 500px;
+    margin-top: 5%;
+}
+
+
+
+/* 메세지 보내기 영역 */
+.sendArea{
+    /* 위치 */
+    display: flex;
+    justify-content: center;
+
+    /* 크기 */
+    width: 100%;
+    height: 50px;
+}
+
+.sendArea>input{
+    /* 크기 */
+    width: 100%;
+    border: 1px solid lightgrey;
+    padding-left: 3%;
+    outline: none;
+}
+
+.sendArea>button{
+    /* 크기 */
+    width: 50px;
+    height: 100%;
+
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+}
+
+
+/* 푸터 */
+.footer{
+    /* 크기 */
+    height: 200px;
+
+    /* 컬러 */
+    background-color: antiquewhite;
+
+    /* 위치 */
+    margin-top: 10%;
+}
