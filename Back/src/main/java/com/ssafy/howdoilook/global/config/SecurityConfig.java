@@ -27,9 +27,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 /*
-* 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리
-* JwtAuthenticationProcessingFilter는 AccessToken, RefreshToken 재발급
-* */
+ * 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리
+ * JwtAuthenticationProcessingFilter는 AccessToken, RefreshToken 재발급
+ * */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -53,13 +53,6 @@ public class SecurityConfig {
 
     private static final String[] PERMIT_URL_ARRAY = {
             /* swagger v2 */
-            "/api/v2/api-docs",
-            "/api/swagger-resources",
-            "/api/swagger-resources/**",
-            "/api/configuration/ui",
-            "/api/configuration/security",
-            "/api/swagger-ui.html",
-            "/api/webjars/**",
             "/v2/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",
@@ -68,8 +61,6 @@ public class SecurityConfig {
             "/swagger-ui.html",
             "/webjars/**",
             /* swagger v3 */
-            "/api/v3/api-docs/**",
-            "/api/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-ui/**"
     };
@@ -77,12 +68,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // https
-//                .requiresChannel()
-//                .anyRequest().requiresSecure()
-
-//                .and()
-
                 .formLogin().disable() // FormLogin 사용 X
                 .httpBasic().disable() // httpBasic 사용 X
                 .csrf().disable() // csrf 보안 사용 X
@@ -93,14 +78,14 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
 
-                // URL 별 권한 관리용자만 접근 가능
-                .and()
+                // URL 별 권한 관리
                 .authorizeRequests()
 
-                .antMatchers("/", "/favicon.ico").permitAll()
+                .antMatchers("/", "/favicon.ico", "/api/user").permitAll()
                 .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 .antMatchers("/api/user/signup").permitAll() // 회원가입 접근 OK
-                .anyRequest().authenticated() // 그 외 경로는 모두 인증된 사
+                .anyRequest().authenticated() // 그 외 경로는 모두 인증된 사용자만 접근 가능
+                .and()
 
                 // 소셜 로그인 설정
                 .oauth2Login()
@@ -117,6 +102,8 @@ public class SecurityConfig {
 
         // 로그아웃
 
+
+
         return httpSecurity.build();
     }
 
@@ -126,8 +113,8 @@ public class SecurityConfig {
     }
 
     /*
-    * AuthenticationManager 설정 후 등록
-    * */
+     * AuthenticationManager 설정 후 등록
+     * */
     @Bean
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
@@ -139,16 +126,16 @@ public class SecurityConfig {
     }
 
     /*
-    * 로그인 성공 시 호출
-    * */
+     * 로그인 성공 시 호출
+     * */
     @Bean
     public LoginSuccessHandler loginSuccessHandler() {
         return new LoginSuccessHandler(jwtService, userRepository, redisRefreshTokenService);
     }
 
     /*
-    * 로그인 실패 시 호출
-    * */
+     * 로그인 실패 시 호출
+     * */
     @Bean
     public LoginFailureHandler loginFailureHandler() {
         return new LoginFailureHandler();

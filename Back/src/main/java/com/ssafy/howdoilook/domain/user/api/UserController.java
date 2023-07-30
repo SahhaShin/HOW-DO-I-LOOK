@@ -1,4 +1,4 @@
-dopackage com.ssafy.howdoilook.domain.user.api;
+package com.ssafy.howdoilook.domain.user.api;
 
 import com.ssafy.howdoilook.domain.user.dto.request.UserSearchCondition;
 import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
@@ -101,8 +101,8 @@ public class UserController {
     }
 
     /*
-    * 유저 정보 업데이트
-    * */
+     * 유저 정보 업데이트
+     * */
     @ApiOperation(value = "유저 정보 수정")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
@@ -113,6 +113,6 @@ public class UserController {
 
 
     /*
-    * 유저 프로필 사진 업데이트 : 추후 진행 예정
-    * */
+     * 유저 프로필 사진 업데이트 : 추후 진행 예정
+     * */
 }
