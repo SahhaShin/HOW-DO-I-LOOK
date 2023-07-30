@@ -53,6 +53,13 @@ public class SecurityConfig {
 
     private static final String[] PERMIT_URL_ARRAY = {
             /* swagger v2 */
+            "/api/v2/api-docs",
+            "/api/swagger-resources",
+            "/api/swagger-resources/**",
+            "/api/configuration/ui",
+            "/api/configuration/security",
+            "/api/swagger-ui.html",
+            "/api/webjars/**",
             "/v2/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",
@@ -61,6 +68,8 @@ public class SecurityConfig {
             "/swagger-ui.html",
             "/webjars/**",
             /* swagger v3 */
+            "/api/v3/api-docs/**",
+            "/api/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-ui/**"
     };
@@ -68,6 +77,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                // https
+//                .requiresChannel()
+//                .anyRequest().requiresSecure()
+
+//                .and()
+
                 .formLogin().disable() // FormLogin 사용 X
                 .httpBasic().disable() // httpBasic 사용 X
                 .csrf().disable() // csrf 보안 사용 X
@@ -78,14 +93,14 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
 
-                // URL 별 권한 관리
+                // URL 별 권한 관리용자만 접근 가능
+                .and()
                 .authorizeRequests()
 
-                .antMatchers("/", "/favicon.ico", "/api/user").permitAll()
+                .antMatchers("/", "/favicon.ico").permitAll()
                 .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 .antMatchers("/api/user/signup").permitAll() // 회원가입 접근 OK
-                .anyRequest().authenticated() // 그 외 경로는 모두 인증된 사용자만 접근 가능
-                .and()
+                .anyRequest().authenticated() // 그 외 경로는 모두 인증된 사
 
                 // 소셜 로그인 설정
                 .oauth2Login()
@@ -101,8 +116,6 @@ public class SecurityConfig {
 
 
         // 로그아웃
-        
-
 
         return httpSecurity.build();
     }

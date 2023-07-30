@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.user.api;
+dopackage com.ssafy.howdoilook.domain.user.api;
 
 import com.ssafy.howdoilook.domain.user.dto.request.UserSearchCondition;
 import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
