@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ClothesOotdRepository extends JpaRepository<ClothesOotd, Long> {
 
-    ClothesOotd findByOotd_IdAndType(Long ootdId, SlotType type);
+    List<ClothesOotd> findByOotd_IdAndType(Long ootdId, SlotType type);
 }

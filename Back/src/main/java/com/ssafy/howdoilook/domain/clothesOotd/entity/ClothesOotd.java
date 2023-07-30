@@ -40,4 +40,7 @@ public class ClothesOotd extends BaseTimeEntity {
         this.type = type;
     }
 
+    public void update(Clothes clothes) {
+        this.clothes = clothes;
+    }
 }
