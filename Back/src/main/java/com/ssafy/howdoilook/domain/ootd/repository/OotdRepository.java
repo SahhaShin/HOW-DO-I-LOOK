@@ -12,5 +12,5 @@ public interface OotdRepository
 
     List<Ootd> findByUser_Id(Long userId);
 
-    List<Ootd> findByUser_IdAndOrder(Long userId, Long order);
+    List<Ootd> findByUser_IdAndOrder(Long userId, Integer order);
 }

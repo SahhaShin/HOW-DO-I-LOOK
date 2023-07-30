@@ -13,7 +13,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OotdSaveRequestDto {
     private Long userId;
-    private Long order;
+    private Integer order;
     private Map<SlotType, Long> slotIds = new HashMap<>();
 
 //    public void setSlotId(SlotType slotType, Long id) {

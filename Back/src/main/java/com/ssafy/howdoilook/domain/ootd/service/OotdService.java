@@ -54,10 +54,12 @@ public class OotdService {
             saveClothesOotd(ootd, ootdSaveRequestDto.getSlotId(slotType.getSlotType()), slotType.getSlotType());
         }
 
-        // 모든 슬롯이 다 채워져 있지 않을 수 있으니까 그 때 예외 처리 필요
+        /**
+         * 모든 슬롯이 다 채워져 있지 않을 수 있으니까 그 때 예외 처리 필요
+         */
 
         return ootd.getId();
-        
+
     }
 
     private void updateClothesOotd(List<Ootd> findOotd, SlotTypeInterface slotType, OotdSaveRequestDto ootdSaveRequestDto) {
@@ -93,31 +95,26 @@ public class OotdService {
     public List<GetOotdListDto> findOotdList(Long userId) {
 
         List<GetOotdListDto> ootds = new ArrayList<>();
+        List<Ootd> findOotds = ootdRepository.findByUser_Id(userId);
 
-        List<Ootd> ootdIds = ootdRepository.findByUser_Id(userId);
+        for(int i = 0; i < findOotds.size(); i++) {
+            List<Ootd> ootd = ootdRepository.findByUser_IdAndOrder(userId, i+1);
+            if (ootd.isEmpty()) {
+                continue;
+            }
+            Long ootdId = ootd.get(0).getId();
+            Integer order = i+1;
 
-        for(int i = 0; i < ootdIds.size(); i++){
-
-            Long ootdId = ootdIds.get(i).getId();
-
-            List<ClothesTypeListDto> topsList = ootdRepository.findOotdIdList(userId, "TOP", ootdId);
-            List<ClothesTypeListDto> bottomsList = ootdRepository.findOotdIdList(userId, "BOTTOM", ootdId);
-            List<ClothesTypeListDto> shoesList = ootdRepository.findOotdIdList(userId, "SHOE", ootdId);
-            List<ClothesTypeListDto> ootdAccessories = ootdRepository.findOotdIdList(userId, "ACCESSORY", ootdId);
-            List<ClothesTypeListDto> accessories1List = new ArrayList<>(List.of(ootdAccessories.get(0)));
-            List<ClothesTypeListDto> accessories2List = new ArrayList<>(List.of(ootdAccessories.get(1)));
-            List<ClothesTypeListDto> accessories3List = new ArrayList<>(List.of(ootdAccessories.get(2)));
-
-            topsList.addAll(ootdRepository.findClothesList(userId, "TOP", ootdId));
-            bottomsList.addAll(ootdRepository.findClothesList(userId, "BOTTOM", ootdId));
-            shoesList.addAll(ootdRepository.findClothesList(userId, "SHOE", ootdId));
-            List<ClothesTypeListDto> allAccessories = ootdRepository.findClothesList(userId, "ACCESSORY", ootdId);
-            accessories1List.addAll(allAccessories);
-            accessories2List.addAll(allAccessories);
-            accessories3List.addAll(allAccessories);
+            List<ClothesTypeListDto> topsList = findClothesByType(userId, ootdId, SlotType.TOP, "TOP");
+            List<ClothesTypeListDto> bottomsList = findClothesByType(userId, ootdId, SlotType.BOTTOM, "BOTTOM");
+            List<ClothesTypeListDto> shoesList = findClothesByType(userId, ootdId, SlotType.SHOE, "SHOE");
+            List<ClothesTypeListDto> accessories1List = findClothesByType(userId, ootdId, SlotType.ACCESSORY1, "ACCESSORY");
+            List<ClothesTypeListDto> accessories2List = findClothesByType(userId, ootdId, SlotType.ACCESSORY2, "ACCESSORY");
+            List<ClothesTypeListDto> accessories3List = findClothesByType(userId, ootdId, SlotType.ACCESSORY3, "ACCESSORY");
 
             GetOotdListDto getOotdListDto = GetOotdListDto.builder()
                     .ootdId(ootdId)
+                    .order(order)
                     .tops(topsList)
                     .bottoms(bottomsList)
                     .shoes(shoesList)
@@ -128,6 +125,17 @@ public class OotdService {
 
             ootds.add(getOotdListDto);
         }
+
         return ootds;
+    }
+
+    private List<ClothesTypeListDto> findClothesByType(Long userId, Long ootdId, SlotType slotType, String clothesType) {
+        List<ClothesTypeListDto> clothesList = new ArrayList<>();
+        clothesList.addAll(ootdRepository.findOotdClothes(ootdId, slotType));
+        /**
+         * 1번 ootd랑 2번 ootd에 같은 옷이 들어가게 될 때 중복 출력 문제
+         */
+        clothesList.addAll(ootdRepository.findClothesList(userId, clothesType, ootdId));
+        return clothesList;
     }
 }

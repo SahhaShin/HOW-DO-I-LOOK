@@ -9,6 +9,7 @@ import java.util.List;
 public class GetOotdListDto {
 
     private Long ootdId;
+    private Integer order;
     private List<ClothesTypeListDto> tops;
     private List<ClothesTypeListDto> bottoms;
     private List<ClothesTypeListDto> shoes;
@@ -17,8 +18,9 @@ public class GetOotdListDto {
     private List<ClothesTypeListDto> accessories3;
 
     @Builder
-    public GetOotdListDto(Long ootdId, List<ClothesTypeListDto> tops, List<ClothesTypeListDto> bottoms, List<ClothesTypeListDto> shoes, List<ClothesTypeListDto> accessories1, List<ClothesTypeListDto> accessories2, List<ClothesTypeListDto> accessories3) {
+    public GetOotdListDto(Long ootdId, Integer order, List<ClothesTypeListDto> tops, List<ClothesTypeListDto> bottoms, List<ClothesTypeListDto> shoes, List<ClothesTypeListDto> accessories1, List<ClothesTypeListDto> accessories2, List<ClothesTypeListDto> accessories3) {
         this.ootdId = ootdId;
+        this.order = order;
         this.tops = tops;
         this.bottoms = bottoms;
         this.shoes = shoes;
