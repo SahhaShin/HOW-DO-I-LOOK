@@ -4,9 +4,6 @@ import React, { useEffect, useState } from "react";
 import coordiStyle from "./OOTDCoordi.module.css";
 import styled from "styled-components";
 
-//부트스트랩
-import Button from 'react-bootstrap/Button';
-
 
 //slick import
 import Slider from 'react-slick';
