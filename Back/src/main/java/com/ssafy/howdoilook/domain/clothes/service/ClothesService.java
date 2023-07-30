@@ -2,6 +2,7 @@ package com.ssafy.howdoilook.domain.clothes.service;
 
 import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesSaveRequestDto;
 import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesUpdateDto;
+import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesDetailResponseDto;
 import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesListResponseDto;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
@@ -67,12 +68,14 @@ public class ClothesService {
         return clothesId;
     }
 
-    public List<ClothesListResponseDto> findClothesList(String type, int page) {
+    public List<ClothesListResponseDto> findClothesList(String type, Long userId, int page) {
+
         List<ClothesListResponseDto> findClothesListResponseDtoList = new ArrayList<>();
         PageRequest pageRequest = PageRequest.of(page, 8);
 
         if(type.equals("ALL")) {
-            List<Clothes> findClothesList = clothesRepository.findAll();
+            System.out.println(userId);
+            List<Clothes> findClothesList = clothesRepository.findByUser_Id(userId);
 
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
@@ -80,7 +83,7 @@ public class ClothesService {
         } else {
             ClothesType clothesType = ClothesType.valueOf(type);
             System.out.println(clothesType);
-            Page<Clothes> findClothesList = clothesRepository.findByType(clothesType, pageRequest);
+            Page<Clothes> findClothesList = clothesRepository.findByTypeAndUser_Id(clothesType, userId, pageRequest);
 
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
@@ -88,5 +91,20 @@ public class ClothesService {
         }
 
         return findClothesListResponseDtoList;
+    }
+
+    public ClothesDetailResponseDto findClothesDetail(Long clothesId) {
+        Clothes clothes = clothesRepository.findById(clothesId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 옷이 존재하지 않습니다"));
+
+        ClothesDetailResponseDto clothesDetailResponseDto = ClothesDetailResponseDto.builder()
+                .type(String.valueOf(clothes.getType()))
+                .name(clothes.getName())
+                .brand(clothes.getBrand())
+                .info(clothes.getInfo())
+                .photoLink(clothes.getPhotoLink())
+                .build();
+
+        return clothesDetailResponseDto;
     }
 }
