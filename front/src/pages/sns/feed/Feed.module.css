@@ -1,4 +1,5 @@
 .total{
+    /* 크기 */
     width: 100%;
     height: 100%;
 }
@@ -19,23 +20,65 @@
 
 /* 메인 컨텐츠 */
 .main{
+    /* 크기 */
     width: 100%;
+
+    /* 위치 */
     display: flex;
     flex-direction: row;
 }
 
 .menuArea{
+    /* 크기 */
     width: 500px;
     flex-shrink: 1;
 }
 
 .contentArea{
     /* 가운데에 있는 리스트 */
+    width: 700px;
+    
+    /* 크기 */
     flex-shrink: 3;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+}
+
+.uploadBtn{
+    /* 크기 */
+    width: 100%;
+    height: 40px;
+
+    /* 위치 */
+    display: flex;
+    justify-content: right;
+}
+
+.uploadBtn button{
+    /* 크기 */
+    width: 150px;
+    border-radius: 5%;
+}
+
+.uploadBtn button:hover{
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
 }
 
 
 .title{
+    /* 위치 */
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+
+.title > div:nth-child(1){
+    /* feed 찐 타이틀 */
     /* 사이즈 */
     width: 120px;
     height: 30px;
@@ -54,25 +97,44 @@
     /* 컬러 */
     background-color: var(--signiture);
     color: white;
-    
 }
 
 
-.onechat{
-    margin-bottom: 3%;
+.sortBtn{
+    /* 위치 */
+    display: flex;
+    flex-direction: row;
+
+    /* 크기 */
+    height: 30px;
+}
+
+.sortBtn button{
+    /* 크기 */
+    width: 100px;
+    height: 30px;
+    border-radius: 3%;
+
+    /* 위치 */
+    margin-left: 3%;
+}
+
+.sortBtn button:hover{
+
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
 }
 
 
 .list{
+    /* 위치 */
     display: flex;
     flex-direction: column;
-    text-align: -webkit-center;
-}
+    align-items: center;
 
-.paginationContainer{
-    width: 800px;
-    margin-top: 5%;
-    margin-bottom: 10%;
+    /* 피드 전체 크기 -> 피드 실제 크기는 500px임 */
+    width: 700px;
 }
 
 
@@ -82,10 +144,12 @@
     position: fixed;
     overflow: auto;
     text-align: -webkit-center;
+    margin-left: 5%;
+    margin-top: -50px;
     
     /* 크기 */
     width: 250px;
-    height: 400px;
+    height: 330px;
     background-color: white;
     border-radius: 1rem;
     box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
@@ -104,6 +168,30 @@
 
     /* 폰트 */
     font-weight: 900;
+}
+
+/* 상세보기 모달 */
+.detailModal{
+    position: fixed;
+    margin-top: 5%;
+    margin-left: 15%;
+    z-index: 10;
+}
+
+/* 업로드 모달 */
+.createModal{
+    position: fixed;
+    margin-top: 5%;
+    margin-left: 25%;
+    z-index: 10;
+}
+
+/* 신고 모달 */
+.declarationModal{
+    position: fixed;
+    margin-top: 5%;
+    margin-left: 32%;
+    z-index: 10;
 }
 
 
