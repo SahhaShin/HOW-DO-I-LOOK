@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeModalOpen, changeFollow} from "../../../store/FeedSlice";
+import {changeFollow, changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 const FeedSlot = () => {
     //redux 관리
@@ -54,7 +54,7 @@ const FeedSlot = () => {
                 {/* 우측 : 팔로우 언팔로우 & 신고버튼 */}
                 <div className={`${feedSlotStyle.btns}`}>
                     {state.isFollow?<div><button onClick={async()=>{dispatch(changeFollow(false))}}>Unfollow</button></div>:<div><button onClick={async()=>{dispatch(changeFollow(true))}}>Follow</button></div>}  
-                    <div className={`${feedSlotStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div>
+                    <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${feedSlotStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div>
                 </div>
             </div>
 

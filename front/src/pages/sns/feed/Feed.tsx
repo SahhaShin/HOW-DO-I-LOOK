@@ -3,13 +3,15 @@ import feedStyle from "./Feed.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeModalOpen,changeSortType} from "../../../store/FeedSlice";
+import {changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 // 컴포넌트
 import FeedSlot from '../../../components/sns/feed/FeedSlot';
 import FollowSlot from "../../../components/util/FollowSlot";
 import IntroArea from '../../../components/sns/feed/IntroArea';
 import FeedDetail from '../../../components/sns/feed/FeedDetail';
+import FeedCreate from '../../../components/sns/feed/FeedCreate';
+import FeedDeclaration from '../../../components/sns/feed/FeedDeclaration';
 
 const Feed = () => {
 
@@ -21,9 +23,18 @@ const Feed = () => {
 
     return(
         <>
-            {/* 피드 상세보기 모달 */}
             {
-                state.modalOpen?<div className={`${feedStyle.detailModal}`}><FeedDetail/></div>:null
+                // 피드 상세보기 모달
+                state.detailModalOpen?<div className={`${feedStyle.detailModal}`}><FeedDetail/></div>:null
+            }
+
+            {
+                // 업로드 모달
+                state.createModalOpen?<div className={`${feedStyle.createModal}`}><FeedCreate/></div>:null
+            }
+            {
+                //신고 모달
+                state.declarationModalOpen?<div className={`${feedStyle.declarationModal}`}><FeedDeclaration/></div>:null
             }
             <div className={`${feedStyle.total}`}>
                 <div className={`${feedStyle.header}`}>header</div>
@@ -48,7 +59,7 @@ const Feed = () => {
                         
                         <div className={`${feedStyle.uploadBtn}`}>
                             {/* 업로드 버튼 */}
-                            <button>업로드</button>
+                            <button onClick={()=>{dispatch(changeCreateModalOpen(true))}}>업로드</button>
                         </div>
 
                         <div className={`${feedStyle.title}`}>
@@ -92,7 +103,7 @@ const Feed = () => {
             </div>
 
             {/* 피드블러 */}
-            <div onClick={async()=>{dispatch(changeModalOpen(false))}} style={state.modalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
+            <div onClick={async()=>{dispatch(changeDetailModalOpen(false)); dispatch(changeCreateModalOpen(false));dispatch(changeDeclarationModalOpen(false))}} style={state.detailModalOpen||state.createModalOpen||state.declarationModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
         </>
     );
 }

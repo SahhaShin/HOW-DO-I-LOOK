@@ -14,7 +14,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollow, changeModalOpen} from "../../../store/FeedSlice";
+import {changeFollow, changeDetailModalOpen} from "../../../store/FeedSlice";
 
 const FeedDetail = () => {
 
@@ -140,7 +140,7 @@ const FeedDetail = () => {
                 {/* 유저반응 / x 표시 */}
                 <div className={`${FeedDetailStyle.rightHeader}`}>
                     <p>유저 반응</p>
-                    <img src={process.env.PUBLIC_URL+`/img/feed/closeBtn.png`} onClick={async()=>{dispatch(changeModalOpen(false))}}/>
+                    <img src={process.env.PUBLIC_URL+`/img/feed/closeBtn.png`} onClick={async()=>{dispatch(changeDetailModalOpen(false))}}/>
                 </div>
 
                 {/* 좋아요 4가지 */}

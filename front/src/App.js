@@ -13,7 +13,6 @@ import Closet from "./pages/user/closet/Closet";
 import ChatList from "./pages/chat/chatting/ChatList";
 import ChatRoom from "./pages/chat/chatting/ChatRoom";
 import Feed from "./pages/sns/feed/Feed";
-import FeedDetail from "./components/sns/feed/FeedDetail";
 
 function App() {
   return (
@@ -25,7 +24,6 @@ function App() {
             <Route path="/chatlist" element={<ChatList/>}/>
             <Route path="/chatroom/:otherId/:roomId" element={<ChatRoom/>}/>
             <Route path="/feed" element={<Feed/>}/>
-            <Route path="/feeddetail/:id" element={<FeedDetail/>}/>
           </Routes>
         </Router>
       </div>
