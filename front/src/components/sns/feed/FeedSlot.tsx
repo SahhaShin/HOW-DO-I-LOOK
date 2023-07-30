@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollow, changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 const FeedSlot = () => {
     //redux 관리
@@ -87,7 +87,7 @@ const FeedSlot = () => {
             {/* comment, count, button */}
             <div className={`${feedSlotStyle.footer}`}>
                 <div className={`${feedSlotStyle.comment}`}>
-                    <img src={process.env.PUBLIC_URL+`/img/feed/comment.png`} onClick={async()=>{dispatch(changeModalOpen(true))}}/>
+                    <img src={process.env.PUBLIC_URL+`/img/feed/comment.png`} onClick={async()=>{dispatch(changeDetailModalOpen(true))}}/>
                     <p>1개</p>
                 </div>
                 <div className={`${feedSlotStyle.feedBtns}`}>
