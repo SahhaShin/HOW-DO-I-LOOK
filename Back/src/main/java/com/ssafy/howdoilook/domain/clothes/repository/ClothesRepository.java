@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.clothes.repository;
 
+import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesDetailResponseDto;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import org.springframework.data.domain.Page;

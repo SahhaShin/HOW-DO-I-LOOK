@@ -5,7 +5,6 @@ import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesUpdateDto;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
 import com.ssafy.howdoilook.domain.clothes.service.ClothesService;
-import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
 import com.ssafy.howdoilook.global.s3upload.ImageService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -57,5 +56,11 @@ public class ClothesController {
                                              @RequestParam(value = "page") int page) {
 
         return ResponseEntity.ok().body(clothesService.findClothesList(type, userId, page));
+    }
+
+    @GetMapping("detail/{clothesId}")
+    public ResponseEntity<?> findClothesDetail(@PathVariable("clothesId") Long clothesId) {
+
+        return ResponseEntity.ok().body(clothesService.findClothesDetail(clothesId));
     }
 }
