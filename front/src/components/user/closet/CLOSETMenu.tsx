@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import closetMenuStyle from './ClosetMenu.module.css';
+import closetMenuStyle from './CLOSETMenu.module.css';
 
 const NavigationBar: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState<number | null>(0);

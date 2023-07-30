@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 //css
-import closetSlotStyle from "./ClosetSlot.module.css";
+import closetSlotStyle from "./CLOSETSlot.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 

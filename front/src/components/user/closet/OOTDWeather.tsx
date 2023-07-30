@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 // css
-import weatherStyle from "./OotdWeather.module.css";
+import weatherStyle from "./OOTDWeather.module.css";
 
 
 // 컴포넌트
