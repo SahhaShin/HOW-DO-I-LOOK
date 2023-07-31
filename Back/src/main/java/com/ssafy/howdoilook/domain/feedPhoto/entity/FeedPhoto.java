@@ -29,11 +29,8 @@ public class FeedPhoto extends BaseTimeEntity {
     @Column(name = "feed_photo_link")
     private String link;
 
-
-
     @OneToMany(mappedBy ="feedPhoto", cascade = CascadeType.ALL)
     List<FeedPhotoHashtag> feedPhotoHashtagList = new ArrayList<>();
-
 
     @Builder
     public FeedPhoto(Long id, Feed feed, String link) {
