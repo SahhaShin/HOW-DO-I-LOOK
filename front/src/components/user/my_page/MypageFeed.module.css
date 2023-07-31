@@ -1,0 +1,33 @@
+.total{
+    /* 크기 */
+    width: 1000px;
+    height: 700px;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 50px;
+}
+
+
+.title{
+    /* 사이즈 */
+    width: 120px;
+    height: 30px;
+    border-radius: 2rem;
+    
+    /* 위치 조정 */
+    line-height: 30px;
+    margin-bottom: 5%;
+
+    /* 폰트 */
+    font-size: 15px;
+    font-weight: 900;
+    font-family: 'Pretendard-Regular';
+
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+    
+}

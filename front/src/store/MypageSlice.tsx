@@ -6,9 +6,11 @@ interface Followers{
     profileImg:string|null,
 }
 
+// menuMode : 1(main), 2(feed), 3(내정보)
 // followMode : 1(팔로워), 2(팔로잉), 3(블랙리스트)
 // mypageMode : 1(나 자신), 2(타인)
 interface Mypage{
+    menuMode:number,
     mypageMode:number,
     followModalOpen : false,
     followUsers:Followers[],
@@ -17,6 +19,7 @@ interface Mypage{
 
 // 초기화
 const initialState:Mypage = {
+    menuMode:2,
     mypageMode:1,
     followModalOpen : false,
     followUsers:[],
