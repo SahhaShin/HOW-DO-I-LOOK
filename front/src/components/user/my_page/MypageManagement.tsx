@@ -5,18 +5,33 @@ import mypageManagementStyle from "./MypageManagement.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollowModalOpen, changeFollowMode, changeMypageMode} from "../../../store/MypageSlice";
+import {changeManageType} from "../../../store/MypageSlice";
 
 const MypageManagement = () => {
+
+    //redux 관리
+    let state = useSelector((state:any)=>state.mypage);
+    let dispatch = useDispatch();
     
-    //정보 보기(1) or 수정 여부(2)
-    let [manageType, setManageType] = useState<number>(1);
 
     return(
         <div className={`${mypageManagementStyle.total}`}>
             {
                 /* 정보 보기(1) 정보 수정(2) */
-                manageType===1?
+                state.manageType===1?
+                <div className={`${mypageManagementStyle.auth}`}>
+                    {/* 안내문구 */}
+                    <div>
+                        비밀번호를 입력해주세요
+                    </div>
+
+                    {/* 입력창 */}
+                    <div>
+                        <input type='password'/>
+                    </div>
+
+                </div>:
+                (state.manageType===2?
                 <div className={`${mypageManagementStyle.read}`}>
                     {/* 이름 */}
                     <div>
@@ -92,20 +107,25 @@ const MypageManagement = () => {
                         </select>
                     </div>
 
-                </div>
+                </div>)
             }
 
             {/* 버튼 2개 */}
             <div className={`${mypageManagementStyle.btns}`}>
-                {   manageType===1?
-                    <div>
-                        <button onClick={()=>{setManageType(2)}}>수정하기</button>
-                        <button>탈퇴하기</button>
-                    </div>:
-                    <div>
-                        <button>수정</button>
-                        <button onClick={()=>{setManageType(1)}}>취소</button>
-                    </div>
+                {   state.manageType===1?
+                        <div>
+                            <button onClick={()=>{dispatch(changeManageType(2))}}>인증하기</button>
+                        </div>
+                    :(state.manageType===2?
+                        <div>
+                            <button onClick={()=>{dispatch(changeManageType(3))}}>수정하기</button>
+                            <button>탈퇴하기</button>
+                        </div>:
+                        <div>
+                            <button>수정</button>
+                            <button onClick={()=>{dispatch(changeManageType(2))}}>취소</button>
+                        </div>
+                    )
                 }
             </div>
         </div>

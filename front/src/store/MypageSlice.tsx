@@ -9,12 +9,14 @@ interface Followers{
 // menuMode : 1(main), 2(feed), 3(내정보)
 // followMode : 1(팔로워), 2(팔로잉), 3(블랙리스트)
 // mypageMode : 1(나 자신), 2(타인)
+// manageType : 1(비번 인증), 2(read), 3(update)
 interface Mypage{
     menuMode:number,
     mypageMode:number,
     followModalOpen : false,
     followUsers:Followers[],
     followMode:number,
+    manageType:number,
 }
 
 // 초기화
@@ -24,6 +26,7 @@ const initialState:Mypage = {
     followModalOpen : false,
     followUsers:[],
     followMode:1,
+    manageType:1,
 }
 
 
@@ -56,10 +59,13 @@ const MypageSlice = createSlice({
         }
         ,changeMypageMode(state, action){
             state.mypageMode=action.payload;
+        },
+        changeManageType(state, action){
+            state.manageType=action.payload;
         }
         
     }
 });
 
-export let {changeFollowModalOpen,addFollowUsers,removeFollowUsers,changeFollowMode, changeMypageMode} = MypageSlice.actions;
+export let {changeFollowModalOpen,addFollowUsers,removeFollowUsers,changeFollowMode, changeMypageMode, changeManageType} = MypageSlice.actions;
 export default MypageSlice.reducer;

@@ -5,7 +5,7 @@ import mypageHeaderStyle from "./MypageHeader.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollowModalOpen, changeFollowMode, changeMypageMode} from "../../../store/MypageSlice";
+import {changeFollowModalOpen, changeFollowMode, changeManageType} from "../../../store/MypageSlice";
 
 
 const MypageHeader = () => {
@@ -45,7 +45,7 @@ const MypageHeader = () => {
                 </div>:
                 <div className={`${mypageHeaderStyle.btns}`}>
                     <button>내 옷장 관리</button>
-                    <button style={state.menuMode===3?{backgroundColor:"#4570F5", color:"white"}:null}>내 정보 관리</button>
+                    <button onClick={()=>{dispatch(changeManageType(1))}} style={state.menuMode===3?{backgroundColor:"#4570F5", color:"white"}:null}>내 정보 관리</button>
                     <button onClick={()=>{dispatch(changeFollowMode(3));dispatch(changeFollowModalOpen(true))}}>블랙리스트 관리</button>
                 </div>
             }
