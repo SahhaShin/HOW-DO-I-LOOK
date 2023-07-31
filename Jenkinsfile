@@ -21,7 +21,6 @@ pipeline {
         stage('Push') {
             steps {
                 echo 'Pushing images to Docker registry...'
-                sh 'docker login -u your_dockerhub_username -p your_dockerhub_password'
                 sh "docker push $DOCKER_IMAGE_FRONT"
                 sh "docker push $DOCKER_IMAGE_BACK"
             }
