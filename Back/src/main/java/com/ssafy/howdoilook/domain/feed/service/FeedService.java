@@ -82,6 +82,8 @@ public class FeedService {
             for (PhotoDto photoDto : photoDtoList) {
                 feedPhotoService.saveFeedPhoto(feedEntity.getId(), photoDto);
             }
+        }else{
+            throw new IllegalArgumentException("사진이 없으면 피드를 저장할 수 없습니다.");
         }
         return feedEntity.getId();
     }
