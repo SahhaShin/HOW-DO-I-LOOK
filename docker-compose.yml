@@ -32,10 +32,10 @@ services:
       - /etc/letsencrypt/live/i9b304.p.ssafy.io/fullchain.pem:/etc/letsencrypt/live/i9b304.p.ssafy.io/fullchain.pem
       - /etc/letsencrypt/live/i9b304.p.ssafy.io/privkey.pem:/etc/letsencrypt/live/i9b304.p.ssafy.io/privkey.pem
 #      - /var/jenkins_home/workspace/deployment-pipeline/nginx/nginx.conf:/var/jenkins_home/workspace/deployment-pipeline/nginx/nginx.conf
-#    depends_on:
-#      - front
-#      - back
-#      - redis
+    depends_on:
+      - front
+      - back
+      - redis
 
   jenkins:
     image: jenkins/jenkins:lts
@@ -46,8 +46,8 @@ services:
       - /jenkins:/var/jenkins_home
     ports:
       - "9090:8080"
-#    depends_on:
-#      - front
-#      - back
+    depends_on:
+      - front
+      - back
 
 
