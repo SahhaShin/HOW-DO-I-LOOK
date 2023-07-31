@@ -8,7 +8,6 @@ import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
 import com.ssafy.howdoilook.domain.feedPhoto.repository.FeedPhotoRepository;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.entity.FeedPhotoHashtag;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.service.FeedPhotoHashtagService;
-import com.ssafy.howdoilook.domain.hashtag.entity.Hashtag;
 import com.ssafy.howdoilook.domain.hashtag.service.HashTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

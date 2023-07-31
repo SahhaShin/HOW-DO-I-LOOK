@@ -27,9 +27,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 /*
-* 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리
-* JwtAuthenticationProcessingFilter는 AccessToken, RefreshToken 재발급
-* */
+ * 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리
+ * JwtAuthenticationProcessingFilter는 AccessToken, RefreshToken 재발급
+ * */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -81,7 +81,7 @@ public class SecurityConfig {
                 // URL 별 권한 관리
                 .authorizeRequests()
 
-                .antMatchers("/", "/favicon.ico", "/api/user").permitAll()
+                .antMatchers("/", "/favicon.ico").permitAll()
                 .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 .antMatchers("/api/user/signup").permitAll() // 회원가입 접근 OK
                 .anyRequest().authenticated() // 그 외 경로는 모두 인증된 사용자만 접근 가능
@@ -101,7 +101,7 @@ public class SecurityConfig {
 
 
         // 로그아웃
-        
+
 
 
         return httpSecurity.build();
@@ -113,8 +113,8 @@ public class SecurityConfig {
     }
 
     /*
-    * AuthenticationManager 설정 후 등록
-    * */
+     * AuthenticationManager 설정 후 등록
+     * */
     @Bean
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
@@ -126,16 +126,16 @@ public class SecurityConfig {
     }
 
     /*
-    * 로그인 성공 시 호출
-    * */
+     * 로그인 성공 시 호출
+     * */
     @Bean
     public LoginSuccessHandler loginSuccessHandler() {
         return new LoginSuccessHandler(jwtService, userRepository, redisRefreshTokenService);
     }
 
     /*
-    * 로그인 실패 시 호출
-    * */
+     * 로그인 실패 시 호출
+     * */
     @Bean
     public LoginFailureHandler loginFailureHandler() {
         return new LoginFailureHandler();

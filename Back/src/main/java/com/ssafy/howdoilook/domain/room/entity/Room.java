@@ -61,7 +61,6 @@ public class Room extends BaseTimeEntity {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<UserLike> userLikeList = new ArrayList<>();
 
-
     @Builder
     public Room(Long id, String code, String title, RoomType type, User host, int minAge, int maxAge, Gender gender, LocalDateTime endedDate, String chatCode, List<RoomUser> roomUserList) {
         this.id = id;
