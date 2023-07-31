@@ -46,11 +46,4 @@ services:
     ports:
       - "1000:1000"
 
-volumes:
-  jenkins_data:
-    driver_opts:
-      type: none
-      device: /var/jenkins_data
-      o: bind
-
 
