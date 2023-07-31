@@ -29,47 +29,45 @@ public class RoomCustomRepositoryImpl implements RoomCustomRepository {
     }
 
     @Override
-    public Page<FollowingRoomResponseDto> findByFollowingList(List<Follow> followingList, Pageable pageable) {
+    public List<FollowingRoomResponseDto> findByFollowingList(List<Follow> followingList, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
         for (Follow follow : followingList) {
             builder.or(room.host.id.eq(follow.getFollowee().getId()));
         }
-        QueryResults<FollowingRoomResponseDto> queryResults = jpaQueryFactory.select(new QFollowingRoomResponseDto(room))
+        List<FollowingRoomResponseDto> queryResults = jpaQueryFactory.select(new QFollowingRoomResponseDto(room))
                 .from(room)
                 .leftJoin(follow)
                 .on(room.host.id.eq(follow.followee.id))
                 .where(builder)
-                .offset(pageable.getOffset()) // 페이지 번호를 0부터 시작하므로 offset 설정
-                .limit(pageable.getPageSize()) // 페이지 크기 설정
+                .offset(pageable.getOffset()) // 페이지 번호
+                .limit(pageable.getPageSize()) // 페이지 사이즈
                 .orderBy(room.id.desc())
-                .fetchResults();
+                .fetch();
 
-        List<FollowingRoomResponseDto> content = queryResults.getResults();
-        long total = queryResults.getTotal();
+        List<FollowingRoomResponseDto> content = queryResults;;
 
-        return new PageImpl<>(content, pageable, total);
+        return content;
     }
 
     @Override
-    public Page<FollowingRoomResponseDto> findByHost_IdAndType(List<Follow> followingList, RoomType type, Pageable pageable) {
+    public List<FollowingRoomResponseDto> findByHost_IdAndType(List<Follow> followingList, RoomType type, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
         for (Follow follow : followingList) {
             builder.or(room.host.id.eq(follow.getFollowee().getId()));
         }
-        QueryResults<FollowingRoomResponseDto> queryResults = jpaQueryFactory.select(new QFollowingRoomResponseDto(room))
+        List<FollowingRoomResponseDto> queryResults = jpaQueryFactory.select(new QFollowingRoomResponseDto(room))
                 .from(room)
                 .leftJoin(follow)
                 .on(room.host.id.eq(follow.followee.id))
                 .where(builder, room.type.eq(type))
-                .offset(pageable.getOffset()) // 페이지 번호를 0부터 시작하므로 offset 설정
-                .limit(pageable.getPageSize()) // 페이지 크기 설정
+                .offset(pageable.getOffset()) // 페이지 번호
+                .limit(pageable.getPageSize()) // 페이지 사이즈
                 .orderBy(room.id.desc())
-                .fetchResults();
+                .fetch();
 
-        List<FollowingRoomResponseDto> content = queryResults.getResults();
-        long total = queryResults.getTotal();
+        List<FollowingRoomResponseDto> content = queryResults;
 
-        return new PageImpl<>(content, pageable, total);
+        return content;
     }
 
 }

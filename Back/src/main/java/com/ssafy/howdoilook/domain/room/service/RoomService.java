@@ -87,7 +87,7 @@ public class RoomService {
         return allRoomResponseDtoList;
     }
 
-    public Page<FollowingRoomResponseDto> getFollowingRoomList(String type, int page, Long userId) {
+    public List<FollowingRoomResponseDto> getFollowingRoomList(String type, int page, Long userId) {
 
         List<FollowingRoomResponseDto> followingRoomResponseDtoList = new ArrayList<>();
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
@@ -99,12 +99,12 @@ public class RoomService {
         List<Follow> followingList = user.getFollowerList();
 
         if(type == null) {
-            Page<FollowingRoomResponseDto> getRoomList = roomRepository.findByFollowingList(followingList, pageRequest);
+            List<FollowingRoomResponseDto> getRoomList = roomRepository.findByFollowingList(followingList, pageRequest);
 
             return getRoomList;
         }
 
-        Page<FollowingRoomResponseDto> getRoomList = roomRepository.findByHost_IdAndType(followingList, RoomType.valueOf(type), pageRequest);
+        List<FollowingRoomResponseDto> getRoomList = roomRepository.findByHost_IdAndType(followingList, RoomType.valueOf(type), pageRequest);
 
         return getRoomList;
     }

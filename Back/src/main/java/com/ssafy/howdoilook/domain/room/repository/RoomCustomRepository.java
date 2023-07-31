@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface RoomCustomRepository {
 
-    Page<FollowingRoomResponseDto> findByFollowingList(List<Follow> followingList, Pageable pageable);
+    List<FollowingRoomResponseDto> findByFollowingList(List<Follow> followingList, Pageable pageable);
 
-    Page<FollowingRoomResponseDto> findByHost_IdAndType(List<Follow> followingList, RoomType type, Pageable pageable);
+    List<FollowingRoomResponseDto> findByHost_IdAndType(List<Follow> followingList, RoomType type, Pageable pageable);
 }
