@@ -18,26 +18,21 @@ import java.util.List;
 public class FeedController {
     public final FeedService feedService;
 
-//    @GetMapping("/")
-//    public ResponseEntity<?> selectAll(){
-//        List<FeedDto> feedDtoList = feedService.selectAll();
-//        return ResponseEntity.ok().body(feedDtoList);
-//    }
     @GetMapping("/")
-    public ResponseEntity<?> selectAll2(Pageable pageable){
-        Page<FeedDto> feedDtos = feedService.selectAll2(pageable);
+    public ResponseEntity<?> selectAll(Pageable pageable){
+        Page<FeedDto> feedDtos = feedService.selectAll(pageable);
         return ResponseEntity.ok().body(feedDtos);
     }
 
     @GetMapping("/hashtag")
-    public ResponseEntity<?> selectByHashTag(@RequestParam(name = "hashtag") List<String> list){
-        List<FeedDto> feedDtoList = feedService.selectByHashTag(list);
-        return ResponseEntity.ok().body(feedDtoList);
+    public ResponseEntity<?> selectByHashTag(@RequestParam(name = "hashtag") List<String> list, Pageable pageable){
+        Page<FeedDto> feedDtos = feedService.selectByHashTag(list, pageable);
+        return ResponseEntity.ok().body(feedDtos);
     }
     @GetMapping("/{userId}")
-    public ResponseEntity<?> selectFollowFeed(@PathVariable(name = "userId")Long userId){
-        List<FeedDto> feedDtoList = feedService.selectByUserFollowee(userId);
-        return ResponseEntity.ok().body(feedDtoList);
+    public ResponseEntity<?> selectFollowFeed(@PathVariable(name = "userId")Long userId, Pageable pageable){
+        Page<FeedDto> feedDtos = feedService.selectByUserFollowee(userId, pageable);
+        return ResponseEntity.ok().body(feedDtos);
     }
     @PostMapping("/")
     public Long saveFeed(@RequestBody FeedSaveRequestDto feedSaveRequestDto){

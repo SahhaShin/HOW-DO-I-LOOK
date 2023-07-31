@@ -4,16 +4,16 @@ import com.ssafy.howdoilook.domain.feed.dto.request.FeedSaveRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.PhotoDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedUpdateRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.response.FeedDto;
-import com.ssafy.howdoilook.domain.feed.dto.response.FeedResponseDto;
+
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.repository.FeedRepository;
-import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
+
 import com.ssafy.howdoilook.domain.feedLike.service.FeedLikeService;
 import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
 import com.ssafy.howdoilook.domain.feedPhoto.service.FeedPhotoService;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.entity.FeedPhotoHashtag;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.service.FeedPhotoHashtagService;
-import com.ssafy.howdoilook.domain.follow.dto.response.FolloweeResponseDto;
+
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.follow.service.FollowService;
 import com.ssafy.howdoilook.domain.hashtag.service.HashTagService;
@@ -42,38 +42,27 @@ public class FeedService {
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
 
-//    public List<FeedDto> selectAll(){
-//        List<FeedResponseDto> feedResponseDtoList = feedRepository.selectFeedAll();
-//        List<FeedDto> feedDtoList = slicingAndCapsule(feedResponseDtoList);
-//        for (FeedDto feedDto : feedDtoList) {
-//            FeedLikeCountResponseDto feedLikeCountResponseDto = feedLikeService.countFeedLike(feedDto.getFeedId());
-//            feedDto.setFeedLikeCountResponseDto(feedLikeCountResponseDto);
-//        }
-//        return feedDtoList;
-//    }
-    public Page<FeedDto> selectAll2(Pageable pageable){
+    public Page<FeedDto> selectAll(Pageable pageable){
         Page<Feed> feeds = feedRepository.selectFeedAll(pageable);
         List<Feed> feedList = feeds.getContent();
         List<FeedDto> feedDtoList = builder(feedList);
         return new PageImpl<>(feedDtoList, feeds.getPageable(), feeds.getTotalElements());
     }
-    public List<FeedDto> selectByHashTag(List<String> hashtagList){
-        List<FeedResponseDto> feedResponseDtoList = feedRepository.selectFeedByHashTag(hashtagList);
-        List<FeedDto> feedDtoList = slicingAndCapsule(feedResponseDtoList);
-        for (FeedDto feedDto : feedDtoList) {
-            FeedLikeCountResponseDto feedLikeCountResponseDto = feedLikeService.countFeedLike(feedDto.getFeedId());
-            feedDto.setFeedLikeCountResponseDto(feedLikeCountResponseDto);
-        }
-        return feedDtoList;
+    public Page<FeedDto> selectByHashTag(List<String> hashtagList,Pageable pageable){
+        Page<Feed> feeds = feedRepository.selectFeedByHashTag(hashtagList, pageable);
+        List<Feed> feedList = feeds.getContent();
+        List<FeedDto> feedDtoList = builder(feedList);
+        return new PageImpl<>(feedDtoList, feeds.getPageable(), feeds.getTotalElements());
     }
-    public List<FeedDto> selectByUserFollowee(Long userId){
+    public Page<FeedDto> selectByUserFollowee(Long userId,Pageable pageable){
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new IllegalArgumentException("존재하지 않는 User 입니다."));
         //찾은 유저가 팔로우 하고있는 팔로우정보를 가져온다.
         List<Follow> followeeList = findUser.getFollowerList();
-        List<FeedResponseDto> feedResponseDtoList = feedRepository.selectByUserFollowee(followeeList);
-        List<FeedDto> feedDtoList = slicingAndCapsule(feedResponseDtoList);
-        return feedDtoList;
+        Page<Feed> feeds = feedRepository.selectByUserFollowee(followeeList, pageable);
+        List<Feed> feedList = feeds.getContent();
+        List<FeedDto> feedDtoList = builder(feedList);
+        return new PageImpl<>(feedDtoList, feeds.getPageable(), feeds.getTotalElements());
     }
 
     @Transactional
@@ -118,51 +107,6 @@ public class FeedService {
     @Transactional
     public void deleteFeed(Long feedId){
         feedRepository.deleteById(feedId);
-    }
-
-    /**
-     * 내부에서만 사용하는 메서드
-     * repository에서 필요한 정보를 전부 가져오면
-     * 프론트로 보내기 좋게 슬라이싱하고 캡슐화하는 메서드
-     * @param feedResponseDtoList
-     * @return
-     */
-    private List<FeedDto> slicingAndCapsule(List<FeedResponseDto> feedResponseDtoList){
-        List<FeedDto> feedDtoList = new ArrayList<>();
-        long feedId = 0;
-        long photoId = 0;
-        for (FeedResponseDto feedResponseDto : feedResponseDtoList) {
-            //피드 새로만들어야 되는 것
-            if (feedResponseDto.getFeedId()!=feedId){
-                feedId = feedResponseDto.getFeedId();
-                FeedDto feedDto = FeedDto.builder()
-                        .userId(feedResponseDto.getUserId())
-                        .feedId(feedResponseDto.getFeedId())
-                        .feedContent(feedResponseDto.getFeedContent())
-                        .feedCreatedDate(feedResponseDto.getFeedCreatedDate())
-                        .feedUpdateDate(feedResponseDto.getFeedUpdateDate())
-                        .photoDtoList(new ArrayList<PhotoDto>())
-                        .build();
-                feedDtoList.add(feedDto);
-            }
-            int feedListSize = feedDtoList.size();
-
-            if (photoId!=feedResponseDto.getFeedPhotoId()) {
-                photoId=feedResponseDto.getFeedPhotoId();
-                PhotoDto photoDto = PhotoDto.builder()
-                        .id(feedResponseDto.getFeedPhotoId())
-                        .link(feedResponseDto.getFeedPhotoLink())
-                        .hashtagList(new ArrayList<>())
-                        .build();
-                feedDtoList.get(feedListSize - 1).getPhotoDtoList().add(photoDto);
-            }
-            int photoListSize = feedDtoList.get(feedListSize - 1).getPhotoDtoList().size();
-
-            feedDtoList.get(feedListSize - 1).getPhotoDtoList()
-                    .get(photoListSize - 1).getHashtagList()
-                    .add(feedResponseDto.getHashtagContent());
-        }
-        return feedDtoList;
     }
 
     private List<FeedDto> builder(List<Feed> feedList){
