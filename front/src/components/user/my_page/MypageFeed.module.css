@@ -1,7 +1,7 @@
 .total{
     /* 크기 */
-    width: 1000px;
-    height: 700px;
+    width: 990px;
+    height: 1000px;
 
     /* 위치 */
     display: flex;
@@ -30,4 +30,38 @@
     background-color: var(--signiture);
     color: white;
     
+}
+
+.feeds{
+    /* 피드 영역 크기 */
+    width: 100%;
+    height: 500px;
+
+    /* 위치 */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    /* background-color: bisque; */
+}
+
+.onefeed{
+    /* 하나의 피드 크기 */
+    width: 200px;
+    height: 200px;
+
+    /* 컬러 */
+    background-color: var(--border);
+    
+    /* border */
+    border: 1px solid grey;
+    
+    /* 위치 */
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.pagenation{
+    margin-top: 180px;
 }

@@ -64,3 +64,11 @@
     z-index: 10;
     margin-left: 20%;
 }
+
+/* 피드 상세보기 모달 */
+.detailModal{
+    position: fixed;
+    margin-top: 5%;
+    margin-left: 20%;
+    z-index: 10;
+}

@@ -61,5 +61,5 @@ const MypageSlice = createSlice({
     }
 });
 
-export let {changeFollowModalOpen,addFollowUsers,removeFollowUsers,changeFollowMode} = MypageSlice.actions;
+export let {changeFollowModalOpen,addFollowUsers,removeFollowUsers,changeFollowMode, changeMypageMode} = MypageSlice.actions;
 export default MypageSlice.reducer;
