@@ -45,7 +45,7 @@ const MypageHeader = () => {
                 </div>:
                 <div className={`${mypageHeaderStyle.btns}`}>
                     <button>내 옷장 관리</button>
-                    <button>내 정보 관리</button>
+                    <button style={state.menuMode===3?{backgroundColor:"#4570F5", color:"white"}:null}>내 정보 관리</button>
                     <button onClick={()=>{dispatch(changeFollowMode(3));dispatch(changeFollowModalOpen(true))}}>블랙리스트 관리</button>
                 </div>
             }

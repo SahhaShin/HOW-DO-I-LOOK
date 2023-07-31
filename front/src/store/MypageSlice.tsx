@@ -19,7 +19,7 @@ interface Mypage{
 
 // 초기화
 const initialState:Mypage = {
-    menuMode:2,
+    menuMode:3,
     mypageMode:1,
     followModalOpen : false,
     followUsers:[],

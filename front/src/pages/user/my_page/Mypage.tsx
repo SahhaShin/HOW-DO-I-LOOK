@@ -13,6 +13,7 @@ import MypageHeader from '../../../components/user/my_page/MypageHeader';
 import MypageMain from '../../../components/user/my_page/MypageMain';
 import MypageFollowModal from '../../../components/user/my_page/MypageFollowModal';
 import MypageFeed from '../../../components/user/my_page/MypageFeed';
+import MypageManagement from '../../../components/user/my_page/MypageManagement';
 import FeedDetail from '../../../components/sns/feed/FeedDetail';
 
 const Mypage = () => {
@@ -43,14 +44,13 @@ const Mypage = () => {
                     <div className={`${mypageStyle.mid}`}>
                         {/* 모달 */}
                         {state.followModalOpen?<div className={`${mypageStyle.followModal}`}><MypageFollowModal/></div>:null}
-                        {
-                            //내정보관리 컴포넌트는 마이페이지 header가 필요하지 않다.
-                            state.menuMode===1||state.menuMode===2?<MypageHeader/>:null
-                        }
+                        
+                        <MypageHeader/>
+                        
                         
                         {
-                            //null 자리에 3번 영역 내정보관리 컴포넌트가 와야한다.
-                            state.menuMode===1?<MypageMain/>:(state.menuMode===2?<MypageFeed/>:null)
+                            // 3개 메뉴 메인/피드/내정보
+                            state.menuMode===1?<MypageMain/>:(state.menuMode===2?<MypageFeed/>:<MypageManagement/>)
                         }
                     </div>
                 </div>
