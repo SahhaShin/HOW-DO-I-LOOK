@@ -35,3 +35,15 @@ services:
       - front
       - back
       - redis
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    user: root
+    volumes:
+      - /var/run.docker.sock:/var/run/docker.sock
+      - /jenkins:/var/jenkins_home
+    ports:
+      - "9090:8080"
+
+
