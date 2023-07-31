@@ -17,10 +17,15 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
+                 echo 'Running tests...'
+
                 // Replace this with your actual test commands
+                sh 'docker-compose up -d front' // 데몬 모드로 실행
                 sh 'docker-compose run --rm front npm test'
+                sh 'docker-compose down' // 테스트 후에 컨테이너 종료
+                sh 'docker-compose up -d back' // 데몬 모드로 실행
                 sh 'docker-compose run --rm back pytest'
+                sh 'docker-compose down' // 테스트 후에 컨테이너 종료
             }
         }
 
