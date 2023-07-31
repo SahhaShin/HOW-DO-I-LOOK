@@ -1,9 +1,11 @@
 package com.ssafy.howdoilook.domain.room.service;
 
-import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesUpdateDto;
+import com.ssafy.howdoilook.domain.follow.entity.Follow;
+import com.ssafy.howdoilook.domain.follow.repository.FollowReposiroty;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomAddRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomUpdateRequestDto;
-import com.ssafy.howdoilook.domain.room.dto.response.AllRoomListResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.AllRoomResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.FollowingRoomResponseDto;
 import com.ssafy.howdoilook.domain.room.entity.Room;
 import com.ssafy.howdoilook.domain.room.entity.RoomType;
 import com.ssafy.howdoilook.domain.room.repository.RoomRepository;
@@ -13,6 +15,7 @@ import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,7 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
+    private final FollowReposiroty followReposiroty;
 
     @Transactional
     public Long addRoom(RoomAddRequestDto roomAddRequestDto) {
@@ -57,28 +61,51 @@ public class RoomService {
         return findRoom.update(roomUpdateRequestDto);
     }
 
-    public List<AllRoomListResponseDto> getAllRoomList(String type, int page) {
+    public List<AllRoomResponseDto> getAllRoomList(String type, int page) {
 
-        List<AllRoomListResponseDto> allRoomListResponseDtoList = new ArrayList<>();
-        PageRequest pageRequest = PageRequest.of(page, 5);
+        List<AllRoomResponseDto> allRoomResponseDtoList = new ArrayList<>();
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        PageRequest pageRequest = PageRequest.of(page, 5, sort);
 
         if(type == null) {
-            List<Room> allRooms = roomRepository.findAll();
+            Page<Room> allRooms = roomRepository.findAll(pageRequest);
 
             for(Room room : allRooms) {
-                allRoomListResponseDtoList.add(new AllRoomListResponseDto(room));
+                allRoomResponseDtoList.add(new AllRoomResponseDto(room));
             }
 
-            return allRoomListResponseDtoList;
+            return allRoomResponseDtoList;
         }
 
         RoomType roomType = RoomType.valueOf(type);
         Page<Room> getRoomList = roomRepository.findByType(roomType, pageRequest);
 
         for(Room room : getRoomList) {
-            allRoomListResponseDtoList.add(new AllRoomListResponseDto(room));
+            allRoomResponseDtoList.add(new AllRoomResponseDto(room));
         }
 
-        return allRoomListResponseDtoList;
+        return allRoomResponseDtoList;
+    }
+
+    public Page<FollowingRoomResponseDto> getFollowingRoomList(String type, int page, Long userId) {
+
+        List<FollowingRoomResponseDto> followingRoomResponseDtoList = new ArrayList<>();
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        PageRequest pageRequest = PageRequest.of(page, 5, sort);
+
+        User user = userRepository.findById(userId).orElseThrow(
+                ()->new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+        // 유저가 팔로잉 하고있는 팔로잉 유저 리스트
+        List<Follow> followingList = user.getFollowerList();
+
+        if(type == null) {
+            Page<FollowingRoomResponseDto> getRoomList = roomRepository.findByFollowingList(followingList, pageRequest);
+
+            return getRoomList;
+        }
+
+        Page<FollowingRoomResponseDto> getRoomList = roomRepository.findByHost_IdAndType(followingList, RoomType.valueOf(type), pageRequest);
+
+        return getRoomList;
     }
 }

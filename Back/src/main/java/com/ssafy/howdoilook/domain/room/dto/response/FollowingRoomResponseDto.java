@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.room.dto.response;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.howdoilook.domain.room.entity.Room;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AllRoomListResponseDto {
+public class FollowingRoomResponseDto {
 
     private String type;
     private String title;
@@ -17,8 +18,8 @@ public class AllRoomListResponseDto {
     private Long hostId;
     private String hostNickname;
 
-    @Builder
-    public AllRoomListResponseDto(Room room) {
+    @Builder @QueryProjection
+    public FollowingRoomResponseDto(Room room) {
         this.type = String.valueOf(room.getType());
         this.title = room.getTitle();
         this.minAge = room.getMinAge();
@@ -26,4 +27,5 @@ public class AllRoomListResponseDto {
         this.hostId = room.getHost().getId();
         this.hostNickname = room.getHost().getNickname();
     }
+
 }
