@@ -15,11 +15,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
 
-            }
-        }
 
 
         stage('Push') {
