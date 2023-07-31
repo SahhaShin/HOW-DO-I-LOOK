@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FollowingRoomResponseDto {
+public class RoomListResponseDto {
 
     private String type;
     private String title;
@@ -19,7 +19,7 @@ public class FollowingRoomResponseDto {
     private String hostNickname;
 
     @Builder @QueryProjection
-    public FollowingRoomResponseDto(Room room) {
+    public RoomListResponseDto(Room room) {
         this.type = String.valueOf(room.getType());
         this.title = room.getTitle();
         this.minAge = room.getMinAge();
@@ -27,5 +27,4 @@ public class FollowingRoomResponseDto {
         this.hostId = room.getHost().getId();
         this.hostNickname = room.getHost().getNickname();
     }
-
 }

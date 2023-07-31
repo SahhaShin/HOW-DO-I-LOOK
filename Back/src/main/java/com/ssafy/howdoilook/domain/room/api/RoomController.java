@@ -27,16 +27,18 @@ public class RoomController {
 
     @GetMapping("/list/all")
     public ResponseEntity<?> getAllRoomList(@RequestParam(value = "type", required = false) String type,
-                                            @RequestParam(value = "page") int page) {
+                                            @RequestParam(value = "page") int page,
+                                            @RequestParam(value = "search", required = false) String search) {
 
-        return ResponseEntity.ok().body(roomService.getAllRoomList(type, page));
+        return ResponseEntity.ok().body(roomService.getAllRoomList(type, page, search));
     }
 
     @GetMapping("/list/following")
     public ResponseEntity<?> getFollowingRoomList(@RequestParam(value = "type", required = false) String type,
                                                   @RequestParam(value = "page") int page,
-                                                  @RequestParam(value = "userId") Long userId) {
-         return ResponseEntity.ok().body(roomService.getFollowingRoomList(type, page, userId));
-         // 필요없는 정보도 담겨 오는거 수정
+                                                  @RequestParam(value = "userId") Long userId,
+                                                  @RequestParam(value = "search", required = false) String search) {
+         return ResponseEntity.ok().body(roomService.getFollowingRoomList(type, page, userId, search));
     }
+
 }

@@ -1,11 +1,9 @@
 package com.ssafy.howdoilook.domain.room.service;
 
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
-import com.ssafy.howdoilook.domain.follow.repository.FollowReposiroty;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomAddRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomUpdateRequestDto;
-import com.ssafy.howdoilook.domain.room.dto.response.AllRoomResponseDto;
-import com.ssafy.howdoilook.domain.room.dto.response.FollowingRoomResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
 import com.ssafy.howdoilook.domain.room.entity.Room;
 import com.ssafy.howdoilook.domain.room.entity.RoomType;
 import com.ssafy.howdoilook.domain.room.repository.RoomRepository;
@@ -29,7 +27,6 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
-    private final FollowReposiroty followReposiroty;
 
     @Transactional
     public Long addRoom(RoomAddRequestDto roomAddRequestDto) {
@@ -61,35 +58,71 @@ public class RoomService {
         return findRoom.update(roomUpdateRequestDto);
     }
 
-    public List<AllRoomResponseDto> getAllRoomList(String type, int page) {
+    public List<RoomListResponseDto> getAllRoomList(String type, int page, String search) {
 
-        List<AllRoomResponseDto> allRoomResponseDtoList = new ArrayList<>();
+        List<RoomListResponseDto> allRoomResponseDtoList = new ArrayList<>();
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         PageRequest pageRequest = PageRequest.of(page, 5, sort);
 
-        if(type == null) {
+        /**
+         * 모든 방 찾을 때
+         */
+        if(type == null && search == null) {
             Page<Room> allRooms = roomRepository.findAll(pageRequest);
 
             for(Room room : allRooms) {
-                allRoomResponseDtoList.add(new AllRoomResponseDto(room));
+                allRoomResponseDtoList.add(new RoomListResponseDto(room));
             }
 
             return allRoomResponseDtoList;
         }
 
-        RoomType roomType = RoomType.valueOf(type);
-        Page<Room> getRoomList = roomRepository.findByType(roomType, pageRequest);
+        /**
+         * 타입만 설정되어 있을 때
+         */
+        if(type != null && search == null) {
+            RoomType roomType = RoomType.valueOf(type);
+            Page<Room> getRoomList = roomRepository.findByType(roomType, pageRequest);
 
-        for(Room room : getRoomList) {
-            allRoomResponseDtoList.add(new AllRoomResponseDto(room));
+            for(Room room : getRoomList) {
+                allRoomResponseDtoList.add(new RoomListResponseDto(room));
+            }
+
+            return allRoomResponseDtoList;
+        }
+
+        /**
+         * 검색어만 입력이 있을 때
+         */
+        if(type == null && search != null) {
+            Page<Room> getRoomList = roomRepository.findByTitleContaining(search, pageRequest);
+
+            for(Room room : getRoomList) {
+                allRoomResponseDtoList.add(new RoomListResponseDto(room));
+            }
+
+            return allRoomResponseDtoList;
+        }
+
+        /**
+         * 타입도 설정되어 있고 검색어도 입력이 들어와 있을 때
+         */
+        if(type != null && search != null) {
+            Page<Room> getRoomList = roomRepository.findByTypeAndTitleContaining(RoomType.valueOf(type), search, pageRequest);
+
+            for(Room room : getRoomList) {
+                allRoomResponseDtoList.add(new RoomListResponseDto(room));
+            }
+
+            return allRoomResponseDtoList;
         }
 
         return allRoomResponseDtoList;
+
     }
 
-    public List<FollowingRoomResponseDto> getFollowingRoomList(String type, int page, Long userId) {
+    public List<RoomListResponseDto> getFollowingRoomList(String type, int page, Long userId, String search) {
 
-        List<FollowingRoomResponseDto> followingRoomResponseDtoList = new ArrayList<>();
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         PageRequest pageRequest = PageRequest.of(page, 5, sort);
 
@@ -98,13 +131,7 @@ public class RoomService {
         // 유저가 팔로잉 하고있는 팔로잉 유저 리스트
         List<Follow> followingList = user.getFollowerList();
 
-        if(type == null) {
-            List<FollowingRoomResponseDto> getRoomList = roomRepository.findByFollowingList(followingList, pageRequest);
-
-            return getRoomList;
-        }
-
-        List<FollowingRoomResponseDto> getRoomList = roomRepository.findByHost_IdAndType(followingList, RoomType.valueOf(type), pageRequest);
+        List<RoomListResponseDto> getRoomList = roomRepository.findFollowingRoomList(followingList, type, search, pageRequest);
 
         return getRoomList;
     }

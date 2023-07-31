@@ -14,11 +14,12 @@ public interface RoomRepository
         extends JpaRepository<Room, Long>,
         RoomCustomRepository, QuerydslPredicateExecutor<Room> {
 
-   Page<Room> findAll(Pageable pageable);
+    Page<Room> findAll(Pageable pageable);
 
     Page<Room> findByType(RoomType type, Pageable pageable);
 
-//    Page<Room> findByHost_Id(Long hostId, Pageable pageable);
+    Page<Room> findByTitleContaining(String keyword, Pageable pageable);
 
-//    Page<Room> findByHost_IdAndType(Long hostId, RoomType type, Pageable pageable);
+    Page<Room> findByTypeAndTitleContaining(RoomType type, String keyword, Pageable pageable);
+
 }
