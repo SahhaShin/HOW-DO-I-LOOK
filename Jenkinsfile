@@ -20,14 +20,15 @@ pipeline {
                 echo 'Running tests for front...'
                 sh 'docker-compose up -d front' // front 컨테이너 데몬 모드로 실행
                 sh 'docker-compose exec front npm test' // 테스트 실행
-                sh 'docker-compose stop front' // front 컨테이너 중지
+                sh 'docker-compose down' // 이전에 실행된 컨테이너 중지 및 삭제
 
                 echo 'Running tests for back...'
                 sh 'docker-compose up -d back' // back 컨테이너 데몬 모드로 실행
                 sh 'docker-compose exec back pytest' // 테스트 실행
-                sh 'docker-compose stop back' // back 컨테이너 중지
+                sh 'docker-compose down' // 이전에 실행된 컨테이너 중지 및 삭제
             }
         }
+
 
         stage('Push') {
             steps {
