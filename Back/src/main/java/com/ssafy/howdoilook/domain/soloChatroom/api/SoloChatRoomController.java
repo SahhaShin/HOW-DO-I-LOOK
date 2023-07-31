@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatRoomDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatContextRequestDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatContextListResponseDto;
 import com.ssafy.howdoilook.domain.soloChatroom.service.SoloChatRoomService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/solochatroom")
+@Getter
+@RequestMapping("/api/soloChatRoom")
 public class SoloChatRoomController {
 
     private final SoloChatRoomService soloChatRoomService;
@@ -21,12 +23,14 @@ public class SoloChatRoomController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getChatList(@PathVariable("id") Long userId){
+        System.out.println("도착");
         List<ChatRoomDto> result = soloChatRoomService.getUserChatRoom(userId);
         return new ResponseEntity<List<ChatRoomDto>>(result, HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping("")
     public ResponseEntity<?> enterChatRoom(@RequestBody ChatContextRequestDto requestDto){
+        System.out.println(requestDto.getUserA());
         if(requestDto.getUserA() == null || requestDto.getUserB() == null){
             return new ResponseEntity<>(HttpStatus.OK);
         }

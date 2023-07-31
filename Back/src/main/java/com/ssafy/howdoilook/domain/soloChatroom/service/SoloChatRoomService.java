@@ -65,14 +65,15 @@ public class SoloChatRoomService {
     //채팅방 입장
     @Transactional
     public ChatContextListResponseDto enterUser(ChatContextRequestDto requestDto){
-        int isExist = soloChatRoomRepository.countByUserAAndUserB(requestDto.getUserA(), requestDto.getUserB());
-
+        System.out.println("-------------------------------");
+        System.out.println(requestDto.getUserA());
         User userA = userRepository.findById(requestDto.getUserA())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
         User userB = userRepository.findById(requestDto.getUserB())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
+        int isExist = soloChatRoomRepository.countByUserAAndUserB(userA, userB);
         //기존 채팅방이 없다면
         if(isExist == 0){
             String roomCode = UUID.randomUUID().toString();
