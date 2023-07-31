@@ -23,9 +23,15 @@ public class FeedLikeController {
     public void deleteFeedLike(@RequestBody FeedLikeDeleteRequestDto feedLikeDeleteRequestDto){
         feedLikeService.deleteFeedLike(feedLikeDeleteRequestDto);
     }
+
+    /**
+     * 로그인한 유저가 피드에 들어갈 때 누를 좋아요 정보를 확인하는 요청
+     * @param userId
+     * @param feedId
+     * @return
+     */
     @GetMapping("/")
     public ResponseEntity checkFeedLike(@RequestParam(name = "userId")Long userId, @RequestParam(name = "feedId")Long feedId){
-        return ResponseEntity.ok().body(feedLikeService.checkFeedLike(userId, userId));
+        return ResponseEntity.ok().body(feedLikeService.checkFeedLike(userId, feedId));
     }
-
 }
