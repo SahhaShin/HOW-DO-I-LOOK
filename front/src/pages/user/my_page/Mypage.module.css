@@ -56,3 +56,11 @@
     /* 위치 */
     margin-top: 10%;
 }
+
+
+/* 팔로우 모달 */
+.followModal{
+    position: fixed;
+    z-index: 10;
+    margin-left: 20%;
+}

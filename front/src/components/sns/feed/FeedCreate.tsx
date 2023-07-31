@@ -58,6 +58,7 @@ const FeedCreate = () => {
     let [hash, setHash] = useState<string[]|null>(null);
 
     //사진 등록 관리
+    let [picture, setPicture] = useState<string[]|null>();
 
     return(
         <div className={`${feedCreateStyle.createTotal}`}>

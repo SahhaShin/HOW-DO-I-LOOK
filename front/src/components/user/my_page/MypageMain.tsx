@@ -3,9 +3,21 @@ import React, { useState } from 'react';
 //css
 import mypageMainStyle from "./MypageMain.module.css";
 
+//redux
+import { useSelector, useDispatch } from "react-redux"; 
+import {changeFollowModalOpen, changeFollowMode, changeMypageMode} from "../../../store/MypageSlice";
+
+
 const MypageMain = () => {
+
+    //redux 관리
+    let state = useSelector((state:any)=>state.mypage);
+    let dispatch = useDispatch();
+
+
     return(
         <div className={`${mypageMainStyle.total}`}>
+
             {/* 타이틀 */}
             <div className={`${mypageMainStyle.title}`}>
                 MYPAGE
@@ -25,20 +37,28 @@ const MypageMain = () => {
             </div>
 
             {/* 버튼 2~3개 */}
-            <div className={`${mypageMainStyle.btns}`}>
-                <button>팔로우</button>
-                <button>대화</button>
-            </div>
+            {
+                state.mypageMode===2?
+                <div className={`${mypageMainStyle.btns}`}>
+                    <button>팔로우</button>
+                    <button>대화</button>
+                </div>:
+                <div className={`${mypageMainStyle.btns}`}>
+                    <button>내 옷장 관리</button>
+                    <button>내 정보 관리</button>
+                    <button onClick={()=>{dispatch(changeFollowMode(3));dispatch(changeFollowModalOpen(true))}}>블랙리스트 관리</button>
+                </div>
+            }
 
-            {/* 팔로워 팔로우 피드 */}
+            {/* 팔로워 팔로잉 피드 */}
             <div className={`${mypageMainStyle.followFeedInfo}`}>
-                <div className={`${mypageMainStyle.follower}`}>
+                <div onClick={()=>{dispatch(changeFollowMode(1));dispatch(changeFollowModalOpen(true))}} className={`${mypageMainStyle.follower}`}>
                     <div>팔로워</div>
                     <div>1</div>
                 </div>
 
-                <div className={`${mypageMainStyle.follow}`}>
-                    <div>팔로우</div>
+                <div onClick={()=>{dispatch(changeFollowMode(2));dispatch(changeFollowModalOpen(true))}} className={`${mypageMainStyle.follow}`}>
+                    <div>팔로잉</div>
                     <div>1</div>
                 </div>
 
