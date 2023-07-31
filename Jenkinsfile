@@ -17,13 +17,21 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
+                stage('Test') {
+                    steps {
+                        echo 'Running tests...'
 
-                echo 'Running tests for front...'
-                sh 'docker-compose run --rm front npm test'
+                        echo 'Running tests for front...'
+                        sh 'docker-compose run --rm front npm test'
 
-                echo 'Running tests for back...'
-                sh 'docker-compose run --rm back pytest'
+                        echo 'Stopping back service...'
+                        sh 'docker-compose stop back'
+
+                        echo 'Running tests for back...'
+                        sh 'docker-compose run --rm back pytest'
+                    }
+                }
+
             }
         }
 
