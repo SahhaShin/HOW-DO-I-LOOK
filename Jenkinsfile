@@ -29,7 +29,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying services...'
-                sh 'docker-compose up -d front back redis nginx'
+                sh 'docker-compose up -d front back redis'
+                sh 'docker-compose up -d nginx'
             }
         }
     }
