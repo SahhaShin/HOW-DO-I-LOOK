@@ -29,6 +29,4 @@ public class ImageController {
 
         return ResponseEntity.ok().body(imageService.updateImage(imageUrl, multipartFile));
     }
-
-
 }
