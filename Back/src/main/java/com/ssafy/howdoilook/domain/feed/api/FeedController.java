@@ -5,6 +5,8 @@ import com.ssafy.howdoilook.domain.feed.dto.request.FeedUpdateRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.response.FeedDto;
 import com.ssafy.howdoilook.domain.feed.service.FeedService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +18,17 @@ import java.util.List;
 public class FeedController {
     public final FeedService feedService;
 
+//    @GetMapping("/")
+//    public ResponseEntity<?> selectAll(){
+//        List<FeedDto> feedDtoList = feedService.selectAll();
+//        return ResponseEntity.ok().body(feedDtoList);
+//    }
     @GetMapping("/")
-    public ResponseEntity<?> selectAll(){
-        List<FeedDto> feedDtoList = feedService.selectAll();
-        return ResponseEntity.ok().body(feedDtoList);
+    public ResponseEntity<?> selectAll2(Pageable pageable){
+        Page<FeedDto> feedDtos = feedService.selectAll2(pageable);
+        return ResponseEntity.ok().body(feedDtos);
     }
+
     @GetMapping("/hashtag")
     public ResponseEntity<?> selectByHashTag(@RequestParam(name = "hashtag") List<String> list){
         List<FeedDto> feedDtoList = feedService.selectByHashTag(list);
@@ -45,4 +53,5 @@ public class FeedController {
     public void deleteFeed(@PathVariable(name = "feedId") Long feedId){
         feedService.deleteFeed(feedId);
     }
+
 }

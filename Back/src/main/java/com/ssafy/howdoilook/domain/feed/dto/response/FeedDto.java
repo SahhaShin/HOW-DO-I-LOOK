@@ -4,10 +4,12 @@ import com.ssafy.howdoilook.domain.feed.dto.PhotoDto;
 import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 @Data
+@NoArgsConstructor
 public class FeedDto {
     private Long userId;
     private Long feedId;

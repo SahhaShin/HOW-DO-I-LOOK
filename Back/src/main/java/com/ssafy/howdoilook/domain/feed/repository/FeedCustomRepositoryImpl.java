@@ -2,9 +2,11 @@ package com.ssafy.howdoilook.domain.feed.repository;
 
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.howdoilook.domain.feed.dto.response.FeedResponseDto;
 import com.ssafy.howdoilook.domain.feed.dto.response.QFeedResponseDto;
+import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.entity.QFeed;
 import com.ssafy.howdoilook.domain.feedPhoto.entity.QFeedPhoto;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.entity.QFeedPhotoHashtag;
@@ -12,6 +14,9 @@ import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.hashtag.entity.QHashtag;
 import com.ssafy.howdoilook.domain.user.entity.QUser;
 import com.ssafy.howdoilook.domain.user.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 
 import javax.persistence.EntityManager;
@@ -44,6 +49,17 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
                 .orderBy(feed.id.desc(),feedPhoto.id.asc())
                 .fetch();
         return feedSelectedList;
+    }
+    //페이징한 feed
+    @Override
+    public Page<Feed> selectFeedAll(Pageable pageable) {
+        QueryResults<Feed> results = jpaQueryFactory.selectFrom(feed)
+                .orderBy(feed.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+        List<Feed> content = results.getResults();
+        return new PageImpl<>(content,pageable, results.getTotal());
     }
 
     @Override
