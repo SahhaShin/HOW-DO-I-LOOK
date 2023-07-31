@@ -18,13 +18,18 @@ public class FeedController {
 
     @GetMapping("/")
     public ResponseEntity<?> selectAll(){
-        List<FeedDto> feedResponseDtoList = feedService.selectAll();
-        return ResponseEntity.ok().body(feedResponseDtoList);
+        List<FeedDto> feedDtoList = feedService.selectAll();
+        return ResponseEntity.ok().body(feedDtoList);
     }
     @GetMapping("/hashtag")
     public ResponseEntity<?> selectByHashTag(@RequestParam(name = "hashtag") List<String> list){
-        List<FeedDto> feedResponseDtoList = feedService.selectByHashTag(list);
-        return ResponseEntity.ok().body(feedResponseDtoList);
+        List<FeedDto> feedDtoList = feedService.selectByHashTag(list);
+        return ResponseEntity.ok().body(feedDtoList);
+    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> selectFollowFeed(@PathVariable(name = "userId")Long userId){
+        List<FeedDto> feedDtoList = feedService.selectByUserFollowee(userId);
+        return ResponseEntity.ok().body(feedDtoList);
     }
     @PostMapping("/")
     public Long saveFeed(@RequestBody FeedSaveRequestDto feedSaveRequestDto){
@@ -34,5 +39,10 @@ public class FeedController {
     @PutMapping("/")
     public Long updateFeed(@RequestBody FeedUpdateRequestDto feedUpdateRequestDto){
         return feedService.updateFeed(feedUpdateRequestDto);
+    }
+
+    @DeleteMapping("/{feedId}")
+    public void deleteFeed(@PathVariable(name = "feedId") Long feedId){
+        feedService.deleteFeed(feedId);
     }
 }

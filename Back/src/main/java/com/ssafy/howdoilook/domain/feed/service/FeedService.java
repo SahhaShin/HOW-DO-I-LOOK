@@ -11,6 +11,9 @@ import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDt
 import com.ssafy.howdoilook.domain.feedLike.service.FeedLikeService;
 import com.ssafy.howdoilook.domain.feedPhoto.service.FeedPhotoService;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.service.FeedPhotoHashtagService;
+import com.ssafy.howdoilook.domain.follow.dto.response.FolloweeResponseDto;
+import com.ssafy.howdoilook.domain.follow.entity.Follow;
+import com.ssafy.howdoilook.domain.follow.service.FollowService;
 import com.ssafy.howdoilook.domain.hashtag.service.HashTagService;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
@@ -30,6 +33,7 @@ public class FeedService {
     private final FeedPhotoService feedPhotoService;
     private final FeedPhotoHashtagService feedPhotoHashtagService;
     private final FeedLikeService feedLikeService;
+    private final FollowService followService;
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
     public List<FeedDto> selectAll(){
@@ -50,6 +54,15 @@ public class FeedService {
         }
         return feedDtoList;
     }
+    public List<FeedDto> selectByUserFollowee(Long userId){
+        User findUser = userRepository.findById(userId).orElseThrow(
+                ()->new IllegalArgumentException("존재하지 않는 User 입니다."));
+        //찾은 유저가 팔로우 하고있는 팔로우정보를 가져온다.
+        List<Follow> followeeList = findUser.getFollowerList();
+        List<FeedResponseDto> feedResponseDtoList = feedRepository.selectByUserFollowee(followeeList);
+        List<FeedDto> feedDtoList = slicingAndCapsule(feedResponseDtoList);
+        return feedDtoList;
+    }
 
     @Transactional
     public Long saveFeed(FeedSaveRequestDto feedRequestDto) {
@@ -65,8 +78,10 @@ public class FeedService {
         feedRepository.save(feedEntity);
 
         List<PhotoDto> photoDtoList = feedRequestDto.getPhotoDtoList();
-        for (PhotoDto photoDto : photoDtoList) {
-            feedPhotoService.saveFeedPhoto(feedEntity.getId(), photoDto);
+        if (photoDtoList!=null){
+            for (PhotoDto photoDto : photoDtoList) {
+                feedPhotoService.saveFeedPhoto(feedEntity.getId(), photoDto);
+            }
         }
         return feedEntity.getId();
     }
@@ -85,6 +100,10 @@ public class FeedService {
             feedPhotoService.updateFeedPhoto(photoDto);
         }
         return findFeed.getId();
+    }
+    @Transactional
+    public void deleteFeed(Long feedId){
+        feedRepository.deleteById(feedId);
     }
 
     /**
@@ -113,6 +132,7 @@ public class FeedService {
                 feedDtoList.add(feedDto);
             }
             int feedListSize = feedDtoList.size();
+
             if (photoId!=feedResponseDto.getFeedPhotoId()) {
                 photoId=feedResponseDto.getFeedPhotoId();
                 PhotoDto photoDto = PhotoDto.builder()
