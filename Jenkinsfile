@@ -17,21 +17,15 @@ pipeline {
 
         stage('Test') {
             steps {
-                stage('Test') {
-                    steps {
-                        echo 'Running tests...'
+                echo 'Running tests for front...'
+                sh 'docker-compose up -d front' // front 컨테이너 데몬 모드로 실행
+                sh 'docker-compose exec front npm test' // 테스트 실행
+                sh 'docker-compose stop front' // front 컨테이너 중지
 
-                        echo 'Running tests for front...'
-                        sh 'docker-compose run --rm front npm test'
-
-                        echo 'Stopping back service...'
-                        sh 'docker-compose stop back'
-
-                        echo 'Running tests for back...'
-                        sh 'docker-compose run --rm back pytest'
-                    }
-                }
-
+                echo 'Running tests for back...'
+                sh 'docker-compose up -d back' // back 컨테이너 데몬 모드로 실행
+                sh 'docker-compose exec back pytest' // 테스트 실행
+                sh 'docker-compose stop back' // back 컨테이너 중지
             }
         }
 
