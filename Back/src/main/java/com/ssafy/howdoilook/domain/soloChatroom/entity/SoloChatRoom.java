@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SoloChatRoom extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "solo_chatroom_id")
     private Long id;
 
@@ -31,8 +31,7 @@ public class SoloChatRoom extends BaseTimeEntity {
     private String roomCode;
 
     @Builder
-    public SoloChatRoom(Long id, User userA, User userB, String roomCode) {
-        this.id = id;
+    public SoloChatRoom(User userA, User userB, String roomCode) {
         this.userA = userA;
         this.userB = userB;
         this.roomCode = roomCode;

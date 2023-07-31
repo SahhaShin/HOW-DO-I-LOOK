@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.soloChatroom.dto;
+package com.ssafy.howdoilook.domain.soloChatroom.dto.response;
 
 import com.ssafy.howdoilook.domain.user.entity.User;
 import lombok.*;

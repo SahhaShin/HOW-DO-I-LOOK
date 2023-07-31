@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatContextRequestDto {
-    private User userA;
-    private User userB;
+    private Long userA;
+    private Long userB;
 }
