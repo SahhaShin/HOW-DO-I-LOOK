@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {changeFollowModalOpen} from "../../../store/MypageSlice";
 
 //컴포넌트
+import MypageHeader from '../../../components/user/my_page/MypageHeader';
 import MypageMain from '../../../components/user/my_page/MypageMain';
 import MypageFollowModal from '../../../components/user/my_page/MypageFollowModal';
 
@@ -32,6 +33,7 @@ const Mypage = () => {
                 <div className={`${mypageStyle.mid}`}>
                     {/* 모달 */}
                     {state.followModalOpen?<div className={`${mypageStyle.followModal}`}><MypageFollowModal/></div>:null}
+                    <MypageHeader/>
                     <MypageMain/>
                 </div>
             </div>

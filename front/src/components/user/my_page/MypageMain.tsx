@@ -18,38 +18,6 @@ const MypageMain = () => {
     return(
         <div className={`${mypageMainStyle.total}`}>
 
-            {/* 타이틀 */}
-            <div className={`${mypageMainStyle.title}`}>
-                MYPAGE
-            </div>
-
-            {/* 프로필 사진 & 뱃지 사진 & 닉네임 */}
-            <div className={`${mypageMainStyle.userInfo}`}>
-                <div>
-                    <div className={`${mypageMainStyle.profile}`}></div>
-                    <div className={`${mypageMainStyle.profile_badge}`}>
-                        <img src={process.env.PUBLIC_URL+`/img/badge/Lovely_colored.png`}/>
-                    </div>
-                </div>
-
-                <div className={`${mypageMainStyle.nickname}`}>미팅만 50번</div>
-                
-            </div>
-
-            {/* 버튼 2~3개 */}
-            {
-                state.mypageMode===2?
-                <div className={`${mypageMainStyle.btns}`}>
-                    <button>팔로우</button>
-                    <button>대화</button>
-                </div>:
-                <div className={`${mypageMainStyle.btns}`}>
-                    <button>내 옷장 관리</button>
-                    <button>내 정보 관리</button>
-                    <button onClick={()=>{dispatch(changeFollowMode(3));dispatch(changeFollowModalOpen(true))}}>블랙리스트 관리</button>
-                </div>
-            }
-
             {/* 팔로워 팔로잉 피드 */}
             <div className={`${mypageMainStyle.followFeedInfo}`}>
                 <div onClick={()=>{dispatch(changeFollowMode(1));dispatch(changeFollowModalOpen(true))}} className={`${mypageMainStyle.follower}`}>

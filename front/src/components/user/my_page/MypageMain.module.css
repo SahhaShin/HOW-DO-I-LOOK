@@ -10,6 +10,7 @@
     margin-left: 50px;
 }
 
+
 .title{
     /* 사이즈 */
     width: 120px;
@@ -29,93 +30,6 @@
     background-color: var(--signiture);
     color: white;
     
-}
-
-
-/* 유저 정보 */
-.userInfo{
-    /* 위치 */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    /* 크기 */
-    width: 1000px;
-    height: 300px;
-
-    /* 컬러 */
-    /* background-color: antiquewhite; */
-}
-
-.userInfo > div:nth-child(1){
-    display: flex;
-}
-
-.profile{
-    /* 위치 */
-    width: 200px;
-    height: 200px;
-
-    /* border */
-    border-radius: 50%;
-    background-color: var(--border);
-}
-
-.profile_badge{
-    /* 위치 */
-    position: absolute;
-    top: 350px;
-    left: 900px;
-
-    
-    /* 크기 */
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    /* background-color: var(--signiture); */
-}
-
-.profile_badge>img{
-    width: 100%;
-    height: 100%;
-}
-
-.nickname{
-    /* 크기 */
-    width: 100%;
-    height: 70px;
-    
-    /* 위치 */
-    line-height: 70px;
-
-    /* 폰트 */
-    font-weight: 900;
-}
-
-.btns{
-    /* 위치 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 5%;
-
-    /* 크기 */
-    width: 100%;
-    height: 50px;
-    /* background-color: aquamarine; */
-}
-
-.btns > button{
-    width: 120px;
-    height: 40px;
-    border-radius: 1rem;
-    margin-right: 5px;
-}
-
-.btns > button:hover{
-    background-color: var(--signiture);
-    color: white;
 }
 
 /* 팔로우 피드 정보 */
