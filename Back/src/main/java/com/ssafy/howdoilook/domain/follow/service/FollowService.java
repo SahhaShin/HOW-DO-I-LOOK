@@ -53,7 +53,7 @@ public class FollowService {
                 followDeleteRequestDto.getFollowerId(), followDeleteRequestDto.getFolloweeId());
         followReposiroty.deleteById(findFollow.getId());
     }
-
+    //내가 팔로우 하는 사람 리스트 반환
     public List<FolloweeResponseDto> selectFolloweeList(Long userId){
         //userId로 user 찾는다- 주체
         User findUser = userRepository.findById(userId).orElseThrow(
