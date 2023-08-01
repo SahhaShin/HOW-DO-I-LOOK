@@ -4,9 +4,8 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Data
+@NoArgsConstructor
 public class PhotoDto {
     private Long id;
     private String link;
