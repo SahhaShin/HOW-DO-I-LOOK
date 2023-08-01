@@ -24,6 +24,7 @@ import java.util.List;
 public class FollowService {
     private final FollowReposiroty followReposiroty;
     private final UserRepository userRepository;
+
     //데이터가 중복으로 삽입되는거 ifelse로 처리했는데 예외로 처리하면 더 좋을거 같다.
     @Transactional
     public Long saveFollow(FollowSaveRequestDto followSaveRequestDto){
