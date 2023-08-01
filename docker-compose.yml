@@ -49,7 +49,6 @@ services:
       - /jenkins:/var/jenkins_home
     ports:
       - "9090:8080"
-    networks:
 
 networks:
   my_network:
