@@ -6,6 +6,8 @@ import liveStyle from "./Live.module.css";
 // 컴포넌트
 import LiveMenu from '../../../components/streaming/live/LiveMenu';
 import LiveChat from '../../../components/streaming/live/LiveChat';
+import LiveAdvisor from '../../../components/streaming/live/LiveAdvisor';
+
 
 const Live = () => {
     return(
@@ -27,7 +29,9 @@ const Live = () => {
             </div>
 
             {/* 참여자 영역 */}
-            <div className={`${liveStyle.advisor}`}></div>
+            <div className={`${liveStyle.advisor}`}>
+                <LiveAdvisor/>
+            </div>
         </div>
     );
 }

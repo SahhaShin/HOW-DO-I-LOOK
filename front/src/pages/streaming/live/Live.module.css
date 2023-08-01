@@ -21,7 +21,7 @@
 .advisor{
     /* 크기 */
     height: 130px;
-    background-color: aquamarine;
+    background-color: var(--border);
 }
 
 .video{
