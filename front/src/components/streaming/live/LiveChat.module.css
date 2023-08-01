@@ -1,0 +1,69 @@
+.total{
+    /* 크기 */
+    width: 100%;
+    height: 100%;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* 채팅 */
+.chatHeader{
+    /* 크기 */
+    width: 100%;
+    height: 50px;
+    background-color: var(--signiture);
+
+    /* 폰트 */
+    font-size: 20px;
+    font-weight: 900;
+    color: white;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+
+}
+
+.chatArea{
+    /* 높이 */
+    height: 530px;
+}
+
+.chatContent{
+    /* 위치 */
+    display: flex;
+    /* 크기 */
+    /* height: 50px; */
+}
+
+.chatContent>input{
+    /* 크기 */
+    width: 400px;
+    height: 50px;
+    padding-left: 3%;
+
+    /* border */
+    border: none;
+    outline: none;
+    border: 1px solid var(--border);
+}
+
+.chatContent>button{
+    /* 크기 */
+    width: 50px;
+    height: 50px;
+
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+}
+
+.chatArea > div:nth-child(1){
+    /* 본문 */
+    height: 480px;
+}
