@@ -4,8 +4,8 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.follow.entity.QFollow;
+import com.ssafy.howdoilook.domain.room.dto.response.QRoomListResponseDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
-import com.ssafy.howdoilook.domain.room.dto.response.QFollowingRoomResponseDto;
 import com.ssafy.howdoilook.domain.room.entity.QRoom;
 import com.ssafy.howdoilook.domain.room.entity.RoomType;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +46,7 @@ public class RoomCustomRepositoryImpl implements RoomCustomRepository {
             builder.and(room.title.like("%" + search + "%"));
         }
 
-        List<RoomListResponseDto> queryResults = jpaQueryFactory.select(new QFollowingRoomResponseDto(room))
+        List<RoomListResponseDto> queryResults = jpaQueryFactory.select(new QRoomListResponseDto(room))
                 .from(room)
                 .leftJoin(follow)
                 .on(room.host.id.eq(follow.followee.id))
