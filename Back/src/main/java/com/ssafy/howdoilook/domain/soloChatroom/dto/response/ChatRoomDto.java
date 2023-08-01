@@ -8,15 +8,15 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatRoomDto {
     private Long id;
-    private User userA;
-    private User userB;
+    private Long userAId;
+    private Long userBId;
     private String chatroomCode;
 
     @Builder
-    public ChatRoomDto(Long id, User userA, User userB, String chatroomCode) {
+    public ChatRoomDto(Long id, long userAId, long userBId, String chatroomCode) {
         this.id = id;
-        this.userA = userA;
-        this.userB = userB;
+        this.userAId = userAId;
+        this.userBId = userBId;
         this.chatroomCode = chatroomCode;
     }
 }

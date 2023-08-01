@@ -48,19 +48,21 @@ public class SoloChatRoomService {
     //특정 유저가 진행했던 채팅방 리스트 반환
     @Transactional
     public List<ChatRoomDto> getUserChatRoom(Long userId){
-        User user = userRepository.findById(userId).get();
-        List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUserA(user);
+
+        List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUserA(userId);
         List<ChatRoomDto> chatRoomListNext = new ArrayList<>();
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
         for (SoloChatRoom chatRoom : chatRoomListPrev){
             ChatRoomDto dto = ChatRoomDto.builder()
                     .id(chatRoom.getId())
-                    .userA(chatRoom.getUserA())
-                    .userB(chatRoom.getUserB())
+                    .userAId(chatRoom.getUserA().getId())
+                    .userBId(chatRoom.getUserB().getId())
                     .chatroomCode(chatRoom.getRoomCode())
                     .build();
             chatRoomListNext.add(dto);
         }
+        System.out.println(chatRoomListNext.size());
         return chatRoomListNext;
     }
     //채팅방 입장
