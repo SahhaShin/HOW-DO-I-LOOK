@@ -30,7 +30,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'develop', url: 'https://lab.ssafy.com/s09-webmobile1-sub2/S09P12B304.git'
+                git branch: 'develop',
+                            credentialsId: 'yun12343@naver.com',
+                            url: 'https://lab.ssafy.com/s09-webmobile1-sub2/S09P12B304.git'
             }
         }
 
