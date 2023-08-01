@@ -1,12 +1,11 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 //css
 import closetRegistStyle from "../closet/CLOSETRegist.module.css";
 
 //redux
-import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeModalOpen, setNewClothes} from "../../../store/ClosetSlice";
-
+import { useSelector, useDispatch} from "react-redux"; 
+import {action, changeModalOpen} from "../../../store/ClosetSlice";
 
 const CLOSETRegist = () => {
 
@@ -15,7 +14,7 @@ const CLOSETRegist = () => {
     let dispatch = useDispatch();
 
 
-    // 파일등록 관련 코드
+    ///////파일등록 관련 저장소///////
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [imgSrc, setImgSrc] = useState<string>('');
     const [imageFile, setImageFile] : any = useState();
@@ -25,7 +24,6 @@ const CLOSETRegist = () => {
     const onUploadImage = useCallback((file: any) => {
 
         setImageFile(file);
-        // console.log(file); //file type
 
         if (!file) {
           return;
@@ -51,29 +49,23 @@ const CLOSETRegist = () => {
         }
     }, []);
 
-    // const onUploadImageButtonClick = useCallback(() => {
-    //     if (!inputRef.current) {
-    //       return;
-    //     }
-    //     inputRef.current.click();
-    // }, []);
 
-    // select box 메뉴
+    ///////select box 메뉴///////
     interface ClothesType{
         value: string,
         name: string
     };
     const selectList:Array<ClothesType|null> = [
-        { value: "top", name: "상의" },
-        { value: "bottom", name: "하의" },
-        { value: "shoes", name: "신발" },
-        { value: "accessory", name: "악세서리" },
+        { value: "TOP", name: "상의" },
+        { value: "BOTTOM", name: "하의" },
+        { value: "SHOES", name: "신발" },
+        { value: "ACCESSOTY", name: "악세서리" },
     ];   
 
-    const [selected, setSelected] = useState<string>("상의");//선택된 값을 저장
+    const [selected, setSelected] = useState<string>("TOP");//선택된 값을 저장
 
 
-    //////유저 선택 정보///////
+    //////유저 입력 정보///////
 
     //select 값이 변하면 선택된 값을 변경
     const handleSelect = (e: any) => {
@@ -99,21 +91,18 @@ const CLOSETRegist = () => {
 
     // 유저가 옷을 등록하려고 시도함 -> 정보들을 redux에 올림 -> redux에서 axios로 백엔드 api 부르기 시도
     // 유저가 옷을 등록하려고 입력한 정보들
-
     const saveClothes = async() => {
-        dispatch(setNewClothes({
-            image:imageFile,
+        let clothesSaveRequestDto = {
+            userId:1,
             type:selected,
             name:clothesName,
             brand:clothesBrand,
-            comment:specialContent
-        }));
+            info:specialContent,
+        }
+        let s3upload = imageFile;
+        dispatch(action.saveClothes({clothesSaveRequestDto,s3upload}));
     }
 
-    // 초기값 저장
-    // useEffect(()=>{
-    //     dispatch<ClothesListByType>(action.getClothesListByType({selected, 0, 0}));
-    // },[])
 
     return(
         <div>
