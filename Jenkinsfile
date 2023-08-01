@@ -20,18 +20,21 @@ pipeline {
 
         stage('Push') {
             steps {
+                echo 'Building frontend and backend...'
+                sh 'docker-compose build front back'
+
+                echo 'Tagging images for Docker registry...'
+                sh "docker tag parkseyun/howdoilook:front docker.io/parkseyun/howdoilook:front"
+                sh "docker tag parkseyun/howdoilook:back docker.io/parkseyun/howdoilook:back"
+
                 echo 'Pushing images to Docker registry...'
-                sh "docker push $DOCKER_IMAGE_FRONT"
-                sh "docker push $DOCKER_IMAGE_BACK"
+                sh "docker push docker.io/parkseyun/howdoilook:front"
+                sh "docker push docker.io/parkseyun/howdoilook:back"
             }
         }
 
-        stage('Deploy') {
-            steps {
-                echo 'Deploying services...'
-                sh 'docker-compose up -d front back'
-            }
-        }
+
+
     }
 
     post {
