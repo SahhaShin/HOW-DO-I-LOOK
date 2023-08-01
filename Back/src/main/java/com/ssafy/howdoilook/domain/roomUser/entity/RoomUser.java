@@ -28,10 +28,15 @@ public class RoomUser extends BaseTimeEntity {
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "room_user_status")
+    private RoomUserType status;
+
     @Builder
-    public RoomUser(Long id, User user, Room room) {
+    public RoomUser(Long id, User user, Room room, RoomUserType status) {
         this.id = id;
         this.user = user;
         this.room = room;
+        this.status = status;
     }
 }
