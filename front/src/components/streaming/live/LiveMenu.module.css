@@ -1,0 +1,101 @@
+.navbarContainer {
+    /* 위치 */
+    position: relative;
+}
+    
+.navbar {
+    /* 크기 */
+    width: 200px;
+    height: 500px;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+
+    /* 컬러 */
+    /* background-color: #f0f0f0; */
+}
+    
+.activeMenuBlock {
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+
+    /* 위치 */
+    position: absolute;
+    top: 0;
+
+    /* 크기 */
+    height: 85px;
+    width: 180px;
+
+    /* 컬러 */
+    background-color: var(--border);
+
+    /* 동적요소 */
+    transition: left 0.3s ease;
+
+    border-radius: 10px;
+}
+    
+.activeMenuBlock.active {
+    z-index: 0;
+}
+  
+.activeMenuBlock.active h2 {
+
+    /* 컬러 */
+    color: #ffffff;
+
+    /* 위치 */
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+
+    /* 동적 */
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+
+    /* 폰트 */
+    font-size: 15px;
+}
+    
+.activeMenuBlock h2 {
+    /* 컬러 */
+    /* color: #ffffff; */
+
+    /* 폰트 */
+    font-size: 15px;
+
+    /* 위치 */
+    padding: 20px;
+}
+    
+  
+  
+/* 버튼 */
+button{
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    font-weight: 700;
+
+    /* border */
+    border: none;
+
+    /* 폰트 */
+    font-size: 15px;
+    color: grey;
+
+    /* 크기 */
+    width: 180px;
+    height: 85px;
+
+    /* 커서 */
+    cursor: pointer;
+
+    background-color: white;
+}
