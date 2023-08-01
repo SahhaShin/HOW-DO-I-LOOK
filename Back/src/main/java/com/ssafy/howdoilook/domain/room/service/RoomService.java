@@ -3,6 +3,7 @@ package com.ssafy.howdoilook.domain.room.service;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomAddRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomUpdateRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.response.RoomDetailResponseDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
 import com.ssafy.howdoilook.domain.room.entity.Room;
 import com.ssafy.howdoilook.domain.room.entity.RoomType;
@@ -134,5 +135,24 @@ public class RoomService {
         List<RoomListResponseDto> getRoomList = roomRepository.findFollowingRoomList(followingList, type, search, pageRequest);
 
         return getRoomList;
+    }
+
+    public RoomDetailResponseDto getRoomDetail(Long roomId) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+
+        User user = userRepository.findById(room.getHost().getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        RoomDetailResponseDto roomDetailResponseDto = RoomDetailResponseDto.builder()
+                .title(room.getTitle())
+                .hostAge(user.getAge())
+                .hostGender(String.valueOf(user.getGender()))
+                .roomMinAge(room.getMinAge())
+                .roomMaxAge(room.getMaxAge())
+                .roomGender(String.valueOf(room.getGender()))
+                .build();
+
+        return roomDetailResponseDto;
     }
 }

@@ -45,14 +45,9 @@ public class ClothesController {
         return ResponseEntity.ok().body(updateId);
     }
 
-    @Transactional
     @DeleteMapping("{clothesId}")
     public ResponseEntity<?> deleteClothes(@PathVariable("clothesId") Long clothesId) {
 
-        Clothes clothes = clothesRepository.findById(clothesId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 옷이 존재하지 않습니다"));
-
-        imageService.deleteImage(clothes.getPhotoLink());
         Long deleteId = clothesService.deleteClothes(clothesId);
 
         return ResponseEntity.ok().body(deleteId);

@@ -41,4 +41,9 @@ public class RoomController {
          return ResponseEntity.ok().body(roomService.getFollowingRoomList(type, page, userId, search));
     }
 
+    @GetMapping("/detail/{roomId}")
+    public ResponseEntity<?> getRoomDetail(@PathVariable("roomId") Long roomId) {
+
+        return ResponseEntity.ok().body(roomService.getRoomDetail(roomId));
+    }
 }

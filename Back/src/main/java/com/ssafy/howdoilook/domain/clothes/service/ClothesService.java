@@ -62,6 +62,7 @@ public class ClothesService {
 
     }
 
+    @Transactional
     public Long deleteClothes(Long clothesId) {
 
         Clothes findClothes = clothesRepository.findById(clothesId)
