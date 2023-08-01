@@ -3,14 +3,14 @@ import axios from "axios";
 
 // axios
 export const action = {
-    // uploadImg : createAsyncThunk("api/image/save", async()=>{
-    //     return await axios({
-    //         method: "post",
-    //         url:process.env.REACT_APP_API_URL,
-    //     }).then(response => {
-    //         console.log(response.data);
-    //     });
-    // }),
+    uploadImg : createAsyncThunk("api/image/save", async()=>{
+        return await axios({
+            method: "post",
+            url:process.env.REACT_APP_API_URL,
+        }).then(response => {
+            console.log(response.data);
+        });
+    }),
     getClothesListByType : createAsyncThunk(`/api/clothes/list`, async({clothesType, userId, pageNum}:ClothesListByType)=>{
         return await axios({
             method: "get",
