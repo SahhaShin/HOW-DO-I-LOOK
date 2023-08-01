@@ -13,6 +13,8 @@ import Closet from "./pages/user/closet/Closet";
 import ChatList from "./pages/chat/chatting/ChatList";
 import ChatRoom from "./pages/chat/chatting/ChatRoom";
 import Feed from "./pages/sns/feed/Feed";
+import Mypage from "./pages/user/my_page/Mypage";
+import MypageFollowModal from "./components/user/my_page/MypageFollowModal";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
             <Route path="/chatlist" element={<ChatList/>}/>
             <Route path="/chatroom/:otherId/:roomId" element={<ChatRoom/>}/>
             <Route path="/feed" element={<Feed/>}/>
+            <Route path="/mypage" element={<Mypage/>}/>
+            <Route path="/mypageFollowModal" element={<MypageFollowModal/>}/>
           </Routes>
         </Router>
       </div>
