@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.room.entity;
 
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
+import com.ssafy.howdoilook.domain.room.dto.request.RoomUpdateRequestDto;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
@@ -74,5 +75,15 @@ public class Room extends BaseTimeEntity {
         this.endedDate = endedDate;
         this.chatCode = chatCode;
         this.roomUserList = roomUserList;
+    }
+
+    public Long update(RoomUpdateRequestDto roomUpdateRequestDto) {
+        this.title = roomUpdateRequestDto.getTitle();
+        this.type = RoomType.valueOf(roomUpdateRequestDto.getType());
+        this.minAge = roomUpdateRequestDto.getMinAge();
+        this.maxAge = roomUpdateRequestDto.getMaxAge();
+        this.gender = Gender.valueOf(roomUpdateRequestDto.getGender());
+
+        return this.id;
     }
 }
