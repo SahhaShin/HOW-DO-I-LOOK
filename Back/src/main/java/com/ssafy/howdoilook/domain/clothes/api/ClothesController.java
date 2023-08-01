@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +24,10 @@ public class ClothesController {
     private final ClothesRepository clothesRepository;
 
     @PostMapping("")
-    public ResponseEntity<?> saveClothes(@RequestBody ClothesSaveRequestDto clothesSaveRequestDto) throws Exception {
+    public ResponseEntity<?> saveClothes(@RequestPart ClothesSaveRequestDto clothesSaveRequestDto,
+                                         @RequestPart("s3upload") MultipartFile multipartFile) throws Exception {
+
+        clothesSaveRequestDto.setPhotoLink(imageService.saveImage(multipartFile));
 
         return ResponseEntity.ok()
                 .body(clothesService.saveClothes(clothesSaveRequestDto));
