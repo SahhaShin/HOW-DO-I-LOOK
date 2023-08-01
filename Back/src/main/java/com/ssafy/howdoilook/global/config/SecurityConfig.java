@@ -91,7 +91,11 @@ public class SecurityConfig {
                 .oauth2Login()
                 .successHandler(oAuth2LoginSuccessHandler)
                 .failureHandler(oAuth2LoginFailureHandler)
-                .userInfoEndpoint().userService(customOAuth2UserService);
+                .userInfoEndpoint().userService(customOAuth2UserService)
+
+                .and()
+                .requiresChannel() // HTTPS 요구 설정 시작
+                .anyRequest().requiresSecure(); // 모든 요청에 HTTPS 요구 설정;
 
         // 스프링 시큐리티 필터 순서 :
         // LogoutFilter -> JwtAuthenticationProcessingFilter -> CustomJsonUsernamePasswordAuthenticationFilter
