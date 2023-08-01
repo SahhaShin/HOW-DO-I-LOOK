@@ -48,9 +48,10 @@ public class SoloChatRoomService {
     //특정 유저가 진행했던 채팅방 리스트 반환
     @Transactional
     public List<ChatRoomDto> getUserChatRoom(Long userId){
-        List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUserA(userId);
+        User user = userRepository.findById(userId).get();
+        List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUserA(user);
         List<ChatRoomDto> chatRoomListNext = new ArrayList<>();
-
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         for (SoloChatRoom chatRoom : chatRoomListPrev){
             ChatRoomDto dto = ChatRoomDto.builder()
                     .id(chatRoom.getId())
@@ -65,8 +66,6 @@ public class SoloChatRoomService {
     //채팅방 입장
     @Transactional
     public ChatContextListResponseDto enterUser(ChatContextRequestDto requestDto){
-        System.out.println("-------------------------------");
-        System.out.println(requestDto.getUserA());
         User userA = userRepository.findById(requestDto.getUserA())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
@@ -110,7 +109,7 @@ public class SoloChatRoomService {
         }
         //기존 채팅방이 있다면
         else{
-            SoloChatRoom chatRoom = soloChatRoomRepository.findByUserAAndUserB(requestDto.getUserA(), requestDto.getUserB());
+            SoloChatRoom chatRoom = soloChatRoomRepository.findByUserAAndUserB(userA, userB);
             List<SoloChat> chatContext = soloChatRepository.findByRoomId(chatRoom.getId());
 
             List<ChatDto> answer = new ArrayList<>();

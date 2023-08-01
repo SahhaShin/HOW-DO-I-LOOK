@@ -23,14 +23,12 @@ public class SoloChatRoomController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getChatList(@PathVariable("id") Long userId){
-        System.out.println("도착");
         List<ChatRoomDto> result = soloChatRoomService.getUserChatRoom(userId);
         return new ResponseEntity<List<ChatRoomDto>>(result, HttpStatus.OK);
     }
 
     @PostMapping("")
     public ResponseEntity<?> enterChatRoom(@RequestBody ChatContextRequestDto requestDto){
-        System.out.println(requestDto.getUserA());
         if(requestDto.getUserA() == null || requestDto.getUserB() == null){
             return new ResponseEntity<>(HttpStatus.OK);
         }

@@ -15,9 +15,9 @@ public interface SoloChatRoomRepository extends JpaRepository<SoloChatRoom,Long>
     */
     int countByUserAAndUserB(User userA, User userB);
 
-    SoloChatRoom findByUserAAndUserB(long userA, long userB);
+    SoloChatRoom findByUserAAndUserB(User userA, User userB);
 
-    List<SoloChatRoom> findByUserA(long userA);
+    List<SoloChatRoom> findByUserA(User userA);
 
     SoloChatRoom findById(long id);
 }
