@@ -4,34 +4,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'develop', url: 'https://lab.ssafy.com/s09-webmobile1-sub2/S09P12B304.git'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'npm install --force'
-                sh 'npm run build'
-            }
-        }
-
-        stage('Docker Build & Push') {
-            steps {
-                sh 'docker build -t parkseyun/howdoilook:front .'
-                sh 'docker push parkseyun/howdoilook:front'
-            }
-        }
-    }
-}
-
-pipeline {
-    agent any
-
-    stages {
-        stage('Checkout') {
-            steps {
                 git branch: 'develop',
-                            credentialsId: 'yun12343@naver.com',
+                            credentialsId: 'howdoilook',
                             url: 'https://lab.ssafy.com/s09-webmobile1-sub2/S09P12B304.git'
             }
         }
