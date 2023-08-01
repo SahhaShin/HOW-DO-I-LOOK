@@ -3,8 +3,9 @@ package com.ssafy.howdoilook.domain.clothes.dto.request;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClothesUpdateDto {
 

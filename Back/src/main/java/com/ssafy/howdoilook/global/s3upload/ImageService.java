@@ -26,8 +26,7 @@ public class ImageService {
     @Autowired
     AmazonS3Client amazonS3Client;
 
-    public List<String> saveImage(MultipartFile multipartFile) throws IOException {
-        List<String> imagePathList = new ArrayList<>();
+    public String saveImage(MultipartFile multipartFile) throws IOException {
 
         String originalName = multipartFile.getOriginalFilename(); // 파일 이름
 
@@ -48,12 +47,11 @@ public class ImageService {
         );
 
         String imagePath = amazonS3Client.getUrl(S3Bucket, fileName).toString(); // 접근가능한 URL 가져오기
-        imagePathList.add(imagePath);
 
-        return imagePathList;
+        return imagePath;
     }
 
-    public List<String> updateImage(String imageUrl, MultipartFile multipartFile) throws IOException {
+    public String updateImage(String imageUrl, MultipartFile multipartFile) throws IOException {
         deleteImage(imageUrl);
 
         return saveImage(multipartFile);
