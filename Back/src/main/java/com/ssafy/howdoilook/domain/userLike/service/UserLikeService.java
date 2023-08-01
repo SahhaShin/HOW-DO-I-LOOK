@@ -23,6 +23,7 @@ public class UserLikeService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
 
+    @Transactional
     public Long saveScore(ScoreSaveRequestDto scoreSaveRequestDto) {
         User user = userRepository.findById(scoreSaveRequestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
@@ -32,7 +33,7 @@ public class UserLikeService {
 
         List<UserLike> findUserLike = userLikeRepository.findByUser_IdAndRoom_Id(scoreSaveRequestDto.getUserId(), scoreSaveRequestDto.getRoomId());
 
-        if(findUserLike.isEmpty()) {
+        if(!findUserLike.isEmpty()) {
             return -1L; // 이미 점수를 매김
         }
 
@@ -43,8 +44,8 @@ public class UserLikeService {
                 .score(scoreSaveRequestDto.getScore())
                 .build();
 
-        return userLike.getId();
+        userLikeRepository.save(userLike);
 
-        // 아직 미완성
+        return userLike.getId();
     }
 }
