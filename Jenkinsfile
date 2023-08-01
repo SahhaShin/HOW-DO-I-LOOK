@@ -1,43 +1,51 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE_FRONT = 'parkseyun/howdoilook:front'
+        DOCKER_IMAGE_BACK = 'parkseyun/howdoilook:back'
+        DOCKER_IMAGE_NGINX = 'nginx'
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                git branch: 'infra',
-                            credentialsId: 'howdoilook',
-                            url: 'https://lab.ssafy.com/s09-webmobile1-sub2/S09P12B304.git'
+                echo 'Building frontend and backend...'
+                sh 'docker-compose build front back'
             }
         }
 
-        stage('Build Frontend') {
+
+
+
+        stage('Push') {
             steps {
-                dir('front') {
-                    sh 'apt-get update'
-                    sh 'apt-get install -y nodejs'
-                    sh 'apt-get install -y npm'
-                    sh 'npm install --force'
-                    sh 'npm run build'
-                    sh 'docker build -t parkseyun/howdoilook:front .'
-                }
+                echo 'Building frontend and backend...'
+                sh 'docker-compose build front back'
+
+                echo 'Tagging images for Docker registry...'
+                sh "docker tag parkseyun/howdoilook:front docker.io/parkseyun/howdoilook:front"
+                sh "docker tag parkseyun/howdoilook:back docker.io/parkseyun/howdoilook:back"
+
+                echo 'Pushing images to Docker registry...'
+                sh "docker push docker.io/parkseyun/howdoilook:front"
+                sh "docker push docker.io/parkseyun/howdoilook:back"
             }
         }
 
-        stage('Build Backend') {
+        stage('Deploy') {
             steps {
-                dir('Back') {
-                    sh './gradlew clean build'
-                    sh 'docker build -t parkseyun/howdoilook:back .'
-                }
+                echo 'Deploying services...'
+                sh 'docker-compose up -d front back'
             }
         }
 
-        stage('Docker Push') {
-            steps {
+    }
 
-                sh 'docker push parkseyun/howdoilook:front'
-                sh 'docker push parkseyun/howdoilook:back'
-            }
+    post {
+        always {
+            echo 'Cleaning up...'
+            sh 'docker-compose down'
         }
     }
 }
