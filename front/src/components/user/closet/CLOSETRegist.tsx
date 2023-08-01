@@ -1,12 +1,11 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 
 //css
 import closetRegistStyle from "../closet/CLOSETRegist.module.css";
-import { AnyAaaaRecord } from 'dns';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeModalOpen} from "../../../store/ClosetSlice";
+import {action, changeModalOpen, setNewClothes} from "../../../store/ClosetSlice";
 
 
 const CLOSETRegist = () => {
@@ -19,10 +18,16 @@ const CLOSETRegist = () => {
     // 파일등록 관련 코드
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [imgSrc, setImgSrc] = useState<string>('');
+    const [imageFile, setImageFile] : any = useState();
 
-    const onUploadImage = useCallback((e: AnyAaaaRecord) => {
-        console.log(e);
-        if (!e) {
+
+    // 유저가 올린 파일 이미지를 미리보기로 띄워주는 함수
+    const onUploadImage = useCallback((file: any) => {
+
+        setImageFile(file);
+        // console.log(file); //file type
+
+        if (!file) {
           return;
         }else{ 
             // file, Blob 객체를 핸들링하는데 사용
@@ -31,7 +36,7 @@ const CLOSETRegist = () => {
 
             // File 혹은 Blob 을 읽은 뒤 base64로 인코딩한 문자열을
             //FileReader 인스턴스의 result라는 속성에 담아줌
-            reader.readAsDataURL(e);
+            reader.readAsDataURL(file);
             console.log(reader);
 
             return new Promise((resolve) => {
@@ -46,12 +51,12 @@ const CLOSETRegist = () => {
         }
     }, []);
 
-    const onUploadImageButtonClick = useCallback(() => {
-        if (!inputRef.current) {
-          return;
-        }
-        inputRef.current.click();
-    }, []);
+    // const onUploadImageButtonClick = useCallback(() => {
+    //     if (!inputRef.current) {
+    //       return;
+    //     }
+    //     inputRef.current.click();
+    // }, []);
 
     // select box 메뉴
     interface ClothesType{
@@ -66,6 +71,9 @@ const CLOSETRegist = () => {
     ];   
 
     const [selected, setSelected] = useState<string>("상의");//선택된 값을 저장
+
+
+    //////유저 선택 정보///////
 
     //select 값이 변하면 선택된 값을 변경
     const handleSelect = (e: any) => {
@@ -89,6 +97,23 @@ const CLOSETRegist = () => {
         setSpecialContent(e.target.value);
     }
 
+    // 유저가 옷을 등록하려고 시도함 -> 정보들을 redux에 올림 -> redux에서 axios로 백엔드 api 부르기 시도
+    // 유저가 옷을 등록하려고 입력한 정보들
+
+    const saveClothes = async() => {
+        dispatch(setNewClothes({
+            image:imageFile,
+            type:selected,
+            name:clothesName,
+            brand:clothesBrand,
+            comment:specialContent
+        }));
+    }
+
+    // 초기값 저장
+    // useEffect(()=>{
+    //     dispatch<ClothesListByType>(action.getClothesListByType({selected, 0, 0}));
+    // },[])
 
     return(
         <div>
@@ -167,7 +192,8 @@ const CLOSETRegist = () => {
                     {state.mode===1 || state.mode===3?<button onClick={()=>{dispatch(changeModalOpen(false))}}>취소</button>:
                     <button onClick={()=>{dispatch(changeModalOpen(false))}}>닫기</button>}
 
-                    {state.mode===1?<button onClick={()=>{dispatch(changeModalOpen(false))}}>업로드</button>: 
+                    {/* 옷 등록할 때 로딩바 필요 */}
+                    {state.mode===1?<button onClick={()=>{saveClothes();dispatch(changeModalOpen(false))}}>업로드</button>: 
                     (state.mode===2?null:<button onClick={()=>{dispatch(changeModalOpen(false))}}>수정</button>)
                     }
                 </div>
