@@ -74,16 +74,16 @@ public class FeedLikeCustomRepositoryImpl implements FeedLikeCustomRepository{
             if (like.getType()!=null) {
                 switch (like.getType()){
                     case LOVELY:
-                        feedLikeCheckResponseDto.setLOVELY(true);
+                        feedLikeCheckResponseDto.setLovelyType(like.getType());
                         break;
                     case NATURAL:
-                        feedLikeCheckResponseDto.setNATURAL(true);
+                        feedLikeCheckResponseDto.setNaturalType(like.getType());
                         break;
                     case MODERN:
-                        feedLikeCheckResponseDto.setMODERN(true);
+                        feedLikeCheckResponseDto.setModernType(like.getType());
                         break;
                     case SEXY:
-                        feedLikeCheckResponseDto.setSEXY(true);
+                        feedLikeCheckResponseDto.setSexyType(like.getType());
                         break;
                 }
             }

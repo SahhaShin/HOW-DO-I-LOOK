@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.feedLike.dto.response;
 
+import com.ssafy.howdoilook.domain.feedLike.entity.FeedLikeType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,16 +10,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class FeedLikeCheckResponseDto {
-    private Boolean LOVELY;
-    private Boolean NATURAL;
-    private Boolean MODERN;
-    private Boolean SEXY;
+
+    private FeedLikeType sexyType;
+    private FeedLikeType lovelyType;
+    private FeedLikeType modernType;
+    private FeedLikeType naturalType;
 
     @Builder
-    public FeedLikeCheckResponseDto(Boolean LOVELY, Boolean NATURAL, Boolean MODERN, Boolean SEXY) {
-        this.LOVELY = LOVELY;
-        this.NATURAL = NATURAL;
-        this.MODERN = MODERN;
-        this.SEXY = SEXY;
+    public FeedLikeCheckResponseDto(FeedLikeType sexyType, FeedLikeType lovelyType, FeedLikeType modernType, FeedLikeType naturalType) {
+        this.sexyType = sexyType;
+        this.lovelyType = lovelyType;
+        this.modernType = modernType;
+        this.naturalType = naturalType;
     }
 }

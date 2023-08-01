@@ -10,7 +10,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FeedSaveRequestDto {
     private Long userId;
-    private Long feedId;
     private String content;
     private List<PhotoDto> photoDtoList;
 }
