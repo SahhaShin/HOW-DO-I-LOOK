@@ -81,7 +81,7 @@ public class SecurityConfig {
                 // URL 별 권한 관리
                 .authorizeRequests()
 
-                .antMatchers("/", "/favicon.ico").permitAll()
+                .antMatchers("/", "/favicon.ico", "/api/user").permitAll()
                 .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 .antMatchers("/api/user/signup").permitAll() // 회원가입 접근 OK
                 .anyRequest().authenticated() // 그 외 경로는 모두 인증된 사용자만 접근 가능
@@ -91,7 +91,11 @@ public class SecurityConfig {
                 .oauth2Login()
                 .successHandler(oAuth2LoginSuccessHandler)
                 .failureHandler(oAuth2LoginFailureHandler)
-                .userInfoEndpoint().userService(customOAuth2UserService);
+                .userInfoEndpoint().userService(customOAuth2UserService)
+
+                .and()
+                .requiresChannel() // HTTPS 요구 설정 시작
+                .anyRequest().requiresSecure(); // 모든 요청에 HTTPS 요구 설정;
 
         // 스프링 시큐리티 필터 순서 :
         // LogoutFilter -> JwtAuthenticationProcessingFilter -> CustomJsonUsernamePasswordAuthenticationFilter
