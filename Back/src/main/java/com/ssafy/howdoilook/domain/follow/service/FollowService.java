@@ -9,6 +9,9 @@ import com.ssafy.howdoilook.domain.follow.repository.FollowReposiroty;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,16 +57,17 @@ public class FollowService {
         followReposiroty.deleteById(findFollow.getId());
     }
     //내가 팔로우 하는 사람 리스트 반환
-    public List<FolloweeResponseDto> selectFolloweeList(Long userId){
-        //userId로 user 찾는다- 주체
+    public Page<FolloweeResponseDto> selectFolloweeList(Long userId,Pageable page){
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new IllegalArgumentException("존재하지 않는 User 입니다."));
-        //찾은 유저가 팔로우 하고있는 팔로우정보를 가져온다.
-        List<Follow> followeeList = findUser.getFollowerList();
-        //반환할 dto리스트 선언
+
+        Page<Follow> followeeByUserId = followReposiroty.findFolloweeByUserId(userId, page);
+        List<Follow> content = followeeByUserId.getContent();
+
         List<FolloweeResponseDto> list = new ArrayList<>();
+
         //dto 객체 만들어서 리스트로 반환
-        for (Follow follow : followeeList) {
+        for (Follow follow : content) {
             //user가 팔로우하는 대상
             User followee = follow.getFollowee();
             list.add(FolloweeResponseDto.builder()
@@ -74,30 +78,31 @@ public class FollowService {
                     .build()
             );
         }
-        return list;
+        return new PageImpl<>(list, followeeByUserId.getPageable(), followeeByUserId.getTotalElements());
     }
     //나를 팔로워 하는사람
-    public List<FollowerResponseDto> selectFollowerList(Long userId){
-        //userId로 user 찾는다- 주체
+    public Page<FollowerResponseDto> selectFollowerList(Long userId, Pageable page){
+
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new IllegalArgumentException("존재하지 않는 User 입니다."));
-        //찾은 유저가 팔로우 당하고 있는 팔로워정보를 가져온다.
-        List<Follow> followerList = findUser.getFolloweeList();
+
+        Page<Follow> followerByUserId = followReposiroty.findFollowerByUserId(userId, page);
+        List<Follow> content = followerByUserId.getContent();
+
         //반환할 dto리스트 선언
         List<FollowerResponseDto> list = new ArrayList<>();
+
         //dto 객체 만들어서 리스트로 반환
-        for (Follow follow : followerList) {
-            //user가 팔로우하는 대상
+        for (Follow follow : content) {
             User follower = follow.getFollower();
-            list.add(FollowerResponseDto.builder()
+            FollowerResponseDto followerResponseDto = FollowerResponseDto.builder()
                     .id(follower.getId())
                     .email(follower.getEmail())
                     .name(follower.getName())
-                    .nickname((follower.getNickname()))
-                    .build()
-            );
+                    .nickname(follower.getNickname())
+                    .build();
+            list.add(followerResponseDto);
         }
-        return list;
+        return new PageImpl<>(list, followerByUserId.getPageable(), followerByUserId.getTotalElements());
     }
-
 }
