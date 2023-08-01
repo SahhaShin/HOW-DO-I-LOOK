@@ -16,6 +16,5 @@ public class ClothesSaveRequestDto {
     private String name;
     private String brand;
     private String info;
-    private MultipartFile s3upload;
 
 }

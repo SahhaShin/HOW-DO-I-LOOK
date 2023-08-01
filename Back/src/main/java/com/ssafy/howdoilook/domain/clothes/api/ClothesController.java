@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @Getter
@@ -34,9 +36,11 @@ public class ClothesController {
     }
 
     @PutMapping("/{clothesId}")
-    public ResponseEntity<?> updateClothes(@PathVariable("clothesId") Long clothesId, @RequestBody ClothesUpdateDto clothesUpdateDto) {
+    public ResponseEntity<?> updateClothes(@PathVariable("clothesId") Long clothesId,
+                                           @RequestPart ClothesUpdateDto clothesUpdateDto,
+                                           @RequestPart("s3upload") MultipartFile multipartFile) throws IOException {
 
-        Long updateId = clothesService.updateClothes(clothesId, clothesUpdateDto);
+        Long updateId = clothesService.updateClothes(clothesId, clothesUpdateDto, multipartFile);
 
         return ResponseEntity.ok().body(updateId);
     }

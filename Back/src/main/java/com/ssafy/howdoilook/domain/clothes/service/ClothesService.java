@@ -15,7 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +51,12 @@ public class ClothesService {
     }
 
     @Transactional
-    public Long updateClothes(Long clothesId, ClothesUpdateDto clothesUpdateDto) {
+    public Long updateClothes(Long clothesId, ClothesUpdateDto clothesUpdateDto, MultipartFile multipartFile) throws IOException {
 
         Clothes findClothes = clothesRepository.findById(clothesId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 옷이 존재하지 않습니다."));
+
+        clothesUpdateDto.setPhotoLink(imageService.updateImage(clothesUpdateDto.getPhotoLink(), multipartFile));
 
         return findClothes.update(clothesUpdateDto);
 
