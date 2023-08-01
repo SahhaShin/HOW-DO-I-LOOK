@@ -1,0 +1,206 @@
+.createTotal{
+    display: flex;
+}
+
+.left{
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1%;
+
+    /* 크기 */
+    width: 350px;
+    height: 500px;
+
+    /* 컬러 */
+    background-color:white;
+}
+
+.right{
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+
+    /* 크기 */
+    width: 350px;
+    height: 500px;
+
+    /* 컬러 */
+    background-color: white;
+}
+
+/* right */
+.closeBtn{
+    /* 크기 */
+    width: 100%;
+    height: 30px;
+    
+    /* 위치 */
+    margin-bottom: 2%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.makeTag{
+    /* 크기 */
+    width: 100%;
+    height: 70px;
+
+    /* 위치 */
+    margin-bottom: 5%;
+}
+
+.addedTag{
+    /* 크기 */
+    width: 100%;
+    height: 350px;
+
+    /* 위치 */
+    margin-bottom: 2%;
+}
+
+.rightBtns{
+    /* 크기 */
+    width: 100%;
+    height: 50px;
+}
+
+/* 세부조정 */
+.closeBtn > img{
+    /* 크기 */
+    width: 15px;
+    height: 15px;
+    
+    /* 위치 */
+    margin-right: 3%;
+    cursor: pointer;
+}
+
+.makeTag{
+    display: flex;
+    flex-direction: column;
+}
+.makeTag > div{
+    /* 위치 */
+    text-align: left;
+    margin-left: 5%;
+    margin-bottom: 3%;
+    
+    /* 폰트 */
+    font-weight: 900;
+}
+
+.makeTagInput{
+    /* 위치 */
+    display: flex;
+    align-items: center;
+}
+
+.makeTagInput > input{
+    /* 크기 */
+    width: 230px;
+    height: 0px;
+    
+    /* border */
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+    border: 1px solid var(--border);
+
+    /* 위치 */
+    margin-right: 3%;
+    padding: 5%;
+}
+
+.makeTagInput > button{
+    /* 크기 */
+    width: 40px;
+    height: 30px;
+    
+    /* 폰트 */
+    font-size: 12px;
+    
+    /* border */
+    border-radius: 5px;
+}
+
+.makeTagInput > button:hover{
+    background-color: var(--signiture);
+    color: white;
+}
+
+.addedTag > div{
+    /* 크기 */
+    width: 100%;
+    height: 50px;
+    
+    /* font */
+    font-weight: 900;
+    text-align: left;
+    
+    /* 위치 */
+    margin-left: 5%;
+}
+
+.tags{
+    /* 크기 */
+    width: 100%;
+    height: 300px;
+}
+
+.rightBtns{
+    /* 위치 */
+    display: flex;
+}
+
+.rightBtns>button:nth-child(1){
+    border-right: 1px solid lightgrey;
+}
+
+.rightBtns button:hover{
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+}
+
+
+
+/* left - 이미지 */
+.img{
+    /* 틀 안에 이미지가 빠져나오지 않게 맞추기 */
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+}
+.picture{
+    width:300px;
+    height: 400px;
+}
+.imgRegist{
+    /* 요소 한가운데 정렬 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 크기 */
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    margin: 0 auto;
+}
+
+.imgRegist > input{
+    /* 크기 */
+    width: 100%;
+}
+
+.selectFile{
+    /* 위치 */
+    text-align-last: center;
+    margin: 0 auto;
+    margin-top: 5%;
+}
+
