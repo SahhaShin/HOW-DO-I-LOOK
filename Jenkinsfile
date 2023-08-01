@@ -13,6 +13,9 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 dir('front') {
+                    sh 'apt-get update'
+                    sh 'apt-get install -y nodejs'
+                    sh 'apt-get install -y npm'
                     sh 'npm install --force'
                     sh 'npm run build'
                     sh 'docker build -t parkseyun/howdoilook:front .'
