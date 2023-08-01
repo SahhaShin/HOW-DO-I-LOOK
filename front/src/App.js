@@ -14,7 +14,7 @@ import ChatList from "./pages/chat/chatting/ChatList";
 import ChatRoom from "./pages/chat/chatting/ChatRoom";
 import Feed from "./pages/sns/feed/Feed";
 import Mypage from "./pages/user/my_page/Mypage";
-import MypageFollowModal from "./components/user/my_page/MypageFollowModal";
+import Live from "./pages/streaming/live/Live"
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
             <Route path="/chatroom/:otherId/:roomId" element={<ChatRoom/>}/>
             <Route path="/feed" element={<Feed/>}/>
             <Route path="/mypage" element={<Mypage/>}/>
-            <Route path="/mypageFollowModal" element={<MypageFollowModal/>}/>
+            <Route path="/live" element={<Live/>}/>
           </Routes>
         </Router>
       </div>
