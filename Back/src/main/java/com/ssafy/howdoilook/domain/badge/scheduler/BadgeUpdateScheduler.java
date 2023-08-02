@@ -20,7 +20,7 @@ public class BadgeUpdateScheduler {
 
     private final BadgeService badgeService;
 
-    @Scheduled(cron = "0 3 * * * *")
+    @Scheduled(cron = "0 0 * * * *")
     public void updateBadge() {
         badgeService.deleteAllBadge();
 
