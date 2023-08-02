@@ -46,4 +46,10 @@ public class RoomController {
 
         return ResponseEntity.ok().body(roomService.getRoomDetail(roomId));
     }
+
+    @DeleteMapping("/end/{roomId}")
+    public ResponseEntity<?> endRoom(@PathVariable("roomId") Long roomId) {
+
+        return ResponseEntity.ok().body(roomService.endRoom(roomId));
+    }
 }
