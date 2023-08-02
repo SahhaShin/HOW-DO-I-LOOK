@@ -8,6 +8,9 @@ import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
 import com.ssafy.howdoilook.domain.room.entity.Room;
 import com.ssafy.howdoilook.domain.room.entity.RoomType;
 import com.ssafy.howdoilook.domain.room.repository.RoomRepository;
+import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
+import com.ssafy.howdoilook.domain.roomUser.entity.RoomUserType;
+import com.ssafy.howdoilook.domain.roomUser.repository.RoomUserRepository;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
@@ -18,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +32,7 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
+    private final RoomUserRepository roomUserRepository;
 
     @Transactional
     public Long addRoom(RoomAddRequestDto roomAddRequestDto) {
@@ -154,5 +159,20 @@ public class RoomService {
                 .build();
 
         return roomDetailResponseDto;
+    }
+
+    @Transactional
+    public Long endRoom(Long roomId) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+
+        room.setEndedDate(LocalDateTime.now());
+        List<RoomUser> roomUsers = roomUserRepository.findByRoom_Id(roomId);
+
+        for(RoomUser roomUser : roomUsers) {
+            roomUser.updateStatus(RoomUserType.valueOf("EXIT"));
+        }
+
+        return room.getId();
     }
 }
