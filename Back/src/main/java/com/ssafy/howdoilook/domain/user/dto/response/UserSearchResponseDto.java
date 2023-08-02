@@ -5,6 +5,7 @@ import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.user.entity.BadgeType;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.SocialType;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class UserSearchResponseDto {
     // Comment
 
     @QueryProjection
+    @Builder
     public UserSearchResponseDto(Long userId, String email, String name, String nickname, Gender gender, int age, SocialType socialType, BadgeType showBadgeType) {
         this.userId = userId;
         this.email = email;

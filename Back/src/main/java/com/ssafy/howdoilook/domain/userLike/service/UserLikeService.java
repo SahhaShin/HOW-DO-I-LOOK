@@ -36,14 +36,14 @@ public class UserLikeService {
         Room room = roomRepository.findById(scoreSaveRequestDto.getRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다"));
 
-        List<UserLike> findUserLike = userLikeRepository.findByUser_IdAndRoom_Id(scoreSaveRequestDto.getTargetUserId(), scoreSaveRequestDto.getRoomId());
+        List<UserLike> findUserLike = userLikeRepository.findByTargetUser_IdAndRoom_Id(scoreSaveRequestDto.getTargetUserId(), scoreSaveRequestDto.getRoomId());
 
         if(!findUserLike.isEmpty()) {
             return -1L; // 이미 점수를 매김
         }
 
         UserLike userLike = UserLike.builder()
-                .user(user)
+                .targetUser(user)
                 .room(room)
                 .type(UserLikeType.valueOf(scoreSaveRequestDto.getType()))
                 .score(scoreSaveRequestDto.getScore())

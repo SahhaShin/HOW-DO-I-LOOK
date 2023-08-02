@@ -107,14 +107,14 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "userB", cascade = CascadeType.ALL)
     List<SoloChatRoom> soloBChatRoomList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "targetUser", cascade = CascadeType.ALL)
     List<UserLike> userLikeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Badge> badgeList = new ArrayList<>();
 
     @Builder
-    public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId) {
+    public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId, BadgeType showBadgeType) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -126,6 +126,7 @@ public class User extends BaseTimeEntity {
         this.role = role;
         this.socialType = socialType;
         this.socialId = socialId;
+        this.showBadgeType = showBadgeType;
     }
 
     /*

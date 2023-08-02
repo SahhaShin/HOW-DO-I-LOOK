@@ -1,12 +1,11 @@
 package com.ssafy.howdoilook.global.oauth2.api;
 
-import com.ssafy.howdoilook.global.oauth2.provider.KakaoProvider;
+import com.ssafy.howdoilook.global.oauth2.handler.OAuth2LoginSuccessHandler;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,30 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/oauth2")
 public class OAuth2Controller {
 
-    private final KakaoProvider kakaoProvider;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
-
-    @ApiOperation(value = "kakao code 전송 및 토큰 받기")
-    @GetMapping("/kakao/{code}")
-    public ResponseEntity<?> sendKakaoCodeAndGetToken(@PathVariable String code) {
-
-        return ResponseEntity.ok()
-                .body(kakaoProvider.getKakaoOAuthToken(code));
-    }
-
-    @ApiOperation(value = "google code 전송 및 토큰 받기")
-    @GetMapping("/google/{code}")
-    public ResponseEntity<?> sendGoogleCodeAndGetToken(@PathVariable String code) {
+    @ApiOperation(value = "소셜 로그인 JWT 받기")
+    @GetMapping("/social")
+    public ResponseEntity<?> socialLoginGetToken() {
 
         return ResponseEntity.ok()
-                .body("");
-    }
-
-    @ApiOperation(value = "naver code 전송 및 토큰 받기")
-    @GetMapping("/naver/{code}")
-    public ResponseEntity<?> sendNaverCodeAndGetToken(@PathVariable String code) {
-
-        return ResponseEntity.ok()
-                .body("");
+                .body(oAuth2LoginSuccessHandler.socialLoginSuccessAndSendTokenToFront());
     }
 }

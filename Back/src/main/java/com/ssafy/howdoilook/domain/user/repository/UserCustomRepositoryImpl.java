@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.howdoilook.domain.user.dto.request.UserSearchCondition;
 import com.ssafy.howdoilook.domain.user.dto.response.QUserSearchResponseDto;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSearchResponseDto;
+import com.ssafy.howdoilook.domain.user.entity.BadgeType;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.SocialType;
 import org.springframework.data.domain.Page;
@@ -36,7 +37,8 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         user.nickname,
                         user.gender,
                         user.age,
-                        user.socialType
+                        user.socialType,
+                        user.showBadgeType
                 ))
                 .from(user)
 //                .leftJoin(, )
@@ -46,6 +48,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         nicknameEq(condition.getNickname()),
                         genderEq(condition.getGender()),
                         socialTypeEq(condition.getSocialType()),
+                        showBadgeTypeEq(condition.getShowBadgeType()),
                         ageGoe(condition.getAgeGoe()),
                         ageLoe(condition.getAgeLoe())
                 )
@@ -62,7 +65,8 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         user.nickname,
                         user.gender,
                         user.age,
-                        user.socialType
+                        user.socialType,
+                        user.showBadgeType
                 ))
                 .from(user)
 //                .leftJoin(, )
@@ -72,6 +76,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         nicknameEq(condition.getNickname()),
                         genderEq(condition.getGender()),
                         socialTypeEq(condition.getSocialType()),
+                        showBadgeTypeEq(condition.getShowBadgeType()),
 
                         ageGoe(condition.getAgeGoe()),
                         ageLoe(condition.getAgeLoe())
@@ -90,6 +95,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         nicknameEq(condition.getNickname()),
                         genderEq(condition.getGender()),
                         socialTypeEq(condition.getSocialType()),
+                        showBadgeTypeEq(condition.getShowBadgeType()),
                         ageGoe(condition.getAgeGoe()),
                         ageLoe(condition.getAgeLoe())
                 );
@@ -106,7 +112,8 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         user.nickname,
                         user.gender,
                         user.age,
-                        user.socialType
+                        user.socialType,
+                        user.showBadgeType
                 ))
                 .from(user)
                 .where(
@@ -115,6 +122,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         nicknameEq(condition.getNickname()),
                         genderEq(condition.getGender()),
                         socialTypeEq(condition.getSocialType()),
+                        showBadgeTypeEq(condition.getShowBadgeType()),
                         ageGoe(condition.getAgeGoe()),
                         ageLoe(condition.getAgeLoe())
                 )
@@ -154,6 +162,11 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     private BooleanExpression socialTypeEq(SocialType socialType) {
 
         return socialType != null ? user.socialType.eq(socialType) : null;
+    }
+
+    private BooleanExpression showBadgeTypeEq(BadgeType badgeType) {
+
+        return badgeType != null ? user.showBadgeType.eq(badgeType) : null;
     }
 
     private BooleanExpression ageGoe(Integer ageGoe) {
