@@ -4,6 +4,10 @@ import React, { useEffect, useState } from "react";
 import coordiStyle from "./OOTDCoordi.module.css";
 import styled from "styled-components";
 
+//redux
+import { useSelector, useDispatch } from "react-redux"; 
+import {action} from "../../../store/ClosetSlice";
+
 
 //slick import
 import Slider from 'react-slick';
@@ -12,6 +16,10 @@ import 'slick-carousel/slick/slick-theme.css';
 
 
 const OOTDCoordi = () => {
+
+    //redux 관리
+    let state = useSelector((state:any)=>state.closet);
+    let dispatch = useDispatch();
    
     const settings = {
         arrows:true,
@@ -30,8 +38,16 @@ const OOTDCoordi = () => {
                     {/* 상의 */}
                     <div className={`${coordiStyle.carousal}`}>
                         <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide}`}>
+                            {   
+                                state.clothesTop.length!==0?
+                                state.clothesTop.map(()=>{
+                                    <div className={`${coordiStyle.slide}`}>
+                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
+                                    </div>
+                                }):
+                                <div className={`${coordiStyle.img}`}>없음</div>
+                            }
+                            {/* <div className={`${coordiStyle.slide}`}>
                                 <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
                             </div>
 
@@ -41,7 +57,7 @@ const OOTDCoordi = () => {
 
                             <div className={`${coordiStyle.slide}`}>
                                 <img src={process.env.PUBLIC_URL+`/img/clothes/top3.png`}/>
-                            </div>
+                            </div> */}
 
                         </StyledSlider>
 

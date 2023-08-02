@@ -10,8 +10,11 @@ export const action = {
             url:`http://localhost:8081/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,
            
         }).then(response=>{
-            console.log(response.data);
-            return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+            let result = {
+                type : clothesType,
+                content : response.data
+            }
+            return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         }).catch((e)=>{
             console.log(e);
         })
@@ -84,6 +87,10 @@ interface closet{
     clothesTypeKo:string,
     clothesTypeEn:string,
     clothesListByType:ClothesListByTypeRes[],
+    clothesTop:ClothesListByTypeRes[],
+    clothesBottom:ClothesListByTypeRes[],
+    clothesShoe:ClothesListByTypeRes[],
+    clothesAccessory:ClothesListByTypeRes[],
     newClothes? : saveClothes|null,
 
     // 페이지네이션
@@ -99,6 +106,10 @@ const initialState:closet = {
     clothesTypeKo : "상의",
     clothesTypeEn : "TOP",
     clothesListByType : [],
+    clothesTop:[],
+    clothesBottom:[],
+    clothesShoe:[],
+    clothesAccessory:[],
     newClothes : null,
     page:1,
 }
@@ -140,7 +151,16 @@ const ClosetSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
-            state.clothesListByType=action.payload;
+            if(action.payload.type==="TOP"){
+                state.clothesTop=action.payload.content;
+            }else if(action.payload.type==="BOTTOM"){
+                state.clothesBottom=action.payload.content;
+            }else if(action.payload.type==="SHOE"){
+                state.clothesShoe=action.payload.content;
+            }else if(action.payload.type==="ACCESSORY"){
+                state.clothesAccessory=action.payload.content;
+            }
+            // state.clothesListByType=action.payload;
         })
         // builder.addCase(action.saveClothes.fulfilled, (state, action) => {
         //     Add user to the state array

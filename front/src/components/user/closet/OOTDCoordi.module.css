@@ -63,6 +63,12 @@
   margin: auto;
 }
 
+.slide > .img{
+  width: 90%;
+  height: 100%;
+  margin: auto;
+}
+
 
 .ootd_etc{
   margin-top: 15%;

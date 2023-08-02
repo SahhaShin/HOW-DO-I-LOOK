@@ -30,6 +30,7 @@ const Closet = () => {
     const [page, setPage] = useState(state.page);
     const offset = (page - 1) * limit;
 
+    //상의 하의 신발 악세서리 전체에 따른 옷 요청을 위한 변수들
     let selectType = {
         clothesType: state.clothesTypeEn,
         pageNum : 0,
@@ -42,6 +43,30 @@ const Closet = () => {
         // closet 영역 초기 셋팅은 top
         dispatch(action.getClothesListByType(selectType));
 
+        //ootd에서 상의 하의 신발 악세서리 3개 부분 보여줌
+        dispatch(action.getClothesListByType({
+            clothesType: "TOP",
+            pageNum : 0,
+            userId:1,
+        }));
+
+        dispatch(action.getClothesListByType({
+            clothesType: "BOTTOM",
+            pageNum : 0,
+            userId:1,
+        }));
+
+        dispatch(action.getClothesListByType({
+            clothesType: "SHOE",
+            pageNum : 0,
+            userId:1,
+        }));
+
+        dispatch(action.getClothesListByType({
+            clothesType: "ACCESSORY",
+            pageNum : 0,
+            userId:1,
+        }));
         // dispatch(action.getOOTDList(init.userId));
         // console.log("getOOTDList load");
     },[])
@@ -76,7 +101,7 @@ const Closet = () => {
                         {/* 옷장 */}
                         <div className={`${closetStyle.closetList}`}>
                             {
-                                state.clothesListByType.lengh!==undefined?
+                                state.clothesListByType.length!==0?
                                 state.clothesListByType.map(()=>{
                                     <CLOSETSlot/>
                                 }):

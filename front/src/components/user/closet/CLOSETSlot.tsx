@@ -19,7 +19,9 @@ const CLOSETSlot = () => {
 
     return(
         <div className={`${closetSlotStyle.slots}`} onMouseOver={()=>setOpenMenu(true)} onMouseOut={()=>setOpenMenu(false)}>
-            <div className={`${closetSlotStyle.slot}`}></div>
+            <div className={`${closetSlotStyle.slot}`}>
+                
+            </div>
             {openMenu?<div className={`${closetSlotStyle.bgColor}`}>
                 <button className={`${closetSlotStyle.btn}`} onClick={()=>{dispatch(changeMode(2));dispatch(changeModalOpen(true))}}>정보</button>
                 <button className={`${closetSlotStyle.btn}`} onClick={()=>{dispatch(changeMode(3));dispatch(changeModalOpen(true))}}>수정</button>
