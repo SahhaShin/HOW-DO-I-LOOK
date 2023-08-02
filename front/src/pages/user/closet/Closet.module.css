@@ -96,6 +96,21 @@
     margin-left: 2%;
 }
 
+/* 아이템이 없을 경우 */
+.noItem{
+    /* 위치 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 크기 */
+    width: 750px;
+    height: 400px;
+
+    /* 폰트 */
+    font-weight: 900;
+}
+
 .paginationContainer{
     width: 800px;
     margin-bottom: 10%;

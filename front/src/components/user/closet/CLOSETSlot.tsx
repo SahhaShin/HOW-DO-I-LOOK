@@ -5,30 +5,16 @@ import closetSlotStyle from "./CLOSETSlot.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action,changeModalOpen, changeMode} from "../../../store/ClosetSlice";
+import {changeModalOpen, changeMode} from "../../../store/ClosetSlice";
 
+//closet 옷장 슬롯 1개 -> closet page에서 map돌려서 여러 개 뜨는 구조임
 const CLOSETSlot = () => {
 
     //redux 관리
     let state = useSelector((state:any)=>state.closet);
     let dispatch = useDispatch();
 
-    // 화면 초기값 백엔드에 요청
-    useEffect(()=>{
-        // let clothesType:string = "TOP";
-        // let pageNum:number = 0;
-        // let userId:number = 1;
-        let init = {
-            clothesType: "TOP",
-            pageNum : 0,
-            userId:1,
-        }
-        dispatch(action.getClothesListByType(init));
-        console.log("here");
-    },[])
-
-    // 더미 데이터 -> 상의들, 하의들 등 요청하면 여기에 이미지 주소를 담아 map 돌림
-    const [clothes, setClothes] = useState<string[]>([]);
+    // 마우스 hover시 정보/수정/삭제 버튼 등장 여부
     let [openMenu, setOpenMenu] = useState<boolean>(false);
 
     return(

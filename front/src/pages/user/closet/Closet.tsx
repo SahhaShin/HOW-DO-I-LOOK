@@ -5,7 +5,7 @@ import closetStyle from "./Closet.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeModalOpen,changeMode} from "../../../store/ClosetSlice";
+import {action, changeModalOpen,changeMode} from "../../../store/ClosetSlice";
 
 //컴포넌트
 import OOTDWeather from "../../../components/user/closet/OOTDWeather";
@@ -25,10 +25,24 @@ const Closet = () => {
     let dispatch = useDispatch();
 
     // 페이지네이션, 옷 관리
-    const [clothes, setPosts] = useState([]);
+    let clothesListType = state.clothesListByType.length;
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
+
+    // 화면 초기값 백엔드(api)에 요청
+    useEffect(()=>{
+        let init = {
+            clothesType: "TOP",
+            pageNum : 0,
+            userId:1,
+        }
+        
+        dispatch(action.getClothesListByType(init));
+
+        // dispatch(action.getOOTDList(init.userId));
+        // console.log("getOOTDList load");
+    },[])
 
 
     return(
@@ -59,25 +73,23 @@ const Closet = () => {
 
                         {/* 옷장 */}
                         <div className={`${closetStyle.closetList}`}>
-                            <CLOSETSlot/>
-                            <CLOSETSlot/>
-                            <CLOSETSlot/>
-                            <CLOSETSlot/>
-
-                            <CLOSETSlot/>
-                            <CLOSETSlot/>
-                            <CLOSETSlot/>
-                            <CLOSETSlot/>
+                            {
+                                state.clothesListByType.lengh!==undefined?
+                                state.clothesListByType.map(()=>{
+                                    <CLOSETSlot/>
+                                }):
+                                <div className={`${closetStyle.noItem}`}>추가된 {state.clothesType} 이미지가 없습니다.</div>
+                            }
                         </div>
 
-                        {/* 페이지네이션   20을 {clothes.length}로 바꿔야 함 */}
+                        {/* 페이지네이션 20을 {clothes.length}로 바꿔야 함 */}
                         <div className={`${closetStyle.paginationContainer}`}>
-                            <Pagination
-                                total={20}
+                            {clothesListType!==0?<Pagination
+                                total={clothesListType}
                                 limit={limit}
                                 page={page}
                                 setPage={setPage}
-                            />
+                            />:null}
                         </div>
                         
                         <div className={`${closetStyle.title}`}>OOTD</div>

@@ -101,6 +101,7 @@ const CLOSETRegist = () => {
         }
         let s3upload = imageFile;
         dispatch(action.saveClothes({clothesSaveRequestDto,s3upload}));
+        
     }
 
 
