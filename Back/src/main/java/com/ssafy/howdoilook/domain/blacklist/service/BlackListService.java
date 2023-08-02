@@ -8,6 +8,9 @@ import com.ssafy.howdoilook.domain.blacklist.repository.BlackListRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +24,11 @@ public class BlackListService {
     private final BlackListRepository blackListRepository;
     private final UserRepository userRepository;
 
-    public List<BlackListSelectResponseDto> findBlackListByUserId(Long userId){
-        User findUser = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 User입니다."));
-        List<BlackList> blacklistList = findUser.getBlackList();
+    public Page<BlackListSelectResponseDto> findBlackListByUserId(Long userId, Pageable pageable){
+        Page<BlackList> blackLists = blackListRepository.selectBlackListByUserId(userId, pageable);
+        List<BlackList> content = blackLists.getContent();
         List<BlackListSelectResponseDto> blackListSelectResponseDtoList = new ArrayList<>();
-        for (BlackList blackList : blacklistList) {
+        for (BlackList blackList : content) {
             User targetUser = blackList.getTargetUser();
             BlackListSelectResponseDto blacklistdto = BlackListSelectResponseDto.builder()
                     .id(targetUser.getId())
@@ -36,7 +38,7 @@ public class BlackListService {
                     .build();
             blackListSelectResponseDtoList.add(blacklistdto);
         }
-        return blackListSelectResponseDtoList;
+        return new PageImpl<>(blackListSelectResponseDtoList,pageable,blackLists.getTotalElements());
     }
     @Transactional
     public Long saveBlackList(BlackListSaveRequestDto blackListSaveRequestDto){
