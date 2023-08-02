@@ -8,6 +8,7 @@ import com.ssafy.howdoilook.domain.blacklist.repository.BlackListRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -43,9 +44,9 @@ public class BlackListService {
     @Transactional
     public Long saveBlackList(BlackListSaveRequestDto blackListSaveRequestDto){
         User findUser = userRepository.findById(blackListSaveRequestDto.getUserId())
-                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 User입니다."));
+                .orElseThrow(()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
         User findTargetUser = userRepository.findById(blackListSaveRequestDto.getTargetUserId())
-                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 User입니다."));
+                .orElseThrow(()->new EmptyResultDataAccessException("존재하지 않는 TargetUser입니다.",1));
         BlackList blacklist = BlackList.builder()
                 .user(findUser)
                 .targetUser(findTargetUser)
@@ -55,7 +56,10 @@ public class BlackListService {
     }
     @Transactional
     public void deleteBlackList(BlackListDeleteRequestDto blackListDeleteRequestDto){
-        blackListRepository.deleteBlackList(blackListDeleteRequestDto.getUserId(),blackListDeleteRequestDto.getTargetUserId());
+        BlackList blackList = blackListRepository.selectBlackListByUserIdTargetUserId(blackListDeleteRequestDto.getUserId(),
+                        blackListDeleteRequestDto.getTargetUserId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 BlackList입니다.", 1));
+        blackListRepository.deleteById(blackList.getId());
     }
 
 }
