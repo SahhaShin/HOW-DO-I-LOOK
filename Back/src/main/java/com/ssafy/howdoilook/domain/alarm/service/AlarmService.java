@@ -7,6 +7,7 @@ import com.ssafy.howdoilook.domain.alarm.repository.AlarmRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -27,9 +28,9 @@ public class AlarmService {
     @Transactional
     public Long saveAlarm(AlarmSaveRequestDto alarmSaveRequestDto){
         User sender = userRepository.findById(alarmSaveRequestDto.getAlarmSenderId()).orElseThrow(
-                ()->new IllegalArgumentException("존재하지 않는 sender입니다."));
+                ()->new EmptyResultDataAccessException("존재하지 않는 sender입니다.",1));
         User receiver = userRepository.findById(alarmSaveRequestDto.getAlarmreceiverId()).orElseThrow(
-                ()->new IllegalArgumentException("존재하지 않는 receiver입니다."));
+                ()->new EmptyResultDataAccessException("존재하지 않는 receiver입니다.",1));
 
         Alarm alarm = Alarm.builder()
                 .user(receiver)
@@ -66,7 +67,7 @@ public class AlarmService {
     @Transactional
     public Long readAlarm(Long id) {
         Alarm findAlarm = alarmRepository.findById(id).orElseThrow(
-                ()->new IllegalArgumentException("존재하지 않는 Alarm입니다."));
+                () -> new EmptyResultDataAccessException("존재하지 않는Alarm입니다.",1));
         findAlarm.readAlarm();
         return findAlarm.getId();
     }
@@ -74,7 +75,7 @@ public class AlarmService {
     @Transactional
     public void deleteAlarm(Long id){
         Alarm findAlarm = alarmRepository.findById(id).orElseThrow(
-                ()->new IllegalArgumentException("존재하지 않는 Alarm입니다."));
-        alarmRepository.deleteById(id);
+                () -> new EmptyResultDataAccessException("존재하지 않는Alarm입니다.",1));
+                alarmRepository.deleteById(id);
     }
 }
