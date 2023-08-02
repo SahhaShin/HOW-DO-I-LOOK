@@ -9,6 +9,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(NoContentException.class)
+    public ResponseEntity<?> NoContentException(NoContentException noContentException) {
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(noContentException.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleOtherException(Exception exception){
         return ResponseEntity
