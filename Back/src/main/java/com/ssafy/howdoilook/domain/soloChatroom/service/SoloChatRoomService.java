@@ -1,14 +1,17 @@
 package com.ssafy.howdoilook.domain.soloChatroom.service;
 
 import com.ssafy.howdoilook.domain.soloChatroom.dto.ChatDto;
+import com.ssafy.howdoilook.domain.soloChatroom.dto.ChatDtoM;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatRoomDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatContextRequestDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecodRequestDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatContextListResponseDto;
 import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChat;
+import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChatM;
 import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChatRoom;
 import com.ssafy.howdoilook.domain.soloChatroom.repository.SoloRoomRepository.SoloChatRoomRepository;
 import com.ssafy.howdoilook.domain.soloChatroom.repository.soloChatRepository.SoloChatRepository;
+import com.ssafy.howdoilook.domain.soloChatroom.repository.soloChatRepository.SoloChatRepositoryM;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ public class SoloChatRoomService {
     private final SoloChatRepository soloChatRepository;
     private final UserRepository userRepository;
     private final SoloChatRoomRepository soloChatRoomRepository;
+    private final SoloChatRepositoryM soloChatRepositoryM;
 
     //채팅 내용 저장 및 브로드캐스팅을 위한 반환
     @Transactional
@@ -45,7 +49,14 @@ public class SoloChatRoomService {
                 .user(user)
                 .build();
 
+        SoloChatM solochatM = SoloChatM.builder()
+                .roomId(room.getId())
+                .userId(user.getId())
+                .content(content)
+                .build();
+
         soloChatRepository.save(solochat);
+        soloChatRepositoryM.save(solochatM);
     }
 
     //특정 유저가 진행했던 채팅방 리스트 반환
@@ -107,11 +118,13 @@ public class SoloChatRoomService {
             SoloChatRoom chatRoom = soloChatRoomRepository.findByUserAAndUserB(userA, userB)
                                         .orElseThrow(() -> new IllegalArgumentException("해당 채팅방은 존재하지 않습니다"));
 
-            List<SoloChat> chatContext = soloChatRepository.findByRoomId(chatRoom.getId());
+            List<SoloChat> chatContent = soloChatRepository.findByRoomId(chatRoom.getId());
+            List<SoloChatM> chatContentM = soloChatRepositoryM.findByRoomId(chatRoom.getId());
+            
             List<ChatDto> answer = new ArrayList<>();
 
             //Entity To Dto
-            for(SoloChat chat : chatContext){
+            for(SoloChat chat : chatContent){
                 ChatDto dto = ChatDto.builder()
                         .chatRoomId(chat.getRoom().getId())
                         .chatId(chat.getId())
@@ -121,6 +134,20 @@ public class SoloChatRoomService {
                         .content(chat.getContent())
                         .build();
                 answer.add(dto);
+            }
+            
+            //Entity To Dto ( MongoDb )
+            for(SoloChatM chat : chatContentM){
+                User user = userRepository.findById(chat.getUserId())
+                        .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+
+                ChatDtoM dto = ChatDtoM.builder()
+                        .roomId(chat.getRoomId())
+                        .userNickName(user.getNickname())
+                        .userProfile(user.getProfileImg())
+                        .time(chat.getTime())
+                        .content(chat.getContent())
+                        .build();
             }
 
             //make ResponseDto
