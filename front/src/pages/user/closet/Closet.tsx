@@ -33,7 +33,7 @@ const Closet = () => {
 
     return(
         <>
-            <div className={`${closetStyle.total}`}>
+            <div>
                 <div className={`${closetStyle.header}`}>header</div>
                 
                 <div className={`${closetStyle.main}`}>
@@ -103,8 +103,8 @@ const Closet = () => {
             </div>
 
             {/* 모달 영역 */}
-            {state.modalOpen?<div className={`${closetStyle.createModal}`}><CLOSETRegist/></div>:null}
-            <div onClick={async()=>{dispatch(changeModalOpen(false))}} style={state.modalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"3000px", backgroundColor:"black", opacity:"0.6", marginTop:"-3000px"}:null}></div>
+            {state.createModalOpen?<div className={`${closetStyle.createModal}`}><CLOSETRegist/></div>:null}
+            <div onClick={async()=>{dispatch(changeModalOpen(false))}} style={state.createModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"3000px", backgroundColor:"black", opacity:"0.6", marginTop:"-3000px"}:null}></div>
         
         </>
         
