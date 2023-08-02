@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.user.entity;
 
 import com.ssafy.howdoilook.domain.alarm.entity.Alarm;
+import com.ssafy.howdoilook.domain.badge.entity.Badge;
 import com.ssafy.howdoilook.domain.blacklist.entity.BlackList;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.comment.entity.Comment;
@@ -66,6 +67,10 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_social_id")
     private String socialId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_show_badge")
+    private BadgeType showBadgeType;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Alarm> alarmList = new ArrayList<>();
 
@@ -104,6 +109,9 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<UserLike> userLikeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Badge> badgeList = new ArrayList<>();
 
     @Builder
     public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId) {
@@ -154,6 +162,15 @@ public class User extends BaseTimeEntity {
         this.gender = userUpdateRequestDto.getGender();
         this.nickname = userUpdateRequestDto.getNickname();
         this.name = userUpdateRequestDto.getName();
+
+        return this.id;
+    }
+
+    /*
+    * 유저 대표 뱃지 설정
+    * */
+    public Long updateShowBadge(BadgeType likeType) {
+        this.showBadgeType = likeType;
 
         return this.id;
     }
