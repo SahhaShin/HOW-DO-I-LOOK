@@ -43,10 +43,14 @@ public class RoomUserService {
 
         RoomUser findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(room.getId(), user.getId()).orElse(null);;
 
-        if(findRoomUser != null) {
+        if(findRoomUser.getStatus() == RoomUserType.KICK ) {
+            return -4L;
+        }
+
+        if((findRoomUser.getStatus() == RoomUserType.JOIN) || (findRoomUser.getStatus() == RoomUserType.EXIT)) {
 
             // 이미 참여중이거나 나갔다가 다시 들어올 경우
-            findRoomUser.updateStatus(RoomUserType.valueOf("JOIN"));
+            findRoomUser.updateStatus(RoomUserType.JOIN);
 
             return -3L;
         }
@@ -65,6 +69,14 @@ public class RoomUserService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 방의 참여자가 존재하지 않습니다."));
 
         // 참가 중이거나 이미 나간 상태인 경우
-        return findRoomUser.updateStatus(RoomUserType.valueOf("EXIT"));
+        return findRoomUser.updateStatus(RoomUserType.EXIT);
+    }
+
+    @Transactional
+    public Long kickRoomUser(Long userId, Long roomId) {
+        RoomUser findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(roomId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 방의 참여자가 존재하지 않습니다."));
+
+        return findRoomUser.updateStatus(RoomUserType.KICK);
     }
 }

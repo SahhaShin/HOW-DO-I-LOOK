@@ -23,4 +23,10 @@ public class RoomUserController {
     public ResponseEntity<?> exitRoomUser(@RequestBody RoomUserUpdateRequestDto roomUserUpdateRequest) {
         return ResponseEntity.ok().body(roomUserService.updateRoomUser(roomUserUpdateRequest));
     }
+
+    @PutMapping("/kick")
+    public ResponseEntity<?> kickRoomUser(@RequestParam(value = "userId") Long userId,
+                                          @RequestParam(value = "roomId") Long roomId) {
+        return ResponseEntity.ok().body(roomUserService.kickRoomUser(userId, roomId));
+    }
 }
