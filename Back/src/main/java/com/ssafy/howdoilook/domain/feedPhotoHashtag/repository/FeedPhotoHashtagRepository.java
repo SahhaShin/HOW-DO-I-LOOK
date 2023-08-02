@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface FeedPhotoHashtagRepository extends JpaRepository<FeedPhotoHashtag,Long> {
+public interface FeedPhotoHashtagRepository extends JpaRepository<FeedPhotoHashtag,Long>,FeedPhotoHashtagCustomRepository{
     @EntityGraph
     @Override
     <S extends FeedPhotoHashtag> S save(S entity);
+
 }
