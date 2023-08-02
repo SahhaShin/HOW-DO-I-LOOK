@@ -41,8 +41,7 @@ public class RoomUserService {
             return -2L; // 성별 제한에 걸림
         }
 
-        RoomUser findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(room.getId(), user.getId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 방의 참여자가 존재하지 않습니다."));
+        RoomUser findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(room.getId(), user.getId()).orElse(null);;
 
         if(findRoomUser != null) {
 
@@ -62,7 +61,7 @@ public class RoomUserService {
 
     @Transactional
     public Long updateRoomUser(RoomUserUpdateRequestDto roomUserUpdateRequest) {
-        RoomUser findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(roomUserUpdateRequest.getRoomId(), roomUserUpdateRequest.getRoomId())
+        RoomUser findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(roomUserUpdateRequest.getRoomId(), roomUserUpdateRequest.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 방의 참여자가 존재하지 않습니다."));
 
         // 참가 중이거나 이미 나간 상태인 경우
