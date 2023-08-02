@@ -1,8 +1,7 @@
 package com.ssafy.howdoilook.domain.roomUser.api;
 
-import com.ssafy.howdoilook.domain.room.service.RoomService;
-import com.ssafy.howdoilook.domain.roomUser.dto.request.RoomUserAddRequest;
-import com.ssafy.howdoilook.domain.roomUser.repository.RoomUserRepository;
+import com.ssafy.howdoilook.domain.roomUser.dto.request.RoomUserAddRequestDto;
+import com.ssafy.howdoilook.domain.roomUser.dto.request.RoomUserUpdateRequestDto;
 import com.ssafy.howdoilook.domain.roomUser.service.RoomUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,12 @@ public class RoomUserController {
     private final RoomUserService roomUserService;
 
     @PostMapping("/")
-    public ResponseEntity<?> addRoomUser(@RequestBody RoomUserAddRequest roomUserAddRequest) {
+    public ResponseEntity<?> addRoomUser(@RequestBody RoomUserAddRequestDto roomUserAddRequest) {
         return ResponseEntity.ok().body(roomUserService.addRoomUser(roomUserAddRequest));
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<?> exitRoomUser(@RequestBody RoomUserUpdateRequestDto roomUserUpdateRequest) {
+        return ResponseEntity.ok().body(roomUserService.updateRoomUser(roomUserUpdateRequest));
     }
 }
