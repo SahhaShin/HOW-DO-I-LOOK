@@ -99,7 +99,12 @@ const CLOSETRegist = () => {
             brand:clothesBrand,
             info:specialContent,
         }
-        let s3upload = imageFile;
+
+        // 이미지 폼데이터로 저장
+        let s3upload = new FormData();
+        s3upload.append("imageFile",imageFile);
+
+
         dispatch(action.saveClothes({clothesSaveRequestDto,s3upload}));
         
     }

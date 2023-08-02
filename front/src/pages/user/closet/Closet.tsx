@@ -67,6 +67,12 @@ const Closet = () => {
             pageNum : 0,
             userId:1,
         }));
+
+        dispatch(action.getClothesListByType({
+            clothesType: "ALL",
+            pageNum : 0,
+            userId:1,
+        }));
         // dispatch(action.getOOTDList(init.userId));
         // console.log("getOOTDList load");
     },[])

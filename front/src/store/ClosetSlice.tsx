@@ -38,14 +38,19 @@ export const action = {
     saveClothes : createAsyncThunk("ClosetSlice/saveClothes", async({clothesSaveRequestDto,s3upload}:saveClothes, thunkAPI)=>{
         return await axios({
             method: "post",
-            url:"/clothes",
+            url:"http://localhost:8081/api/clothes",
             params:{
                 clothesSaveRequestDto,
                 s3upload,
-            }
+            },
+            headers: {
+                // 'Content-Type': 'multipart/form-data',
+                'Content-Type' : 'application/json'
+            },
         }).then(response => {
             console.log(response.data);
             alert("옷이 등록되었습니다.");
+            return response.data;
         }).catch((e)=>{
             console.log(e);
         });
@@ -109,6 +114,7 @@ interface closet{
     clothesBottom:ClothesListByTypeRes[],
     clothesShoe:ClothesListByTypeRes[],
     clothesAccessory:ClothesListByTypeRes[],
+    clothesAll:ClothesListByTypeRes[],
     newClothes? : saveClothes|null,
 
     // 페이지네이션
@@ -128,6 +134,7 @@ const initialState:closet = {
     clothesBottom:[],
     clothesShoe:[],
     clothesAccessory:[],
+    clothesAll:[],
     newClothes : null,
     page:1,
 }
@@ -168,7 +175,8 @@ const ClosetSlice = createSlice({
         }
     },
     extraReducers:(builder) => {
-        builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
+        builder
+        .addCase(action.getClothesListByType.fulfilled,(state,action)=>{
             if(action.payload.type==="TOP"){
                 state.clothesTop=action.payload.content;
             }else if(action.payload.type==="BOTTOM"){
@@ -177,13 +185,18 @@ const ClosetSlice = createSlice({
                 state.clothesShoe=action.payload.content;
             }else if(action.payload.type==="ACCESSORY"){
                 state.clothesAccessory=action.payload.content;
+            }else{
+                // all
+                state.clothesAll=action.payload.content;
             }
-            // state.clothesListByType=action.payload;
+
+            state.clothesListByType=action.payload.content;
         })
-        // builder.addCase(action.saveClothes.fulfilled, (state, action) => {
-        //     Add user to the state array
-        //     state.newClothes?.push(action.payload);
-        // })
+        .addCase(action.saveClothes.fulfilled, (state, action) => {
+
+            //옷등록하고, 새로고침되면 all 옷들을 다 불러올텐데 구지 여기서 처리해줘야할까라는 의문
+            //여기서 처리는 전체 옷 리스트에 추가된 옷을 넣어줘야 하냐이다.
+        })
     }
 });
 
