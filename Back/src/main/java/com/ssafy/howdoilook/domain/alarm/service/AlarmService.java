@@ -7,6 +7,9 @@ import com.ssafy.howdoilook.domain.alarm.repository.AlarmRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,12 +41,13 @@ public class AlarmService {
         alarmRepository.save(alarm);
         return alarm.getId();
     }
-    public List<AlarmResponseDto> selectAlarmByUserId(Long userId){
-        List<Alarm> alarmList = alarmRepository.selectAlarmByUserId(userId);
+    public Page<AlarmResponseDto> selectAlarmByUserId(Long userId, Pageable pageable){
+        Page<Alarm> alarms = alarmRepository.selectAlarmByUserId(userId, pageable);
+        List<Alarm> content = alarms.getContent();
 
         List<AlarmResponseDto> alarmResponseDtoList = new ArrayList<>();
 
-        for (Alarm alarm : alarmList) {
+        for (Alarm alarm : content) {
             AlarmResponseDto alarmResponseDto = AlarmResponseDto.builder()
                     .id(alarm.getId())
                     .userId(alarm.getUser().getId())
@@ -56,7 +60,7 @@ public class AlarmService {
                     .build();
             alarmResponseDtoList.add(alarmResponseDto);
         }
-        return alarmResponseDtoList;
+        return new PageImpl<>(alarmResponseDtoList, pageable, alarms.getTotalElements());
     }
     //알림 읽음으로 바꾸는 메서드
     @Transactional
