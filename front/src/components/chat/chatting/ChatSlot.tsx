@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import chatSlotStyle from './ChatSlot.module.css';
+import { useNavigate } from 'react-router-dom';
 
-const ChatSlot = () => {
+const ChatSlot = (props) => {
+
+    const navigate = useNavigate();
+
+    function chatStart(){
+        // navigate("/chat/" + props.item.otherId + "/" + props.item.roomId);
+    }
 
 
     return(
@@ -28,7 +35,7 @@ const ChatSlot = () => {
                 </div>
 
                 {/* 우측 : 입장 버튼 */}
-                <div className={`${chatSlotStyle.enterBnt}`}><button>입장</button></div>
+                <div className={`${chatSlotStyle.enterBnt}`}><button onClick={()=>{chatStart(props.oneRoom.chatRoomCode)}}>입장</button></div>
             </div>
 
         </div>

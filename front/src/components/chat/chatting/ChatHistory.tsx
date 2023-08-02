@@ -11,13 +11,19 @@ const ChatHistory = () => {
     const navigate = useNavigate();
 
     // a유저와 b유저가 나눈 채팅 기록
+    // interface ChatList{
+    //     date:string,
+    //     id:string,
+    //     nickname:string,
+    //     profile?:string,
+    //     content:string,
+    //     time:string
+    // }
+
     interface ChatList{
-        date:string,
-        id:string,
-        nickname:string,
-        profile?:string,
-        content:string,
-        time:string
+        userId:string,
+        roomId:string,
+        chatContent:string,
     }
 
     let [chatList, setChatList] = useState<ChatList[]|null>([]); //채팅방 사람들의 채팅 내역들
@@ -27,7 +33,10 @@ const ChatHistory = () => {
     const nickname:string = "user3"; //나의 닉네임
     // const profileImg = JSON.parse(); //로그인 구현시 가져올 것
     // const userId = JSON.parse(); //로그인 구현 시 가져올 것
-    const {roomId} = useParams(); //파라미터에 있는 채팅룸 아이디
+
+    // const {roomId} = useParams(); //파라미터에 있는 채팅룸 아이디
+    var roomCode = "1305594a-7131-43a3-b5b9-8179d8dd67e4";
+    
     const {otherId} = useParams(); //파라미터에 있는 다른 유저 아이디
 
     const client = useRef({}); //useRef는 저장공간 또는 DOM요소에 접근하기 위해 사용되는 React Hook == like query selector
@@ -36,7 +45,7 @@ const ChatHistory = () => {
     function connect(){
         // 클라이언트 소켓 생성
         client.current = new StompJs.Client({
-            brokerURL : 'http://localhost:8081/ws',
+            brokerURL : 'ws://localhost:8081/ws',
             onConnect: () => {
                 console.log('success');
                 subscribe();
@@ -48,18 +57,23 @@ const ChatHistory = () => {
 
     //2. 채팅방 1:1 구독
     function subscribe(){
-        client.current.subscribe('sub/soloChat'+roomId,(chatMessage)=>{
+        console.log("구독시작");
+        client.current.subscribe('/sub/soloChat/'+roomCode,(chatMessage)=>{
             const message = JSON.parse(chatMessage.body);
+            console.log("구독완료");
 
             setChatList((_chatList)=>[
                 ..._chatList, message
             ]);
+
+            console.log(chatList);
         });
     }
 
     //3. 채팅방에 메세지를 보낸다. (사전 셋팅)
     function sendMessage(event, chat){
         event.preventDefault();//버튼 눌렀을 때 새로고침 방지
+        
         if(chat!==""){//빈문자열 입력 방지
             publish(chat);
         }
@@ -67,27 +81,38 @@ const ChatHistory = () => {
 
     //4. 채팅방에 메세지를 보낸다. (서버전송)
     function publish(chat){
+
         if(!client.current.connected){
             return;
         }
-
+        // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
         client.current.publish({
-            destination: 'pub/soloChat',
+            destination: '/pub/soloChat/'+roomCode,
             body: JSON.stringify({
-                roomId: roomId,
-                userId : 1,
+                chatContent:chat,
+                roomId:1,
+                userId:1
+                // roomId: roomId,
+                // userId : 1,
                 // nickname: nickname,
                 // profileImg: profileImg,
-                content: chat,
+                // content: chat,
             })
 
         });
 
         setChat('');
+        console.log(chatList);
     }
 
+
+    //5. 채팅 종료
+    function disconnect() {
+        client.current.deactivate();
+    };
+
     //지금 내가 어떤 id를 가진 유저인지 확인
-    const myId:string = "ssafy";
+    const myId:number = 12;
 
 
     // let [chatList, setChatList] = useState<ChatList[]>([
@@ -155,14 +180,54 @@ const ChatHistory = () => {
     // ]);
 
     // 현재 채팅이 들어오는 날짜
-    let [curDate, setCurDate] = useState<string|null>("");
-    useEffect(()=>{
-        setCurDate(null);
-    },[]);
+    // let [curDate, setCurDate] = useState<string|null>("");
+    // useEffect(()=>{
+    //     setCurDate(null);
+    // },[]);
     
     // function changeCurDate(newDate:string){
     //     setCurDate(newDate);
     // }
+
+    // 화면 들어올 시 초기화
+    useEffect(() => {
+
+        // url 접근 막기
+        // let roomId2 = localStorage.getItem("roomId")
+        // if (roomId2 == null) {
+        //   navigate("/home")
+        //   return
+        // }
+    
+        // let userId = JSON.parse(sessionStorage.getItem("loginUser")).id;
+    
+        const url = process.env.REACT_APP_SERVER + "/api/chat"
+        const data = {
+          userA: 1,
+          userB: 2
+        }
+        const config = {"Content-Type": 'application/json'};
+        
+        // 과거 채팅했던 내역을 가져와서 저장해야함
+        // axios.post(url, data, config)
+        // .then((result) => {
+        // //   setOtherName(result.data.talkUserName);
+        //   setChatList(result.data.chatList);
+        // })
+        // .then(() => {
+        //   // console.log(chatList)
+        //   connect();
+    
+        //   // setUp(false);
+        // })
+
+        connect();
+    
+        return () => {
+          localStorage.removeItem("roomId")
+          disconnect();
+        }
+      }, []);
 
     return(
         <div className={`${chatHistoryStyle.total}`}>
@@ -170,9 +235,9 @@ const ChatHistory = () => {
                 {chatList?.map((one)=>{
                     return(
                         <div className={`${chatHistoryStyle.chatArea}`}>
-                            {/* 날짜 */}
-                            {curDate!==one.date?<div className={`${chatHistoryStyle.date}`}><div>{one.date}</div></div>:null}
-                            {myId!==one.id?<div className={`${chatHistoryStyle.oneChat}`}>
+                            {/* 날짜 -> 아직 안줌 */}
+                            {/* {curDate!==one.date?<div className={`${chatHistoryStyle.date}`}><div>{one.date}</div></div>:null} */}
+                            {myId!==one.userId?<div className={`${chatHistoryStyle.oneChat}`}>
                                 {/* 유저 프로필 */}
                                 <div className={`${chatHistoryStyle.profile}`}>
                                     <div className={`${chatHistoryStyle.profileCircle_G}`}>
@@ -182,17 +247,20 @@ const ChatHistory = () => {
 
                                 {/* 유저 닉네임, 내용/시간 */}
                                 <div className={`${chatHistoryStyle.mid}`}>
-                                    <div>{one.nickname}</div>
+                                    {/* <div>{one.nickname}</div> */}
+                                    <div>닉네임 안줌</div>
                                     <div>
-                                        <div className={`${chatHistoryStyle.midContent}`}>{one.content}</div>
-                                        <div className={`${chatHistoryStyle.midTime}`}>{one.time}</div>
+                                        <div className={`${chatHistoryStyle.midContent}`}>{one.chatContent}</div>
+                                        {/* <div className={`${chatHistoryStyle.midTime}`}>{one.time}</div> */}
+                                        <div className={`${chatHistoryStyle.midTime}`}>시간 안줌</div>
                                     </div>
                                 </div>
                             </div> :
                             <div className={`${chatHistoryStyle.oneChat2}`}>
                                 <div className={`${chatHistoryStyle.mid2}`}>    
-                                    <div className={`${chatHistoryStyle.midTime}`}>{one.time}</div>
-                                    <div className={`${chatHistoryStyle.midContent}`}>{one.content}</div>
+                                    {/* <div className={`${chatHistoryStyle.midTime}`}>{one.time}</div> */}
+                                    <div className={`${chatHistoryStyle.midTime}`}>시간 안줌</div>
+                                    <div className={`${chatHistoryStyle.midContent}`}>{one.chatContent}</div>
                                 </div>
                             </div>}
 
@@ -203,8 +271,11 @@ const ChatHistory = () => {
 
             {/* input과 전송 */}
             <div className={`${chatHistoryStyle.sendArea}`}>
-                <input type="text" placeholder="메세지를 입력하세요."/>
-                <button>전송</button>
+            <form className={`${chatHistoryStyle.sendArea}`} onSubmit={(event) => sendMessage(event, chat)}>
+                <input type="text" placeholder="메세지를 입력하세요." value={chat} onChange={(event)=>{setChat(event.target.value)}}/>
+                <button type={'submit'}>전송</button>
+            </form>
+                
             </div>
 
         </div>
