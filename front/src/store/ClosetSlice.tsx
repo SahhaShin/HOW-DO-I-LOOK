@@ -6,7 +6,7 @@ export const action = {
     saveClothes : createAsyncThunk("ClosetSlice/saveClothes", async({clothesSaveRequestDto,s3upload}:saveClothes, thunkAPI)=>{
         return await axios({
             method: "post",
-            url:"http://localhost:8081/api/clothes",
+            url:"/clothes",
             params:{
                 clothesSaveRequestDto,
                 s3upload,
