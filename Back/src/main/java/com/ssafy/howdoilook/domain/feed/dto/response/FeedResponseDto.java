@@ -1,6 +1,6 @@
 package com.ssafy.howdoilook.domain.feed.dto.response;
 
-import com.ssafy.howdoilook.domain.feed.dto.PhotoDto;
+
 import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
 import lombok.Builder;
 import lombok.Data;
@@ -10,23 +10,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 @Data
 @NoArgsConstructor
-public class FeedDto {
+public class FeedResponseDto {
     private Long userId;
     private Long feedId;
     private String feedContent;
     private LocalDateTime feedCreatedDate;
     private LocalDateTime feedUpdateDate;
-    private List<PhotoDto> photoDtoList;
+    private List<PhotoResponseDto> photoResponseDtoList;
     private FeedLikeCountResponseDto feedLikeCountResponseDto;
 
     @Builder
-    public FeedDto(Long userId, Long feedId, String feedContent, LocalDateTime feedCreatedDate, LocalDateTime feedUpdateDate, List<PhotoDto> photoDtoList, FeedLikeCountResponseDto feedLikeCountResponseDto) {
+    public FeedResponseDto(Long userId, Long feedId, String feedContent, LocalDateTime feedCreatedDate, LocalDateTime feedUpdateDate, List<PhotoResponseDto> photoResponseDtoList, FeedLikeCountResponseDto feedLikeCountResponseDto) {
         this.userId = userId;
         this.feedId = feedId;
         this.feedContent = feedContent;
         this.feedCreatedDate = feedCreatedDate;
         this.feedUpdateDate = feedUpdateDate;
-        this.photoDtoList = photoDtoList;
+        this.photoResponseDtoList = photoResponseDtoList;
         this.feedLikeCountResponseDto = feedLikeCountResponseDto;
     }
 }

@@ -12,6 +12,7 @@ import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -33,13 +35,13 @@ public class CommentService {
     @Transactional
     public Long saveComment(CommentSaveRequestDto commentSaveRequestDto) {
         User findUser = userRepository.findById(commentSaveRequestDto.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("해당 User가 없습니다."));
+                () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
         Feed findFeed = feedRepository.findById(commentSaveRequestDto.getFeedId()).orElseThrow(
-                () -> new IllegalArgumentException("해당 Feed가 없습니다."));
+                () -> new EmptyResultDataAccessException("존재하지 않는 Feed입니다.",1));
         Comment parentComment = null;
         if (commentSaveRequestDto.getParentCommentId() != null) {
              parentComment= commentRepository.findById(commentSaveRequestDto.getParentCommentId()).orElseThrow(
-                    () -> new IllegalArgumentException("해당 parentComment가 없습니다."));
+                    () -> new EmptyResultDataAccessException("존재하지 않는 parentComment입니다.",1));
         }
         Comment comment = Comment.builder()
                 .user(findUser)
@@ -53,13 +55,15 @@ public class CommentService {
     @Transactional
     public Long updateComment(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto){
         Comment findComment = commentRepository.findById(commentId).orElseThrow(
-                ()->new IllegalArgumentException("존재하지 않는 댓글입니다."));
+                ()->new EmptyResultDataAccessException("존재하지 않는 comment입니다.",1));
         findComment.updateContent(commentUpdateRequestDto.getContent());
         return findComment.getId();
     }
     @Transactional
     public void deleteComment(Long commentId){
-        commentRepository.deleteById(commentId);
+        Comment findComment = commentRepository.findById(commentId).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 comment입니다.", 1));
+        commentRepository.delete(findComment);
     }
 
     public Page<CommentResponseDto> selectCommentByFeedId(Long feedId, Pageable page){
