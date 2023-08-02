@@ -45,6 +45,20 @@ export const action = {
 }
 
 
+// 타입별 옷 요청 요청 api에 필요한 변수
+// 1. clothesType은 “ALL, TOP, BOTTOM, SHOE, ACCESSORY” 중 하나만 올 수 있다!
+// 2. pageNum은 페이지 번호!(페이지 순서는 0부터 시작)
+interface ClothesListByTypeReq{ //response
+    clothesType : string,
+    userId : number,
+    pageNum : number,
+}
+
+
+interface ClothesListByTypeRes{ //response
+    clothesId : number,
+    photoLink : string
+}
 
 // 유저가 옷을 등록하려고 입력한 정보들
 interface saveClothes{
@@ -59,19 +73,7 @@ interface saveClothes{
 }
 
 
-// 타입별 옷 요청 요청 api에 필요한 변수
-// 1. clothesType은 “ALL, TOP, BOTTOM, SHOE, ACCESSORY” 중 하나만 올 수 있다!
-// 2. pageNum은 페이지 번호!(페이지 순서는 0부터 시작)
-interface ClothesListByTypeReq{ //response
-    clothesType : string,
-    userId : number,
-    pageNum : number,
-}
 
-interface ClothesListByTypeRes{ //response
-    clothesId : number,
-    photoLink : string
-}
 
 // 초기값 인터페이스
 interface closet{
@@ -79,9 +81,13 @@ interface closet{
     mode:number, 
 
     // 옷 타입과 리스트
-    clothesType:string,
+    clothesTypeKo:string,
+    clothesTypeEn:string,
     clothesListByType:ClothesListByTypeRes[],
     newClothes? : saveClothes|null,
+
+    // 페이지네이션
+    page:number,
 }
 
 
@@ -90,9 +96,11 @@ interface closet{
 const initialState:closet = {
     modalOpen : false,
     mode : 0,
-    clothesType : "상의",
+    clothesTypeKo : "상의",
+    clothesTypeEn : "TOP",
     clothesListByType : [],
     newClothes : null,
+    page:1,
 }
 
 
@@ -112,7 +120,22 @@ const ClosetSlice = createSlice({
             
         },
         changeClothesType(state, action){
-            state.clothesType=action.payload;
+            state.clothesTypeKo=action.payload;
+
+            if(state.clothesTypeKo==="상의"){
+                state.clothesTypeEn="TOP";
+            }else if(state.clothesTypeKo==="하의"){
+                state.clothesTypeEn="BOTTOM";
+            }else if(state.clothesTypeKo==="신발"){
+                state.clothesTypeEn="SHOE";
+            }else if(state.clothesTypeKo==="악세서리"){
+                state.clothesTypeEn="ACCESSORY";
+            }else{
+                state.clothesTypeEn="ALL";
+            }
+        },
+        changePage(state, action){
+            state.page = action.payload;
         }
     },
     extraReducers:(builder) => {
@@ -126,5 +149,5 @@ const ClosetSlice = createSlice({
     }
 });
 
-export let {changeModalOpen, changeMode, setNewClothes,changeClothesType} = ClosetSlice.actions;
+export let {changeModalOpen, changeMode, setNewClothes,changeClothesType,changePage} = ClosetSlice.actions;
 export default ClosetSlice.reducer;

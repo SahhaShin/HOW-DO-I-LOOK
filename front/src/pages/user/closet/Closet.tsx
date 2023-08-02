@@ -25,20 +25,22 @@ const Closet = () => {
     let dispatch = useDispatch();
 
     // 페이지네이션, 옷 관리
-    let clothesListType = state.clothesListByType.length;
+    let clothesListType = state.clothesListByType?.length;
     const [limit, setLimit] = useState(10);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(state.page);
     const offset = (page - 1) * limit;
+
+    let selectType = {
+        clothesType: state.clothesTypeEn,
+        pageNum : 0,
+        userId:1,
+    }
 
     // 화면 초기값 백엔드(api)에 요청
     useEffect(()=>{
-        let init = {
-            clothesType: "TOP",
-            pageNum : 0,
-            userId:1,
-        }
         
-        dispatch(action.getClothesListByType(init));
+        // closet 영역 초기 셋팅은 top
+        dispatch(action.getClothesListByType(selectType));
 
         // dispatch(action.getOOTDList(init.userId));
         // console.log("getOOTDList load");
@@ -78,7 +80,7 @@ const Closet = () => {
                                 state.clothesListByType.map(()=>{
                                     <CLOSETSlot/>
                                 }):
-                                <div className={`${closetStyle.noItem}`}>추가된 {state.clothesType} 이미지가 없습니다.</div>
+                                <div className={`${closetStyle.noItem}`}>추가된 {state.clothesTypeKo} 이미지가 없습니다.</div>
                             }
                         </div>
 
