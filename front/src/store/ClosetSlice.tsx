@@ -19,13 +19,18 @@ export const action = {
             console.log(e);
         })
     }),
-    getOOTDList: createAsyncThunk("ClosetSlice/getOOTDList",async (userId,thunkAPI) => {
+    OOTDSave: createAsyncThunk("ClosetSlice/OOTDSave",async ({userId, order, slotIds}:saveOOTD,thunkAPI) => {
         return await axios({
-            method: "get",
-            url:`http://localhost:8081/api/ootd/list/${userId}`,
-           
+            method: "post",
+            url:`http://localhost:8081/api/ootd`,
+            data:{
+                userId: userId,
+                order: order,
+                slotIds,
+            }
         }).then(response=>{
             console.log(response.data);
+            
         }).catch((e)=>{
             console.log(e);
         })
@@ -64,7 +69,7 @@ interface ClothesListByTypeRes{ //response
 }
 
 // 유저가 옷을 등록하려고 입력한 정보들
-interface saveClothes{
+interface saveClothes{ //request
     clothesSaveRequestDto:{
         userId:number,
         type:string,
@@ -75,6 +80,19 @@ interface saveClothes{
     s3upload:File,
 }
 
+// 유저가 ootd를 등록하려고 입력한 정보들
+interface saveOOTD{
+    userId:number,
+    order:number,
+    slotIds:{
+        TOP:number,
+        BOTTOM:number,
+        SHOE:number,
+        ACCESSORY1:number,
+        ACCESSORY2:number,
+        ACCESSORY3:number
+    }
+}
 
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 // css
 import coordiStyle from "./OOTDCoordi.module.css";
@@ -15,18 +15,46 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 
-const OOTDCoordi = () => {
+//idx는 몇 번째 ootd 순서인가 1번인가 2번인가를 알려줌
+const OOTDCoordi = (idx) => {
 
     //redux 관리
     let state = useSelector((state:any)=>state.closet);
     let dispatch = useDispatch();
    
+    
+    // 슬라이더 환경 관리
     const settings = {
-        arrows:true,
+        arrows:false,
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1,
     };
+
+
+    // ootd 저장
+    interface slotIds{
+        TOP:number,
+        BOTTOM:number,
+        SHOE:number,
+        ACCESSORY1:number,
+        ACCESSORY2:number,
+        ACCESSORY3:number
+    }
+
+    let order = idx;
+    let [TOP,setTOP] = useState<number|null>();
+    let [BOTTOM,setBOTTOM] = useState<number|null>();
+    let [SHOE,setSHOE] = useState<number|null>();
+    let [ACCESSOTY1,setACCESSOTY1] = useState<number|null>();
+    let [ACCESSOTY2,setACCESSOTY2] = useState<number|null>();
+    let [ACCESSOTY3,setACCESSOTY3] = useState<number|null>();
+    
+    const userId:number = 1;
+
+    function saveOOTD(){
+        dispatch(action.OOTDSave(userId,order,clothesIds));
+    }
 
     // 화면 단 : 이 부분은 백엔드에서 데이터 넘겨주면 map 형태로 다시 바꿀 것임
     return(
@@ -35,6 +63,7 @@ const OOTDCoordi = () => {
             <div className={`${coordiStyle.oneCloset}`}>
                 {/* 상의 하의 신발 */}
                 <div className={`${coordiStyle.ootd}`}>
+
                     {/* 상의 */}
                     <div className={`${coordiStyle.carousal}`}>
                         <StyledSlider {...settings}>
@@ -45,19 +74,8 @@ const OOTDCoordi = () => {
                                         <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
                                     </div>
                                 }):
-                                <div className={`${coordiStyle.img}`}>없음</div>
+                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgTop}`}>NOTHING</div></div>
                             }
-                            {/* <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/top2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/top3.png`}/>
-                            </div> */}
 
                         </StyledSlider>
 
@@ -67,19 +85,15 @@ const OOTDCoordi = () => {
                     {/* 하의 */}
                     <div className={`${coordiStyle.carousal}`}>
                         <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bottom1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bottom2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bottom3.png`}/>
-                            </div>
-
+                            {   
+                                state.clothesBottom.length!==0?
+                                state.clothesBottom.map(()=>{
+                                    <div className={`${coordiStyle.slide}`}>
+                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
+                                    </div>
+                                }):
+                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgBottom}`}>NOTHING</div></div>
+                            }
                         </StyledSlider>
 
                     </div>
@@ -87,18 +101,15 @@ const OOTDCoordi = () => {
                     {/* 신발 */}
                     <div className={`${coordiStyle.carousal}`}>
                         <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/shoes1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/shoes2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/shoes3.png`}/>
-                            </div>
+                            {   
+                                state.clothesShoe.length!==0?
+                                state.clothesShoe.map(()=>{
+                                    <div className={`${coordiStyle.slide}`}>
+                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
+                                    </div>
+                                }):
+                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgShoe}`}>NOTHING</div></div>
+                            }
 
                         </StyledSlider>
 
@@ -112,22 +123,15 @@ const OOTDCoordi = () => {
                     {/* 악세서리1 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
                         <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/earing1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/socks1.png`}/>
-                            </div>
+                            {   
+                                state.clothesAccessory.length!==0?
+                                state.clothesAccessory.map(()=>{
+                                    <div className={`${coordiStyle.slide}`}>
+                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
+                                    </div>
+                                }):
+                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgAccessory}`}>NOTHING</div></div>
+                            }
 
                         </StyledSlider>
 
@@ -136,22 +140,15 @@ const OOTDCoordi = () => {
                     {/* 악세서리2 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
                         <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/earing1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/socks1.png`}/>
-                            </div>
+                        {   
+                                state.clothesAccessory.length!==0?
+                                state.clothesAccessory.map(()=>{
+                                    <div className={`${coordiStyle.slide}`}>
+                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
+                                    </div>
+                                }):
+                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgAccessory}`}>NOTHING</div></div>
+                            }
 
                         </StyledSlider>
 
@@ -160,22 +157,15 @@ const OOTDCoordi = () => {
                     {/* 악세서리3 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
                         <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/earing1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/socks1.png`}/>
-                            </div>
+                            {   
+                                state.clothesAccessory.length!==0?
+                                state.clothesAccessory.map(()=>{
+                                    <div className={`${coordiStyle.slide}`}>
+                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
+                                    </div>
+                                }):
+                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgAccessory}`}>NOTHING</div></div>
+                            }
 
                         </StyledSlider>
 

@@ -124,8 +124,8 @@ const Closet = () => {
                         <OOTDWeather/>
                         
                         <div className={`${closetStyle.closetContainer}`}>
-                            <div className={`${closetStyle.closet}`}><OOTDCoordi/></div>
-                            <div className={`${closetStyle.closet}`}><OOTDCoordi/></div>
+                            <div className={`${closetStyle.closet}`}><OOTDCoordi idx={1} /></div>
+                            <div className={`${closetStyle.closet}`}><OOTDCoordi idx={2}/></div>
                         </div>
                         
                     </div>
