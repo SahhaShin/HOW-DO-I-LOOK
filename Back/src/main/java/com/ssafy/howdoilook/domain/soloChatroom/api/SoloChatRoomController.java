@@ -17,16 +17,11 @@ import java.util.List;
 @Getter
 @RequestMapping("/api/soloChatRoom")
 public class SoloChatRoomController {
-
     private final SoloChatRoomService soloChatRoomService;
-
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getChatList(@PathVariable("id") Long userId){
-        System.out.println("시작??????");
         List<ChatRoomDto> result = soloChatRoomService.getUserChatRoom(userId);
-        System.out.println("여기까지 왔다. 리턴이 문제?");
-//        System.out.println(result.get(0).getUserA());
         return new ResponseEntity<List<ChatRoomDto>>(result, HttpStatus.OK);
     }
 

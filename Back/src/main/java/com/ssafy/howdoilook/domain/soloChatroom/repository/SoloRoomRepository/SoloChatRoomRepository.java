@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SoloChatRoomRepository extends JpaRepository<SoloChatRoom,Long> {
 
@@ -15,12 +16,13 @@ public interface SoloChatRoomRepository extends JpaRepository<SoloChatRoom,Long>
     2. 아이디 두개에 해당하는 채팅방이 있는지 확인
     3. 아이디 두개에 해당하는 채팅방
     */
+
     int countByUserAAndUserB(User userA, User userB);
 
-    SoloChatRoom findByUserAAndUserB(User userA, User userB);
+    Optional<SoloChatRoom> findByUserAAndUserB(User userA, User userB);
 
     @Query("SELECT c FROM SoloChatRoom c WHERE c.userA.id = :userId")
     List<SoloChatRoom> findByUserA(@Param("userId") long userId);
 
-    SoloChatRoom findById(long id);
+    Optional<SoloChatRoom> findById(long id);
 }

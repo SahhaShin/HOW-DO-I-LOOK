@@ -16,7 +16,8 @@ public class SoloWebSocketController {
     @MessageMapping("/soloChat/{roomCode}")
     @SendTo("/sub/soloChat/{roomCode}")
     public ChatRecodRequestDto broadcasting(ChatRecodRequestDto requestDto){
-        return soloChatRoomService.recordChat(requestDto);
+        soloChatRoomService.recordChat(requestDto);
+        return requestDto;
     }
 
 }
