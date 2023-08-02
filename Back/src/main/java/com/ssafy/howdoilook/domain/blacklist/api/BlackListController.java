@@ -5,6 +5,8 @@ import com.ssafy.howdoilook.domain.blacklist.dto.request.BlackListSaveRequestDto
 import com.ssafy.howdoilook.domain.blacklist.dto.response.BlackListSelectResponseDto;
 import com.ssafy.howdoilook.domain.blacklist.service.BlackListService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +24,8 @@ public class BlackListController {
         return blackListService.saveBlackList(blackListSaveRequestDto);
     }
     @GetMapping("/{userId}")
-    public ResponseEntity<?> selectBlackList(@PathVariable(name = "userId") Long userId){
-        List<BlackListSelectResponseDto> blackListByUserId = blackListService.findBlackListByUserId(userId);
+    public ResponseEntity<?> selectBlackList(@PathVariable(name = "userId") Long userId, Pageable pageable){
+        Page<BlackListSelectResponseDto> blackListByUserId = blackListService.findBlackListByUserId(userId, pageable);
         return ResponseEntity.ok().body(blackListByUserId);
     }
     @DeleteMapping("/")
