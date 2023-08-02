@@ -33,7 +33,7 @@ public class FollowService {
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
         User followee = userRepository.findById(followSaveRequestDto.getFolloweeId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 followee입니다.",1));
-        //넘어온 팔로우,팔로워 값으로 이미 데이터가 있는지 확인하는 작업
+
         //null값이 아니면 이미 데이터가 있는 것이다.
         Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(follower.getId(), followee.getId());
         //데이터가 없을때(정상일때)
@@ -45,13 +45,13 @@ public class FollowService {
             followReposiroty.save(follow);
             return follow.getId();
         } else {
-            return findFollow.getId();
+            throw new IllegalArgumentException("이미 존재하는 Follow입니다.");
         }
 
 
     }
-    //데이터가 없는데 삭제하려는 것 구현 안함
-    //구현하면 좋을 것 같다.
+
+
     @Transactional
     public void deleteFollow(FollowDeleteRequestDto followDeleteRequestDto){
         Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(
@@ -59,6 +59,8 @@ public class FollowService {
         //팔로우 관계가 있을 때
         if (findFollow != null) {
             followReposiroty.deleteById(findFollow.getId());
+        }else{
+            throw new IllegalArgumentException("존재하지 않는 Follow입니다.");
         }
     }
     //내가 팔로우 하는 사람 리스트 반환
