@@ -33,14 +33,18 @@ public class SoloChatRoomService {
     @Transactional
     public ChatRecodRequestDto recordChat(ChatRecodRequestDto requestDto){
         String content = requestDto.getChatContent();
+
         SoloChatRoom room = soloChatRoomRepository.findById(requestDto.getRoomId());
-        Optional<User> user = userRepository.findById(requestDto.getUserId());
+
+        User user = userRepository.findById(requestDto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
         SoloChat solochat = SoloChat.builder()
                 .content(content)
                 .room(room)
-                .user(user.get())
+                .user(user)
                 .build();
+
         soloChatRepository.save(solochat);
         return requestDto;
     }
@@ -51,7 +55,6 @@ public class SoloChatRoomService {
 
         List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUserA(userId);
         List<ChatRoomDto> chatRoomListNext = new ArrayList<>();
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         for (SoloChatRoom chatRoom : chatRoomListPrev){
             ChatRoomDto dto = ChatRoomDto.builder()

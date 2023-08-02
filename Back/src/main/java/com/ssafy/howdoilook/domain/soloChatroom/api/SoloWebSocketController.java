@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/soloChat")
 public class SoloWebSocketController {
-    private SoloChatRoomService soloChatRoomService;
+    private final SoloChatRoomService soloChatRoomService;
 
-    @MessageMapping("/{roomCode}")
+    @MessageMapping("/soloChat/{roomCode}")
     @SendTo("/sub/soloChat/{roomCode}")
     public ChatRecodRequestDto broadcasting(ChatRecodRequestDto requestDto){
         return soloChatRoomService.recordChat(requestDto);
