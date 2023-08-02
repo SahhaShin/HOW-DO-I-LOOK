@@ -35,9 +35,9 @@ public class AlarmController {
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
     @DeleteMapping("/{alarmId}")
-    public ResponseEntity deleteAlarm(@PathVariable(name = "alarmId") Long alarmId) {
+    public ResponseEntity<String> deleteAlarm(@PathVariable(name = "alarmId") Long alarmId) {
         alarmService.deleteAlarm(alarmId);
-        return (ResponseEntity) ResponseEntity.status(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 
 }

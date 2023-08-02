@@ -31,9 +31,9 @@ public class BlackListController {
         return ResponseEntity.ok().body(blackListByUserId);
     }
     @DeleteMapping("/")
-    public ResponseEntity deleteBlackList(@RequestBody BlackListDeleteRequestDto blackListDeleteRequestDto){
+    public ResponseEntity<String> deleteBlackList(@RequestBody BlackListDeleteRequestDto blackListDeleteRequestDto){
         blackListService.deleteBlackList(blackListDeleteRequestDto);
-        return (ResponseEntity) ResponseEntity.status(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 
 }
