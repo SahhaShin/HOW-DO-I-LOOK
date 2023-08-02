@@ -8,6 +8,7 @@ import com.ssafy.howdoilook.domain.clothes.service.ClothesService;
 import com.ssafy.howdoilook.global.s3upload.ImageService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,12 @@ public class ClothesController {
     private final ClothesRepository clothesRepository;
 
     @PostMapping("")
-    public ResponseEntity<?> saveClothes(@RequestPart ClothesSaveRequestDto clothesSaveRequestDto,
+    public ResponseEntity<Long> saveClothes(@RequestPart ClothesSaveRequestDto clothesSaveRequestDto,
                                          @RequestPart("s3upload") MultipartFile multipartFile) throws Exception {
 
         clothesSaveRequestDto.setPhotoLink(imageService.saveImage(multipartFile));
 
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(clothesService.saveClothes(clothesSaveRequestDto));
     }
 

@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.global.s3upload;
 
+import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -21,12 +22,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImageService {
 
-    private String S3Bucket = "howdobucket"; // Bucket 이름
+    private String S3Bucket = "howdobucket2"; // Bucket 이름
 
     @Autowired
     AmazonS3Client amazonS3Client;
 
     public String saveImage(MultipartFile multipartFile) throws IOException {
+
+        if(multipartFile.isEmpty()) {
+            throw new IllegalArgumentException("사진이 없으면 사진을 저장할 수 없습니다.");
+        }
 
         String originalName = multipartFile.getOriginalFilename(); // 파일 이름
 
@@ -40,13 +45,21 @@ public class ImageService {
         objectMetaData.setContentType(multipartFile.getContentType());
         objectMetaData.setContentLength(size);
 
-        // S3에 업로드
-        amazonS3Client.putObject(
-                new PutObjectRequest(S3Bucket, fileName, multipartFile.getInputStream(), objectMetaData)
-                        .withCannedAcl(CannedAccessControlList.PublicRead)
-        );
+        try {
+            // S3에 업로드
+            amazonS3Client.putObject(
+                    new PutObjectRequest(S3Bucket, fileName, multipartFile.getInputStream(), objectMetaData)
+                            .withCannedAcl(CannedAccessControlList.PublicRead)
+            );
+        } catch (AmazonClientException e) {
+            throw new RuntimeException("S3에 이미지를 업로드하는데 실패했습니다.", e);
+        }
 
         String imagePath = amazonS3Client.getUrl(S3Bucket, fileName).toString(); // 접근가능한 URL 가져오기
+
+        if(imagePath == null) {
+            throw new IllegalArgumentException("이미지 경로를 가져오지 못하였습니다.");
+        }
 
         return imagePath;
     }

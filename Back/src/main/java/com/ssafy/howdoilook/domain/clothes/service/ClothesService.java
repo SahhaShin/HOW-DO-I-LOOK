@@ -11,6 +11,7 @@ import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.global.s3upload.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class ClothesService {
     @Transactional
     public Long saveClothes(ClothesSaveRequestDto clothesSaveRequestDto) {
         User user = userRepository.findById(clothesSaveRequestDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 User 입니다.",1));
 
         Clothes clothes = Clothes.builder()
                 .user(user)
