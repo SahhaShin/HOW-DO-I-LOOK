@@ -15,6 +15,7 @@ import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.domain.user.service.UserService;
 import com.ssafy.howdoilook.global.redis.service.RedisRankingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,10 +38,9 @@ public class FeedLikeService {
     @Transactional
     public Long saveFeedLike(FeedLikeSaveRequestDto feedLikeSaveRequestDto){
         User findUser = userRepository.findById(feedLikeSaveRequestDto.getUserId()).orElseThrow(
-                ()->new IllegalArgumentException("user를 찾지 못했습니다."));
-
+                ()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
         Feed findFeed = feedRepository.findById(feedLikeSaveRequestDto.getFeedId()).orElseThrow(
-                ()->new IllegalArgumentException("feed를 찾지 못했습니다."));
+                ()->new EmptyResultDataAccessException("존재하지 않는 Feed입니다.",1));
 
         FeedLike feedlike = FeedLike.builder()
                 .user(findUser)
@@ -57,11 +57,9 @@ public class FeedLikeService {
     @Transactional
     public void deleteFeedLike(FeedLikeDeleteRequestDto feedLikeDeleteRequestDto){
         User findUser = userRepository.findById(feedLikeDeleteRequestDto.getUserId()).orElseThrow(
-                ()->new IllegalArgumentException("user를 찾지 못했습니다."));
-
+                ()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
         Feed findFeed = feedRepository.findById(feedLikeDeleteRequestDto.getFeedId()).orElseThrow(
-                ()->new IllegalArgumentException("feed를 찾지 못했습니다."));
-
+                ()->new EmptyResultDataAccessException("존재하지 않는 Feed입니다.",1));
         FeedLike findFeedLike = feedLikeRepository.findFeedLikeByUserIdAndFeedIdAndType(findUser, findFeed, feedLikeDeleteRequestDto.getType());
 
         feedLikeRepository.delete(findFeedLike);
@@ -71,6 +69,8 @@ public class FeedLikeService {
     public FeedLikeCountResponseDto countFeedLike(Long feedId){
         return feedLikeRepository.countFeedLike(feedId);
     }
+
+
     public FeedLikeCheckResponseDto checkFeedLike(Long userId, Long feedId){
         return feedLikeRepository.checkFeedLike(userId, feedId);
     }

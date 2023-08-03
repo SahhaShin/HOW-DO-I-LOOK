@@ -5,6 +5,7 @@ import com.ssafy.howdoilook.domain.feedLike.dto.request.FeedLikeSaveRequestDto;
 import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCheckResponseDto;
 import com.ssafy.howdoilook.domain.feedLike.service.FeedLikeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +16,15 @@ public class FeedLikeController {
 
     private final FeedLikeService feedLikeService;
     @PostMapping("/")
-    public Long saveFeedLike(@RequestBody FeedLikeSaveRequestDto feedLikeSaveRequestDto){
-        return feedLikeService.saveFeedLike(feedLikeSaveRequestDto);
+    public ResponseEntity<Long> saveFeedLike(@RequestBody FeedLikeSaveRequestDto feedLikeSaveRequestDto){
+        Long id = feedLikeService.saveFeedLike(feedLikeSaveRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     @DeleteMapping("/")
-    public void deleteFeedLike(@RequestBody FeedLikeDeleteRequestDto feedLikeDeleteRequestDto){
+    public ResponseEntity<?> deleteFeedLike(@RequestBody FeedLikeDeleteRequestDto feedLikeDeleteRequestDto){
         feedLikeService.deleteFeedLike(feedLikeDeleteRequestDto);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 
     /**
@@ -31,7 +34,8 @@ public class FeedLikeController {
      * @return
      */
     @GetMapping("/")
-    public ResponseEntity checkFeedLike(@RequestParam(name = "userId")Long userId, @RequestParam(name = "feedId")Long feedId){
-        return ResponseEntity.ok().body(feedLikeService.checkFeedLike(userId, feedId));
+    public ResponseEntity<FeedLikeCheckResponseDto> checkFeedLike(@RequestParam(name = "userId")Long userId, @RequestParam(name = "feedId")Long feedId){
+        FeedLikeCheckResponseDto feedLikeCheckResponseDto = feedLikeService.checkFeedLike(userId, feedId);
+        return ResponseEntity.status(HttpStatus.OK).body(feedLikeCheckResponseDto);
     }
 }

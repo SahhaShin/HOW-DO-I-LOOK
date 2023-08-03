@@ -4,17 +4,15 @@ package com.ssafy.howdoilook.domain.feedPhotoHashtag.service;
 
 import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
 import com.ssafy.howdoilook.domain.feedPhoto.repository.FeedPhotoRepository;
-
-import com.ssafy.howdoilook.domain.feedPhotoHashtag.dto.response.FeedPhotoHashTagResponseDto;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.entity.FeedPhotoHashtag;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.repository.FeedPhotoHashtagRepository;
 import com.ssafy.howdoilook.domain.hashtag.entity.Hashtag;
 import com.ssafy.howdoilook.domain.hashtag.repository.HashTagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 
 @Service
@@ -25,17 +23,12 @@ public class FeedPhotoHashtagService {
     private final FeedPhotoRepository feedPhotoRepository;
     private final HashTagRepository hashTagRepository;
 
-    public FeedPhotoHashTagResponseDto findById(Long id){
-        FeedPhotoHashtag findFeedPhotoHashtag = feedPhotoHashtagRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 feedphotohashtag가 존재하지 않습니다."));
-        return new FeedPhotoHashTagResponseDto(findFeedPhotoHashtag);
-    }
     @Transactional
     public Long saveFeedPhotoHashtag(Long feedPhotoId, Long hashtagId){
         FeedPhoto findFeedPhoto = feedPhotoRepository.findById(feedPhotoId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 feedphoto가 존재하지 않습니다."));
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는FeedPhoto입니다.",1));
         Hashtag findHashtag = hashTagRepository.findById(hashtagId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 hashtag가 존재하지 않습니다."));
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는HashTag입니다.",1));
 
 
         FeedPhotoHashtag entity = FeedPhotoHashtag.builder()
@@ -44,9 +37,9 @@ public class FeedPhotoHashtagService {
                 .build();
         return feedPhotoHashtagRepository.save(entity).getId();
     }
-    @Transactional
-    public void deleteFeedPhotoHashTag(Long id){
-        feedPhotoHashtagRepository.deleteById(id);
-    }
+//    @Transactional
+//    public void deleteFeedPhotoHashTag(Long id){
+//        feedPhotoHashtagRepository.deleteById(id);
+//    }
 
 }

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -43,16 +44,23 @@ public class BlackListService {
     }
     @Transactional
     public Long saveBlackList(BlackListSaveRequestDto blackListSaveRequestDto){
-        User findUser = userRepository.findById(blackListSaveRequestDto.getUserId())
-                .orElseThrow(()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
-        User findTargetUser = userRepository.findById(blackListSaveRequestDto.getTargetUserId())
-                .orElseThrow(()->new EmptyResultDataAccessException("존재하지 않는 TargetUser입니다.",1));
-        BlackList blacklist = BlackList.builder()
-                .user(findUser)
-                .targetUser(findTargetUser)
-                .build();
-        blackListRepository.save(blacklist);
-        return blacklist.getId();
+        Optional<BlackList> blackList = blackListRepository.selectBlackListByUserIdTargetUserId(blackListSaveRequestDto.getUserId(),
+                blackListSaveRequestDto.getTargetUserId());
+        if (blackList.isPresent()){
+            throw new IllegalArgumentException("이미 존재하는 BlackList입니다.");
+        }
+        else{
+            User findUser = userRepository.findById(blackListSaveRequestDto.getUserId()).orElseThrow(
+                    () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
+            User findTargetUser = userRepository.findById(blackListSaveRequestDto.getTargetUserId()).orElseThrow(
+                    () -> new EmptyResultDataAccessException("존재하지 않는 TargetUser입니다.",1));
+            BlackList blacklist = BlackList.builder()
+                    .user(findUser)
+                    .targetUser(findTargetUser)
+                    .build();
+            blackListRepository.save(blacklist);
+            return blacklist.getId();
+        }
     }
     @Transactional
     public void deleteBlackList(BlackListDeleteRequestDto blackListDeleteRequestDto){

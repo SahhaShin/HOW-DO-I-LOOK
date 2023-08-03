@@ -4,10 +4,8 @@ import com.ssafy.howdoilook.domain.feed.dto.request.PhotoSaveRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.PhotoUpdateRequestDto;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.repository.FeedRepository;
-import com.ssafy.howdoilook.domain.feedPhoto.dto.response.FeedPhotoResponseDto;
 import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
 import com.ssafy.howdoilook.domain.feedPhoto.repository.FeedPhotoRepository;
-import com.ssafy.howdoilook.domain.feedPhotoHashtag.dto.response.FeedPhotoHashTagResponseDto;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.entity.FeedPhotoHashtag;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.repository.FeedPhotoHashtagRepository;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.service.FeedPhotoHashtagService;
@@ -16,9 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,19 +30,12 @@ public class FeedPhotoService {
 
 
 
-    public FeedPhotoResponseDto findById(Long id) {
-        FeedPhoto findFeedPhoto = feedPhotoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 feedphoto가 존재하지 않습니다."));
-
-        return new FeedPhotoResponseDto(findFeedPhoto);
-    }
-
 
     @Transactional
     public Long saveFeedPhoto(Long feedId, PhotoSaveRequestDto photoSaveRequestDto) {
         //피드 찾기
         Feed findFeed = feedRepository.findById(feedId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 feed가 존재하지 않습니다."));
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는Feed 입니다.",1));
 
         //사진 엔티티 만들기
         FeedPhoto feedPhoto = FeedPhoto.builder()
@@ -66,7 +55,7 @@ public class FeedPhotoService {
                 Long feedPhotoHashtagId = feedPhotoHashtagService.saveFeedPhotoHashtag(feedPhotoId, hashtagId);
             }
         }
-        return feedPhoto.getId();
+        return feedPhotoId;
     }
     @Transactional
     public Long updateFeedPhoto(PhotoUpdateRequestDto photoUpdateRequestDto) {
