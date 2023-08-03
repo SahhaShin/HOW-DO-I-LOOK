@@ -6,6 +6,11 @@ import { useSelector, useDispatch } from "react-redux";
 import {login, socialLogin} from "../../../store/UserSlice";
 
 const Login: React.FC = () => {
+
+    //redux 관리
+  let state = useSelector((state:any)=>state.closet);
+  let dispatch = useDispatch();
+
   const [email, setemail] = useState('')
   const [password, setPassword] = useState('')
   
@@ -16,6 +21,11 @@ const Login: React.FC = () => {
       console.log("회원 로그인")
       console.log("email : " + email)
       console.log("password : "+ password)
+
+      dispatch(action.Login({
+        'email' : email,
+        'password' : password,
+      }))
   
       // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"
       //window.location.href = "http://localhost:8081/oauth2/authorization/kakao"

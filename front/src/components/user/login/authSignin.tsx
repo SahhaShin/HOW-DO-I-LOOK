@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import loginStyle from './login.module.css';
 
+//redux
+import { useSelector, useDispatch } from "react-redux"; 
+import {action} from "../../../store/UserSlice";
+
 const Login: React.FC = () => {
+
+  //redux 관리
+  let state = useSelector((state:any)=>state.closet);
+  let dispatch = useDispatch();
 
   const [nickname, setNickname] = useState('')
   const [gender, setGender] = useState('')
@@ -14,7 +22,12 @@ const Login: React.FC = () => {
     console.log("nickname : " + nickname)
     console.log("gender: " + gender)
 
-    
+    //소셜 회원가입 추가정보 요청
+    dispatch(action.SocialSignin({
+      'nickname' : nickname,
+      'gender' : gender,
+      'age' : age
+    }));
 
 
     // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"

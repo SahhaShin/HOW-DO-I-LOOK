@@ -1,44 +1,46 @@
 import {  createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
+
+
 // axios
 export const action = {
     // 회원가입 api
-    Signin : createAsyncThunk(`UserSlice/Signin`, async({formdata}:SigninINfo,thunkAPI)=>{
+    Signin : createAsyncThunk(`UserSlice/Signin`, async(formdata:SigninINfo,thunkAPI)=>{
         return await axios({
             method: "post",
-            url:"http://localhost:8081/api/user/signup",
+            url:`${process.env.REACT_APP_SERVER}/api/user/signup`,
             data:formdata,
            
         }).then(response=>{
-            console.log(resopnse)
-            return response; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+            // console.log(response)
+            return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         }).catch((e)=>{
             console.log(e);
         })
     }),
 
-        // 소셜 회원가입 api
-        SocialSignin : createAsyncThunk(`UserSlice/SocialSignin`, async({formdata}:SigninINfo,thunkAPI)=>{
-            return await axios({
-                method: "post",
-                url:process.env.REACT_APP_SERVER+"/api/user/signup",
-                data:formdata,
+    // 소셜 회원가입 api
+    SocialSignin : createAsyncThunk(`UserSlice/SocialSignin`, async(formdata:SigninINfo,thunkAPI)=>{
+        return await axios({
+            method: "post",
+            url:`${process.env.REACT_APP_SERVER}/social/update/{id}`,
+            data:formdata,
                
-            }).then(response=>{
-                console.log(response)
-                return response; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
-            }).catch((e)=>{
-                console.log(e);
-            })
-        }),
+        }).then(response=>{
+            console.log(response)
+            return response; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+        }).catch((e)=>{
+            console.log(e);
+        })
+    }),
     
 
     // 로그인 api
-    Login : createAsyncThunk(`UserSlice/Login`, async({formdata}:LoginInfo,thunkAPI)=>{
+    Login : createAsyncThunk(`UserSlice/Login`, async(formdata:LoginInfo,thunkAPI)=>{
         return await axios({
             method: "post",
-            url:process.env.REACT_APP_SERVER+"/api/user/login",
+            url:`${process.env.REACT_APP_SERVER}/social/update/{id}`,
             data : formdata,
         }).then(response=>{
             let result = {
