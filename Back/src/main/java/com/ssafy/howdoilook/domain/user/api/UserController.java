@@ -67,9 +67,17 @@ public class UserController {
         return ResponseEntity.ok()
                 .body(userService.getUserList());
     }
+
+    @ApiOperation(value = "이메일로 유저 아이디(PK) 얻기")
+    @GetMapping("/userId/{email}")
+    public ResponseEntity<?> getUserIdByEmail(@PathVariable String email) {
+
+        return ResponseEntity.ok()
+                .body(userService.getUserIdByEmail(email));
+    }
     
     @ApiOperation(value = "이메일로 유저 검색 (이메일 중복 체크 용)", notes = "true : email 이미 존재, false : email 존재 X")
-    @GetMapping("/check/nickname/{email}")
+    @GetMapping("/checkbyemail/{email}")
     public ResponseEntity<?> checkUserEmail(@PathVariable String email) {
 
         return ResponseEntity.ok()
@@ -77,7 +85,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "닉네임으로 유저 검색 (닉네임 중복 체크 용)", notes = "true : nickname 이미 존재, false : nickname 존재 X")
-    @GetMapping("/check/nickname/{nickname}")
+    @GetMapping("/checkbynickname/{nickname}")
     public ResponseEntity<?> checkUserNickname(@PathVariable String nickname) {
 
         return ResponseEntity.ok()
@@ -109,11 +117,11 @@ public class UserController {
     }
 
     @ApiOperation(value = "소셜 로그인 유저 추가 정보 입력", notes = "age, gender, nickname를 입력하면, role도 GUEST -> USER로 변경됨")
-    @PutMapping("/social/update/{id}")
-    public ResponseEntity<?> updateSocialUserInfo(@PathVariable Long id, @RequestBody UserBySocialUpdateRequestDto userBySocialUpdateRequestDto) {
+    @PutMapping("/social/update/{email}")
+    public ResponseEntity<?> updateSocialUserInfo(@PathVariable String email, @RequestBody UserBySocialUpdateRequestDto userBySocialUpdateRequestDto) {
 
         return ResponseEntity.ok()
-                .body(userService.updateSocialUserInfo(id, userBySocialUpdateRequestDto));
+                .body(userService.updateSocialUserInfo(email, userBySocialUpdateRequestDto));
     }
 
     /*

@@ -53,6 +53,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 httpServletResponse.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
                 httpServletResponse.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
+                Cookie emailCookie = new Cookie("new_social_user_email", oAuth2User.getEmail());
+                emailCookie.setMaxAge(600);
+                emailCookie.setPath("/");
+                httpServletResponse.addCookie(emailCookie);
+
                 // Header에 AccessToken / RefreshToken 담기
 //                jwtService.sendAccessAndRefreshToken(httpServletResponse, accessToken, refreshToken);
                 // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트

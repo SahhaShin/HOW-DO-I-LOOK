@@ -73,11 +73,4 @@ public class HashTagService {
         }
     }
 
-//    @Transactional
-//    public void removeHashTag(String content) {
-//        Optional<Hashtag> findHashTag = hashTagRepository.findByContent(content);
-//        if (findHashTag.isPresent()){
-//            hashTagRepository.delete(findHashTag.get());
-//        }
-//    }
 }

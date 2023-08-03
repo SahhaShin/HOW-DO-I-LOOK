@@ -14,4 +14,6 @@ public interface FeedLikeCustomRepository {
     public FeedLikeCountResponseDto countFeedLike(Long feedId);
 
     public FeedLikeCheckResponseDto checkFeedLike(Long userId, Long feedId);
+
+
 }
