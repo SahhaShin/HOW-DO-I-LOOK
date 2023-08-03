@@ -35,7 +35,7 @@ const ChatHistory = () => {
     // const userId = JSON.parse(); //로그인 구현 시 가져올 것
 
     // const {roomId} = useParams(); //파라미터에 있는 채팅룸 아이디
-    var roomCode = "1305594a-7131-43a3-b5b9-8179d8dd67e4";
+    var roomCode = "fcfca771-eb08-45ea-94fe-784d00c4d5d8";
     
     const {otherId} = useParams(); //파라미터에 있는 다른 유저 아이디
 
@@ -60,7 +60,7 @@ const ChatHistory = () => {
         console.log("구독시작");
         client.current.subscribe('/sub/soloChat/'+roomCode,(chatMessage)=>{
             const message = JSON.parse(chatMessage.body);
-            console.log("구독완료");
+            console.log("qw");
 
             setChatList((_chatList)=>[
                 ..._chatList, message
@@ -102,7 +102,7 @@ const ChatHistory = () => {
         });
 
         setChat('');
-        console.log(chatList);
+        console.log(`${chatList} 여기는 퍼블리시!!`);
     }
 
 

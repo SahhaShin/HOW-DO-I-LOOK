@@ -37,7 +37,8 @@ const Nav = styled.nav`
 `;
 
 const Button = styled.button`
-  width : 60px;
+  width : 40px;
+  height : 40px;
   border: none;
   border-radius: 8px;
   padding: 8px;
