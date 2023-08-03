@@ -64,11 +64,10 @@ export const action = {
   // 이메일 증복 체크 api
   CheckEmail: createAsyncThunk(
     `UserSlice/CheckEmail`,
-    async (formdata: String, thunkAPI) => {
+    async (email: String, thunkAPI) => {
       return await axios({
-        method: "post",
-        url: `${process.env.REACT_APP_SERVER}/login`,
-        data: formdata,
+        method: "get",
+        url: `${process.env.REACT_APP_SERVER}/check/email/${email}`,
       })
         .then((response) => {
           const result = response.data;
@@ -83,12 +82,12 @@ export const action = {
 
   // 닉네임 증복 체크 api
   CheckNickName: createAsyncThunk(
-    `UserSlice/Login`,
-    async (formdata: String, thunkAPI) => {
+    `UserSlice/CheckNickName`,
+    async (nickname: String, thunkAPI) => {
+      console.log("nickname: " + nickname);
       return await axios({
-        method: "post",
-        url: `${process.env.REACT_APP_SERVER}/checkbynickname/{nickname}`,
-        data: formdata,
+        method: "get",
+        url: `${process.env.REACT_APP_SERVER}/check/nickname/${nickname}`,
       })
         .then((response) => {
           const result = response.data;
@@ -112,6 +111,12 @@ interface SigninINfo {
 }
 
 interface LoginInfo {
+  //response
+  userId: string;
+  password: string;
+}
+
+interface StringInfo {
   //response
   userId: string;
   password: string;

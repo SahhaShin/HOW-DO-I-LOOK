@@ -35,17 +35,9 @@ const Login: React.FC = () => {
     console.log("agree : " + agree);
 
     //이메일 확인
-    dispatch(
-      action.CheckNickName({
-        nickname,
-      })
-    );
+    dispatch(action.CheckNickName(nickname));
 
-    dispatch(
-      action.CheckEmail({
-        nickname,
-      })
-    );
+    dispatch(action.CheckEmail(email));
 
     //회원가입 요청
     dispatch(
