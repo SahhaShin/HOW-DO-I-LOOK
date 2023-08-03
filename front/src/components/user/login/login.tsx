@@ -17,7 +17,7 @@ const Login: React.FC = () => {
   
   const loginClick = () => {
       console.log("회원 로그인")
-      console.log("id : " + id)
+      console.log("email : " + email)
       console.log("password : "+ password)
   
       // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"

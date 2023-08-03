@@ -14,6 +14,8 @@ const Login: React.FC = () => {
     console.log("nickname : " + nickname)
     console.log("gender: " + gender)
 
+    
+
 
     // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"
     //window.location.href = "http://localhost:8081/oauth2/authorization/kakao"
