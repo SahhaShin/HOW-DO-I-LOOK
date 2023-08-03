@@ -11,7 +11,6 @@ import java.nio.file.AccessDeniedException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
     @ExceptionHandler(NoContentException.class)
     public ResponseEntity<?> NoContentException(NoContentException noContentException) {
         return ResponseEntity
@@ -25,7 +24,6 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(exception.getStackTrace());
     }
-
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ResponseEntity<String> handleEmptyResultData(EmptyResultDataAccessException exception){
         return ResponseEntity
