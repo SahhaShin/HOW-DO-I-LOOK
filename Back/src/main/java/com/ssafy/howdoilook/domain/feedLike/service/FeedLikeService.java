@@ -13,6 +13,7 @@ import com.ssafy.howdoilook.domain.user.dto.response.UserSimpleResponseDto;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.domain.user.service.UserService;
+import com.ssafy.howdoilook.global.redis.service.RedisRankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FeedLikeService {
+
     private final FeedLikeRepository feedLikeRepository;
+
     private final UserRepository userRepository;
+
     private final FeedRepository feedRepository;
+
+    private final RedisRankingService redisRankingService;
+
     @Transactional
     public Long saveFeedLike(FeedLikeSaveRequestDto feedLikeSaveRequestDto){
         User findUser = userRepository.findById(feedLikeSaveRequestDto.getUserId()).orElseThrow(
@@ -35,13 +42,17 @@ public class FeedLikeService {
         Feed findFeed = feedRepository.findById(feedLikeSaveRequestDto.getFeedId()).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 Feed입니다.",1));
 
-        FeedLike feed = FeedLike.builder()
+        FeedLike feedlike = FeedLike.builder()
                 .user(findUser)
                 .feed(findFeed)
                 .type(FeedLikeType.valueOf(feedLikeSaveRequestDto.getType()))
                 .build();
-        feedLikeRepository.save(feed);
-        return feed.getId();
+
+        feedLikeRepository.save(feedlike);
+
+        redisRankingService.updateScore(feedLikeSaveRequestDto.getType(), findFeed.getUser().getId(), 1);
+
+        return feedlike.getId();
     }
     @Transactional
     public void deleteFeedLike(FeedLikeDeleteRequestDto feedLikeDeleteRequestDto){
@@ -50,7 +61,10 @@ public class FeedLikeService {
         Feed findFeed = feedRepository.findById(feedLikeDeleteRequestDto.getFeedId()).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 Feed입니다.",1));
         FeedLike findFeedLike = feedLikeRepository.findFeedLikeByUserIdAndFeedIdAndType(findUser, findFeed, feedLikeDeleteRequestDto.getType());
+
         feedLikeRepository.delete(findFeedLike);
+
+        redisRankingService.updateScore(feedLikeDeleteRequestDto.getType(), findFeed.getUser().getId(), -1);
     }
     public FeedLikeCountResponseDto countFeedLike(Long feedId){
         return feedLikeRepository.countFeedLike(feedId);
