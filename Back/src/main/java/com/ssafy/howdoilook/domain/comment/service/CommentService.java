@@ -11,11 +11,13 @@ import com.ssafy.howdoilook.domain.feed.service.FeedService;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.domain.user.service.UserService;
+import com.ssafy.howdoilook.global.handler.AccessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
@@ -33,9 +35,17 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public Long saveComment(CommentSaveRequestDto commentSaveRequestDto) {
+    public Long saveComment(CommentSaveRequestDto commentSaveRequestDto, UserDetails userDetails) {
+        String clientEmail = userDetails.getUsername();
+
         User findUser = userRepository.findById(commentSaveRequestDto.getUserId()).orElseThrow(
                 () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
+
+        if (!clientEmail.equals(findUser.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+
         Feed findFeed = feedRepository.findById(commentSaveRequestDto.getFeedId()).orElseThrow(
                 () -> new EmptyResultDataAccessException("존재하지 않는 Feed입니다.",1));
         Comment parentComment = null;
@@ -53,20 +63,36 @@ public class CommentService {
         return comment.getId();
     }
     @Transactional
-    public Long updateComment(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto){
+    public Long updateComment(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto,UserDetails userDetails){
+        String clientEmail = userDetails.getUsername();
+
         Comment findComment = commentRepository.findById(commentId).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 comment입니다.",1));
+
+        if (!clientEmail.equals(findComment.getUser().getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         findComment.updateContent(commentUpdateRequestDto.getContent());
         return findComment.getId();
     }
     @Transactional
-    public void deleteComment(Long commentId){
+    public void deleteComment(Long commentId,UserDetails userDetails){
+
+        String clientEmail = userDetails.getUsername();
+
         Comment findComment = commentRepository.findById(commentId).orElseThrow(
-                () -> new EmptyResultDataAccessException("존재하지 않는 comment입니다.", 1));
+                ()->new EmptyResultDataAccessException("존재하지 않는 comment입니다.",1));
+
+        if (!clientEmail.equals(findComment.getUser().getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         commentRepository.delete(findComment);
     }
 
     public Page<CommentResponseDto> selectCommentByFeedId(Long feedId, Pageable page){
+
         Page<Comment> results = commentRepository.selectCommentByFeedId(feedId, page);
         List<Comment> content = results.getContent();
 
@@ -84,6 +110,7 @@ public class CommentService {
     }
 
     public Page<CommentResponseDto> selectCommentByFeedIdAndParentCommentId(Long feedId,Long parentCommentId, Pageable page){
+
         Page<Comment> results = commentRepository.selectCommentByFeedIdAndParentCommentId(feedId, parentCommentId, page);
         List<Comment> content = results.getContent();
 

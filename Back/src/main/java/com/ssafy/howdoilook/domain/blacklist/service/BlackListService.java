@@ -7,11 +7,14 @@ import com.ssafy.howdoilook.domain.blacklist.entity.BlackList;
 import com.ssafy.howdoilook.domain.blacklist.repository.BlackListRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.handler.AccessException;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +29,15 @@ public class BlackListService {
     private final BlackListRepository blackListRepository;
     private final UserRepository userRepository;
 
-    public Page<BlackListSelectResponseDto> findBlackListByUserId(Long userId, Pageable pageable){
+    public Page<BlackListSelectResponseDto> findBlackListByUserId(Long userId,UserDetails userDetails, Pageable pageable){
+        String clientEmail = userDetails.getUsername();
+        User findUser = userRepository.findById(userId).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
+
+        if (!clientEmail.equals(findUser.getEmail())) {
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         Page<BlackList> blackLists = blackListRepository.selectBlackListByUserId(userId, pageable);
         List<BlackList> content = blackLists.getContent();
         List<BlackListSelectResponseDto> blackListSelectResponseDtoList = new ArrayList<>();
@@ -43,7 +54,15 @@ public class BlackListService {
         return new PageImpl<>(blackListSelectResponseDtoList,pageable,blackLists.getTotalElements());
     }
     @Transactional
-    public Long saveBlackList(BlackListSaveRequestDto blackListSaveRequestDto){
+    public Long saveBlackList(BlackListSaveRequestDto blackListSaveRequestDto, UserDetails userDetails){
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(blackListSaveRequestDto.getUserId()).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
+
+        if (!clientEmail.equals(user.getEmail())) {
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         Optional<BlackList> blackList = blackListRepository.selectBlackListByUserIdTargetUserId(blackListSaveRequestDto.getUserId(),
                 blackListSaveRequestDto.getTargetUserId());
         if (blackList.isPresent()){
@@ -63,7 +82,17 @@ public class BlackListService {
         }
     }
     @Transactional
-    public void deleteBlackList(BlackListDeleteRequestDto blackListDeleteRequestDto){
+    public void deleteBlackList(BlackListDeleteRequestDto blackListDeleteRequestDto,UserDetails userDetails){
+        String clientEmail = userDetails.getUsername();
+
+        User user = userRepository.findById(blackListDeleteRequestDto.getUserId()).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
+
+        if (!clientEmail.equals(user.getEmail())) {
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+
         BlackList blackList = blackListRepository.selectBlackListByUserIdTargetUserId(blackListDeleteRequestDto.getUserId(),
                         blackListDeleteRequestDto.getTargetUserId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 BlackList입니다.", 1));

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,20 +40,20 @@ public class FeedController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Long> saveFeed(@RequestPart FeedSaveRequestDto feedSaveRequestDto, @RequestPart("s3upload") List<MultipartFile> multipartFileList){
-        Long id = feedService.saveFeed(feedSaveRequestDto,multipartFileList);
+    public ResponseEntity<Long> saveFeed(@RequestPart FeedSaveRequestDto feedSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails, @RequestPart("s3upload") List<MultipartFile> multipartFileList){
+        Long id = feedService.saveFeed(feedSaveRequestDto,userDetails,multipartFileList);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     @PutMapping("")
-    public ResponseEntity<Long> updateFeed(@RequestBody FeedUpdateRequestDto feedUpdateRequestDto){
-        Long id = feedService.updateFeed(feedUpdateRequestDto);
+    public ResponseEntity<Long> updateFeed(@RequestBody FeedUpdateRequestDto feedUpdateRequestDto, @AuthenticationPrincipal UserDetails userDetails){
+        Long id = feedService.updateFeed(feedUpdateRequestDto,userDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     @DeleteMapping("/{feedId}")
-    public ResponseEntity<?> deleteFeed(@PathVariable(name = "feedId") Long feedId){
-        feedService.deleteFeed(feedId);
+    public ResponseEntity<?> deleteFeed(@PathVariable(name = "feedId") Long feedId, @AuthenticationPrincipal UserDetails userDetails){
+        feedService.deleteFeed(feedId,userDetails);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 }
