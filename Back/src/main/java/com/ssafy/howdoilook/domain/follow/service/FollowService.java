@@ -8,11 +8,14 @@ import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.follow.repository.FollowReposiroty;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.handler.AccessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +31,17 @@ public class FollowService {
 
     //데이터가 중복으로 삽입되는거 ifelse로 처리했는데 예외로 처리하면 더 좋을거 같다.
     @Transactional
-    public Long saveFollow(FollowSaveRequestDto followSaveRequestDto){
+    public Long saveFollow(FollowSaveRequestDto followSaveRequestDto, UserDetails userDetails){
+        String clientEmail = userDetails.getUsername();
+
+
         User follower = userRepository.findById(followSaveRequestDto.getFollowerId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
+
+        if (!clientEmail.equals(follower.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         User followee = userRepository.findById(followSaveRequestDto.getFolloweeId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 followee입니다.",1));
 
@@ -53,7 +64,16 @@ public class FollowService {
 
 
     @Transactional
-    public void deleteFollow(FollowDeleteRequestDto followDeleteRequestDto){
+    public void deleteFollow(FollowDeleteRequestDto followDeleteRequestDto, UserDetails userDetails){
+        String clientEmail = userDetails.getUsername();
+
+        User follower = userRepository.findById(followDeleteRequestDto.getFollowerId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
+
+        if (!clientEmail.equals(follower.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(
                 followDeleteRequestDto.getFollowerId(), followDeleteRequestDto.getFolloweeId());
         //팔로우 관계가 있을 때
@@ -64,9 +84,15 @@ public class FollowService {
         }
     }
     //내가 팔로우 하는 사람 리스트 반환
-    public Page<FolloweeResponseDto> selectFolloweeList(Long userId,Pageable page){
+    public Page<FolloweeResponseDto> selectFolloweeList(Long userId, UserDetails userDetails,Pageable page){
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
+
+        String clientEmail = userDetails.getUsername();
+
+        if (!clientEmail.equals(findUser.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         Page<Follow> followeeByUserId = followReposiroty.findFolloweeByUserId(userId, page);
         List<Follow> content = followeeByUserId.getContent();
@@ -88,10 +114,16 @@ public class FollowService {
         return new PageImpl<>(list, followeeByUserId.getPageable(), followeeByUserId.getTotalElements());
     }
     //나를 팔로워 하는사람
-    public Page<FollowerResponseDto> selectFollowerList(Long userId, Pageable page){
+    public Page<FollowerResponseDto> selectFollowerList(Long userId,UserDetails userDetails,Pageable page){
 
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 User 입니다.",1));
+
+        String clientEmail = userDetails.getUsername();
+
+        if (!clientEmail.equals(findUser.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         Page<Follow> followerByUserId = followReposiroty.findFollowerByUserId(userId, page);
         List<Follow> content = followerByUserId.getContent();

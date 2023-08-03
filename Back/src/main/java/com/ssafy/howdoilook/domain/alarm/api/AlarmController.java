@@ -13,7 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -32,13 +32,13 @@ public class AlarmController {
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
     @PutMapping("/{alarmId}")
-    public ResponseEntity<Long> readAlarm(@PathVariable(name = "alarmId") Long alarmId){
-        Long id = alarmService.readAlarm(alarmId);
+    public ResponseEntity<Long> readAlarm(@PathVariable(name = "alarmId") Long alarmId, @AuthenticationPrincipal UserDetails userDetails){
+        Long id = alarmService.readAlarm(alarmId,userDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
     @DeleteMapping("/{alarmId}")
-    public ResponseEntity<String> deleteAlarm(@PathVariable(name = "alarmId") Long alarmId) {
-        alarmService.deleteAlarm(alarmId);
+    public ResponseEntity<String> deleteAlarm(@PathVariable(name = "alarmId") Long alarmId, @AuthenticationPrincipal UserDetails userDetails) {
+        alarmService.deleteAlarm(alarmId,userDetails);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 

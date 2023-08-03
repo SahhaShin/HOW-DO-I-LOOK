@@ -78,17 +78,32 @@ public class AlarmService {
     }
     //알림 읽음으로 바꾸는 메서드
     @Transactional
-    public Long readAlarm(Long id) {
+    public Long readAlarm(Long id, UserDetails userDetails) {
+        String clientEmail = userDetails.getUsername();
+
         Alarm findAlarm = alarmRepository.findById(id).orElseThrow(
                 () -> new EmptyResultDataAccessException("존재하지 않는Alarm입니다.",1));
+        String email = findAlarm.getUser().getEmail();
+
+        if (!clientEmail.equals(email)){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         findAlarm.readAlarm();
         return findAlarm.getId();
     }
     //알림 삭제
     @Transactional
-    public void deleteAlarm(Long id){
+    public void deleteAlarm(Long id, UserDetails userDetails){
+        String clientEmail = userDetails.getUsername();
+
         Alarm findAlarm = alarmRepository.findById(id).orElseThrow(
                 () -> new EmptyResultDataAccessException("존재하지 않는Alarm입니다.",1));
-                alarmRepository.deleteById(id);
+        String email = findAlarm.getUser().getEmail();
+
+        if (!clientEmail.equals(email)){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+        alarmRepository.deleteById(id);
     }
 }
