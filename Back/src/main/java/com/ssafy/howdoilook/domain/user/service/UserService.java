@@ -1,16 +1,19 @@
 package com.ssafy.howdoilook.domain.user.service;
 
+import com.ssafy.howdoilook.domain.badge.entity.Badge;
+import com.ssafy.howdoilook.domain.badge.repository.BadgeRepository;
 import com.ssafy.howdoilook.domain.user.dto.request.UserSearchCondition;
 import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.request.UserBySocialUpdateRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSearchResponseDto;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSimpleResponseDto;
-import com.ssafy.howdoilook.domain.user.entity.Role;
-import com.ssafy.howdoilook.domain.user.entity.SocialType;
+import com.ssafy.howdoilook.domain.user.entity.BadgeType;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.handler.NoContentException;
 import com.ssafy.howdoilook.global.redis.service.RedisAccessTokenService;
+import com.ssafy.howdoilook.global.redis.service.RedisRankingService;
 import com.ssafy.howdoilook.global.redis.service.RedisRefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -35,6 +39,9 @@ public class UserService {
 
     private final RedisAccessTokenService redisAccessTokenService;
 
+    private final BadgeRepository badgeRepository;
+
+    private final RedisRankingService redisRankingService;
 
     /*
      * 일반 회원 가입
@@ -51,9 +58,16 @@ public class UserService {
 
         user.passwordEncode(passwordEncoder);
 
-        userRepository.save(user);
+        user.updateShowBadge(BadgeType.X);
 
-        return user.getId();
+        User saveUser = userRepository.save(user);
+
+        redisRankingService.updateScore(String.valueOf(BadgeType.SEXY), saveUser.getId(), 0);
+        redisRankingService.updateScore(String.valueOf(BadgeType.LOVELY), saveUser.getId(), 0);
+        redisRankingService.updateScore(String.valueOf(BadgeType.NATURAL), saveUser.getId(), 0);
+        redisRankingService.updateScore(String.valueOf(BadgeType.MODERN), saveUser.getId(), 0);
+
+        return saveUser.getId();
     }
 
     /*
@@ -101,6 +115,24 @@ public class UserService {
 
         return userDtoList;
     }
+
+    public boolean checkUserEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if(user.isPresent())
+            return true;
+        else
+            return false;
+    }
+
+    public boolean checkUserNickname(String nickname) {
+        Optional<User> user = userRepository.findByNickname(nickname);
+
+        if(user.isPresent())
+            return true;
+        else
+            return false;
+    }
     
     /*
     * 유저 검색 (페이징 X)
@@ -147,5 +179,34 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저 존재 X"));
 
         return user.updateUserInfo(userUpdateRequestDto);
+    }
+
+    /*
+    * 유저 대표 뱃지 수정
+    * */
+    @Transactional
+    public Long updateShowBadge(Long id, String badge) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저 존재 X"));
+
+        List<Badge> badgeList = badgeRepository.findAllByUser(user);
+
+        boolean flag = false;
+
+        for (Badge b : badgeList) {
+            if(b.getBadgeType() == BadgeType.valueOf(badge)) {
+                flag = true;
+                break;
+            }
+        }
+
+        if(!flag)
+            throw new NoContentException("해당 뱃지는 수여받은 적이 없습니다.");
+
+        if(badgeList.size() == 0)
+            throw new NoContentException("대표로 지정할 뱃지가 존재하지 않습니다.");
+
+
+        return user.updateShowBadge(BadgeType.valueOf(badge));
     }
 }

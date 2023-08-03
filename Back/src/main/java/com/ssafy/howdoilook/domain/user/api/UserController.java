@@ -67,6 +67,22 @@ public class UserController {
         return ResponseEntity.ok()
                 .body(userService.getUserList());
     }
+    
+    @ApiOperation(value = "이메일로 유저 검색 (이메일 중복 체크 용)", notes = "true : email 이미 존재, false : email 존재 X")
+    @GetMapping("/check/nickname/{email}")
+    public ResponseEntity<?> checkUserEmail(@PathVariable String email) {
+
+        return ResponseEntity.ok()
+                .body(userService.checkUserEmail(email));
+    }
+
+    @ApiOperation(value = "닉네임으로 유저 검색 (닉네임 중복 체크 용)", notes = "true : nickname 이미 존재, false : nickname 존재 X")
+    @GetMapping("/check/nickname/{nickname}")
+    public ResponseEntity<?> checkUserNickname(@PathVariable String nickname) {
+
+        return ResponseEntity.ok()
+                .body(userService.checkUserNickname(nickname));
+    }
 
     @ApiOperation(value = "유저 검색", notes = "NonPaging")
     @GetMapping("/search")
@@ -111,6 +127,13 @@ public class UserController {
                 .body(userService.updateUserInfo(id, userUpdateRequestDto));
     }
 
+    @ApiOperation(value = "유저 대표 뱃지 수정", notes = "만약 대표 뱃지가 없다면 X임.")
+    @PutMapping("/update/{id}/{badge}")
+    public ResponseEntity<?> updateShowBadge(@PathVariable Long id, @PathVariable String badge) {
+
+        return ResponseEntity.ok()
+                .body(userService.updateShowBadge(id, badge));
+    }
 
     /*
      * 유저 프로필 사진 업데이트 : 추후 진행 예정
