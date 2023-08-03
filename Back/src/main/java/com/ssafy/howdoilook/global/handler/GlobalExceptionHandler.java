@@ -11,7 +11,6 @@ import java.nio.file.AccessDeniedException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
     @ExceptionHandler(NoContentException.class)
     public ResponseEntity<?> NoContentException(NoContentException noContentException) {
         return ResponseEntity
