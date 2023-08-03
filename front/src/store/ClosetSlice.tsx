@@ -54,6 +54,8 @@ export const action = {
             text: '옷이 성공적으로 등록되었습니다.',
             confirmButtonColor: '#4570F5',
         })
+
+        return res.data;
       })
     }),
 
@@ -87,7 +89,7 @@ export const action = {
     deleteClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async(clothesId, thunkAPI)=>{
         try{
             const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`);
-            console.log("삭제완료");
+            // console.log("삭제완료");
         } catch (e) {
             console.log(e);
             throw e;
@@ -258,7 +260,8 @@ const ClosetSlice = createSlice({
         builder.addCase(action.saveClothes.fulfilled, (state, action) => {
 
             //옷등록하고, 새로고침되면 all 옷들을 다 불러올텐데 구지 여기서 처리해줘야할까라는 의문
-            //여기서 처리는 전체 옷 리스트에 추가된 옷을 넣어줘야 하냐이다.
+            //여기서 처리는 전체 옷 리스트에 추가된 옷을 넣어줘야 하냐이다.saveClothes
+            console.log(action);
         })
     }
 });

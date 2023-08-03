@@ -50,18 +50,17 @@ const Closet = () => {
     }
 
     // 화면 초기값 백엔드(api)에 요청
-    useEffect(()=>{
-        // closet 영역 초기 셋팅은 top
-        dispatch(action.getClothesListByType(selectType));
+    // useEffect(()=>{
+    //     // closet 영역 초기 셋팅은 top
+    //     dispatch(action.getClothesListByType(selectType));
 
-        //ootd에서 상의 하의 신발 악세서리 3개 부분 보여줌
-        dispatch(action.getClothesListByType({
-            clothesType: "TOP",
-            pageNum : 0,
-            userId:1,
-        }));
+    //     dispatch(action.getClothesListByType({
+    //         clothesType: "TOP",
+    //         pageNum : 0,
+    //         userId:1,
+    //     }));
 
-    },[])
+    // },[])
 
     useEffect(()=>{
         if(state.clothesTypeKo==="상의"){
@@ -89,6 +88,14 @@ const Closet = () => {
             }));
         }
 
+        else if(state.clothesTypeKo==="악세서리"){
+            dispatch(action.getClothesListByType({
+                clothesType: "ACCESSORY",
+                pageNum : 0,
+                userId:1,
+            }));
+        }
+
         else if(state.clothesTypeKo==="전체"){
             dispatch(action.getClothesListByType({
                 clothesType: "ALL",
@@ -96,7 +103,8 @@ const Closet = () => {
                 userId:1,
             }));
         }
-    },[state.clothesTypeKo, state.clothesTop, state.clothesBottom, state.clothesShoe, state.clothesAccessory, state.clothesAll])
+    },[state.clothesTypeKo])
+    // state.clothesTop, state.clothesBottom, state.clothesShoe, state.clothesAccessory, state.clothesAll
 
     return(
         <>

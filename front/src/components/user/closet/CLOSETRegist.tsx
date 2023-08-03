@@ -58,7 +58,7 @@ const CLOSETRegist = () => {
     const selectList:Array<ClothesType|null> = [
         { value: "TOP", name: "상의" },
         { value: "BOTTOM", name: "하의" },
-        { value: "SHOES", name: "신발" },
+        { value: "SHOE", name: "신발" },
         { value: "ACCESSORY", name: "악세서리" },
     ];   
 
@@ -179,7 +179,7 @@ const CLOSETRegist = () => {
                         {state.mode===1 || state.mode===3?<div className={closetRegistStyle.line}>
                             <p>옷 구분</p>
                             <select style={{marginLeft:"2%"}} className={closetRegistStyle.select} onChange={(e)=>handleSelect(e)} value={selected}>
-                                    {selectList.map((item:ClothesType) => {
+                                    {selectList?.map((item:ClothesType) => {
                                         return(
                                             <option value={item.value} key={item.value}>
                                                 {item.name}

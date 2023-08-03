@@ -14,6 +14,9 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+// 직접 만든 slider
+import CLOSETSlider from "./CLOSETSlider";
+
 
 //idx는 몇 번째 ootd 순서인가 1번인가 2번인가를 알려줌
 const OOTDCoordi = (idx) => {
@@ -66,53 +69,18 @@ const OOTDCoordi = (idx) => {
 
                     {/* 상의 */}
                     <div className={`${coordiStyle.carousal}`}>
-                        <StyledSlider {...settings}>
-                            {   
-                                state.clothesTop.length!==0?
-                                state.clothesTop.map(()=>{
-                                    <div className={`${coordiStyle.slide}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
-                                    </div>
-                                }):
-                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgTop}`}>NOTHING</div></div>
-                            }
-
-                        </StyledSlider>
-
+                        <CLOSETSlider clothesType={"TOP"}/>
                     </div>
 
 
                     {/* 하의 */}
                     <div className={`${coordiStyle.carousal}`}>
-                        <StyledSlider {...settings}>
-                            {   
-                                state.clothesBottom.length!==0?
-                                state.clothesBottom.map(()=>{
-                                    <div className={`${coordiStyle.slide}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
-                                    </div>
-                                }):
-                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgBottom}`}>NOTHING</div></div>
-                            }
-                        </StyledSlider>
-
+                        <CLOSETSlider clothesType={"BOTTOM"}/>
                     </div>
 
                     {/* 신발 */}
                     <div className={`${coordiStyle.carousal}`}>
-                        <StyledSlider {...settings}>
-                            {   
-                                state.clothesShoe.length!==0?
-                                state.clothesShoe.map(()=>{
-                                    <div className={`${coordiStyle.slide}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
-                                    </div>
-                                }):
-                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgShoe}`}>NOTHING</div></div>
-                            }
-
-                        </StyledSlider>
-
+                        <CLOSETSlider clothesType={"SHOE"}/>
                     </div>
                 
                 </div>
@@ -122,52 +90,19 @@ const OOTDCoordi = (idx) => {
 
                     {/* 악세서리1 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
-                        <StyledSlider {...settings}>
-                            {   
-                                state.clothesAccessory.length!==0?
-                                state.clothesAccessory.map(()=>{
-                                    <div className={`${coordiStyle.slide}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
-                                    </div>
-                                }):
-                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgAccessory}`}>NOTHING</div></div>
-                            }
-
-                        </StyledSlider>
+                        {/* <CLOSETSlider clothesType={"ACCESSORY"}/> */}
 
                     </div>
 
                     {/* 악세서리2 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
-                        <StyledSlider {...settings}>
-                        {   
-                                state.clothesAccessory.length!==0?
-                                state.clothesAccessory.map(()=>{
-                                    <div className={`${coordiStyle.slide}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
-                                    </div>
-                                }):
-                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgAccessory}`}>NOTHING</div></div>
-                            }
 
-                        </StyledSlider>
 
                     </div>
 
                     {/* 악세서리3 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
-                        <StyledSlider {...settings}>
-                            {   
-                                state.clothesAccessory.length!==0?
-                                state.clothesAccessory.map(()=>{
-                                    <div className={`${coordiStyle.slide}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
-                                    </div>
-                                }):
-                                <div className={`${coordiStyle.slide}`}><div className={`${coordiStyle.noImgAccessory}`}>NOTHING</div></div>
-                            }
 
-                        </StyledSlider>
 
                     </div>
                 </div>
