@@ -125,6 +125,13 @@ public class UserService {
             return false;
     }
 
+    public long getUserIdByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        return user.getId();
+    }
+
     public boolean checkUserNickname(String nickname) {
         Optional<User> user = userRepository.findByNickname(nickname);
 
