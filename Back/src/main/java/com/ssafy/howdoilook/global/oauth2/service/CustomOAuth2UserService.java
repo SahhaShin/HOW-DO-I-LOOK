@@ -1,15 +1,18 @@
 package com.ssafy.howdoilook.global.oauth2.service;
 
+import com.ssafy.howdoilook.domain.user.entity.BadgeType;
 import com.ssafy.howdoilook.domain.user.entity.SocialType;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.global.oauth2.CustomOAuth2User;
 import com.ssafy.howdoilook.global.oauth2.OAuthAttributes;
+import com.ssafy.howdoilook.global.redis.service.RedisRankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private static final String NAVER = "naver";
     private static final String KAKAO = "kakao";
     private static final String GOOGLE = "google";
+
+    private final RedisRankingService redisRankingService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -46,6 +51,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // 소셜 로그인에서 API가 제공하는 userInfo의 Json 값(유저 정보)
         Map<String, Object> attributes = oAuth2User.getAttributes();
+
+        System.out.println(userRequest.getAccessToken());
+
 
         OAuthAttributes extractAttributes = OAuthAttributes.of(socialType, userNameAttributeName, attributes);
 
@@ -89,6 +97,16 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private User saveUser(OAuthAttributes oAuthAttributes, SocialType socialType) {
         User user = oAuthAttributes.toEntity(socialType, oAuthAttributes.getOAuth2UserInfo());
 
-        return userRepository.save(user);
+
+        User saveUser = userRepository.save(user);
+
+        saveUser.updateShowBadge(BadgeType.X);
+
+        redisRankingService.updateScore(String.valueOf(BadgeType.SEXY), saveUser.getId(), 0);
+        redisRankingService.updateScore(String.valueOf(BadgeType.LOVELY), saveUser.getId(), 0);
+        redisRankingService.updateScore(String.valueOf(BadgeType.NATURAL), saveUser.getId(), 0);
+        redisRankingService.updateScore(String.valueOf(BadgeType.MODERN), saveUser.getId(), 0);
+
+        return saveUser;
     }
 }
