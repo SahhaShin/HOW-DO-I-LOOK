@@ -170,9 +170,11 @@ public class UserService {
     * 소셜 로그인 유저 추가 정보 입력
     * */
     @Transactional
-    public Long updateSocialUserInfo(Long id, UserBySocialUpdateRequestDto userBySocialUpdateRequestDto) {
-        User user = userRepository.findById(id)
+    public Long updateSocialUserInfo(String email, UserBySocialUpdateRequestDto userBySocialUpdateRequestDto) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        user.updateShowBadge(BadgeType.X);
 
         return user.socialUserInfoUpdate(userBySocialUpdateRequestDto);
     }

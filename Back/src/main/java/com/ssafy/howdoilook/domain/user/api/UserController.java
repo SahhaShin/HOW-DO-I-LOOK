@@ -117,11 +117,11 @@ public class UserController {
     }
 
     @ApiOperation(value = "소셜 로그인 유저 추가 정보 입력", notes = "age, gender, nickname를 입력하면, role도 GUEST -> USER로 변경됨")
-    @PutMapping("/social/update/{id}")
-    public ResponseEntity<?> updateSocialUserInfo(@PathVariable Long id, @RequestBody UserBySocialUpdateRequestDto userBySocialUpdateRequestDto) {
+    @PutMapping("/social/update/{email}")
+    public ResponseEntity<?> updateSocialUserInfo(@PathVariable String email, @RequestBody UserBySocialUpdateRequestDto userBySocialUpdateRequestDto) {
 
         return ResponseEntity.ok()
-                .body(userService.updateSocialUserInfo(id, userBySocialUpdateRequestDto));
+                .body(userService.updateSocialUserInfo(email, userBySocialUpdateRequestDto));
     }
 
     /*
