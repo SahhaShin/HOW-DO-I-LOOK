@@ -35,17 +35,14 @@ export const action = {
             console.log(e);
         })
     }),
-    saveClothes : createAsyncThunk("ClosetSlice/saveClothes", async({clothesSaveRequestDto,s3upload}:saveClothes, thunkAPI)=>{
+    saveClothes : createAsyncThunk("ClosetSlice/saveClothes", async({formdata}, thunkAPI)=>{
         return await axios({
             method: "post",
-            url:"http://localhost:8081/api/clothes",
-            params:{
-                clothesSaveRequestDto,
-                s3upload,
-            },
+            url:process.env.REACT_APP_SERVER+"/api/clothes",
+            data:formdata,
             headers: {
-                // 'Content-Type': 'multipart/form-data',
-                'Content-Type' : 'application/json'
+                'Content-Type': 'multipart/form-data',
+                // 'Content-Type' : 'application/json'
             },
         }).then(response => {
             console.log(response.data);

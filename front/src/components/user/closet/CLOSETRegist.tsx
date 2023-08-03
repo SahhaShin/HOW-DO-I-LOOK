@@ -6,6 +6,7 @@ import closetRegistStyle from "../closet/CLOSETRegist.module.css";
 //redux
 import { useSelector, useDispatch} from "react-redux"; 
 import {action, changeModalOpen} from "../../../store/ClosetSlice";
+import { type } from 'os';
 
 const CLOSETRegist = () => {
 
@@ -100,12 +101,16 @@ const CLOSETRegist = () => {
             info:specialContent,
         }
 
+        const blob = new Blob([JSON.stringify(clothesSaveRequestDto)], {type:"application/json"});
+
         // 이미지 폼데이터로 저장
-        let s3upload = new FormData();
-        s3upload.append("imageFile",imageFile);
+        const formdata = new FormData();
+
+        formdata.append("s3upload",imageFile);
+        formdata.append("clothesSaveRequestDto", blob);
 
 
-        dispatch(action.saveClothes({clothesSaveRequestDto,s3upload}));
+        dispatch(action.saveClothes(formdata));
         
     }
 
@@ -128,7 +133,10 @@ const CLOSETRegist = () => {
                     </div>
 
                     {/* 파일선택 */}
-                    {state.mode===1 || state.mode===3?<input className={`${closetRegistStyle.selectFile}`} type="file" accept="image/*" ref={inputRef} onChange={(e)=>{onUploadImage(e.target.files[0])}} />:null}
+                    {state.mode===1 || state.mode===3?
+                    <form id="formElem" enctype="multipart/form-data">
+                        <input className={`${closetRegistStyle.selectFile}`} type="file" accept="image/*" ref={inputRef} onChange={(e)=>{onUploadImage(e.target.files[0])}} />
+                    </form>:null}
 
                     {/* input */}
                     <div>
