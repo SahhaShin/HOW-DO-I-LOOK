@@ -55,7 +55,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 // Header에 AccessToken / RefreshToken 담기
 //                jwtService.sendAccessAndRefreshToken(httpServletResponse, accessToken, refreshToken);
                 // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
-                httpServletResponse.sendRedirect("oauth2/sign-up"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
+                httpServletResponse.sendRedirect("auth2/sign-up"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
 
                 Optional<User> findUser = userRepository.findByEmail(oAuth2User.getEmail());
 
@@ -78,7 +78,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         }
     }
 
-    private void loginSuccess(HttpServletResponse httpServletResponse, CustomOAuth2User oAuth2User) {
+    private void loginSuccess(HttpServletResponse httpServletResponse, CustomOAuth2User oAuth2User) throws IOException {
         String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
         String refreshToken = jwtService.createRefreshToken();
 
@@ -90,6 +90,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         access = accessToken;
         refresh = refreshToken;
+
+        httpServletResponse.sendRedirect("/");
     }
 
     public Map<String, String> socialLoginSuccessAndSendTokenToFront() {
