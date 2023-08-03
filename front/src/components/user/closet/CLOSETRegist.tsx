@@ -8,7 +8,7 @@ import { useSelector, useDispatch} from "react-redux";
 import {action, changeModalOpen} from "../../../store/ClosetSlice";
 import { type } from 'os';
 
-const CLOSETRegist = () => {
+const CLOSETRegist = (props) => {
 
     //redux 관리
     let state = useSelector((state:any)=>state.closet);

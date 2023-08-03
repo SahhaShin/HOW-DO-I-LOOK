@@ -14,6 +14,7 @@ import CLOSETMenu from "../../../components/user/closet/CLOSETMenu";
 import CLOSETSlot from "../../../components/user/closet/CLOSETSlot";
 import Pagination from "../../../components/util/Pagination";
 import CLOSETRegist from "../../../components/user/closet/CLOSETRegist";
+import { Console } from "console";
 
 
 
@@ -25,10 +26,22 @@ const Closet = () => {
     let dispatch = useDispatch();
 
     // 페이지네이션, 옷 관리
-    let clothesListType = state.clothesListByType?.length;
+    let clothesListLen = state.clothesTop?.length;
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(state.page);
     const offset = (page - 1) * limit;
+
+    if(state.clothesTypeKo==="상의"){
+        clothesListLen = state.clothesTop?.length;
+    }else if(state.clothesTypeKo==="하의"){
+        clothesListLen = state.clothesBottom?.length;
+    }else if(state.clothesTypeKo==="신발"){
+        clothesListLen = state.clothesShoe?.length;
+    }else if(state.clothesTypeKo==="악세서리"){
+        clothesListLen = state.clothesAccessory?.length;
+    }else if(state.clothesTypeKo==="전체"){
+        clothesListLen = state.clothesAll?.length;
+    }
 
     //상의 하의 신발 악세서리 전체에 따른 옷 요청을 위한 변수들
     let selectType = {
@@ -39,7 +52,7 @@ const Closet = () => {
 
     // 화면 초기값 백엔드(api)에 요청
     useEffect(()=>{
-        
+        console.log(`1`);
         // closet 영역 초기 셋팅은 top
         dispatch(action.getClothesListByType(selectType));
 
@@ -50,32 +63,43 @@ const Closet = () => {
             userId:1,
         }));
 
-        dispatch(action.getClothesListByType({
-            clothesType: "BOTTOM",
-            pageNum : 0,
-            userId:1,
-        }));
-
-        dispatch(action.getClothesListByType({
-            clothesType: "SHOE",
-            pageNum : 0,
-            userId:1,
-        }));
-
-        dispatch(action.getClothesListByType({
-            clothesType: "ACCESSORY",
-            pageNum : 0,
-            userId:1,
-        }));
-
-        dispatch(action.getClothesListByType({
-            clothesType: "ALL",
-            pageNum : 0,
-            userId:1,
-        }));
-        // dispatch(action.getOOTDList(init.userId));
-        // console.log("getOOTDList load");
     },[])
+
+    useEffect(()=>{
+        console.log(`2`);
+        if(state.clothesTypeKo==="상의"){
+            dispatch(action.getClothesListByType({
+                clothesType: "TOP",
+                pageNum : 0,
+                userId:1,
+            }));
+        }
+
+
+        else if(state.clothesTypeKo==="하의"){
+            dispatch(action.getClothesListByType({
+                clothesType: "BOTTOM",
+                pageNum : 0,
+                userId:1,
+            }));
+        }
+
+        else if(state.clothesTypeKo==="신발"){
+            dispatch(action.getClothesListByType({
+                clothesType: "SHOE",
+                pageNum : 0,
+                userId:1,
+            }));
+        }
+
+        else if(state.clothesTypeKo==="전체"){
+            dispatch(action.getClothesListByType({
+                clothesType: "ALL",
+                pageNum : 0,
+                userId:1,
+            }));
+        }
+    },[state.clothesTypeKo])
 
 
     return(
@@ -107,18 +131,26 @@ const Closet = () => {
                         {/* 옷장 */}
                         <div className={`${closetStyle.closetList}`}>
                             {
-                                state.clothesListByType.length!==0?
-                                state.clothesListByType.map(()=>{
-                                    <CLOSETSlot/>
-                                }):
-                                <div className={`${closetStyle.noItem}`}>추가된 {state.clothesTypeKo} 이미지가 없습니다.</div>
-                            }
+                                state.clothesTypeKo==="상의" && state.clothesTop?.length!==0?state.clothesTop?.map((one, idx)=>
+                                    <CLOSETSlot key={idx} idx={idx}/>
+                                ):
+                                (state.clothesTypeKo==="하의" && state.clothesBottom?.length!==0?state.clothesBottom?.map((one, idx)=>
+                                    <CLOSETSlot key={idx} idx={idx}/>
+                                ):(state.clothesTypeKo==="신발" && state.clothesShoe?.length!==0?state.clothesShoe?.map((one, idx)=>
+                                    <CLOSETSlot key={idx} idx={idx}/>
+                                ):(state.clothesTypeKo==="악세서리" && state.clothesShoe?.length!==0?state.clothesAccessory?.map((one, idx)=>
+                                    <CLOSETSlot key={idx} idx={idx}/>
+                                ):(state.clothesTypeKo==="전체" && state.clothesAll?state.clothesAll?.map((one,idx)=>
+                                    <CLOSETSlot key={idx} idx={idx}/>
+                                ):<div className={`${closetStyle.noItem}`}>추가된 {state.clothesTypeKo} 이미지가 없습니다.</div>))))
+
+                            }   
                         </div>
 
                         {/* 페이지네이션 20을 {clothes.length}로 바꿔야 함 */}
                         <div className={`${closetStyle.paginationContainer}`}>
-                            {clothesListType!==0?<Pagination
-                                total={clothesListType}
+                            {clothesListLen!==0?<Pagination
+                                total={clothesListLen}
                                 limit={limit}
                                 page={page}
                                 setPage={setPage}

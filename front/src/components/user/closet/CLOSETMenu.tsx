@@ -5,7 +5,7 @@ import closetMenuStyle from './CLOSETMenu.module.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeClothesType} from "../../../store/ClosetSlice";
+import {action, changeClothesType} from "../../../store/ClosetSlice";
 
 const NavigationBar: React.FC = () => {
 
@@ -24,11 +24,23 @@ const NavigationBar: React.FC = () => {
 
   const menuItems = ['상의', '하의', '신발', '악세서리', '전체'];
 
+  // 다른 메뉴를 선택하면 그 메뉴에 맞는 분류의 옷들 가져오기
+  //여기서는 초기 화면은 0부터 시작
+
+  //상의 하의 신발 악세서리 전체에 따른 옷 요청을 위한 변수들
+  function getClothes(){
+    dispatch(action.getClothesListByType({
+      clothesType: state.clothesTypeEn,
+      pageNum : 0,
+      userId:1,
+    }));
+  }
+
   return (
     <div className={`${closetMenuStyle.navbarContainer}`}>
       <div className={`${closetMenuStyle.navbar}`}>
         {menuItems.map((menuItem, index) => (
-          <button key={index} onClick={() => {handleMenuClick(index); dispatch(changeClothesType(menuItem))}}>
+          <button key={index} onClick={() => {handleMenuClick(index); dispatch(changeClothesType(menuItem));getClothes();}}>
             {menuItem}
           </button>
         ))}
