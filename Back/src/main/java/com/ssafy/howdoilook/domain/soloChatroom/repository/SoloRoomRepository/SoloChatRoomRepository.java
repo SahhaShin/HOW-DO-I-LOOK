@@ -11,12 +11,6 @@ import java.util.Optional;
 
 public interface SoloChatRoomRepository extends JpaRepository<SoloChatRoom,Long> {
 
-    /*
-    1. 아이디에 해당하는 모든 채팅방
-    2. 아이디 두개에 해당하는 채팅방이 있는지 확인
-    3. 아이디 두개에 해당하는 채팅방
-    */
-
     int countByUserAAndUserB(User userA, User userB);
 
     Optional<SoloChatRoom> findByUserAAndUserB(User userA, User userB);
