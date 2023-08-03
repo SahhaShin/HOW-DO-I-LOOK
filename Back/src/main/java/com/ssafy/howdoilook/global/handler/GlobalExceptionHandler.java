@@ -23,19 +23,19 @@ public class GlobalExceptionHandler {
 //                .body(exception.getMessage());
 //    }
 
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public ResponseEntity<String> handleEmptyResultData(EmptyResultDataAccessException exception){
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(exception.getMessage());
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception){
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(exception.getMessage());
-    }
+//    @ExceptionHandler(EmptyResultDataAccessException.class)
+//    public ResponseEntity<String> handleEmptyResultData(EmptyResultDataAccessException exception){
+//        return ResponseEntity
+//                .status(HttpStatus.NOT_FOUND)
+//                .body(exception.getMessage());
+//    }
+//
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception){
+//        return ResponseEntity
+//                .status(HttpStatus.BAD_REQUEST)
+//                .body(exception.getMessage());
+//    }
 
 //    // S3 이미지 업로드 실패 예외 핸들러
 //    @ExceptionHandler(RuntimeException.class)

@@ -5,7 +5,9 @@ import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import com.ssafy.howdoilook.domain.clothes.entity.QClothes;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.QClothesOotd;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.SlotType;
+import com.ssafy.howdoilook.domain.ootd.dto.response.ClothesAllTypeListDto;
 import com.ssafy.howdoilook.domain.ootd.dto.response.ClothesTypeListDto;
+import com.ssafy.howdoilook.domain.ootd.dto.response.QClothesAllTypeListDto;
 import com.ssafy.howdoilook.domain.ootd.dto.response.QClothesTypeListDto;
 
 import javax.persistence.EntityManager;
@@ -55,5 +57,18 @@ public class OotdCustomRepositoryImpl implements OotdCustomRepository {
                  .fetch();
 
         return ootdList;
+    }
+
+    @Override
+    public List<ClothesAllTypeListDto> findByTypeAndUser_Id(ClothesType type, Long userId) {
+
+        List<ClothesAllTypeListDto> ootdList = jpaQueryFactory.select(new QClothesAllTypeListDto(
+                c.clothes.id, c.photoLink))
+                .from(c)
+                .where(c.type.eq(type), c.user.id.eq(userId))
+                .fetch();
+
+        return ootdList;
+
     }
 }

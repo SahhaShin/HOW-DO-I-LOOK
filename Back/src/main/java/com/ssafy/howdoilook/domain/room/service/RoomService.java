@@ -185,7 +185,7 @@ public class RoomService {
     }
 
     @Transactional
-    public Long endRoom(Long roomId, UserDetails userDetails) throws AccessException {
+    public void endRoom(Long roomId, UserDetails userDetails) throws AccessException {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
 
@@ -203,7 +203,5 @@ public class RoomService {
         for(RoomUser roomUser : roomUsers) {
             roomUser.updateStatus(RoomUserType.valueOf("EXIT"));
         }
-
-        return room.getId();
     }
 }

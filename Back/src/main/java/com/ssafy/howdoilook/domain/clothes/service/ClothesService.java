@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.expression.AccessException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,9 +34,14 @@ public class ClothesService {
     private final ImageService imageService;
 
     @Transactional
-    public Long saveClothes(ClothesSaveRequestDto clothesSaveRequestDto) {
+    public Long saveClothes(ClothesSaveRequestDto clothesSaveRequestDto, UserDetails userDetails) throws AccessException {
+        String clientEmail = userDetails.getUsername();
         User user = userRepository.findById(clothesSaveRequestDto.getUserId())
-                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 User 입니다.",1));
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         Clothes clothes = Clothes.builder()
                 .user(user)
@@ -52,29 +59,53 @@ public class ClothesService {
     }
 
     @Transactional
-    public Long updateClothes(Long clothesId, ClothesUpdateDto clothesUpdateDto, MultipartFile multipartFile) throws IOException {
+    public Long updateClothes(Long clothesId, ClothesUpdateDto clothesUpdateDto, UserDetails userDetails) throws IOException, AccessException {
 
         Clothes findClothes = clothesRepository.findById(clothesId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 옷이 존재하지 않습니다.", 1));
 
-        clothesUpdateDto.setPhotoLink(imageService.updateImage(clothesUpdateDto.getPhotoLink(), multipartFile));
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(findClothes.getUser().getId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+        // 이미지는 수정 못하도록 함
+//        clothesUpdateDto.setPhotoLink(imageService.updateImage(clothesUpdateDto.getPhotoLink(), multipartFile));
 
         return findClothes.update(clothesUpdateDto);
 
     }
 
     @Transactional
-    public Long deleteClothes(Long clothesId) {
+    public void deleteClothes(Long clothesId, UserDetails userDetails) throws AccessException {
 
         Clothes findClothes = clothesRepository.findById(clothesId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 옷이 존재하지 않습니다."));
 
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(findClothes.getUser().getId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         imageService.deleteImage(findClothes.getPhotoLink());
         clothesRepository.deleteById(clothesId);
-        return clothesId;
     }
 
-    public List<ClothesListResponseDto> findClothesList(String type, Long userId, int page) {
+    public List<ClothesListResponseDto> findClothesList(String type, Long userId, int page, UserDetails userDetails) throws AccessException {
+
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         List<ClothesListResponseDto> findClothesListResponseDtoList = new ArrayList<>();
         PageRequest pageRequest = PageRequest.of(page, 8);
@@ -99,9 +130,17 @@ public class ClothesService {
         return findClothesListResponseDtoList;
     }
 
-    public ClothesDetailResponseDto findClothesDetail(Long clothesId) {
+    public ClothesDetailResponseDto findClothesDetail(Long clothesId, UserDetails userDetails) throws AccessException {
         Clothes clothes = clothesRepository.findById(clothesId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 옷이 존재하지 않습니다", 1));
+
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(clothes.getUser().getId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         ClothesDetailResponseDto clothesDetailResponseDto = ClothesDetailResponseDto.builder()
                 .type(String.valueOf(clothes.getType()))

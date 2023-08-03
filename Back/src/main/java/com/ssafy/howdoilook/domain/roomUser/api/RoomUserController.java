@@ -1,7 +1,6 @@
 package com.ssafy.howdoilook.domain.roomUser.api;
 
-import com.ssafy.howdoilook.domain.roomUser.dto.request.RoomUserAddRequestDto;
-import com.ssafy.howdoilook.domain.roomUser.dto.request.RoomUserUpdateRequestDto;
+import com.ssafy.howdoilook.domain.roomUser.dto.response.RoomUserAddResponseDto;
 import com.ssafy.howdoilook.domain.roomUser.service.RoomUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.expression.AccessException;
@@ -19,19 +18,27 @@ public class RoomUserController {
     private final RoomUserService roomUserService;
 
     @PostMapping("")
-    public ResponseEntity<Long> addRoomUser(@RequestBody RoomUserAddRequestDto roomUserAddRequest,
-                                         @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
-        return ResponseEntity.status(HttpStatus.OK).body(roomUserService.addRoomUser(roomUserAddRequest, userDetails));
+    public ResponseEntity<RoomUserAddResponseDto> addRoomUser(@RequestParam(value = "userId") Long userId,
+                                                              @RequestParam(value = "roomId") Long roomId,
+                                                              @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomUserService.addRoomUser(userId, roomId, userDetails));
     }
 
-    @PutMapping("")
-    public ResponseEntity<?> exitRoomUser(@RequestBody RoomUserUpdateRequestDto roomUserUpdateRequest) {
-        return ResponseEntity.ok().body(roomUserService.updateRoomUser(roomUserUpdateRequest));
+    @DeleteMapping("")
+    public ResponseEntity<?> exitRoomUser(@RequestParam(value = "userId") Long userId,
+                                          @RequestParam(value = "roomId") Long roomId,
+                                          @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
+
+        roomUserService.updateRoomUser(userId, roomId, userDetails);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 
-    @PutMapping("/kick")
+    @DeleteMapping("/kick")
     public ResponseEntity<?> kickRoomUser(@RequestParam(value = "userId") Long userId,
                                           @RequestParam(value = "roomId") Long roomId) {
-        return ResponseEntity.ok().body(roomUserService.kickRoomUser(userId, roomId));
+
+        roomUserService.kickRoomUser(userId, roomId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 }

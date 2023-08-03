@@ -25,14 +25,14 @@ public class RoomController {
     public ResponseEntity<Long> addRoom(@RequestBody RoomAddRequestDto roomAddRequestDto,
                                         @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
 
-        return ResponseEntity.status(HttpStatus.OK).body(roomService.addRoom(roomAddRequestDto, userDetails));
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomService.addRoom(roomAddRequestDto, userDetails));
     }
 
     @PutMapping("/{roomId}")
     public ResponseEntity<Long> updateRoom(@PathVariable("roomId") Long roomId, @RequestBody RoomUpdateRequestDto roomUpdateRequestDto,
                                            @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
 
-        return ResponseEntity.status(HttpStatus.OK).body(roomService.updateRoom(roomId, roomUpdateRequestDto, userDetails));
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomService.updateRoom(roomId, roomUpdateRequestDto, userDetails));
     }
 
     @GetMapping("/list/all")
@@ -59,8 +59,9 @@ public class RoomController {
     }
 
     @DeleteMapping("/end/{roomId}")
-    public ResponseEntity<Long> endRoom(@PathVariable("roomId") Long roomId, @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
+    public ResponseEntity<?> endRoom(@PathVariable("roomId") Long roomId, @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
 
-        return ResponseEntity.status(HttpStatus.OK).body(roomService.endRoom(roomId, userDetails));
+        roomService.endRoom(roomId, userDetails);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 }

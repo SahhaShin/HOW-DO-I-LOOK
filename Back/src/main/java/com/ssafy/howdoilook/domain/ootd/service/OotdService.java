@@ -1,12 +1,14 @@
 package com.ssafy.howdoilook.domain.ootd.service;
 
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
+import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.ClothesOotd;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.SlotType;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.SlotTypeInterface;
 import com.ssafy.howdoilook.domain.clothesOotd.repository.ClothesOotdRepository;
 import com.ssafy.howdoilook.domain.ootd.dto.request.OotdSaveRequestDto;
+import com.ssafy.howdoilook.domain.ootd.dto.response.ClothesAllTypeListDto;
 import com.ssafy.howdoilook.domain.ootd.dto.response.ClothesTypeListDto;
 import com.ssafy.howdoilook.domain.ootd.dto.response.GetOotdListDto;
 import com.ssafy.howdoilook.domain.ootd.entity.Ootd;
@@ -15,6 +17,8 @@ import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.expression.AccessException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +38,14 @@ public class OotdService {
     private final ClothesOotdRepository clothesOotdRepository;
 
     @Transactional
-    public Long saveOotd(OotdSaveRequestDto ootdSaveRequestDto) {
+    public Long saveOotd(OotdSaveRequestDto ootdSaveRequestDto, UserDetails userDetails) throws AccessException {
+        String clientEmail = userDetails.getUsername();
         User user = userRepository.findById(ootdSaveRequestDto.getUserId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         Optional<Ootd> findOotd = ootdRepository.findByUser_IdAndOrder(ootdSaveRequestDto.getUserId(), ootdSaveRequestDto.getOrder());
 
@@ -56,29 +65,28 @@ public class OotdService {
             saveClothesOotd(ootd, ootdSaveRequestDto.getSlotId(slotType.getSlotType()), slotType.getSlotType());
         }
 
-        /**
-         * 모든 슬롯이 다 채워져 있지 않을 수 있으니까 그 때 예외 처리 필요
-         */
-
         return ootd.getId();
 
     }
 
     private void updateClothesOotd(Ootd findOotd, SlotTypeInterface slotType, OotdSaveRequestDto ootdSaveRequestDto) {
-        List<ClothesOotd> findClothesOotdList = clothesOotdRepository.findByOotd_IdAndType(findOotd.getId(), slotType.getSlotType());
+        Optional<ClothesOotd> findClothesOotd = clothesOotdRepository.findByOotd_IdAndType(findOotd.getId(), slotType.getSlotType());
 
-        if (findClothesOotdList.isEmpty()) {
-            saveClothesOotd(findOotd, ootdSaveRequestDto.getSlotId(slotType.getSlotType()), slotType.getSlotType());
+        Long slotId = ootdSaveRequestDto.getSlotId(slotType.getSlotType());
+
+        if(slotId == null) {
+            throw new IllegalStateException("슬롯에 빈칸이 들어올 수는 없습니다.");
+        }
+
+        if (findClothesOotd.isEmpty()) {
+            saveClothesOotd(findOotd, slotId, slotType.getSlotType());
         } else {
-            findClothesOotdList.get(0).update(clothesRepository.findById(ootdSaveRequestDto.getSlotId(slotType.getSlotType()))
+            findClothesOotd.get().update(clothesRepository.findById(slotId)
                     .orElseThrow(() -> new EmptyResultDataAccessException("해당 옷이 존재하지 않습니다.", 1)));
         }
     }
 
     private void saveClothesOotd(Ootd ootd, Long clothesId, SlotType type) {
-        if (clothesId == null) {
-            return; // ID 값이 null이면 메서드 종료
-        }
 
         Clothes clothes = clothesRepository.findById(clothesId).orElse(null);
 
@@ -99,13 +107,19 @@ public class OotdService {
         List<GetOotdListDto> ootds = new ArrayList<>();
         List<Ootd> findOotds = ootdRepository.findByUser_Id(userId);
 
-        for(int i = 0; i < findOotds.size(); i++) {
-            Ootd ootd = ootdRepository.findByUser_IdAndOrder(userId, i+1).orElse(null);
-            if (ootd != null) {
+        for(int i = 1; i <= findOotds.size(); i++) {
+            Ootd ootd = ootdRepository.findByUser_IdAndOrder(userId, i).orElse(null);
+            if (ootd == null) {
+                List<ClothesAllTypeListDto> topsList = ootdRepository.findByTypeAndUser_Id(ClothesType.TOP, userId);
+                List<ClothesAllTypeListDto> bottomsList = ootdRepository.findByTypeAndUser_Id(ClothesType.BOTTOM, userId);
+                List<ClothesAllTypeListDto> shoesList = ootdRepository.findByTypeAndUser_Id(ClothesType.SHOE, userId);
+                List<ClothesAllTypeListDto> accessories1List = ootdRepository.findByTypeAndUser_Id(ClothesType.ACCESSORY, userId);
+                List<ClothesAllTypeListDto> accessories2List = ootdRepository.findByTypeAndUser_Id(ClothesType.ACCESSORY, userId);
+                List<ClothesAllTypeListDto> accessories3List = ootdRepository.findByTypeAndUser_Id(ClothesType.ACCESSORY, userId);
                 continue;
             }
             Long ootdId = ootd.getId();
-            Integer order = i+1;
+            Integer order = i;
 
             List<ClothesTypeListDto> topsList = findClothesByType(userId, ootdId, SlotType.TOP, "TOP");
             List<ClothesTypeListDto> bottomsList = findClothesByType(userId, ootdId, SlotType.BOTTOM, "BOTTOM");
