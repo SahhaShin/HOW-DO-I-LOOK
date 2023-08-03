@@ -60,7 +60,7 @@ const CLOSETRegist = () => {
         { value: "TOP", name: "상의" },
         { value: "BOTTOM", name: "하의" },
         { value: "SHOES", name: "신발" },
-        { value: "ACCESSOTY", name: "악세서리" },
+        { value: "ACCESSORY", name: "악세서리" },
     ];   
 
     const [selected, setSelected] = useState<string>("TOP");//선택된 값을 저장
@@ -101,13 +101,13 @@ const CLOSETRegist = () => {
             info:specialContent,
         }
 
-        const blob = new Blob([JSON.stringify(clothesSaveRequestDto)], {type:"application/json"});
+        // const blob = new Blob([JSON.stringify(clothesSaveRequestDto)], {type:"application/json"});
 
         // 이미지 폼데이터로 저장
         const formdata = new FormData();
 
         formdata.append("s3upload",imageFile);
-        formdata.append("clothesSaveRequestDto", blob);
+        formdata.append("clothesSaveRequestDto", new Blob([JSON.stringify(clothesSaveRequestDto)],{ type: "application/json" }));
 
 
         dispatch(action.saveClothes(formdata));

@@ -35,23 +35,19 @@ export const action = {
             console.log(e);
         })
     }),
-    saveClothes : createAsyncThunk("ClosetSlice/saveClothes", async({formdata}, thunkAPI)=>{
-        return await axios({
-            method: "post",
-            url:process.env.REACT_APP_SERVER+"/api/clothes",
-            data:formdata,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                // 'Content-Type' : 'application/json'
-            },
-        }).then(response => {
-            console.log(response.data);
-            alert("옷이 등록되었습니다.");
-            return response.data;
-        }).catch((e)=>{
-            console.log(e);
-        });
-    }),
+    // 성공데이터
+    saveClothes : createAsyncThunk("ClosetSlice/saveClothes", async(formdata, thunkAPI)=>{
+
+        await axios.post(`${process.env.REACT_APP_SERVER}/api/clothes`, formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+            // "Content-Type": "application/json",
+
+        }
+      }).then((res)=>{
+        console.log(res);
+      })
+    })
 }
 
 
