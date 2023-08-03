@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 public class FeedLikeController {
 
     private final FeedLikeService feedLikeService;
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Long> saveFeedLike(@RequestBody FeedLikeSaveRequestDto feedLikeSaveRequestDto){
         Long id = feedLikeService.saveFeedLike(feedLikeSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("")
     public ResponseEntity<?> deleteFeedLike(@RequestBody FeedLikeDeleteRequestDto feedLikeDeleteRequestDto){
         feedLikeService.deleteFeedLike(feedLikeDeleteRequestDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
@@ -33,7 +33,7 @@ public class FeedLikeController {
      * @param feedId
      * @return
      */
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<FeedLikeCheckResponseDto> checkFeedLike(@RequestParam(name = "userId")Long userId, @RequestParam(name = "feedId")Long feedId){
         FeedLikeCheckResponseDto feedLikeCheckResponseDto = feedLikeService.checkFeedLike(userId, feedId);
         return ResponseEntity.status(HttpStatus.OK).body(feedLikeCheckResponseDto);

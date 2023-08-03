@@ -6,16 +6,20 @@ import com.ssafy.howdoilook.domain.alarm.entity.Alarm;
 import com.ssafy.howdoilook.domain.alarm.repository.AlarmRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.handler.AccessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +46,16 @@ public class AlarmService {
         alarmRepository.save(alarm);
         return alarm.getId();
     }
-    public Page<AlarmResponseDto> selectAlarmByUserId(Long userId, Pageable pageable){
+    public Page<AlarmResponseDto> selectAlarmByUserId(Long userId, UserDetails userDetails , Pageable pageable){
+
+        String clientEmail = userDetails.getUsername();
+        User findUser = userRepository.findById(userId).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.", 1));
+
+        if (!clientEmail.equals(findUser.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         Page<Alarm> alarms = alarmRepository.selectAlarmByUserId(userId, pageable);
         List<Alarm> content = alarms.getContent();
 

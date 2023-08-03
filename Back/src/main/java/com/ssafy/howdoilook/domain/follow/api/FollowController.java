@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class FollowController {
     private final FollowService followService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Long> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto){
         Long id = followService.saveFollow(followSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
-    @DeleteMapping("/")
+    @DeleteMapping("")
     public ResponseEntity<?> deleteFollow(@RequestBody FollowDeleteRequestDto followDeleteRequestDto){
         followService.deleteFollow(followDeleteRequestDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");

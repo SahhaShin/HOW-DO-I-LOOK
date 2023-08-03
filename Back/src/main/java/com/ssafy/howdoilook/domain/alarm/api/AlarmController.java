@@ -1,6 +1,6 @@
 package com.ssafy.howdoilook.domain.alarm.api;
 
-import com.amazonaws.Response;
+
 import com.ssafy.howdoilook.domain.alarm.dto.request.AlarmSaveRequestDto;
 import com.ssafy.howdoilook.domain.alarm.dto.response.AlarmResponseDto;
 import com.ssafy.howdoilook.domain.alarm.service.AlarmService;
@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,11 +22,11 @@ public class AlarmController {
     private final AlarmService alarmService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Page<AlarmResponseDto>> selectAlarm(@PathVariable(name = "userId") Long userId, Pageable pageable){
-        Page<AlarmResponseDto> alarmResponseDtoList = alarmService.selectAlarmByUserId(userId, pageable);
+    public ResponseEntity<Page<AlarmResponseDto>> selectAlarm(@PathVariable(name = "userId") Long userId, @AuthenticationPrincipal UserDetails userDetails, Pageable pageable){
+        Page<AlarmResponseDto> alarmResponseDtoList = alarmService.selectAlarmByUserId(userId,userDetails,pageable);
         return ResponseEntity.ok().body(alarmResponseDtoList);
     }
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Long> saveAlarm(@RequestBody AlarmSaveRequestDto alarmSaveRequestDto){
         Long id = alarmService.saveAlarm(alarmSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
@@ -39,5 +41,6 @@ public class AlarmController {
         alarmService.deleteAlarm(alarmId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
+
 
 }
