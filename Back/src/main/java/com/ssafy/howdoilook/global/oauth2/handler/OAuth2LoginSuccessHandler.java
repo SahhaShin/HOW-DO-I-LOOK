@@ -55,6 +55,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 // Header에 AccessToken / RefreshToken 담기
 //                jwtService.sendAccessAndRefreshToken(httpServletResponse, accessToken, refreshToken);
                 // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
+
                 httpServletResponse.sendRedirect("http://localhost:3000/auth2/sign-up"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
 //                httpServletResponse.sendRedirect("https://i9b304.p.ssafy.io/auth2/sign-up");
 
@@ -93,7 +94,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         refresh = refreshToken;
 
         httpServletResponse.sendRedirect("http://localhost:3000");
-        httpServletResponse.sendRedirect("https://i9b304.p.ssafy.io");
+//        httpServletResponse.sendRedirect("https://i9b304.p.ssafy.io");
     }
 
     public Map<String, String> socialLoginSuccessAndSendTokenToFront() {
