@@ -10,10 +10,10 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 * */
 
 @Configuration
-public class EncodingFilter {
+public class EncodingFilterConfig {
 
     @Bean
-    public FilterRegistrationBean<CharacterEncodingFilter> characterEncodingFilter() {
+    public FilterRegistrationBean<CharacterEncodingFilter> utf8encodingFilter() {
         FilterRegistrationBean<CharacterEncodingFilter> registrationBean = new FilterRegistrationBean<>();
 
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
