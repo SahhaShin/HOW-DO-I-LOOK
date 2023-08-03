@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -37,15 +38,13 @@ public class FeedController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Long> saveFeed(@RequestBody FeedSaveRequestDto feedSaveRequestDto){
-        System.out.println("feedSaveRequestDto = " + feedSaveRequestDto);
-        Long id = feedService.saveFeed(feedSaveRequestDto);
+    public ResponseEntity<Long> saveFeed(@RequestPart FeedSaveRequestDto feedSaveRequestDto, @RequestPart("s3upload") List<MultipartFile> multipartFileList){
+        Long id = feedService.saveFeed(feedSaveRequestDto,multipartFileList);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
     @PutMapping("/")
     public ResponseEntity<Long> updateFeed(@RequestBody FeedUpdateRequestDto feedUpdateRequestDto){
-        System.out.println("feedUpdateRequestDto = " + feedUpdateRequestDto);
         Long id = feedService.updateFeed(feedUpdateRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
