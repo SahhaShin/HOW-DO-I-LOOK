@@ -3,11 +3,11 @@ import axios from "axios";
 
 // axios
 export const action = {
-    // 초기 api
+    // 옷 분야별 리스트 O
     getClothesListByType : createAsyncThunk(`ClosetSlice/getClothesListByType`, async({clothesType, userId, pageNum}:ClothesListByTypeReq,thunkAPI)=>{
         return await axios({
             method: "get",
-            url:`http://localhost:8081/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,
+            url:`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,
            
         }).then(response=>{
             let result = {
@@ -19,10 +19,12 @@ export const action = {
             console.log(e);
         })
     }),
+
+    //OOTD X
     OOTDSave: createAsyncThunk("ClosetSlice/OOTDSave",async ({userId, order, slotIds}:saveOOTD,thunkAPI) => {
         return await axios({
             method: "post",
-            url:`http://localhost:8081/api/ootd`,
+            url:`${process.env.REACT_APP_SERVER}/api/ootd`,
             data:{
                 userId: userId,
                 order: order,
@@ -35,19 +37,55 @@ export const action = {
             console.log(e);
         })
     }),
-    // 성공데이터
+    // 새로운 옷 등록 O
     saveClothes : createAsyncThunk("ClosetSlice/saveClothes", async(formdata, thunkAPI)=>{
 
         await axios.post(`${process.env.REACT_APP_SERVER}/api/clothes`, formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
-            // "Content-Type": "application/json",
-
         }
       }).then((res)=>{
         console.log(res);
       })
-    })
+    }),
+
+    //특정 옷 정보 가져오기 O
+    getClothInfo : createAsyncThunk("ClosetSlice/getClothInfo", async(clothesId, thunkAPI)=>{
+
+        try{
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/detail/${clothesId}`);
+            console.log(response.data);
+            return response.data; // 액션의 payload로 값을 반환해야 합니다.
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }),
+
+    //특정 옷 수정하기 X -> 이미지는 수정 안되는 걸로
+    updateClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async(clothesId, thunkAPI)=>{
+
+        // try{
+        //     const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`);
+        //     console.log(response.data);
+        //     return response.data; // 액션의 payload로 값을 반환해야 합니다.
+        // } catch (e) {
+        //     console.log(e);
+        //     throw e;
+        // }
+    }), 
+
+    //특정 옷 삭제하기 X 
+    deleteClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async(clothesId, thunkAPI)=>{
+        try{
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`);
+            console.log("삭제완료");
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }), 
+
 }
 
 
@@ -76,6 +114,15 @@ interface saveClothes{ //request
         info:string,
     },
     s3upload:File,
+}
+
+//특정 옷 정보
+interface getClothes{
+    type:string,
+    photoLink:string,
+    name:string,
+    brand:string,
+    info:string
 }
 
 // 유저가 ootd를 등록하려고 입력한 정보들
@@ -108,7 +155,12 @@ interface closet{
     clothesShoe:ClothesListByTypeRes[],
     clothesAccessory:ClothesListByTypeRes[],
     clothesAll:ClothesListByTypeRes[],
-    newClothes? : saveClothes|null,
+
+    // 옷 id, link
+    clothesId : number,
+    clothesLink : string,
+
+    clothInfo? : getClothes|null,
 
     // 페이지네이션
     page:number,
@@ -128,7 +180,11 @@ const initialState:closet = {
     clothesShoe:[],
     clothesAccessory:[],
     clothesAll:[],
-    newClothes : null,
+
+    clothesId : 0,
+    clothesLink : "",
+
+    clothInfo : null,
     page:1,
 }
 
@@ -143,10 +199,6 @@ const ClosetSlice = createSlice({
 
         changeMode(state, action){
             state.mode = action.payload;
-        },
-        setNewClothes(state, action){
-            state.newClothes=action.payload;
-            
         },
         changeClothesType(state, action){
             state.clothesTypeKo=action.payload;
@@ -165,11 +217,16 @@ const ClosetSlice = createSlice({
         },
         changePage(state, action){
             state.page = action.payload;
+        },
+        changeClothesId(state, action){
+            state.clothesId = action.payload;
+        },
+        changeClothesLink(state, action){
+            state.clothesLink = action.payload;
         }
     },
     extraReducers:(builder) => {
-        builder
-        .addCase(action.getClothesListByType.fulfilled,(state,action)=>{
+        builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
             if(action.payload.type==="TOP"){
                 state.clothesTop=action.payload.content;
             }else if(action.payload.type==="BOTTOM"){
@@ -185,7 +242,12 @@ const ClosetSlice = createSlice({
 
             state.clothesListByType=action.payload.content;
         })
-        .addCase(action.saveClothes.fulfilled, (state, action) => {
+        builder.addCase(action.getClothInfo.fulfilled, (state, action) => {
+            //옷 특정 정보 결과
+            state.clothInfo=action.payload;
+            console.log(action);
+        })
+        builder.addCase(action.saveClothes.fulfilled, (state, action) => {
 
             //옷등록하고, 새로고침되면 all 옷들을 다 불러올텐데 구지 여기서 처리해줘야할까라는 의문
             //여기서 처리는 전체 옷 리스트에 추가된 옷을 넣어줘야 하냐이다.
@@ -193,5 +255,5 @@ const ClosetSlice = createSlice({
     }
 });
 
-export let {changeModalOpen, changeMode, setNewClothes,changeClothesType,changePage} = ClosetSlice.actions;
+export let {changeModalOpen, changeMode, setNewClothes,changeClothesType,changePage, changeClothesId, changeClothesLink} = ClosetSlice.actions;
 export default ClosetSlice.reducer;

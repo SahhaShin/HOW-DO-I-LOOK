@@ -14,7 +14,6 @@ import CLOSETMenu from "../../../components/user/closet/CLOSETMenu";
 import CLOSETSlot from "../../../components/user/closet/CLOSETSlot";
 import Pagination from "../../../components/util/Pagination";
 import CLOSETRegist from "../../../components/user/closet/CLOSETRegist";
-import { Console } from "console";
 
 
 
@@ -52,7 +51,6 @@ const Closet = () => {
 
     // 화면 초기값 백엔드(api)에 요청
     useEffect(()=>{
-        console.log(`1`);
         // closet 영역 초기 셋팅은 top
         dispatch(action.getClothesListByType(selectType));
 
@@ -66,7 +64,6 @@ const Closet = () => {
     },[])
 
     useEffect(()=>{
-        console.log(`2`);
         if(state.clothesTypeKo==="상의"){
             dispatch(action.getClothesListByType({
                 clothesType: "TOP",
@@ -99,8 +96,7 @@ const Closet = () => {
                 userId:1,
             }));
         }
-    },[state.clothesTypeKo])
-
+    },[state.clothesTypeKo, state.clothesTop, state.clothesBottom, state.clothesShoe, state.clothesAccessory, state.clothesAll])
 
     return(
         <>
@@ -132,16 +128,16 @@ const Closet = () => {
                         <div className={`${closetStyle.closetList}`}>
                             {
                                 state.clothesTypeKo==="상의" && state.clothesTop?.length!==0?state.clothesTop?.map((one, idx)=>
-                                    <CLOSETSlot key={idx} idx={idx}/>
+                                    <CLOSETSlot key={idx} one={one}/>
                                 ):
                                 (state.clothesTypeKo==="하의" && state.clothesBottom?.length!==0?state.clothesBottom?.map((one, idx)=>
-                                    <CLOSETSlot key={idx} idx={idx}/>
+                                    <CLOSETSlot key={idx} one={one}/>
                                 ):(state.clothesTypeKo==="신발" && state.clothesShoe?.length!==0?state.clothesShoe?.map((one, idx)=>
-                                    <CLOSETSlot key={idx} idx={idx}/>
+                                    <CLOSETSlot key={idx} one={one}/>
                                 ):(state.clothesTypeKo==="악세서리" && state.clothesShoe?.length!==0?state.clothesAccessory?.map((one, idx)=>
-                                    <CLOSETSlot key={idx} idx={idx}/>
-                                ):(state.clothesTypeKo==="전체" && state.clothesAll?state.clothesAll?.map((one,idx)=>
-                                    <CLOSETSlot key={idx} idx={idx}/>
+                                    <CLOSETSlot key={idx} one={one}/>
+                                ):(state.clothesTypeKo==="전체" && state.clothesAll.length!==0?state.clothesAll?.map((one,idx)=>
+                                    <CLOSETSlot key={idx} one={one}/>
                                 ):<div className={`${closetStyle.noItem}`}>추가된 {state.clothesTypeKo} 이미지가 없습니다.</div>))))
 
                             }   
@@ -179,7 +175,7 @@ const Closet = () => {
                 
             </div>
 
-            {/* 모달 영역 */}
+            {/* 모달 영역 - 정보보기(slot에서 옷 아이디가 날아옴->모달정보로 쏴줌)*/}
             {state.modalOpen?<div className={`${closetStyle.createModal}`}><CLOSETRegist/></div>:null}
             <div onClick={async()=>{dispatch(changeModalOpen(false))}} style={state.modalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"3000px", backgroundColor:"black", opacity:"0.6", marginTop:"-3000px"}:null}></div>
         
