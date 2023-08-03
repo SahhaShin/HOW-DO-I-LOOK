@@ -55,7 +55,7 @@ public class ClothesService {
     public Long updateClothes(Long clothesId, ClothesUpdateDto clothesUpdateDto, MultipartFile multipartFile) throws IOException {
 
         Clothes findClothes = clothesRepository.findById(clothesId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 옷이 존재하지 않습니다."));
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 옷이 존재하지 않습니다.", 1));
 
         clothesUpdateDto.setPhotoLink(imageService.updateImage(clothesUpdateDto.getPhotoLink(), multipartFile));
 
@@ -101,7 +101,7 @@ public class ClothesService {
 
     public ClothesDetailResponseDto findClothesDetail(Long clothesId) {
         Clothes clothes = clothesRepository.findById(clothesId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 옷이 존재하지 않습니다"));
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 옷이 존재하지 않습니다", 1));
 
         ClothesDetailResponseDto clothesDetailResponseDto = ClothesDetailResponseDto.builder()
                 .type(String.valueOf(clothes.getType()))

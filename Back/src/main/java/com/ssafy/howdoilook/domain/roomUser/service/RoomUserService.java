@@ -11,6 +11,9 @@ import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.expression.AccessException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +29,15 @@ public class RoomUserService {
     private final RoomRepository roomRepository;
 
     @Transactional
-    public Long addRoomUser(RoomUserAddRequestDto roomUserAddRequest) {
+    public Long addRoomUser(RoomUserAddRequestDto roomUserAddRequest, UserDetails userDetails) throws AccessException {
+
+        String clientEmail = userDetails.getUsername();
         User user = userRepository.findById(roomUserAddRequest.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         Room room = roomRepository.findById(roomUserAddRequest.getRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
@@ -41,7 +50,7 @@ public class RoomUserService {
             return -2L; // 성별 제한에 걸림
         }
 
-        RoomUser findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(room.getId(), user.getId()).orElse(null);;
+        RoomUser findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(room.getId(), user.getId()).orElse(null);
 
         if(findRoomUser.getStatus() == RoomUserType.KICK ) {
             return -4L;

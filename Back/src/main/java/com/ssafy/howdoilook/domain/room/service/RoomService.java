@@ -15,9 +15,12 @@ import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.expression.AccessException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,9 +38,14 @@ public class RoomService {
     private final RoomUserRepository roomUserRepository;
 
     @Transactional
-    public Long addRoom(RoomAddRequestDto roomAddRequestDto) {
+    public Long addRoom(RoomAddRequestDto roomAddRequestDto, UserDetails userDetails) throws AccessException {
+        String clientEmail = userDetails.getUsername();
         User user = userRepository.findById(roomAddRequestDto.getHostId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         Room room = Room.builder()
                 .code(roomAddRequestDto.getCode())
@@ -56,10 +64,18 @@ public class RoomService {
     }
 
     @Transactional
-    public Long updateRoom(Long roomId, RoomUpdateRequestDto roomUpdateRequestDto) {
+    public Long updateRoom(Long roomId, RoomUpdateRequestDto roomUpdateRequestDto, UserDetails userDetails) throws AccessException {
 
         Room findRoom = roomRepository.findById(roomId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 방이 존재하지 않습니다.", 1));
+
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(findRoom.getHost().getId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         return findRoom.update(roomUpdateRequestDto);
     }
@@ -127,13 +143,20 @@ public class RoomService {
 
     }
 
-    public List<RoomListResponseDto> getFollowingRoomList(String type, int page, Long userId, String search) {
+    public List<RoomListResponseDto> getFollowingRoomList(String type, int page, Long userId, String search, UserDetails userDetails) throws AccessException {
 
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         PageRequest pageRequest = PageRequest.of(page, 5, sort);
 
         User user = userRepository.findById(userId).orElseThrow(
-                ()->new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+                ()->new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다.", 1));
+
+        String clientEmail = userDetails.getUsername();
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         // 유저가 팔로잉 하고있는 팔로잉 유저 리스트
         List<Follow> followingList = user.getFollowerList();
 
@@ -162,9 +185,17 @@ public class RoomService {
     }
 
     @Transactional
-    public Long endRoom(Long roomId) {
+    public Long endRoom(Long roomId, UserDetails userDetails) throws AccessException {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(room.getHost().getId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         room.setEndedDate(LocalDateTime.now());
         List<RoomUser> roomUsers = roomUserRepository.findByRoom_Id(roomId);

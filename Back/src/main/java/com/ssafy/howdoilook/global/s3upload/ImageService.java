@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImageService {
 
-    private String S3Bucket = "howdobucket2"; // Bucket 이름
+    private String S3Bucket = "howdobucket"; // Bucket 이름
 
     @Autowired
     AmazonS3Client amazonS3Client;

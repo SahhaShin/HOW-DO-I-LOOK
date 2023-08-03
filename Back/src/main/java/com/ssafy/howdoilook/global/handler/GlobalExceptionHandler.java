@@ -16,12 +16,12 @@ public class GlobalExceptionHandler {
 //                .body(exception.getStackTrace());
 //    }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleOtherException(Exception exception){
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(exception.getMessage());
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<String> handleOtherException(Exception exception){
+//        return ResponseEntity
+//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                .body(exception.getMessage());
+//    }
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ResponseEntity<String> handleEmptyResultData(EmptyResultDataAccessException exception){

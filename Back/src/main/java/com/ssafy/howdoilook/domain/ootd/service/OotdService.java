@@ -14,11 +14,13 @@ import com.ssafy.howdoilook.domain.ootd.repository.OotdRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -34,16 +36,16 @@ public class OotdService {
     @Transactional
     public Long saveOotd(OotdSaveRequestDto ootdSaveRequestDto) {
         User user = userRepository.findById(ootdSaveRequestDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
-        List<Ootd> findOotd = ootdRepository.findByUser_IdAndOrder(ootdSaveRequestDto.getUserId(), ootdSaveRequestDto.getOrder());
+        Optional<Ootd> findOotd = ootdRepository.findByUser_IdAndOrder(ootdSaveRequestDto.getUserId(), ootdSaveRequestDto.getOrder());
 
-        if(!findOotd.isEmpty()){ // ootd가 등록된 적이 있는 경우
+        if(findOotd.isPresent()){ // ootd가 등록된 적이 있는 경우
             for (SlotTypeInterface slotType : SlotType.values()) {
-                updateClothesOotd(findOotd, slotType,ootdSaveRequestDto);
+                updateClothesOotd(findOotd.get(), slotType,ootdSaveRequestDto);
             }
 
-            return findOotd.get(0).getId();
+            return findOotd.get().getId();
         }
 
 
@@ -62,14 +64,14 @@ public class OotdService {
 
     }
 
-    private void updateClothesOotd(List<Ootd> findOotd, SlotTypeInterface slotType, OotdSaveRequestDto ootdSaveRequestDto) {
-        List<ClothesOotd> findClothesOotdList = clothesOotdRepository.findByOotd_IdAndType(findOotd.get(0).getId(), slotType.getSlotType());
+    private void updateClothesOotd(Ootd findOotd, SlotTypeInterface slotType, OotdSaveRequestDto ootdSaveRequestDto) {
+        List<ClothesOotd> findClothesOotdList = clothesOotdRepository.findByOotd_IdAndType(findOotd.getId(), slotType.getSlotType());
 
         if (findClothesOotdList.isEmpty()) {
-            saveClothesOotd(findOotd.get(0), ootdSaveRequestDto.getSlotId(slotType.getSlotType()), slotType.getSlotType());
+            saveClothesOotd(findOotd, ootdSaveRequestDto.getSlotId(slotType.getSlotType()), slotType.getSlotType());
         } else {
             findClothesOotdList.get(0).update(clothesRepository.findById(ootdSaveRequestDto.getSlotId(slotType.getSlotType()))
-                    .orElseThrow(() -> new IllegalArgumentException("해당 옷이 존재하지 않습니다.")));
+                    .orElseThrow(() -> new EmptyResultDataAccessException("해당 옷이 존재하지 않습니다.", 1)));
         }
     }
 
@@ -80,8 +82,6 @@ public class OotdService {
 
         Clothes clothes = clothesRepository.findById(clothesId).orElse(null);
 
-        System.out.println(clothes);
-
         if(clothes != null) {
             ClothesOotd clothesOotd = ClothesOotd.builder()
                     .ootd(ootd)
@@ -89,6 +89,8 @@ public class OotdService {
                     .type(type)
                     .build();
             clothesOotdRepository.save(clothesOotd);
+        } else {
+            throw new RuntimeException("해당 옷이 존재하지 않습니다.");
         }
     }
 
@@ -98,11 +100,11 @@ public class OotdService {
         List<Ootd> findOotds = ootdRepository.findByUser_Id(userId);
 
         for(int i = 0; i < findOotds.size(); i++) {
-            List<Ootd> ootd = ootdRepository.findByUser_IdAndOrder(userId, i+1);
-            if (ootd.isEmpty()) {
+            Ootd ootd = ootdRepository.findByUser_IdAndOrder(userId, i+1).orElse(null);
+            if (ootd != null) {
                 continue;
             }
-            Long ootdId = ootd.get(0).getId();
+            Long ootdId = ootd.getId();
             Integer order = i+1;
 
             List<ClothesTypeListDto> topsList = findClothesByType(userId, ootdId, SlotType.TOP, "TOP");
