@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
+// alert창
+import Swal from "sweetalert2";
+
 // axios
 export const action = {
     // 옷 분야별 리스트 O
@@ -31,7 +34,7 @@ export const action = {
                 slotIds,
             }
         }).then(response=>{
-            console.log(response.data);
+            // console.log(response.data);
             
         }).catch((e)=>{
             console.log(e);
@@ -45,7 +48,12 @@ export const action = {
           "Content-Type": "multipart/form-data",
         }
       }).then((res)=>{
-        console.log(res);
+        Swal.fire({
+            icon: 'success',
+            title: '등록 완료',
+            text: '옷이 성공적으로 등록되었습니다.',
+            confirmButtonColor: '#4570F5',
+        })
       })
     }),
 
@@ -54,7 +62,7 @@ export const action = {
 
         try{
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/detail/${clothesId}`);
-            console.log(response.data);
+            // console.log(response.data);
             return response.data; // 액션의 payload로 값을 반환해야 합니다.
         } catch (e) {
             console.log(e);
@@ -75,7 +83,7 @@ export const action = {
         // }
     }), 
 
-    //특정 옷 삭제하기 X 
+    //특정 옷 삭제하기 O
     deleteClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async(clothesId, thunkAPI)=>{
         try{
             const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`);
@@ -245,7 +253,7 @@ const ClosetSlice = createSlice({
         builder.addCase(action.getClothInfo.fulfilled, (state, action) => {
             //옷 특정 정보 결과
             state.clothInfo=action.payload;
-            console.log(action);
+            // console.log(action);
         })
         builder.addCase(action.saveClothes.fulfilled, (state, action) => {
 

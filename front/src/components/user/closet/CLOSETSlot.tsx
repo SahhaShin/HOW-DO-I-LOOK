@@ -7,6 +7,9 @@ import closetSlotStyle from "./CLOSETSlot.module.css";
 import { useSelector, useDispatch } from "react-redux"; 
 import {action,changeModalOpen, changeMode, changeClothesId, changeClothesLink} from "../../../store/ClosetSlice";
 
+// alert창
+import Swal from "sweetalert2";
+
 //closet 옷장 슬롯 1개 -> closet page에서 map돌려서 여러 개 뜨는 구조임
 const CLOSETSlot = (props) => {
 
@@ -29,7 +32,35 @@ const CLOSETSlot = (props) => {
 
     //옷 삭제
     function deleteCloth(){
-        dispatch(action.deleteClothInfo(props.one.clothesId));
+
+        Swal.fire({
+            icon: "question",
+            title: "삭제",
+            text: `삭제 하시겠습니까??`,
+            showCancelButton: true,
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소",
+            confirmButtonColor:'#4570F5',
+            customClass: {
+                confirmButton: closetSlotStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+                cancelButton: closetSlotStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+              }
+        }).then((res) => {
+            if (res.isConfirmed) {
+                dispatch(action.deleteClothInfo(props.one.clothesId));
+                // 삭제 완료 알림창 띄우기
+                Swal.fire({
+                    icon: 'success',
+                    title: '삭제 완료',
+                    text: '옷이 성공적으로 삭제되었습니다.',
+                    confirmButtonColor: '#4570F5',
+                })
+            }
+            else{
+                
+            }
+        });
+        
     }
 
     return(
@@ -73,7 +104,7 @@ const CLOSETSlot = (props) => {
             {openMenu?<div className={`${closetSlotStyle.bgColor}`}>
                 <button className={`${closetSlotStyle.btn}`} onClick={()=>{dispatch(changeMode(2));dispatch(changeModalOpen(true));sendInfo()}}>정보</button>
                 <button className={`${closetSlotStyle.btn}`} onClick={()=>{dispatch(changeMode(3));dispatch(changeModalOpen(true));sendInfo()}}>수정</button>
-                <button className={`${closetSlotStyle.btn}`}>삭제</button>
+                <button className={`${closetSlotStyle.btn}`} onClick={()=>{deleteCloth()}}>삭제</button>
             </div>:null}
 
             {openMenu?<div className={`${closetSlotStyle.bgColor2}`}></div>:null}

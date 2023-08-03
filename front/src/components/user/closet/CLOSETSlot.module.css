@@ -31,6 +31,7 @@
 .slot > img{
     width: 100%;
     height: 100%;
+    object-fit:contain;
 }
 
 .bgColor{
@@ -73,3 +74,18 @@
     background-color: var(--signiture);
     color:white;
 }
+
+
+.confirmButton {
+    font-size: 16px; /* 확인 버튼에 원하는 폰트 크기를 설정하세요. */
+    /* 기타 확인 버튼에 원하는 스타일을 추가하세요. */
+    width: 100px;
+    height: 50px;
+  }
+  
+  .cancelButton {
+    font-size: 16px; /* 취소 버튼에 원하는 폰트 크기를 설정하세요. */
+    /* 기타 취소 버튼에 원하는 스타일을 추가하세요. */
+    width: 100px;
+    height: 50px;
+  }

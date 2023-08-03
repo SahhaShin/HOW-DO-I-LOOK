@@ -7,6 +7,7 @@ import closetRegistStyle from "../closet/CLOSETRegist.module.css";
 import { useSelector, useDispatch} from "react-redux"; 
 import {action, changeModalOpen} from "../../../store/ClosetSlice";
 
+
 const CLOSETRegist = () => {
 
     //redux 관리
@@ -119,25 +120,25 @@ const CLOSETRegist = () => {
             dispatch(action.getClothInfo(state.clothesId));
             
             // 옷구분 초기 값 셋팅
-            if(state.clothInfo.type==="TOP"){
+            if(state.clothInfo?.type==="TOP"){
                 setSelected("상의");
-            }else if(state.clothInfo.type==="BOTTOM"){
+            }else if(state.clothInfo?.type==="BOTTOM"){
                 setSelected("하의");
-            }else if(state.clothInfo.type==="SHOE"){
+            }else if(state.clothInfo?.type==="SHOE"){
                 setSelected("신발");
-            }else if(state.clothInfo.type==="ACCESSORY"){
+            }else if(state.clothInfo?.type==="ACCESSORY"){
                 setSelected("악세서리");
-            }else if(state.clothInfo.type==="ALL"){
+            }else if(state.clothInfo?.type==="ALL"){
                 setSelected("전체");
             }
             
 
             //옷 이름 초기 값 셋팅
-            setClothesName(state.clothInfo.name);
+            setClothesName(state.clothInfo?.name);
             //브랜드명 초기 값 셋팅
-            setClothesBrand(state.clothInfo.brand);
+            setClothesBrand(state.clothInfo?.brand);
             //특이사항 초기 값 셋팅
-            setSpecialContent(state.clothInfo.info);
+            setSpecialContent(state.clothInfo?.info);
         }
     },[state.clothInfo, state.clothesId])
 
