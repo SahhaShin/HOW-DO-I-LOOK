@@ -3,17 +3,14 @@ import loginStyle from './login.module.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {login} from "../../../store/UserSlice";
+import {login, socialLogin} from "../../../store/UserSlice";
 
 const Login: React.FC = () => {
   const [email, setemail] = useState('')
   const [password, setPassword] = useState('')
   
 
-  const openNewWindowAndWait = () => {
-    const url = "http://localhost:8081/oauth2/authorization/kakao"; // 원하는 URL로 대체하세요.
 
-    };
   
   const loginClick = () => {
       console.log("회원 로그인")
@@ -30,9 +27,11 @@ const Login: React.FC = () => {
   const socialLoginClick = (brand) => {
     console.log("브랜드 로그인")
     console.log("brand : " + brand)
+    socialLogin(brand)
 
+    const ApiUrl = "http://localhost:8081/oauth2/authorization/"
     // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"
-    window.location.href = "http://localhost:8081/oauth2/authorization/kakao"
+    window.location.href = ApiUrl + brand
   }
 
 

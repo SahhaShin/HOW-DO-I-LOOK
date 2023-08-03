@@ -1,4 +1,72 @@
-import { createSlice} from "@reduxjs/toolkit";
+import {  createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import axios from "axios";
+
+// axios
+export const action = {
+    // 회원가입 api
+    Signin : createAsyncThunk(`UserSlice/Signin`, async({formdata}:SigninINfo,thunkAPI)=>{
+        return await axios({
+            method: "post",
+            url:"http://localhost:8081/api/user/signup",
+            data:formdata,
+           
+        }).then(response=>{
+            console.log(resopnse)
+            return response; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+        }).catch((e)=>{
+            console.log(e);
+        })
+    }),
+
+        // 소셜 회원가입 api
+        SocialSignin : createAsyncThunk(`UserSlice/SocialSignin`, async({formdata}:SigninINfo,thunkAPI)=>{
+            return await axios({
+                method: "post",
+                url:process.env.REACT_APP_SERVER+"/api/user/signup",
+                data:formdata,
+               
+            }).then(response=>{
+                console.log(response)
+                return response; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+            }).catch((e)=>{
+                console.log(e);
+            })
+        }),
+    
+
+    // 로그인 api
+    Login : createAsyncThunk(`UserSlice/Login`, async({formdata}:LoginInfo,thunkAPI)=>{
+        return await axios({
+            method: "post",
+            url:process.env.REACT_APP_SERVER+"/api/user/login",
+            data : formdata,
+        }).then(response=>{
+            let result = {
+                type : clothesType,
+                content : response.data
+            }
+            return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+        }).catch((e)=>{
+            console.log(e);
+        })
+    }),
+
+}
+
+interface SigninINfo{ //response
+    userId : string,
+    nickname : string,
+    password : string,
+    gender : string,
+    age : number,
+}
+
+interface LoginInfo{ //response
+    userId : number,
+    password : number,
+}
+
+
 
 const initialState = {
     id : "",
@@ -14,12 +82,12 @@ const initialState = {
     socialId : "",
     createdDate : "",
     updatedDate : "",
-    accessToken : "", //엑세스토큰
-    refreshToken : "", //리프레시토큰
+    accessToken : "", //엑세스토큰 - 쿠키로 
+    refreshToken : "", //리프레시토큰 - 쿠키로 
     follower : [],
     following : [],
     brand : "None", //로그인 Auth 브랜드
-    tokenExpire : 0, //Expire 예정 시각 
+    tokenExpire : 0, //Expire 예정 시각 - 사용 x 
 }
 
 
@@ -31,14 +99,14 @@ const UserSlice = createSlice({
         signin(state, action){
             state.brand = action.payload;
         }, 
-        //로그인
-        login(state, action){
-            state.brand = "local";
-        },
         //소셜 로그인
         socialLogin(state, action){
             state.brand = action.payload;
             
+        },
+        //로그인
+        login(state, action){
+            state.brand = "local";
         },
         //로그아웃
         logout(state, action){
@@ -67,5 +135,5 @@ const UserSlice = createSlice({
     }
 });
 
-export let {login} = UserSlice.actions;
+export let {login, socialLogin} = UserSlice.actions;
 export default UserSlice.reducer;

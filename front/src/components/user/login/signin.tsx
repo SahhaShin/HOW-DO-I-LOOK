@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import loginStyle from './login.module.css';
 
+//redux
+import { useSelector, useDispatch } from "react-redux"; 
+import {action} from "../../../store/UserSlice";
+
 const Login: React.FC = () => {
   
+  //redux 관리
+  let state = useSelector((state:any)=>state.closet);
+  let dispatch = useDispatch();
+
+  const [name, setname] = useState('')
   const [email, setemail] = useState('')
   const [nickname, setNickname] = useState('')
   const [password, setPassword] = useState('')
@@ -13,6 +22,7 @@ const Login: React.FC = () => {
 
   const signinClick = () => {
     console.log("일반 회원가입")
+    console.log("name : " + name)
     console.log("email : " + email)
     console.log("nickname : "+ nickname)
     console.log("password : " + password)
@@ -20,6 +30,17 @@ const Login: React.FC = () => {
     console.log("gender : "+ gender)
     console.log("age : "+ age)
     console.log("agree : "+ agree)
+
+    //회원가입 요청
+    dispatch(action.Signin({
+      'name' : name,
+      'email' : email,
+      'nickname' : nickname,
+      'password' : password,
+      'gender' : gender,
+      'age' : age
+    }));
+
 
   }
 

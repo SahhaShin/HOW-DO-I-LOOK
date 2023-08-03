@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeModalOpen,changeMode} from "../../../store/ClosetSlice";
+import {action} from "../../../store/UserSlice";
 
 //컴포넌트
 import Login from "../../../components/user/login/login";
@@ -32,4 +32,4 @@ const LoginPage = () => {
 }
 
 
-export default Login;
+export default LoginPage;
