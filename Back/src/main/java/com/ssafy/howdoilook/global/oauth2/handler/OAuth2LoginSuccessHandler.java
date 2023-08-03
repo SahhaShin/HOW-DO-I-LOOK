@@ -58,7 +58,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
 
                 // Access Token을 쿠키로 설정
-                Cookie accessTokenCookie = new Cookie("access_token", accessToken);
+                Cookie accessTokenCookie = new Cookie("Authorization", accessToken);
                 accessTokenCookie.setMaxAge(3600); // 1시간 유효한 쿠키로 설정
                 accessTokenCookie.setPath("/"); // 모든 경로에서 접근 가능하도록 설정
 //        accessTokenCookie.setHttpOnly(true); // JavaScript로 접근을 막기 위해 HttpOnly 설정
@@ -66,7 +66,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 httpServletResponse.addCookie(accessTokenCookie);
 
                 // Refresh Token을 쿠키로 설정 (위와 동일한 방식으로 쿠키 생성)
-                Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
+                Cookie refreshTokenCookie = new Cookie("Authorization-Refresh", refreshToken);
                 refreshTokenCookie.setMaxAge(1209600); // 24시간 유효한 쿠키로 설정
                 refreshTokenCookie.setPath("/");
 //        refreshTokenCookie.setHttpOnly(true);
