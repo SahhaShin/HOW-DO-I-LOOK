@@ -20,7 +20,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Long> saveComment(@RequestBody CommentSaveRequestDto commentSaveRequestDto) {
         Long id = commentService.saveComment(commentSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
