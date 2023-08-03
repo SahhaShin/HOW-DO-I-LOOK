@@ -20,7 +20,7 @@ import java.util.List;
 public class FeedController {
     public final FeedService feedService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<Page<FeedResponseDto>> selectAll(Pageable pageable){
         Page<FeedResponseDto> feedResponseDtos = feedService.selectAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
@@ -37,13 +37,13 @@ public class FeedController {
         return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Long> saveFeed(@RequestPart FeedSaveRequestDto feedSaveRequestDto, @RequestPart("s3upload") List<MultipartFile> multipartFileList){
         Long id = feedService.saveFeed(feedSaveRequestDto,multipartFileList);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
-    @PutMapping("/")
+    @PutMapping("")
     public ResponseEntity<Long> updateFeed(@RequestBody FeedUpdateRequestDto feedUpdateRequestDto){
         Long id = feedService.updateFeed(feedUpdateRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);

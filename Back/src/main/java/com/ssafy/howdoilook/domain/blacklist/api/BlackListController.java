@@ -20,7 +20,7 @@ public class BlackListController {
     private final BlackListService blackListService;
 
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Long> saveBlackList(@RequestBody BlackListSaveRequestDto blackListSaveRequestDto){
         Long id = blackListService.saveBlackList(blackListSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
@@ -30,7 +30,7 @@ public class BlackListController {
         Page<BlackListSelectResponseDto> blackListByUserId = blackListService.findBlackListByUserId(userId, pageable);
         return ResponseEntity.ok().body(blackListByUserId);
     }
-    @DeleteMapping("/")
+    @DeleteMapping("")
     public ResponseEntity<String> deleteBlackList(@RequestBody BlackListDeleteRequestDto blackListDeleteRequestDto){
         blackListService.deleteBlackList(blackListDeleteRequestDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");

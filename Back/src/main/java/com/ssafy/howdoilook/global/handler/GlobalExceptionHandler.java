@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -34,7 +36,6 @@ public class GlobalExceptionHandler {
 
 
 
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception){
         return ResponseEntity
@@ -42,7 +43,9 @@ public class GlobalExceptionHandler {
                 .body(exception.getMessage());
     }
 
-
-
-
+    @ExceptionHandler(AccessException.class)
+    public ResponseEntity<String> handleAccessException(AccessException exception){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(exception.getMessage());
+    }
 }
