@@ -10,11 +10,9 @@ import { store } from "./store/Store";
 
 //페이지 선언
 import Closet from "./pages/user/closet/Closet";
-import ChatList from "./pages/chat/chatting/ChatList";
-import ChatRoom from "./pages/chat/chatting/ChatRoom";
-import Feed from "./pages/sns/feed/Feed";
-import Mypage from "./pages/user/my_page/Mypage";
-import MypageFollowModal from "./components/user/my_page/MypageFollowModal";
+import Login from "./pages/user/login/Login";
+import Singin from "./pages/user/signin/Signin";
+
 
 function App() {
   return (
@@ -23,11 +21,12 @@ function App() {
         <Router>
           <Routes>
             <Route path="/closet" element={<Closet/>}/>
-            <Route path="/chatlist" element={<ChatList/>}/>
-            <Route path="/chatroom/:otherId/:roomId" element={<ChatRoom/>}/>
-            <Route path="/feed" element={<Feed/>}/>
-            <Route path="/mypage" element={<Mypage/>}/>
-            <Route path="/mypageFollowModal" element={<MypageFollowModal/>}/>
+          </Routes>
+          <Routes>
+            <Route path="/login" element={<Login/>}/>
+          </Routes>
+          <Routes>
+            <Route path="/signin" element={<Singin/>}/>
           </Routes>
         </Router>
       </div>
