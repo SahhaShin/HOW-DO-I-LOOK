@@ -1,29 +1,35 @@
 package com.ssafy.howdoilook.domain.soloChatroom.entity;
 
+import com.mongodb.internal.connection.Time;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import javax.persistence.Id;
+
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
-@Document(collation = "chat")
+@Document
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SoloChatM {
+public class Chat {
     @Id
     private String id;
-    private Long roomId;
+    private String roomId;
     private Long userId;
     private String content;
     private String time;
 
     @Builder
-    public SoloChatM(Long roomId, Long userId, String content) {
-        this.roomId = roomId;
+    public Chat(String id, long roomId, Long userId, String content) {
+        this.id = id;
+        this.roomId = Long.toString(roomId);
         this.userId = userId;
         this.content = content;
-        this.time = new Timestamp(System.currentTimeMillis()).toString();
+        time = new Timestamp(System.currentTimeMillis()).toString();
     }
 }
+
