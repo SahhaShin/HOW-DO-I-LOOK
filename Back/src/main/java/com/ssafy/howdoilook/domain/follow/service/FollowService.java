@@ -9,6 +9,7 @@ import com.ssafy.howdoilook.domain.follow.repository.FollowReposiroty;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +30,10 @@ public class FollowService {
     @Transactional
     public Long saveFollow(FollowSaveRequestDto followSaveRequestDto){
         User follower = userRepository.findById(followSaveRequestDto.getFollowerId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 follower입니다."));
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
         User followee = userRepository.findById(followSaveRequestDto.getFolloweeId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 followee입니다."));
-        //넘어온 팔로우,팔로워 값으로 이미 데이터가 있는지 확인하는 작업
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 followee입니다.",1));
+
         //null값이 아니면 이미 데이터가 있는 것이다.
         Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(follower.getId(), followee.getId());
         //데이터가 없을때(정상일때)
@@ -44,23 +45,28 @@ public class FollowService {
             followReposiroty.save(follow);
             return follow.getId();
         } else {
-            return findFollow.getId();
+            throw new IllegalArgumentException("이미 존재하는 Follow입니다.");
         }
 
 
     }
-    //데이터가 없는데 삭제하려는 것 구현 안함
-    //구현하면 좋을 것 같다.
+
+
     @Transactional
     public void deleteFollow(FollowDeleteRequestDto followDeleteRequestDto){
         Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(
                 followDeleteRequestDto.getFollowerId(), followDeleteRequestDto.getFolloweeId());
-        followReposiroty.deleteById(findFollow.getId());
+        //팔로우 관계가 있을 때
+        if (findFollow != null) {
+            followReposiroty.deleteById(findFollow.getId());
+        }else{
+            throw new IllegalArgumentException("존재하지 않는 Follow입니다.");
+        }
     }
     //내가 팔로우 하는 사람 리스트 반환
     public Page<FolloweeResponseDto> selectFolloweeList(Long userId,Pageable page){
         User findUser = userRepository.findById(userId).orElseThrow(
-                ()->new IllegalArgumentException("존재하지 않는 User 입니다."));
+                ()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
 
         Page<Follow> followeeByUserId = followReposiroty.findFolloweeByUserId(userId, page);
         List<Follow> content = followeeByUserId.getContent();
@@ -85,7 +91,7 @@ public class FollowService {
     public Page<FollowerResponseDto> selectFollowerList(Long userId, Pageable page){
 
         User findUser = userRepository.findById(userId).orElseThrow(
-                ()->new IllegalArgumentException("존재하지 않는 User 입니다."));
+                ()->new EmptyResultDataAccessException("존재하지 않는 User 입니다.",1));
 
         Page<Follow> followerByUserId = followReposiroty.findFollowerByUserId(userId, page);
         List<Follow> content = followerByUserId.getContent();
