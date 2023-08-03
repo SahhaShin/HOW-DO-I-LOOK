@@ -10,6 +10,7 @@ import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.repository.FeedRepository;
 import com.ssafy.howdoilook.domain.feedLike.service.FeedLikeService;
 import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
+import com.ssafy.howdoilook.domain.feedPhoto.repository.FeedPhotoRepository;
 import com.ssafy.howdoilook.domain.feedPhoto.service.FeedPhotoService;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.entity.FeedPhotoHashtag;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.service.FeedPhotoHashtagService;
@@ -18,6 +19,7 @@ import com.ssafy.howdoilook.domain.follow.service.FollowService;
 import com.ssafy.howdoilook.domain.hashtag.service.HashTagService;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.s3upload.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -25,9 +27,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,7 +44,9 @@ public class FeedService {
     private final FeedPhotoHashtagService feedPhotoHashtagService;
     private final FeedLikeService feedLikeService;
     private final FollowService followService;
+    private final ImageService imageService;
     private final FeedRepository feedRepository;
+    private final FeedPhotoRepository feedPhotoRepository;
     private final UserRepository userRepository;
 
     public Page<FeedResponseDto> selectAll(Pageable pageable){
@@ -66,7 +73,15 @@ public class FeedService {
     }
 
     @Transactional
-    public Long saveFeed(FeedSaveRequestDto feedSaveRequestDto) {
+    public Long saveFeed(FeedSaveRequestDto feedSaveRequestDto, List<MultipartFile> multipartFileList) {
+        for (int i = 0; i < multipartFileList.size(); i++) {
+            try {
+                String link = imageService.saveImage(multipartFileList.get(i));
+                feedSaveRequestDto.getPhotoSaveRequestDtoList().get(i).setLink(link);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         //넘어온 회원찾기
         User findUser = userRepository.findById(feedSaveRequestDto.getUserId()).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 User 입니다.",1));
@@ -115,7 +130,12 @@ public class FeedService {
     public void deleteFeed(Long feedId){
         Feed findFeed = feedRepository.findById(feedId).orElseThrow(
                 () -> new EmptyResultDataAccessException("존재하지 않는 Feed입니다.",1));
-
+        List<String> linkList = feedPhotoRepository.selectLinkListByFeedId(feedId);
+        System.out.println("linkList.size() = " + linkList.size());
+        for (String link : linkList) {
+            System.out.println("하나를 삭제합니다.");
+            imageService.deleteImage(link);
+        }
         feedRepository.delete(findFeed);
     }
 
