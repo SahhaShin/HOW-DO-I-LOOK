@@ -11,7 +11,8 @@ import { store } from "./store/Store";
 //페이지 선언
 import Closet from "./pages/user/closet/Closet";
 import Login from "./pages/user/login/Login";
-import Singin from "./pages/user/signin/Signin";
+import Signin from "./pages/user/login/Signin";
+import AuthSignin from "./pages/user/login/AuthSignin"
 
 
 function App() {
@@ -23,10 +24,13 @@ function App() {
             <Route path="/closet" element={<Closet/>}/>
           </Routes>
           <Routes>
-            <Route path="/login" element={<Login/>}/>
+            <Route path="/user/log-in" element={<Login/>}/>
           </Routes>
           <Routes>
-            <Route path="/signin" element={<Singin/>}/>
+            <Route path="/user/sign-up" element={<Signin/>}/>
+          </Routes>
+          <Routes>
+            <Route path="auth2/sign-up" element={<AuthSignin/>}/>
           </Routes>
         </Router>
       </div>
