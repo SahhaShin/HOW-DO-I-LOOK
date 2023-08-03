@@ -5,6 +5,7 @@ import com.ssafy.howdoilook.domain.hashtag.dto.response.HashTagResponseDto;
 import com.ssafy.howdoilook.domain.hashtag.entity.Hashtag;
 import com.ssafy.howdoilook.domain.hashtag.repository.HashTagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class HashTagService {
      */
     public HashTagResponseDto findByHashTagId(Long id) {
         Hashtag findHashTag = hashTagRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 hashtag가 존재하지 않습니다."));
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 HashTag입니다.",1));
         return new HashTagResponseDto(findHashTag);
     }
 
@@ -48,7 +49,7 @@ public class HashTagService {
 
     public HashTagResponseDto findByHashTagContent(String content){
         Hashtag findHashTag = hashTagRepository.findByContent(content)
-                .orElseThrow(() -> new IllegalArgumentException("해당 hashtag가 존재하지 않습니다."));
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 HashTag입니다.",1));
         return new HashTagResponseDto(findHashTag);
     }
 
@@ -72,11 +73,11 @@ public class HashTagService {
         }
     }
 
-    @Transactional
-    public void removeHashTag(String content) {
-        Optional<Hashtag> findHashTag = hashTagRepository.findByContent(content);
-        if (findHashTag.isPresent()){
-            hashTagRepository.delete(findHashTag.get());
-        }
-    }
+//    @Transactional
+//    public void removeHashTag(String content) {
+//        Optional<Hashtag> findHashTag = hashTagRepository.findByContent(content);
+//        if (findHashTag.isPresent()){
+//            hashTagRepository.delete(findHashTag.get());
+//        }
+//    }
 }

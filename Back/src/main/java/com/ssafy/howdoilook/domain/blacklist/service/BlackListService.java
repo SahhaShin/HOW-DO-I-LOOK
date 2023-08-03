@@ -8,6 +8,7 @@ import com.ssafy.howdoilook.domain.blacklist.repository.BlackListRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,20 +44,30 @@ public class BlackListService {
     }
     @Transactional
     public Long saveBlackList(BlackListSaveRequestDto blackListSaveRequestDto){
-        User findUser = userRepository.findById(blackListSaveRequestDto.getUserId())
-                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 User입니다."));
-        User findTargetUser = userRepository.findById(blackListSaveRequestDto.getTargetUserId())
-                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 User입니다."));
-        BlackList blacklist = BlackList.builder()
-                .user(findUser)
-                .targetUser(findTargetUser)
-                .build();
-        blackListRepository.save(blacklist);
-        return blacklist.getId();
+        Optional<BlackList> blackList = blackListRepository.selectBlackListByUserIdTargetUserId(blackListSaveRequestDto.getUserId(),
+                blackListSaveRequestDto.getTargetUserId());
+        if (blackList.isPresent()){
+            throw new IllegalArgumentException("이미 존재하는 BlackList입니다.");
+        }
+        else{
+            User findUser = userRepository.findById(blackListSaveRequestDto.getUserId()).orElseThrow(
+                    () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
+            User findTargetUser = userRepository.findById(blackListSaveRequestDto.getTargetUserId()).orElseThrow(
+                    () -> new EmptyResultDataAccessException("존재하지 않는 TargetUser입니다.",1));
+            BlackList blacklist = BlackList.builder()
+                    .user(findUser)
+                    .targetUser(findTargetUser)
+                    .build();
+            blackListRepository.save(blacklist);
+            return blacklist.getId();
+        }
     }
     @Transactional
     public void deleteBlackList(BlackListDeleteRequestDto blackListDeleteRequestDto){
-        blackListRepository.deleteBlackList(blackListDeleteRequestDto.getUserId(),blackListDeleteRequestDto.getTargetUserId());
+        BlackList blackList = blackListRepository.selectBlackListByUserIdTargetUserId(blackListDeleteRequestDto.getUserId(),
+                        blackListDeleteRequestDto.getTargetUserId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 BlackList입니다.", 1));
+        blackListRepository.deleteById(blackList.getId());
     }
 
 }
