@@ -26,14 +26,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FollowService {
-    private final FollowReposiroty followReposiroty;
+    private final FollowReposiroty followRepository;
     private final UserRepository userRepository;
 
     //데이터가 중복으로 삽입되는거 ifelse로 처리했는데 예외로 처리하면 더 좋을거 같다.
     @Transactional
     public Long saveFollow(FollowSaveRequestDto followSaveRequestDto, UserDetails userDetails){
         String clientEmail = userDetails.getUsername();
-
 
         User follower = userRepository.findById(followSaveRequestDto.getFollowerId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
@@ -46,14 +45,14 @@ public class FollowService {
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 followee입니다.",1));
 
         //null값이 아니면 이미 데이터가 있는 것이다.
-        Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(follower.getId(), followee.getId());
+        Follow findFollow = followRepository.findFollowIdByFollowerAndFollowee(follower.getId(), followee.getId());
         //데이터가 없을때(정상일때)
         if (findFollow == null) {
             Follow follow = Follow.builder()
                     .follower(follower)
                     .followee(followee)
                     .build();
-            followReposiroty.save(follow);
+            followRepository.save(follow);
             return follow.getId();
         } else {
             throw new IllegalArgumentException("이미 존재하는 Follow입니다.");
@@ -74,11 +73,11 @@ public class FollowService {
             throw new AccessException("접근 권한이 없습니다.");
         }
 
-        Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(
+        Follow findFollow = followRepository.findFollowIdByFollowerAndFollowee(
                 followDeleteRequestDto.getFollowerId(), followDeleteRequestDto.getFolloweeId());
         //팔로우 관계가 있을 때
         if (findFollow != null) {
-            followReposiroty.deleteById(findFollow.getId());
+            followRepository.deleteById(findFollow.getId());
         }else{
             throw new IllegalArgumentException("존재하지 않는 Follow입니다.");
         }
@@ -88,7 +87,7 @@ public class FollowService {
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
 
-        Page<Follow> followeeByUserId = followReposiroty.findFolloweeByUserId(userId, page);
+        Page<Follow> followeeByUserId = followRepository.findFolloweeByUserId(userId, page);
         List<Follow> content = followeeByUserId.getContent();
 
         List<FolloweeResponseDto> list = new ArrayList<>();
@@ -113,7 +112,7 @@ public class FollowService {
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 User 입니다.",1));
 
-        Page<Follow> followerByUserId = followReposiroty.findFollowerByUserId(userId, page);
+        Page<Follow> followerByUserId = followRepository.findFollowerByUserId(userId, page);
         List<Follow> content = followerByUserId.getContent();
 
         //반환할 dto리스트 선언
@@ -136,7 +135,7 @@ public class FollowService {
     * 나를 팔로우하는 사람 전체 리스트 반환(Non-Paging) 
     * */
     public List<FolloweeResponseDto> getAllFolloweeList(Long userId) {
-        List<Follow> allFolloweeList = followReposiroty.findAllFolloweeByUserId(userId);
+        List<Follow> allFolloweeList = followRepository.findAllFolloweeByUserId(userId);
 
         List<FolloweeResponseDto> followeeResponseDtoList = new ArrayList<>();
 
@@ -157,7 +156,7 @@ public class FollowService {
     * 내가 팔로우하는 사람 전체 리스트 반환(Non-Paging)
     * */
     public List<FollowerResponseDto> getAllFollowerList(Long userId) {
-        List<Follow> allFollowerList = followReposiroty.findAllFollowerByUserId(userId);
+        List<Follow> allFollowerList = followRepository.findAllFollowerByUserId(userId);
 
         List<FollowerResponseDto> followerResponseDtoList = new ArrayList<>();
 

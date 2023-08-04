@@ -9,7 +9,6 @@ import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.global.handler.AccessException;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,7 +25,9 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BlackListService {
+
     private final BlackListRepository blackListRepository;
+
     private final UserRepository userRepository;
 
     public Page<BlackListSelectResponseDto> findBlackListByUserId(Long userId,UserDetails userDetails, Pageable pageable){
@@ -44,10 +45,9 @@ public class BlackListService {
         for (BlackList blackList : content) {
             User targetUser = blackList.getTargetUser();
             BlackListSelectResponseDto blacklistdto = BlackListSelectResponseDto.builder()
-                    .id(targetUser.getId())
-                    .email(targetUser.getEmail())
-                    .name(targetUser.getName())
+                    .targetUserId(targetUser.getId())
                     .nickname(targetUser.getNickname())
+                    .profileImg(targetUser.getProfileImg())
                     .build();
             blackListSelectResponseDtoList.add(blacklistdto);
         }
@@ -99,4 +99,22 @@ public class BlackListService {
         blackListRepository.deleteById(blackList.getId());
     }
 
+    public List<BlackListSelectResponseDto> getAllBlackList(Long userId) {
+        List<BlackListSelectResponseDto> blackListSelectResponseDtoList = new ArrayList<>();
+
+        List<BlackList> blackList = blackListRepository.getAllBlackList(userId);
+
+        for (BlackList black : blackList) {
+            BlackListSelectResponseDto blackListSelectResponseDto = BlackListSelectResponseDto.builder()
+                    .targetUserId(black.getTargetUser().getId())
+                    .nickname(black.getTargetUser().getNickname())
+                    .profileImg(black.getTargetUser().getProfileImg())
+                    .build();
+
+            blackListSelectResponseDtoList.add(blackListSelectResponseDto);
+        }
+
+        return blackListSelectResponseDtoList;
+
+    }
 }
