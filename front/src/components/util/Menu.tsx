@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import UtilStyle from "./Util.module.css";
 
@@ -8,6 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {changeMenuItemNum} from "../../store/UtilSlice";
 
 const NavigationBar: React.FC = () => {
+
+  const navigate = useNavigate();
 
   //redux 관리
   let state = useSelector((state:any)=>state.util);
@@ -28,14 +31,14 @@ const NavigationBar: React.FC = () => {
 
 
   const liveMenuItems = ["라이브", "피드", "채팅", "랭킹", "알림"];
-
+  const liveMenuLink = ["liveList", "feed", "chatList", "rank", "alarm"];
 
 
   return (
     <div className={`${UtilStyle.navbarContainer}`}>
         <div className={`${UtilStyle.navbar}`}>
             {liveMenuItems.map((menuItem, index) => (
-            <button key={index} onClick={() => {handleMenuClick(index); dispatch(changeMenuItemNum(index))}}>
+            <button key={index} onClick={() => {handleMenuClick(index); dispatch(changeMenuItemNum(index));navigate(`/${liveMenuLink[index]}`)}}>
                 {menuItem}
             </button>
             ))}
