@@ -5,15 +5,15 @@ import React, { useEffect, useState } from "react";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action} from "../../../store/UserSlice";
+import {changeModalOpen,changeMode} from "../../../store/ClosetSlice";
 
 //컴포넌트
-import Login from "../../../components/user/login/login";
+import authSignin from "../../../components/user/login/authSignin";
 
 
 
 
-const LoginPage = () => {
+const AuthSignin = () => {
 
     //redux 관리
     let state = useSelector((state:any)=>state.closet);
@@ -24,7 +24,7 @@ const LoginPage = () => {
 
     return(
         <div>
-            <Login></Login>
+        
 
         </div>
         
@@ -32,4 +32,4 @@ const LoginPage = () => {
 }
 
 
-export default LoginPage;
+export default authSignin;
