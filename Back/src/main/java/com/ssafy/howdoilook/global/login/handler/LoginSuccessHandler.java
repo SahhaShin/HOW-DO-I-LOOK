@@ -41,7 +41,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         httpServletResponse.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
         httpServletResponse.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
-        httpServletResponse.getWriter().write("로그인 성공! 헤더의 토큰을 확인하세요");
+        httpServletResponse.getWriter().write("Login Success!");
 
         // response header에 AccessToken, RefreshToken 실어서 보내기
 //        jwtService.sendAccessAndRefreshToken(httpServletResponse, accessToken, refreshToken);
