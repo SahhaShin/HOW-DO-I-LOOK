@@ -66,6 +66,7 @@
     "source-map-loader": "^3.0.0",
     "style-loader": "^3.3.1",
     "styled-components": "^6.0.5",
+    "sweetalert2": "^11.7.20",
     "tailwindcss": "^3.0.2",
     "terser-webpack-plugin": "^5.2.5",
     "ts-node": "^10.9.1",
@@ -154,5 +155,6 @@
     "presets": [
       "react-app"
     ]
-  }
+  },
+  "proxy": "http://localhost:8081/api"
 }

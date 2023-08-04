@@ -30,10 +30,11 @@
 
 .closetContainer{
     display: flex;
+    justify-content: center;
 }
 
 .closetContainer > .closet{
-    margin-right: 15%;
+    margin-right: 5%;
 }
 
 .title{
@@ -94,6 +95,21 @@
     display: flex;
     flex-wrap: wrap;
     margin-left: 2%;
+}
+
+/* 아이템이 없을 경우 */
+.noItem{
+    /* 위치 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 크기 */
+    width: 750px;
+    height: 400px;
+
+    /* 폰트 */
+    font-weight: 900;
 }
 
 .paginationContainer{
