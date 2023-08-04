@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
@@ -79,7 +80,7 @@ public class RoomService {
                 .minAge(roomAddRequestDto.getMinAge())
                 .maxAge(roomAddRequestDto.getMaxAge())
                 .gender(Gender.valueOf(roomAddRequestDto.getGender()))
-                .chatCode(roomAddRequestDto.getChatCode())
+                .chatCode(UUID.randomUUID().toString())
                 .build();
 
         roomRepository.save(room);
