@@ -1,6 +1,8 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-module.exports = function(app) {
+
+// 채팅을 위한 소켓 연결을 위한 ws 변경
+module.exports = (app) => {
   app.use(
     '/api', //proxy가 필요한 path parameter
     createProxyMiddleware({

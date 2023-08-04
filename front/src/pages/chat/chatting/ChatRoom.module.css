@@ -21,6 +21,7 @@
 .main{
     /* 크기 */
     width: 100%;
+    height: 700px;
 
     /* 위치 */
     display: flex;
@@ -37,7 +38,8 @@
 
 /* 중앙 컴포 */
 .mid{
-/* nothing */
+    /* nothing */
+    height: 100%;
 }
 
 .nickname{
@@ -86,6 +88,7 @@
 
     /* 크기 */
     width: 1010px;
+    height: 100%;
 
     /* border */
     border: 1px solid lightgrey;
@@ -114,11 +117,9 @@
 
 .chatting{
     /* 위치 */
-    padding: 3%;
+    /* padding: 3%; */
     overflow: auto;
-    border: 1px solid lightgrey;
-    height: 500px;
-    margin-top: 5%;
+    height: 700px; /*채팅 영역 전체 높이*/
 }
 
 

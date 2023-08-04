@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import {useNavigate} from 'react-router-dom';
 
 //css
 import chatRoomStyle from "./ChatRoom.module.css";
 
 //컴포넌트
 import ChatHistory from "../../../components/chat/chatting/ChatHistory";
+import { subscribe } from "diagnostics_channel";
 
 
 const ChatRoom = () => {
+
+    const navigate = useNavigate();
 
     const nickname:string = "user3";
 
@@ -27,17 +31,17 @@ const ChatRoom = () => {
                         <div>
                             <div className={`${chatRoomStyle.chatHeader}`}>
                                 <div className={`${chatRoomStyle.nickname}`}>{nickname}</div>
-                                <div className={`${chatRoomStyle.exitWrapper}`}><button className={`${chatRoomStyle.exit}`}>나가기</button></div>
+                                <div onClick={()=>{navigate(-1)}} className={`${chatRoomStyle.exitWrapper}`}><button className={`${chatRoomStyle.exit}`}>나가기</button></div>
                             </div>
                             
                         </div>
                         <div className={`${chatRoomStyle.chatting}`}><ChatHistory/></div>
 
                         {/* input과 전송 */}
-                        <div className={`${chatRoomStyle.sendArea}`}>
+                        {/* <div className={`${chatRoomStyle.sendArea}`}>
                             <input type="text" placeholder="메세지를 입력하세요."/>
                             <button>전송</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

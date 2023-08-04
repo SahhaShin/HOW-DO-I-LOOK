@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
+import axios from 'axios';
 
 //css
 import chatStyle from "./ChatList.module.css";
@@ -14,11 +17,37 @@ import FollowSlot from "../../../components/util/FollowSlot";
 
 const ChatList = () => {
 
+    const navigate = useNavigate();
+    
+
     //redux 관리
     // let state = useSelector((state:any)=>state.closet);
     // let dispatch = useDispatch();
 
-    // 페이지네이션, 옷 관리
+    // 유저가 참여하고 있는 1:1 채팅방 모든 리스트 띄우기
+    interface chatInfo{
+        chatRoomCode:string,
+    }
+    // 아직 챗룸 코드는 고정적임 방 선택에 따라 유동적으로 바꿔야함
+    let [chatRoomList, setChatRoomList] = useState<chatInfo[]>([{
+        chatRoomCode:"1305594a-7131-43a3-b5b9-8179d8dd67e4",
+    }]);
+
+    useEffect(() => {
+        // let userId = JSON.parse(sessionStorage.getItem("loginUser")).id;
+        // console.log(userId)
+        let userId = 12;
+        const url = "http://localhost:8081/api/soloChatRoom/" + userId;
+        axios.get(url)
+        .then((result) => {
+          setChatRoomList(result.data);
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      },[])
+
+    // 페이지네이션
     const [clothes, setPosts] = useState([]);
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
@@ -46,11 +75,18 @@ const ChatList = () => {
 
                         {/* 채팅 리스트 */}
                         <div className={`${chatStyle.list}`}>
+                            {
+                                chatRoomList.map((one, index)=>{
+                                    return(
+                                        <div className={`${chatStyle.onechat}`}><ChatSlot oneRoom={one} key={index}/></div>
+                                    );
+                                })
+                            }
+                            {/* <div className={`${chatStyle.onechat}`}><ChatSlot/></div>
                             <div className={`${chatStyle.onechat}`}><ChatSlot/></div>
                             <div className={`${chatStyle.onechat}`}><ChatSlot/></div>
                             <div className={`${chatStyle.onechat}`}><ChatSlot/></div>
-                            <div className={`${chatStyle.onechat}`}><ChatSlot/></div>
-                            <div className={`${chatStyle.onechat}`}><ChatSlot/></div>
+                            <div className={`${chatStyle.onechat}`}><ChatSlot/></div> */}
                         </div>
                         
                         
