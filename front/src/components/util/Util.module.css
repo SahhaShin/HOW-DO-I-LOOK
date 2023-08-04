@@ -1,3 +1,36 @@
+.header_total{
+    /* 크기 */
+    width: 100%;
+    height: 50px;
+    /* 위치 */
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2%;
+    /* border */
+    border-bottom: 1px solid var(--border);
+    
+}
+
+.etcMenu{
+    display: flex;
+    margin-right: 3%;
+    font-weight: 900;
+}
+.etcMenu > div{
+    /* 내 옷장 마이페이지 */
+    width: 70px;
+    margin-right: 0;
+    cursor: pointer;
+}
+
+.etcMenu > div:hover{
+    color:var(--signiture);
+}
+
+.header_logo > img{
+    width: 70%;
+    margin-left: 3%;
+}
 .navbarContainer {
     /* 위치 */
     position: relative;
@@ -5,11 +38,12 @@
     
 .navbar {
     /* 크기 */
-    width: 800px;
-    height: 60px;
+    width: 200px;
+    height: 350px;
 
     /* 위치 */
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
     position: relative;
@@ -24,14 +58,16 @@
     top: 0;
 
     /* 크기 */
-    height: 100%;
-    width: 20%;
+    height: 70px;
+    width: 200px;
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--border);
 
     /* 동적요소 */
     transition: left 0.3s ease;
+
+    border-radius: 10px;
 }
     
 .activeMenuBlock.active {
@@ -45,7 +81,7 @@
 
     /* 위치 */
     position: absolute;
-    top: 50%;
+    bottom: 50%;
     left: 50%;
 
     /* 동적 */
@@ -58,16 +94,15 @@
     font-size: 15px;
 }
     
-/* Hide the text when the block is not active */
 .activeMenuBlock h2 {
     /* 컬러 */
-    color: #ffffff;
+    /* color: #ffffff; */
 
     /* 폰트 */
     font-size: 15px;
 
     /* 위치 */
-    padding: 5%;;
+    padding: 15px;
 }
     
   
@@ -83,11 +118,14 @@ button{
 
     /* 폰트 */
     font-size: 15px;
+    color: grey;
 
     /* 크기 */
-    width: 100%;
-    height: 100%;
+    width: 180px;
+    height: 85px;
 
     /* 커서 */
     cursor: pointer;
+
+    background-color: white;
 }

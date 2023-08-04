@@ -91,6 +91,7 @@
     margin-right: 10px;
     margin-bottom: 5px;
     font-size: 15px;
+    background-color: var(--border);
 }
 
 .btns> div button:hover{
@@ -148,7 +149,10 @@
     border-radius: 10px;
     border-color: black;
     margin-right: 1%;
+    background-color: var(--signiture);
+    color: white;
 }
+
 
 .footer{
     display: flex;
@@ -185,6 +189,7 @@
     border-radius: 1rem;
     font-size: 12px;
     margin-right: 3%;
+    background-color: var(--border);
 }
 
 .feedBtns button:hover{

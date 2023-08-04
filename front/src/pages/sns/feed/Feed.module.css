@@ -8,10 +8,10 @@
 .header{
     /* 크기 */
     width: 100%;
-    height: 70px;
+    /* height: 70px; */
 
     /* 컬러 */
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
 
     /* 위치 */
     margin-bottom: 5%;
@@ -32,6 +32,15 @@
     /* 크기 */
     width: 500px;
     flex-shrink: 1;
+
+    display: flex;
+    justify-content: center;
+
+    margin-top: -10%;
+}
+
+.menuArea > div{
+    position: fixed;
 }
 
 .contentArea{
@@ -54,19 +63,20 @@
     /* 위치 */
     display: flex;
     justify-content: right;
+    margin-bottom: 5%;
+
 }
 
 .uploadBtn button{
     /* 크기 */
     width: 150px;
+    height: 50px;
     border-radius: 5%;
-}
-
-.uploadBtn button:hover{
-    /* 컬러 */
+    border: 1px solid var(--border);
     background-color: var(--signiture);
     color: white;
 }
+
 
 
 .title{
@@ -112,11 +122,13 @@
 .sortBtn button{
     /* 크기 */
     width: 100px;
-    height: 30px;
+    height: 40px;
     border-radius: 3%;
 
     /* 위치 */
     margin-left: 3%;
+
+    /* border:1px solid lightgrey; */
 }
 
 .sortBtn button:hover{
@@ -145,11 +157,11 @@
     overflow: auto;
     text-align: -webkit-center;
     margin-left: 5%;
-    margin-top: -50px;
+    margin-top: -20px;
     
     /* 크기 */
     width: 250px;
-    height: 330px;
+    height: 430px;
     background-color: white;
     border-radius: 1rem;
     box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
