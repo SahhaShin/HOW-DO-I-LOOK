@@ -1,8 +1,9 @@
 package com.ssafy.howdoilook.domain.userLike.service;
 
 import com.ssafy.howdoilook.domain.room.entity.Room;
-import com.ssafy.howdoilook.domain.room.repository.RoomRepository;
+
 import com.ssafy.howdoilook.domain.roomUser.repository.RoomUserRepository;
+import com.ssafy.howdoilook.domain.room.repository.RoomRepository.RoomRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.domain.userLike.dto.request.ScoreSaveRequestDto;

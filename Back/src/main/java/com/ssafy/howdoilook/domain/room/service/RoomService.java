@@ -6,11 +6,14 @@ import com.ssafy.howdoilook.domain.room.dto.request.RoomUpdateRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomDetailResponseDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
 import com.ssafy.howdoilook.domain.room.entity.Room;
+import com.ssafy.howdoilook.domain.room.entity.RoomChat;
 import com.ssafy.howdoilook.domain.room.entity.RoomType;
-import com.ssafy.howdoilook.domain.room.repository.RoomRepository;
+import com.ssafy.howdoilook.domain.room.repository.ChatRepository.RoomChatRepository;
+import com.ssafy.howdoilook.domain.room.repository.RoomRepository.RoomRepository;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUserType;
 import com.ssafy.howdoilook.domain.roomUser.repository.RoomUserRepository;
+import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecodRequestDto;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
@@ -36,6 +39,27 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final RoomUserRepository roomUserRepository;
+    private final RoomChatRepository roomChatRepository;
+
+    @Transactional
+    public void recordChat(ChatRecodRequestDto requestDto){
+//        User user = userRepository.findById(requestDto.getUserId())
+//                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+//
+//        Room room = roomRepository.findById(requestDto.getRoomId())
+//                .orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+
+
+        RoomChat chat = RoomChat.builder()
+                .userId(requestDto.getUserId())
+                .roomId(requestDto.getRoomId())
+//                .userId(user.getId())
+//                .roomId(room.getId())
+                .content(requestDto.getChatContent())
+                .build();
+
+        roomChatRepository.save(chat);
+    }
 
     @Transactional
     public Long addRoom(RoomAddRequestDto roomAddRequestDto, UserDetails userDetails) throws AccessException {
