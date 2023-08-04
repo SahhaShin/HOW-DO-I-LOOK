@@ -53,6 +53,7 @@ export const action = {
         .then((response) => {
           const result = response.data;
           console.log(result);
+          console.log(response)
           return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
