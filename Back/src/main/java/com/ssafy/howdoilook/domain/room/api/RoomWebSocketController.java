@@ -1,23 +1,20 @@
-package com.ssafy.howdoilook.domain.soloChatroom.api;
+package com.ssafy.howdoilook.domain.room.api;
 
+import com.ssafy.howdoilook.domain.room.service.RoomService;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecodRequestDto;
-import com.ssafy.howdoilook.domain.soloChatroom.service.SoloChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class SoloWebSocketController {
-    private final SoloChatRoomService soloChatRoomService;
-
-    @MessageMapping("/soloChat/{roomCode}")
-    @SendTo("/sub/soloChat/{roomCode}")
+public class RoomWebSocketController {
+    private final RoomService roomService;
+    @MessageMapping("/roomChat/{roomCode}")
+    @SendTo("/sub/roomChat/{roomCode}")
     public ChatRecodRequestDto broadCasting(ChatRecodRequestDto requestDto){
-        soloChatRoomService.recordChat(requestDto);
+        roomService.recordChat(requestDto);
         return requestDto;
     }
-
 }

@@ -1,8 +1,8 @@
 package com.ssafy.howdoilook.domain.roomUser.service;
 
 import com.ssafy.howdoilook.domain.room.entity.Room;
-import com.ssafy.howdoilook.domain.room.repository.RoomRepository;
 import com.ssafy.howdoilook.domain.roomUser.dto.response.RoomUserAddResponseDto;
+import com.ssafy.howdoilook.domain.room.repository.RoomRepository.RoomRepository;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUserType;
 import com.ssafy.howdoilook.domain.roomUser.repository.RoomUserRepository;
@@ -15,8 +15,8 @@ import org.springframework.expression.AccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
+
 
 @Service
 @Transactional(readOnly = true)

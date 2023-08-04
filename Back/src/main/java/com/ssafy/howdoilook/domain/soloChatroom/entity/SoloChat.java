@@ -1,32 +1,32 @@
 package com.ssafy.howdoilook.domain.soloChatroom.entity;
 
-import com.mongodb.internal.connection.Time;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.redis.core.index.Indexed;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Document
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Chat {
+@CompoundIndex(def = "{'roomId' : 1, 'time' : 1}")
+public class SoloChat {
     @Id
     private String id;
-    private String roomId;
-    private Long userId;
+    @Indexed
+    private long roomId;
+    private long userId;
     private String content;
     private String time;
 
     @Builder
-    public Chat(String id, long roomId, Long userId, String content) {
-        this.id = id;
-        this.roomId = Long.toString(roomId);
+    public SoloChat(long roomId, long userId, String content) {
+        this.roomId = roomId;
         this.userId = userId;
         this.content = content;
         time = new Timestamp(System.currentTimeMillis()).toString();

@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.room.repository;
+package com.ssafy.howdoilook.domain.room.repository.RoomRepository;
 
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
