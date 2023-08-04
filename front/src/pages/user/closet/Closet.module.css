@@ -10,7 +10,7 @@
     height: 70px;
 
     /* 컬러 */
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
 
     /* 위치 */
     margin-bottom: 5%;
@@ -25,7 +25,15 @@
 
 .menuArea{
     width: 500px;
-    background-color: bisque;
+    /* background-color: bisque; */
+
+    display: flex;
+    justify-content: center;
+}
+
+.menuArea > div{
+    position: sticky;
+    top: 0;
 }
 
 .closetContainer{
@@ -69,6 +77,7 @@
     /* 크기 */
     width: 800px;
     height: 50px;
+    
 }
 .addBtn{
     /* 크기 */
@@ -76,17 +85,12 @@
     height: 100%;
 
     /* 컬러 */
-    background-color: var(--border);
-
+    background-color: var(--signiture);
+    color:white;
     /* 커서 */
     cursor: pointer;
 }
 
-.addBtn:hover{
-    /* 컬러 */
-    background-color: var(--signiture);
-    color:white;
-}
 
 .closetList{
     /* 크기 */
@@ -128,9 +132,6 @@
 .footer{
     /* 크기 */
     height: 200px;
-
-    /* 컬러 */
-    background-color: antiquewhite;
 
     /* 위치 */
     margin-top: 10%;

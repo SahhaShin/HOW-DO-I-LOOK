@@ -14,6 +14,10 @@ import chatStyle from "./ChatList.module.css";
 import ChatSlot from "../../../components/chat/chatting/ChatSlot";
 import Pagination from "../../../components/util/Pagination";
 import FollowSlot from "../../../components/util/FollowSlot";
+import Header from "../../../components/util/Header";
+import Menu from "../../../components/util/Menu";
+import Footer from "../../../components/util/Footer";
+
 
 const ChatList = () => {
 
@@ -57,7 +61,7 @@ const ChatList = () => {
     return(
         <>
             <div className={`${chatStyle.total}`}>
-                <div className={`${chatStyle.header}`}>header</div>
+                <div className={`${chatStyle.header}`}><Header/></div>
                 
                 <div className={`${chatStyle.main}`}>
                     
@@ -65,7 +69,7 @@ const ChatList = () => {
                     
                     <div className={`${chatStyle.menuArea}`}>
                         {/* floating menu start */}
-                        menu area
+                        <div><Menu/></div>
                     </div>
 
                     {/* 메인 컨텐츠 시작 */}
@@ -115,7 +119,7 @@ const ChatList = () => {
                     </div>
                 </div>
 
-                <div className={`${chatStyle.footer}`}>footer</div>
+                <div className={`${chatStyle.footer}`}><Footer/></div>
 
                 
             </div>

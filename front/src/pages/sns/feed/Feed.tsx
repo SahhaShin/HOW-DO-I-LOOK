@@ -12,6 +12,9 @@ import IntroArea from '../../../components/sns/feed/IntroArea';
 import FeedDetail from '../../../components/sns/feed/FeedDetail';
 import FeedCreate from '../../../components/sns/feed/FeedCreate';
 import FeedDeclaration from '../../../components/sns/feed/FeedDeclaration';
+import Header from '../../../components/util/Header';
+import Footer from '../../../components/util/Footer';
+import Menu from '../../../components/util/Menu';
 
 const Feed = () => {
 
@@ -37,7 +40,7 @@ const Feed = () => {
                 state.declarationModalOpen?<div className={`${feedStyle.declarationModal}`}><FeedDeclaration/></div>:null
             }
             <div className={`${feedStyle.total}`}>
-                <div className={`${feedStyle.header}`}>header</div>
+                <div className={`${feedStyle.header}`}><Header/></div>
                 
                 <div>
                     {/* 문구 & 해시태그 */}
@@ -51,7 +54,7 @@ const Feed = () => {
                     
                     <div className={`${feedStyle.menuArea}`}>
                         {/* floating menu start */}
-                        menu area
+                        <div><Menu/></div>
                     </div>
 
                     {/* 메인 컨텐츠 시작 */}
@@ -97,7 +100,7 @@ const Feed = () => {
                     </div>
                 </div>
 
-                <div className={`${feedStyle.footer}`}>footer</div>
+                <div className={`${feedStyle.footer}`}><Footer/></div>
 
                 
             </div>
