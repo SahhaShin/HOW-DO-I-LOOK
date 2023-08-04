@@ -16,19 +16,8 @@ const MypageFollowModal = () => {
     interface Follow{
         profileImg?:string,
         nickname:string,
-        id:string,
+        id:number,
     }
-
-    let [users, setUsers] = useState<Follow[]|null>([
-        {
-            nickname:"닉네임1",
-            id:"nick1"
-        },
-        {
-            nickname:"닉네임2",
-            id:"nick2"
-        },
-    ]);
 
     // 현재 내 아이디
     let id:number = 1;
@@ -44,11 +33,11 @@ const MypageFollowModal = () => {
             {/* 메인 */}
             <div className={`${mypageFollowModalStyle.main}`}>
                 {
-                    users?.map((one)=>{
+                    state.followUsers?.map((one, idx)=>{
                         return(
-                            <div className={`${mypageFollowModalStyle.userInfo}`}>
+                            <div key = {idx} className={`${mypageFollowModalStyle.userInfo}`}>
                                 {/* 프로필 이미지 */}
-                                <div className={`${mypageFollowModalStyle.profileImg}`}></div>
+                                <div className={`${mypageFollowModalStyle.profileImg}`}><img src={one.profileImg}></img></div>
 
                                 {/* 닉네임 */}
                                 <div className={`${mypageFollowModalStyle.nickname}`}>{one.nickname}</div>

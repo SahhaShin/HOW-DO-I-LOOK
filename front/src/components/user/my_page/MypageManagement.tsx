@@ -13,6 +13,7 @@ const MypageManagement = () => {
     let state = useSelector((state:any)=>state.mypage);
     let dispatch = useDispatch();
     
+    console.log(4)
 
     return(
         <div className={`${mypageManagementStyle.total}`}>
