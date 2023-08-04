@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Optional;
 
 /*
@@ -28,7 +29,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                                        Authentication authentication) {
+                                        Authentication authentication) throws IOException {
 
         // 인증 정보에서 username(email) 추출
         String email = extractUsername(authentication);
@@ -39,6 +40,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         httpServletResponse.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
         httpServletResponse.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
+
+        httpServletResponse.getWriter().write("로그인 성공! 헤더의 토큰을 확인하세요");
 
         // response header에 AccessToken, RefreshToken 실어서 보내기
 //        jwtService.sendAccessAndRefreshToken(httpServletResponse, accessToken, refreshToken);

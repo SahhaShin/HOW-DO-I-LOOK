@@ -36,7 +36,7 @@ public class UserController {
                 .body(userService.quit(authorization, id));
     }
 
-    @ApiOperation(value = "JWT 토큰 테스트", notes = "추후 삭제 예정")
+    @ApiOperation(value = "JWT 재발급용 (재발급을 원한다면 RefreshToken을 헤더에)", notes = "추후 삭제 예정")
     @GetMapping("/jwt")
     public ResponseEntity<?> jwtTest() {
 
