@@ -4,10 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 const ChatSlot = (props) => {
 
+    console.log(props);
+
     const navigate = useNavigate();
 
     function chatStart(){
-        // navigate("/chat/" + props.item.otherId + "/" + props.item.roomId);
+        //props.oneRoom.chatRoomCode
+        navigate("/chatroom/" + props.oneRoom.userBId + "/" + props.oneRoom.id);
     }
 
 
@@ -26,7 +29,7 @@ const ChatSlot = (props) => {
                 <div className={`${chatSlotStyle.content}`}>
                     {/* 닉네임, 시간 */}
                     <div>
-                        <p>User3</p>
+                        <p>닉네임 안줌</p>
                         <p>오후 3:12</p>
                     </div>
 
@@ -35,7 +38,7 @@ const ChatSlot = (props) => {
                 </div>
 
                 {/* 우측 : 입장 버튼 */}
-                <div className={`${chatSlotStyle.enterBnt}`}><button onClick={()=>{chatStart(props.oneRoom.chatRoomCode)}}>입장</button></div>
+                <div className={`${chatSlotStyle.enterBnt}`}><button onClick={()=>{chatStart()}}>입장</button></div>
             </div>
 
         </div>

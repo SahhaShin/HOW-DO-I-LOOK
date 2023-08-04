@@ -6,9 +6,20 @@ import * as StompJs from '@stomp/stompjs';
 //css
 import chatHistoryStyle from "./ChatHistory.module.css";
 
+//redux
+import { useSelector, useDispatch } from "react-redux"; 
+import {action} from "../../../store/ChatSlice";
+
 const ChatHistory = () => {
 
+    //redux 관리
+    let state = useSelector((state:any)=>state.chat);
+    let dispatch = useDispatch();
+
     const navigate = useNavigate();
+
+    const params = useParams();
+        console.log(params);
 
     // a유저와 b유저가 나눈 채팅 기록
     // interface ChatList{
@@ -112,7 +123,7 @@ const ChatHistory = () => {
     };
 
     //지금 내가 어떤 id를 가진 유저인지 확인
-    const myId:number = 12;
+    const myId:number = 1;
 
 
     // let [chatList, setChatList] = useState<ChatList[]>([
@@ -200,26 +211,10 @@ const ChatHistory = () => {
         // }
     
         // let userId = JSON.parse(sessionStorage.getItem("loginUser")).id;
-    
-        const url = process.env.REACT_APP_SERVER + "/api/chat"
-        const data = {
-          userA: 1,
-          userB: 2
-        }
-        const config = {"Content-Type": 'application/json'};
         
         // 과거 채팅했던 내역을 가져와서 저장해야함
-        // axios.post(url, data, config)
-        // .then((result) => {
-        // //   setOtherName(result.data.talkUserName);
-        //   setChatList(result.data.chatList);
-        // })
-        // .then(() => {
-        //   // console.log(chatList)
-        //   connect();
-    
-        //   // setUp(false);
-        // })
+        let otherId = params.otherId;
+        dispatch(action.enterChatRoom({myId, otherId}));
 
         connect();
     
@@ -232,12 +227,12 @@ const ChatHistory = () => {
     return(
         <div className={`${chatHistoryStyle.total}`}>
             <div className={`${chatHistoryStyle.totalChat}`}>
-                {chatList?.map((one)=>{
+                {state.chatHistory?.chatContext && state.chatHistory?.chatContext.map((one, idx)=>{
                     return(
-                        <div className={`${chatHistoryStyle.chatArea}`}>
-                            {/* 날짜 -> 아직 안줌 */}
-                            {/* {curDate!==one.date?<div className={`${chatHistoryStyle.date}`}><div>{one.date}</div></div>:null} */}
-                            {myId!==one.userId?<div className={`${chatHistoryStyle.oneChat}`}>
+                        <div key={idx} className={`${chatHistoryStyle.chatArea}`}>
+                            {/* 날짜 */}
+                            <div className={`${chatHistoryStyle.date}`}><div>{one.createTime}</div></div>
+                            {params.otherId===one.userId?<div className={`${chatHistoryStyle.oneChat}`}>
                                 {/* 유저 프로필 */}
                                 <div className={`${chatHistoryStyle.profile}`}>
                                     <div className={`${chatHistoryStyle.profileCircle_G}`}>
@@ -248,19 +243,19 @@ const ChatHistory = () => {
                                 {/* 유저 닉네임, 내용/시간 */}
                                 <div className={`${chatHistoryStyle.mid}`}>
                                     {/* <div>{one.nickname}</div> */}
-                                    <div>닉네임 안줌</div>
+                                    <div>{one.userNickName}</div>
                                     <div>
-                                        <div className={`${chatHistoryStyle.midContent}`}>{one.chatContent}</div>
-                                        {/* <div className={`${chatHistoryStyle.midTime}`}>{one.time}</div> */}
-                                        <div className={`${chatHistoryStyle.midTime}`}>시간 안줌</div>
+                                        <div className={`${chatHistoryStyle.midContent}`}>{one.content}</div>
+                                        {/* <div className={`${chatHistoryStyle.midTime}`}>{one.createTime}</div> */}
+                                        <div className={`${chatHistoryStyle.midTime}`}>{one.createTime}</div>
                                     </div>
                                 </div>
                             </div> :
                             <div className={`${chatHistoryStyle.oneChat2}`}>
                                 <div className={`${chatHistoryStyle.mid2}`}>    
                                     {/* <div className={`${chatHistoryStyle.midTime}`}>{one.time}</div> */}
-                                    <div className={`${chatHistoryStyle.midTime}`}>시간 안줌</div>
-                                    <div className={`${chatHistoryStyle.midContent}`}>{one.chatContent}</div>
+                                    <div className={`${chatHistoryStyle.midTime}`}>{one.createTime}</div>
+                                    <div className={`${chatHistoryStyle.midContent}`}>{one.content}</div>
                                 </div>
                             </div>}
 
