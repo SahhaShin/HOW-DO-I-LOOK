@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface OotdCustomRepository {
 
-    List<ClothesTypeListDto> findOotdClothes(Long ootdId, SlotType slotType);
-    List<ClothesTypeListDto> findClothesList(Long userId, String type, Long ootdId);
-    List<ClothesAllTypeListDto> findByTypeAndUser_Id(ClothesType type, Long userId);
+    ClothesTypeListDto findOotdClothes(Long ootdId, SlotType slotType);
+    List<ClothesTypeListDto> findClothesList(Long clothesId, Long userId, String type, Long ootdId);
+    List<ClothesTypeListDto> findByTypeAndUser_Id(ClothesType type, Long userId);
 }
