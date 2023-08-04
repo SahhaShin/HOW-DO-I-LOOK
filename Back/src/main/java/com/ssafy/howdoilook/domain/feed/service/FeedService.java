@@ -73,6 +73,19 @@ public class FeedService {
         List<FeedResponseDto> feedResponseDtoList = builder(feedList);
         return new PageImpl<>(feedResponseDtoList, feeds.getPageable(), feeds.getTotalElements());
     }
+    public Page<FeedResponseDto> selectByUserId(Long userId,Pageable pageable){
+        Page<Feed> feeds = feedRepository.selectByUserId(userId, pageable);
+        List<Feed> feedList = feeds.getContent();
+        List<FeedResponseDto> feedResponseDtoList = builder(feedList);
+        return new PageImpl<>(feedResponseDtoList, feeds.getPageable(), feeds.getTotalElements());
+    }
+
+    public Page<FeedResponseDto> selectLikedFeed(Long userId,Pageable pageable){
+        Page<Feed> feeds = feedRepository.selectLikedFeed(userId, pageable);
+        List<Feed> feedList = feeds.getContent();
+        List<FeedResponseDto> feedResponseDtoList = builder(feedList);
+        return new PageImpl<>(feedResponseDtoList, feeds.getPageable(), feeds.getTotalElements());
+    }
 
     @Transactional
     public Long saveFeed(FeedSaveRequestDto feedSaveRequestDto, UserDetails userDetails, List<MultipartFile> multipartFileList) {

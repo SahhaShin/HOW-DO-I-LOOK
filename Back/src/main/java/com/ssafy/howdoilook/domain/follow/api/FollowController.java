@@ -3,6 +3,7 @@ package com.ssafy.howdoilook.domain.follow.api;
 import com.ssafy.howdoilook.domain.follow.dto.request.FollowDeleteRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.request.FollowSaveRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FolloweeResponseDto;
+import com.ssafy.howdoilook.domain.follow.dto.response.FollowerResponseDto;
 import com.ssafy.howdoilook.domain.follow.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,10 +30,18 @@ public class FollowController {
         followService.deleteFollow(followDeleteRequestDto,userDetails);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
+    //나를 팔로워 하는사람
+    @GetMapping("/follower/{userId}")
+    public ResponseEntity<Page<FollowerResponseDto>> selectFollower(@PathVariable(name = "userId") Long userId, Pageable page){
+        Page<FollowerResponseDto> followerResponseDtos = followService.selectFollowerList(userId, page);
+        return ResponseEntity.status(HttpStatus.OK).body(followerResponseDtos);
+    }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Page<FolloweeResponseDto>> selectFollowerAndFollowee(@PathVariable(name = "userId") Long userId, @AuthenticationPrincipal UserDetails userDetails, Pageable page){
-        Page<FolloweeResponseDto> followeeResponseDtos = followService.selectFolloweeList(userId,userDetails, page);
+
+    //내가 팔로우 하는사랑
+    @GetMapping("/followee/{userId}")
+    public ResponseEntity<Page<FolloweeResponseDto>> selectFollowee(@PathVariable(name = "userId") Long userId, Pageable page){
+        Page<FolloweeResponseDto> followeeResponseDtos = followService.selectFolloweeList(userId, page);
         return ResponseEntity.status(HttpStatus.OK).body(followeeResponseDtos);
     }
 }
