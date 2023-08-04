@@ -24,6 +24,8 @@ public class UserSignUpRequestDto {
 
     private int age;
 
+    private String profileImg;
+
     public User toEntity() {
 
         return User.builder()
