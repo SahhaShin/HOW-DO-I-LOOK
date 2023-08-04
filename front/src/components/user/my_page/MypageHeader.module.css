@@ -65,8 +65,10 @@
 .profile_badge{
     /* 위치 */
     position: absolute;
-    top: 350px;
-    left: 900px;
+    /* top: 350px;
+    left: 900px; */
+    margin-top: 110px;
+    margin-left: 150px;
 
     
     /* 크기 */
