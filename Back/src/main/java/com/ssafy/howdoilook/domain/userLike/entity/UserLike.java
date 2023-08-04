@@ -22,7 +22,7 @@ public class UserLike extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_user_id")
-    private User user;
+    private User targetUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
@@ -36,9 +36,9 @@ public class UserLike extends BaseTimeEntity {
     private int score;
 
     @Builder
-    public UserLike(Long id, User user, Room room, UserLikeType type, int score) {
+    public UserLike(Long id, User targetUser, Room room, UserLikeType type, int score) {
         this.id = id;
-        this.user = user;
+        this.targetUser = targetUser;
         this.room = room;
         this.type = type;
         this.score = score;

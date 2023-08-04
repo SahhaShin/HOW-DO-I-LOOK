@@ -11,6 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("*")
+                .allowedHeaders("*")
+                .exposedHeaders("Authorization", "Authorization-Refresh")
                 .maxAge(3000);
 
     }

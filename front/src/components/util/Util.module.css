@@ -1,0 +1,114 @@
+:root {
+    --primary-light: #8abdff;
+    --primary: #6d5dfc;
+    --primary-dark: #5b0eeb;
+    --white: #ffffff;
+    --greyLight-1: #e4ebf5;
+    --greyLight-2: #c8d0e7;
+    --greyLight-3: #bec8e4;
+    --greyDark: #9baacf;
+    --signiture: #4570F5;
+}
+
+.navbarContainer {
+    /* 위치 */
+    position: relative;
+}
+    
+.navbar {
+    /* 크기 */
+    width: 100px;
+    height: 300px;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+
+    /* 컬러 */
+    background-color: #f0f0f0;
+
+    margin-left: 20px;
+}
+    
+.activeMenuBlock {
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    align-items: center;
+    text-align: center;
+    vertical-align:middle;
+
+    /* 위치 */
+    position: absolute;
+    top: 0;
+
+    /* 크기 */
+    height: 20%;
+    width: 100%;
+
+    /* 컬러 */
+    background-color: darkgray;
+
+    /* 동적요소 */
+    transition: top 0.3s ease
+}
+    
+.activeMenuBlock.active {
+    z-index: 0;
+}
+  
+.activeMenuBlock.active h2 {
+
+    /* 컬러 */
+    color: #ffffff;
+
+    /* 위치 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    /* 동적 */
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+
+    /* 폰트 */
+    font-size: 15px;
+}
+    
+/* Hide the text when the block is not active */
+.activeMenuBlock h2 {
+    /* 컬러 */
+    color: #ffffff;
+
+    /* 폰트 */
+    font-size: 15px;
+
+    /* 위치 */
+    padding: 5%;;
+}
+    
+  
+  
+/* 버튼 */
+button{
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    font-weight: 700;
+
+    /* border */
+    border: none;
+
+    /* 폰트 */
+    font-size: 15px;
+
+    /* 크기 */
+    width: 100%;
+    height: 100%;
+
+    /* 커서 */
+    cursor: pointer;
+}

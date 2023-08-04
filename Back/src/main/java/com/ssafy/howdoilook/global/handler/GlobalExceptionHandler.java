@@ -6,8 +6,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(NoContentException.class)
+    public ResponseEntity<?> NoContentException(NoContentException noContentException) {
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(noContentException.getMessage());
+    }
 
 //    @ExceptionHandler(Exception.class)
 //    public ResponseEntity<?> handleOtherException(Exception exception){
@@ -42,6 +51,12 @@ public class GlobalExceptionHandler {
 //    public ResponseEntity<String> handleS3UploadFailure(RuntimeException exception) {
 //        return ResponseEntity
 //                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                .body(exception.getMessage());
+//    }
+
+//    @ExceptionHandler(AccessException.class)
+//    public ResponseEntity<String> handleAccessException(AccessException exception){
+//        return ResponseEntity.status(HttpStatus.FORBIDDEN)
 //                .body(exception.getMessage());
 //    }
 

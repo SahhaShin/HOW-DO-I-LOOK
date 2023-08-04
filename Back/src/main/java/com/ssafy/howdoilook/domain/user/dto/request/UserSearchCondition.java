@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.user.dto.request;
 
+import com.ssafy.howdoilook.domain.user.entity.BadgeType;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.Role;
 import com.ssafy.howdoilook.domain.user.entity.SocialType;
@@ -25,4 +26,6 @@ public class UserSearchCondition {
     private Role role;
 
     private SocialType socialType;
+
+    private BadgeType showBadgeType;
 }

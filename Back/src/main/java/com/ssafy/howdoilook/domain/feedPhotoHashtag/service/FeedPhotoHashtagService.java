@@ -37,9 +37,5 @@ public class FeedPhotoHashtagService {
                 .build();
         return feedPhotoHashtagRepository.save(entity).getId();
     }
-//    @Transactional
-//    public void deleteFeedPhotoHashTag(Long id){
-//        feedPhotoHashtagRepository.deleteById(id);
-//    }
 
 }
