@@ -1,14 +1,12 @@
 package com.ssafy.howdoilook.domain.ootd.service;
 
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
-import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.ClothesOotd;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.SlotType;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.SlotTypeInterface;
 import com.ssafy.howdoilook.domain.clothesOotd.repository.ClothesOotdRepository;
 import com.ssafy.howdoilook.domain.ootd.dto.request.OotdSaveRequestDto;
-import com.ssafy.howdoilook.domain.ootd.dto.response.ClothesAllTypeListDto;
 import com.ssafy.howdoilook.domain.ootd.dto.response.ClothesTypeListDto;
 import com.ssafy.howdoilook.domain.ootd.dto.response.GetOotdListDto;
 import com.ssafy.howdoilook.domain.ootd.entity.Ootd;
@@ -105,7 +103,6 @@ public class OotdService {
     public List<GetOotdListDto> findOotdList(Long userId) {
 
         List<GetOotdListDto> ootds = new ArrayList<>();
-        List<Ootd> findOotds = ootdRepository.findByUser_Id(userId);
 
         for(int i = 1; i <= 2; i++) {
             Ootd ootd = ootdRepository.findByUser_IdAndOrder(userId, i).orElse(null);
@@ -113,26 +110,7 @@ public class OotdService {
             Integer order = i;
 
             if (ootd == null) {
-                List<ClothesTypeListDto> topsList = ootdRepository.findByTypeAndUser_Id(ClothesType.TOP, userId);
-                List<ClothesTypeListDto> bottomsList = ootdRepository.findByTypeAndUser_Id(ClothesType.BOTTOM, userId);
-                List<ClothesTypeListDto> shoesList = ootdRepository.findByTypeAndUser_Id(ClothesType.SHOE, userId);
-                List<ClothesTypeListDto> accessories1List = ootdRepository.findByTypeAndUser_Id(ClothesType.ACCESSORY, userId);
-                List<ClothesTypeListDto> accessories2List = ootdRepository.findByTypeAndUser_Id(ClothesType.ACCESSORY, userId);
-                List<ClothesTypeListDto> accessories3List = ootdRepository.findByTypeAndUser_Id(ClothesType.ACCESSORY, userId);
-
-                GetOotdListDto getOotdListDto = GetOotdListDto.builder()
-//                        .ootdId(ootdId)
-                        .order(order)
-                        .tops(topsList)
-                        .bottoms(bottomsList)
-                        .shoes(shoesList)
-                        .accessories1(accessories1List)
-                        .accessories2(accessories2List)
-                        .accessories3(accessories3List)
-                        .build();
-
-                ootds.add(getOotdListDto);
-                System.out.println("===이거 몇번 ====");
+                // ootd를 한번도 설정된 적 없으면 아무것도 반환하지 않는다.
                 continue;
             }
 
@@ -166,8 +144,6 @@ public class OotdService {
         List<ClothesTypeListDto> clothesList = new ArrayList<>();
         ClothesTypeListDto findClothesOotd = ootdRepository.findOotdClothes(ootdId, slotType);
         clothesList.add(findClothesOotd);
-        System.out.println(ootdRepository.findOotdClothes(ootdId, slotType).getClothesId());
-        System.out.println("===역?");
         /**
          * 1번 ootd랑 2번 ootd에 같은 옷이 들어가게 될 때 중복 출력 문제
          */
