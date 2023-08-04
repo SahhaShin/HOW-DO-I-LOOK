@@ -6,7 +6,9 @@ import chatRoomStyle from "./ChatRoom.module.css";
 
 //컴포넌트
 import ChatHistory from "../../../components/chat/chatting/ChatHistory";
-import { subscribe } from "diagnostics_channel";
+import Header from "../../../components/util/Header";
+import Menu from "../../../components/util/Menu";
+import Footer from "../../../components/util/Footer";
 
 
 const ChatRoom = () => {
@@ -18,12 +20,12 @@ const ChatRoom = () => {
     return(
         <div className={`${chatRoomStyle.total}`}>
             {/* 헤더 */}
-            <div className={`${chatRoomStyle.header}`}>헤더</div>
+            <div className={`${chatRoomStyle.header}`}><Header/></div>
 
             {/* 메인 */}
             <div className={`${chatRoomStyle.main}`}>
                 {/* 좌측 메뉴 */}
-                <div className={`${chatRoomStyle.menuArea}`}></div>
+                <div className={`${chatRoomStyle.menuArea}`}><div><Menu/></div></div>
 
                 {/* 우측 채팅하는 ui */}
                 <div className={`${chatRoomStyle.mid}`}>
@@ -47,7 +49,7 @@ const ChatRoom = () => {
             </div>
 
             {/* 푸터 */}
-            <div className={`${chatRoomStyle.footer}`}></div>
+            <div className={`${chatRoomStyle.footer}`}><Footer/></div>
         </div>
     );
 }
