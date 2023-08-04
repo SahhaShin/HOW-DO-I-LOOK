@@ -99,14 +99,14 @@ public class FollowService {
             User followee = follow.getFollowee();
             list.add(FolloweeResponseDto.builder()
                     .id(followee.getId())
-                    .email(followee.getEmail())
-                    .name(followee.getName())
-                    .nickname((followee.getNickname()))
+                    .nickname(followee.getNickname())
+                    .profileImg(followee.getProfileImg())
                     .build()
             );
         }
         return new PageImpl<>(list, followeeByUserId.getPageable(), followeeByUserId.getTotalElements());
     }
+    
     //나를 팔로워 하는사람
     public Page<FollowerResponseDto> selectFollowerList(Long userId,Pageable page){
 
@@ -124,12 +124,53 @@ public class FollowService {
             User follower = follow.getFollower();
             FollowerResponseDto followerResponseDto = FollowerResponseDto.builder()
                     .id(follower.getId())
-                    .email(follower.getEmail())
-                    .name(follower.getName())
                     .nickname(follower.getNickname())
+                    .profileImg(follower.getProfileImg())
                     .build();
             list.add(followerResponseDto);
         }
         return new PageImpl<>(list, followerByUserId.getPageable(), followerByUserId.getTotalElements());
+    }
+    
+    /*
+    * 나를 팔로우하는 사람 전체 리스트 반환(Non-Paging) 
+    * */
+    public List<FolloweeResponseDto> getAllFolloweeList(Long userId) {
+        List<Follow> allFolloweeList = followReposiroty.findAllFolloweeByUserId(userId);
+
+        List<FolloweeResponseDto> followeeResponseDtoList = new ArrayList<>();
+
+        for (Follow follow : allFolloweeList) {
+            FolloweeResponseDto followeeResponseDto = FolloweeResponseDto.builder()
+                    .id(follow.getFollowee().getId())
+                    .nickname(follow.getFollowee().getNickname())
+                    .profileImg(follow.getFollowee().getProfileImg())
+                    .build();
+
+            followeeResponseDtoList.add(followeeResponseDto);
+        }
+
+        return followeeResponseDtoList;
+    }
+    
+    /*
+    * 내가 팔로우하는 사람 전체 리스트 반환(Non-Paging)
+    * */
+    public List<FollowerResponseDto> getAllFollowerList(Long userId) {
+        List<Follow> allFollowerList = followReposiroty.findAllFollowerByUserId(userId);
+
+        List<FollowerResponseDto> followerResponseDtoList = new ArrayList<>();
+
+        for (Follow follow : allFollowerList) {
+            FollowerResponseDto followerResponseDto = FollowerResponseDto.builder()
+                    .id(follow.getFollower().getId())
+                    .nickname(follow.getFollower().getNickname())
+                    .profileImg(follow.getFollower().getProfileImg())
+                    .build();
+
+            followerResponseDtoList.add(followerResponseDto);
+        }
+
+        return followerResponseDtoList;
     }
 }

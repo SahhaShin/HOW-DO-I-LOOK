@@ -5,6 +5,7 @@ import com.ssafy.howdoilook.domain.follow.dto.request.FollowSaveRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FolloweeResponseDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FollowerResponseDto;
 import com.ssafy.howdoilook.domain.follow.service.FollowService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,5 +44,21 @@ public class FollowController {
     public ResponseEntity<Page<FolloweeResponseDto>> selectFollowee(@PathVariable(name = "userId") Long userId, Pageable page){
         Page<FolloweeResponseDto> followeeResponseDtos = followService.selectFolloweeList(userId, page);
         return ResponseEntity.status(HttpStatus.OK).body(followeeResponseDtos);
+    }
+
+    @ApiOperation(value = "내가 팔로우하는 사람 전체 리스트")
+    @GetMapping("/list/follower/{userId}")
+    public ResponseEntity<?> getAllFolloweeList(@PathVariable Long userId) {
+
+        return ResponseEntity.ok()
+                .body(followService.getAllFolloweeList(userId));
+    }
+
+    @ApiOperation(value = "나를 팔로우하는 사람 전체 리스트")
+    @GetMapping("/list/followee/{userId}")
+    public ResponseEntity<?> getAllFollowerList(@PathVariable Long userId) {
+
+        return ResponseEntity.ok()
+                .body(followService.getAllFollowerList(userId));
     }
 }
