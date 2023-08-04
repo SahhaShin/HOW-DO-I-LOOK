@@ -5,7 +5,7 @@ import mypageHeaderStyle from "./MypageHeader.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollowModalOpen, changeFollowMode, changeManageType} from "../../../store/MypageSlice";
+import {changeFollowModalOpen, changeFollowMode, changeManageType, changeMenuMode} from "../../../store/MypageSlice";
 
 
 const MypageHeader = () => {
@@ -40,12 +40,13 @@ const MypageHeader = () => {
             {
                 state.mypageMode===2?
                 <div className={`${mypageHeaderStyle.btns}`}>
+                    <button onClick={()=>{dispatch(changeManageType(1)); dispatch(changeMenuMode(1))}}>기본정보</button>
                     <button>팔로우</button>
                     <button>대화</button>
                 </div>:
                 <div className={`${mypageHeaderStyle.btns}`}>
-                    <button>내 옷장 관리</button>
-                    <button onClick={()=>{dispatch(changeManageType(1))}} style={state.menuMode===3?{backgroundColor:"#4570F5", color:"white"}:null}>내 정보 관리</button>
+                    <button onClick={()=>{dispatch(changeManageType(1)); dispatch(changeMenuMode(1))}}>기본정보</button>
+                    <button onClick={()=>{dispatch(changeManageType(1)); dispatch(changeMenuMode(3))}} style={state.menuMode===3?{backgroundColor:"#4570F5", color:"white"}:null}>내 정보 관리</button>
                     <button onClick={()=>{dispatch(changeFollowMode(3));dispatch(changeFollowModalOpen(true))}}>블랙리스트 관리</button>
                 </div>
             }

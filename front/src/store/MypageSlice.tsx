@@ -21,8 +21,8 @@ interface Mypage{
 
 // 초기화
 const initialState:Mypage = {
-    menuMode:3,
-    mypageMode:1,
+    menuMode:1,
+    mypageMode:2,
     followModalOpen : false,
     followUsers:[],
     followMode:1,
@@ -62,10 +62,13 @@ const MypageSlice = createSlice({
         },
         changeManageType(state, action){
             state.manageType=action.payload;
+        },
+        changeMenuMode(state, action){
+            state.menuMode=action.payload;
         }
         
     }
 });
 
-export let {changeFollowModalOpen,addFollowUsers,removeFollowUsers,changeFollowMode, changeMypageMode, changeManageType} = MypageSlice.actions;
+export let {changeFollowModalOpen,addFollowUsers,removeFollowUsers,changeFollowMode, changeMypageMode, changeManageType, changeMenuMode} = MypageSlice.actions;
 export default MypageSlice.reducer;

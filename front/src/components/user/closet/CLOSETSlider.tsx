@@ -12,13 +12,20 @@ const SlideComponent = (props) => {
 
     const slideRef = useRef(null);
     const [currentImgOrder, setcCurrentImgOrder] = useState(0);
-    let IMG_WIDTH = 120;
+    let IMG_WIDTH = 180;
+    // if(props.clothesType=="ACCESSORY"){
+    //     IMG_WIDTH=70;
+    // }else if(props.clothesType=="SHOE"){
+    //     IMG_WIDTH=100;
+    // }
 
     const slideRange = currentImgOrder * IMG_WIDTH;
 
     useEffect(() => {
-        slideRef.current.style.transition = "all 0.3s ease-in-out";
-        slideRef.current.style.transform = `translateX(-${slideRange}px)`;
+        if (slideRef.current) {
+            slideRef.current.style.transition = "all 0.3s ease-in-out";
+            slideRef.current.style.transform = `translateX(-${slideRange}px)`;
+        }
     }, [currentImgOrder]);
 
     const moveToNextSlide = () => {
@@ -34,11 +41,12 @@ const SlideComponent = (props) => {
         setcCurrentImgOrder(currentImgOrder - 1);
     };
     return (
-        <>
+        <div style={{display:"flex", alignItems:"center", width:"180px"}}>
+            <Button onClick={moveToPrevSlide}><img style={{width:"15px", height:"15px",zIndex:"5"}} src={process.env.PUBLIC_URL+`/img/prev.png`}/></Button>
                 {
                     
                     props.clothesType==="TOP"?
-                    <WrapperTOP>
+                    <WrapperTOP style={{width:"100%"}}>
                         <SlideWrapper ref={slideRef}>
                             {state.clothesTop?.map((one)=>{
                                 return(<ImgTOP src={one.photoLink} />);
@@ -72,44 +80,60 @@ const SlideComponent = (props) => {
                 }
 
                 {
+                    
                     props.clothesType==="ACCESSORY"?
-                    state.clothesAccessory?.map((one)=>{
-                        return(<ImgACCESSORY src={one.photoLink} />);
-                    }):null
+                    <WrapperACCESSORY>
+                        <SlideWrapper ref={slideRef}>
+                            {state.clothesAccessory?.map((one)=>{
+                                return(<ImgACCESSORY src={one.photoLink} />);
+                            })}
+                        </SlideWrapper>
+                    </WrapperACCESSORY>:null
                 }
 
-        {/* <Button onClick={moveToPrevSlide}>prev</Button>
-        <Button onClick={moveToNextSlide}>next</Button> */}
-        </>
+
+            <Button onClick={moveToNextSlide}><img style={{width:"15px", height:"15px", marginLeft:"-15px", zIndex:"5"}} src={process.env.PUBLIC_URL+`/img/next.png`}/></Button>
+        </div>
     );
 };
 
 export default SlideComponent;
 
 const WrapperTOP = styeld.div`
-  width: 120px;
+  width: 180px;
   height: 120px;
-  margin-bottom:5px;
+  margin-bottom:15px;
   overflow: hidden;
 `;
 
 const WrapperBOTTOM = styeld.div`
-  width: 120px;
+  width: 180px;
   height: 230px;
-  margin-bottom:5px;
+  margin-bottom:15px;
   overflow: hidden;
 `;
 
 const WrapperSHOE = styeld.div`
-  width: 120px;
+  width: 180px;
   height: 100%;
+  object-fit:contain;
+  overflow: hidden;
+
+  display:flex;
+  
+`;
+
+const WrapperACCESSORY = styeld.div`
+  width: 180px;
+  height: 100%;
+  margin-top:10px;
   object-fit:contain;
   overflow: hidden;
 `;
 
-
 const SlideWrapper = styeld.div`
   display: flex;
+  justify-content:center;
   width: 100%;
   height:100%;
 `;
@@ -127,13 +151,13 @@ const ImgBOTTOM = styeld.img`
 `;
 
 const ImgACCESSORY = styeld.img`
-    width: 100%;
+    width: 50%;
     height: 100%;
     object-fit:contain;
 `;
 
 const ImgSHOE = styeld.img`
-    width: 100%;
+    width: 60%;
     height: 100%;
     object-fit:contain;
 `;
@@ -141,6 +165,7 @@ const ImgSHOE = styeld.img`
 const Button = styeld.button`
     display:flex;
     flex-direction:row;
-    width:50px;
-    height:50px;
+    width:15px;
+    height:15px;
+    background-color:white;
 `;

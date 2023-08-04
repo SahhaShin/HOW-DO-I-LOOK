@@ -2,17 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 
 // css
 import coordiStyle from "./OOTDCoordi.module.css";
-import styled from "styled-components";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action} from "../../../store/ClosetSlice";
-
-
-//slick import
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 // 직접 만든 slider
 import CLOSETSlider from "./CLOSETSlider";
@@ -26,13 +19,6 @@ const OOTDCoordi = (idx) => {
     let dispatch = useDispatch();
    
     
-    // 슬라이더 환경 관리
-    const settings = {
-        arrows:false,
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    };
 
 
     // ootd 저장
@@ -90,20 +76,17 @@ const OOTDCoordi = (idx) => {
 
                     {/* 악세서리1 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
-                        {/* <CLOSETSlider clothesType={"ACCESSORY"}/> */}
-
+                        <CLOSETSlider clothesType={"ACCESSORY"}/>
                     </div>
 
                     {/* 악세서리2 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
-
-
+                        <CLOSETSlider clothesType={"ACCESSORY"}/>
                     </div>
 
                     {/* 악세서리3 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
-
-
+                        <CLOSETSlider clothesType={"ACCESSORY"}/>
                     </div>
                 </div>
                 
@@ -118,37 +101,3 @@ const OOTDCoordi = (idx) => {
 
 
 export default OOTDCoordi;
-
-const StyledSlider = styled(Slider)`
-
-  .slick-prev {
-    z-index: 1;
-    left: 30px;
-  }
-
-  .slick-next {
-    right: 40px;
-  }
-
-  .slick-prev:before,
-  .slick-next:before {
-    font-size: 30px;
-    opacity: 0.5;
-    color: white;
-  }
-
-  .slick-dots {
-    display: flex;
-    justify-content: center;
-    bottom: 30px;
-    color: white;
-
-    li button:before {
-      color: white;
-    }
-
-    li.slick-active button:before {
-      color: white;
-    }
-  }
-`;

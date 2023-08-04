@@ -5,7 +5,7 @@ import mypageMainStyle from "./MypageMain.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollowModalOpen, changeFollowMode, changeMypageMode} from "../../../store/MypageSlice";
+import {changeFollowModalOpen, changeFollowMode, changeMenuMode} from "../../../store/MypageSlice";
 
 
 const MypageMain = () => {
@@ -30,7 +30,7 @@ const MypageMain = () => {
                     <div>1</div>
                 </div>
 
-                <div className={`${mypageMainStyle.feed}`}>
+                <div onClick={()=>{dispatch(changeMenuMode(2))}} className={`${mypageMainStyle.feed}`}>
                     <div>피드</div>
                     <div>10</div>
                 </div>

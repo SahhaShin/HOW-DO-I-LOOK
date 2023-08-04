@@ -49,19 +49,53 @@ const Closet = () => {
         userId:1,
     }
 
-    // 화면 초기값 백엔드(api)에 요청
-    // useEffect(()=>{
-    //     // closet 영역 초기 셋팅은 top
-    //     dispatch(action.getClothesListByType(selectType));
 
-    //     dispatch(action.getClothesListByType({
-    //         clothesType: "TOP",
-    //         pageNum : 0,
-    //         userId:1,
-    //     }));
+    //초기 화면 OOTD를 위해 모든 분류의 옷 불러야함 (새로고침 시 재렌더링 될 때만)
+    useEffect(()=>{
+        
+        dispatch(action.getClothesListByType({
+            clothesType: "TOP",
+            pageNum : 0,
+            userId:1,
+        }));
+        
 
-    // },[])
 
+       
+        dispatch(action.getClothesListByType({
+            clothesType: "BOTTOM",
+            pageNum : 0,
+            userId:1,
+        }));
+        
+
+        
+        dispatch(action.getClothesListByType({
+            clothesType: "SHOE",
+            pageNum : 0,
+            userId:1,
+        }));
+        
+
+ 
+        dispatch(action.getClothesListByType({
+            clothesType: "ACCESSORY",
+            pageNum : 0,
+            userId:1,
+        }));
+        
+
+       
+        dispatch(action.getClothesListByType({
+            clothesType: "ALL",
+            pageNum : 0,
+            userId:1,
+        }));
+    
+    },[])
+
+
+    // 메뉴 클릭 시 마다 새롭게 옷을 받아옴
     useEffect(()=>{
         if(state.clothesTypeKo==="상의"){
             dispatch(action.getClothesListByType({
@@ -103,9 +137,8 @@ const Closet = () => {
                 userId:1,
             }));
         }
-    },[state.clothesTypeKo])
-    // state.clothesTop, state.clothesBottom, state.clothesShoe, state.clothesAccessory, state.clothesAll
-
+    },[state.clothesTypeEn])
+  
     return(
         <>
             <div className={`${closetStyle.total}`}>

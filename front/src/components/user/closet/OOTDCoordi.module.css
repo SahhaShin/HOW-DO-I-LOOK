@@ -32,7 +32,7 @@
 .ootd{
   /* 위치 */
   margin-top: 15%;
-  margin-left: 15%;
+  margin-left: 1%;
 
   /* 크기 */
   width: 120px;
@@ -136,12 +136,13 @@
 
 .ootd_etc{
   margin-top: 15%;
-  width: 100px;
+  width: 120px;
   height: 100px;
+  margin-left: 55px;
 }
 
 .carousal_etc{
-  width:130%;
+  width:130px;
 }
 
 
