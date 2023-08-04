@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getCookie, setCookie } from "../hook/Cookie";
+
 
 // axios
 export const action = {
   // 회원가입 api
   Signin: createAsyncThunk(
     `UserSlice/Signin`,
-    async (formdata: SigninINfo, thunkAPI) => {
+    async (formdata: SigninInfo, thunkAPI) => {
       return await axios({
         method: "post",
         url: `${process.env.REACT_APP_SERVER}/api/user/signup`,
@@ -25,19 +27,47 @@ export const action = {
   // 소셜 회원가입 api
   SocialSignin: createAsyncThunk(
     `UserSlice/SocialSignin`,
-    async (formdata: SigninINfo, thunkAPI) => {
+    async (formdata : SocialSigninInfo, thunkAPI) => {
+      console.log("`UserSlice/SocialSignin`,")
+      const email = getCookie("new_social_user_email")
+      const token = "Bearer " + getCookie("Authorization")
+      console.log(`${process.env.REACT_APP_SERVER}/social/update/${email}`)
+      console.log("formdata : " + formdata)
+      console.log("email : " + email)
+      console.log("token : " + token)
+      //회원 정보 업데이트 할 회원 id 가져오기 
       return await axios({
-        method: "post",
-        url: `${process.env.REACT_APP_SERVER}/social/update/{id}`,
-        data: formdata,
+        method: "get",
+        url: `${process.env.REACT_APP_SERVER}/api/user/userId/${email}`,
+        headers : {Authorization : token},
       })
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
           return response; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
           console.log(e);
         });
+
+      
+
+
+
+
+      // //회원 정보 업데이트 하기 
+      // return await axios({
+      //   method: "post",
+      //   url: `${process.env.REACT_APP_SERVER}/social/update/${id}`,
+      //   data: formdata,
+      //   headers : {Authorization : token},
+      // })
+      //   .then((response) => {
+      //     console.log(response.data);
+      //     return response; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+      //   })
+      //   .catch((e) => {
+      //     console.log(e);
+      //   });
     }
   ),
 
@@ -51,9 +81,9 @@ export const action = {
         data: formdata,
       })
         .then((response) => {
-          const result = response.data;
-          console.log(result);
-          return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+          console.log(response.data )
+          console.log(response)
+          return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
           console.log(e);
@@ -64,14 +94,14 @@ export const action = {
   // 이메일 증복 체크 api
   CheckEmail: createAsyncThunk(
     `UserSlice/CheckEmail`,
-    async (email: String, thunkAPI) => {
+    async (email:string, thunkAPI) => {
       return await axios({
         method: "get",
-        url: `${process.env.REACT_APP_SERVER}/check/email/${email}`,
+        url: `${process.env.REACT_APP_SERVER}/api/user/checkbyemail/${email.value}`,
       })
         .then((response) => {
           const result = response.data;
-          console.log(result);
+          console.log("email check : " + result);
           return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
@@ -83,15 +113,14 @@ export const action = {
   // 닉네임 증복 체크 api
   CheckNickName: createAsyncThunk(
     `UserSlice/CheckNickName`,
-    async (nickname: String, thunkAPI) => {
-      console.log("nickname: " + nickname);
+    async (nickname:string, thunkAPI) => {
       return await axios({
         method: "get",
-        url: `${process.env.REACT_APP_SERVER}/check/nickname/${nickname}`,
+        url: `${process.env.REACT_APP_SERVER}/api/user/checkbynickname/${nickname.value}`,
       })
         .then((response) => {
           const result = response.data;
-          console.log(result);
+          console.log("nickname check : " + result);
           return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
@@ -100,15 +129,31 @@ export const action = {
     }
   ),
 };
-
-interface SigninINfo {
+//회원가입
+interface SigninInfo {
   //response
-  userId: string;
-  nickname: string;
+  email: string;
   password: string;
+  name: string;
+  nickname: string;
   gender: string;
   age: number;
 }
+//소셜회원가입
+interface SocialSigninInfo {
+  //response
+  nickname: string;
+  gender: string;
+  age: number;
+}
+
+
+interface SocialSignin {
+  //response
+  formdata: SocialSigninInfo;
+  email: string;
+}
+
 
 interface LoginInfo {
   //response
@@ -118,8 +163,7 @@ interface LoginInfo {
 
 interface StringInfo {
   //response
-  userId: string;
-  password: string;
+  info : string;
 }
 
 const initialState = {

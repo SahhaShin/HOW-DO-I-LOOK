@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import loginStyle from './login.module.css';
 
+//cookie
+import { getCookie, setCookie } from "../../../hook/Cookie";
+
+
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action} from "../../../store/UserSlice";
@@ -21,13 +25,15 @@ const Login: React.FC = () => {
     console.log("age : " + age)
     console.log("nickname : " + nickname)
     console.log("gender: " + gender)
+    console.log(getCookie("new_social_user_email"))
 
+    const email = getCookie("new_social_user_email")
     //소셜 회원가입 추가정보 요청
     dispatch(action.SocialSignin({
       'nickname' : nickname,
       'gender' : gender,
       'age' : age
-    }));
+    }, email));
 
 
     // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"

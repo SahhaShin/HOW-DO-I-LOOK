@@ -35,17 +35,17 @@ const Login: React.FC = () => {
     console.log("agree : " + agree);
 
     //이메일 확인
-    dispatch(action.CheckNickName(nickname));
+    dispatch(action.CheckNickName({nickname}));
 
-    dispatch(action.CheckEmail(email));
+    dispatch(action.CheckEmail({email}));
 
     //회원가입 요청
     dispatch(
       action.Signin({
-        name: name,
         email: email,
-        nickname: nickname,
         password: password,
+        name: name,
+        nickname: nickname,
         gender: gender,
         age: age,
       })
@@ -57,6 +57,18 @@ const Login: React.FC = () => {
       <h1>회원가입</h1>
       <form className={`${loginStyle.login}`}>
         <div>
+          <div>
+            <label htmlFor="name" className={`${loginStyle.lable}`}>
+              <p>이름</p>
+            </label>
+            <input
+              type="name"
+              id="name"
+              placeholder="이름을을 입력해주세요"
+              className={`${loginStyle.input}`}
+              onChange={(e) => setname(e.target.value)}
+            />
+          </div>
           <div>
             <label htmlFor="email" className={`${loginStyle.lable}`}>
               <p>이메일</p>

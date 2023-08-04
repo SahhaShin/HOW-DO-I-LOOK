@@ -12,11 +12,14 @@ const Login: React.FC = () => {
 
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberID, setRememberID] = useState("");
 
   const loginClick = () => {
     console.log("회원 로그인");
     console.log("email : " + email);
     console.log("password : " + password);
+
+
 
     dispatch(
       action.Login({
@@ -72,7 +75,7 @@ const Login: React.FC = () => {
 
         <div>
           <div className={`${loginStyle.rememberID}`}>
-            <input type="checkbox" id="rememberID" />
+            <input type="checkbox" id="rememberID" onChange={(e) => setRememberID(e.target.value)}/>
             <label htmlFor="rememberID">
               <p>아이디 저장</p>
             </label>
