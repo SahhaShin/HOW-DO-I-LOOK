@@ -35,12 +35,11 @@
 
     display: flex;
     justify-content: center;
-
-    margin-top: -10%;
 }
 
 .menuArea > div{
-    position: fixed;
+    position: sticky;
+    top: 0;
 }
 
 .contentArea{
@@ -127,8 +126,6 @@
 
     /* 위치 */
     margin-left: 3%;
-
-    /* border:1px solid lightgrey; */
 }
 
 .sortBtn button:hover{
@@ -153,11 +150,11 @@
 /* 우측 팔로잉 영역 */
 .followArea{
     /* 고정 */
-    position: fixed;
+    position: sticky;
     overflow: auto;
     text-align: -webkit-center;
     margin-left: 5%;
-    margin-top: -20px;
+    margin-top: 180px;
     
     /* 크기 */
     width: 250px;
@@ -211,9 +208,6 @@
 .footer{
     /* 크기 */
     height: 200px;
-
-    /* 컬러 */
-    background-color: antiquewhite;
 
     /* 위치 */
     margin-top: 10%;
