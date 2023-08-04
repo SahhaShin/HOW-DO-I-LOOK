@@ -14,8 +14,9 @@ import CLOSETMenu from "../../../components/user/closet/CLOSETMenu";
 import CLOSETSlot from "../../../components/user/closet/CLOSETSlot";
 import Pagination from "../../../components/util/Pagination";
 import CLOSETRegist from "../../../components/user/closet/CLOSETRegist";
-
-
+import Header from "../../../components/util/Header";
+import Menu from "../../../components/util/Menu";
+import Footer from "../../../components/util/Footer";
 
 
 const Closet = () => {
@@ -142,7 +143,9 @@ const Closet = () => {
     return(
         <>
             <div className={`${closetStyle.total}`}>
-                <div className={`${closetStyle.header}`}>header</div>
+                <div className={`${closetStyle.header}`}>
+                    <Header/>
+                </div>
                 
                 <div className={`${closetStyle.main}`}>
                     
@@ -150,7 +153,7 @@ const Closet = () => {
                     
                     <div className={`${closetStyle.menuArea}`}>
                         {/* floating menu start */}
-                        menu area
+                        <div><Menu/></div>
                     </div>
 
                     {/* 메인 컨텐츠 시작 */}
@@ -207,11 +210,11 @@ const Closet = () => {
 
                     <div className={`${closetStyle.menuArea}`}>
                         {/* floating menu start */}
-                        빈공간
+                     
                     </div>
                 </div>
 
-                <div className={`${closetStyle.footer}`}>footer</div>
+                <div className={`${closetStyle.footer}`}><Footer/></div>
 
                 
             </div>

@@ -13,6 +13,11 @@
     justify-content: space-around;
     align-items: center;
     position: relative;
+
+    background-color: var(--border);
+}    
+.navbar > button{
+    background-color: var(--border);
 }
     
 .activeMenuBlock {
@@ -21,10 +26,10 @@
 
     /* 위치 */
     position: absolute;
-    top: 0;
+    top: -1;
 
     /* 크기 */
-    height: 100%;
+    height: 85px;
     width: 20%;
 
     /* 컬러 */
@@ -67,7 +72,7 @@
     font-size: 15px;
 
     /* 위치 */
-    padding: 5%;;
+    padding: 13%;
 }
     
   
