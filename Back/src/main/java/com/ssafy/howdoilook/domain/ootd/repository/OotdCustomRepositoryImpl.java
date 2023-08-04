@@ -22,38 +22,48 @@ public class OotdCustomRepositoryImpl implements OotdCustomRepository {
     }
 
     @Override
-    public List<ClothesTypeListDto> findOotdClothes(Long ootdId, SlotType slotType) {
+    public ClothesTypeListDto findOotdClothes(Long ootdId, SlotType slotType) {
 
-        List<ClothesTypeListDto> ootdClothes = jpaQueryFactory.select(new QClothesTypeListDto(
-                        co.clothes.id, c.photoLink, co.id))
+        ClothesTypeListDto ootdClothes = jpaQueryFactory.select(new QClothesTypeListDto(
+                        co.clothes.id, c.photoLink))
                 .from(co)
                 .leftJoin(co.clothes, c)
-//                .on(c.id.eq(co.id))
                 .where(
                         co.ootd.id.eq(ootdId),
                         co.type.eq(slotType)
                 )
-                .fetch();
+                .fetchOne();
 
         return ootdClothes;
     }
 
     @Override
-    public List<ClothesTypeListDto> findClothesList(Long userId, String type, Long ootdId) {
+    public List<ClothesTypeListDto> findClothesList(Long clothesId, Long userId, String type, Long ootdId) {
 
          List<ClothesTypeListDto> ootdList = jpaQueryFactory.select(new QClothesTypeListDto(
-                 c.clothes.id, c.photoLink, co.id))
+                 c.clothes.id, c.photoLink))
                 .from(c)
-                .leftJoin(c.clothesOotdList, co)
-//                .on(c.id.eq(co.id))
                 .where(
                         c.user.id.eq(userId),
                         c.type.eq(ClothesType.valueOf(type)),
-                        co.ootd.id.notIn(ootdId).or(co.id.isNull())
+                        c.id.notIn(clothesId)
                 )
-                 .orderBy(co.ootd.id.desc())
+                 .orderBy(c.id.desc())
                  .fetch();
 
         return ootdList;
+    }
+
+    @Override
+    public List<ClothesTypeListDto> findByTypeAndUser_Id(ClothesType type, Long userId) {
+
+        List<ClothesTypeListDto> ootdList = jpaQueryFactory.select(new QClothesTypeListDto(
+                c.clothes.id, c.photoLink))
+                .from(c)
+                .where(c.type.eq(type), c.user.id.eq(userId))
+                .fetch();
+
+        return ootdList;
+
     }
 }
