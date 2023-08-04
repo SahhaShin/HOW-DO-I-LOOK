@@ -84,15 +84,9 @@ public class FollowService {
         }
     }
     //내가 팔로우 하는 사람 리스트 반환
-    public Page<FolloweeResponseDto> selectFolloweeList(Long userId, UserDetails userDetails,Pageable page){
+    public Page<FolloweeResponseDto> selectFolloweeList(Long userId, Pageable page){
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
-
-        String clientEmail = userDetails.getUsername();
-
-        if (!clientEmail.equals(findUser.getEmail())){
-            throw new AccessException("접근 권한이 없습니다.");
-        }
 
         Page<Follow> followeeByUserId = followReposiroty.findFolloweeByUserId(userId, page);
         List<Follow> content = followeeByUserId.getContent();
@@ -114,16 +108,10 @@ public class FollowService {
         return new PageImpl<>(list, followeeByUserId.getPageable(), followeeByUserId.getTotalElements());
     }
     //나를 팔로워 하는사람
-    public Page<FollowerResponseDto> selectFollowerList(Long userId,UserDetails userDetails,Pageable page){
+    public Page<FollowerResponseDto> selectFollowerList(Long userId,Pageable page){
 
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 User 입니다.",1));
-
-        String clientEmail = userDetails.getUsername();
-
-        if (!clientEmail.equals(findUser.getEmail())){
-            throw new AccessException("접근 권한이 없습니다.");
-        }
 
         Page<Follow> followerByUserId = followReposiroty.findFollowerByUserId(userId, page);
         List<Follow> content = followerByUserId.getContent();
