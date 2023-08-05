@@ -14,11 +14,16 @@ import Login from "./pages/user/login/Login";
 import Signin from "./pages/user/login/Signin";
 import AuthSignin from "./pages/user/login/AuthSignin"
 
+//컴포넌트 선언
+import Header from "./components/util/Header"
+
 
 function App() {
   return (
     <Provider store={store}>
       <div className="App">
+        <Header></Header>
+
         <Router>
           <Routes>
             <Route path="/closet" element={<Closet/>}/>

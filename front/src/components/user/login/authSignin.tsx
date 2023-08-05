@@ -29,25 +29,13 @@ const Login: React.FC = () => {
 
     
     //소셜 회원가입 추가정보 요청
-    try {
-    // const idResponse = await dispatch(action.getID());
-    // const id = idResponse.payload; // Extract the id from the response
-
-    // console.log("id : " + id.value);
-
-    const link = await dispatch(
+    dispatch(
       action.SocialSignin({
         nickname: nickname,
         gender: gender,
         age: age,
-        // id : id,
       })
     );
-    // window.location.href = link;
-
-  } catch (error) {
-    console.error("Error:", error);
-  }
 
     // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"
     //window.location.href = "http://localhost:8081/oauth2/authorization/kakao"

@@ -1,23 +1,31 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import loginStyle from "./login.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { login, socialLogin, action } from "../../../store/UserSlice";
 
+//cookie
+import { getCookie, setCookie } from "../../../hook/Cookie";
+
 const Login: React.FC = () => {
+
+
+
   //redux 관리
   let state = useSelector((state: any) => state.closet);
   let dispatch = useDispatch();
 
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberID, setRememberID] = useState("");
+  const [rememberID, setRememberID] = useState("false");
 
   const loginClick = () => {
     console.log("회원 로그인");
     console.log("email : " + email);
     console.log("password : " + password);
+
+
 
 
 
@@ -75,10 +83,10 @@ const Login: React.FC = () => {
 
         <div>
           <div className={`${loginStyle.rememberID}`}>
-            <input type="checkbox" id="rememberID" onChange={(e) => setRememberID(e.target.value)}/>
+            {/* <input type="checkbox" id="rememberID" onChange={(e) => setRememberID(e.target.value)}/>
             <label htmlFor="rememberID">
               <p>아이디 저장</p>
-            </label>
+            </label> */}
           </div>
           <input
             type="button"
@@ -91,7 +99,7 @@ const Login: React.FC = () => {
         </div>
       </form>
       <div>
-        <a href="" className={`${loginStyle.signin}`}>
+        <a href={process.env.REACT_APP_FRONT + `/user/sign-up`} className={`${loginStyle.signin}`}>
           혹시 아직 회원이 아니십니까? <strong>회원가입</strong>
         </a>
       </div>

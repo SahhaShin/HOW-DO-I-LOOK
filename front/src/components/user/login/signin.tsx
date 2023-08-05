@@ -23,18 +23,9 @@ const Login: React.FC = () => {
   const [pwNotice, setPwNotice] = useState(false);
   const [nicknameNotice, setNicknameNotice] = useState(false);
 
-  const typeEmail = (e) => { 
+
+  const changeEmail = (e) => {
     setEmail(e.target.value)
-
-  }
-
-  const typeNickname = (e) => { 
-    setNickname(e.target.value)
-
-  }
-
-  const typePW = () => {
-
   }
 
   const signinClick = () => {
@@ -49,21 +40,36 @@ const Login: React.FC = () => {
     console.log("agree : " + agree);
 
     //이메일 확인
-    dispatch(action.CheckNickName({nickname}));
+    // const ntf = dispatch(action.CheckNickName({nickname}))
+    // .then((res) =>{
+    //   console.log("ntf : "+ res.value)
 
-    dispatch(action.CheckEmail({email}));
+    // });
 
-    //회원가입 요청
-    dispatch(
-      action.Signin({
-        email: email,
-        password: password,
-        name: name,
-        nickname: nickname,
-        gender: gender,
-        age: age,
-      })
-    );
+    // const ctf = dispatch(action.CheckEmail({email}));
+    // console.log("ctf : "+ ctf)
+
+    if(!agree){
+      alert("이용약관 동의를 해 주십시오")
+    }
+    else if(password != passworda ){
+      alert("비밀번호와 비밀번호 확인이 서로 일치하지 않습니다.")
+      return
+    }
+    else { 
+      //회원가입 요청
+      dispatch(
+        action.Signin({
+          email: email,
+          password: password,
+          name: name,
+          nickname: nickname,
+          gender: gender,
+          age: age,
+        })
+      );
+    }
+    
   };
 
   return (
@@ -92,7 +98,7 @@ const Login: React.FC = () => {
               id="email"
               placeholder="이메일을 입력해주세요"
               className={`${loginStyle.input}`}
-              onChange={(e) => typeEmail(e)}
+              onChange={(e) => setEmail(e.target.value)}
             />
             {pwNotice && <div>사용하실 수 있는 이메일입니다.</div>}
           </div>
@@ -104,7 +110,7 @@ const Login: React.FC = () => {
               type="text"
               id="nickname"
               value={nickname}
-              onChange={(e) => typeNickname(e)}
+              onChange={(e) => setNickname(e.target.value)}
               placeholder="사용하실 닉네임을 입력해주세요"
               className={`${loginStyle.input}`}
             />
@@ -199,7 +205,7 @@ const Login: React.FC = () => {
         </div>
       </form>
       <div>
-        <a href="" className={`${loginStyle.signin}`}>
+        <a href={process.env.REACT_APP_FRONT + `/user/log-in`} className={`${loginStyle.signin}`}>
           이미 계정이 있으신가요? <strong>로그인</strong>
         </a>
       </div>

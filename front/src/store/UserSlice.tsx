@@ -1,10 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getCookie, setCookie } from "../hook/Cookie";
+import { getCookie, setCookie, removeCookie } from "../hook/Cookie";
 
-const basePath = "http://localhost:3000"
-const homePath = "/home"
-const loginPath = "user/log-in"
 
 // axios
 export const action = {
@@ -18,7 +15,8 @@ export const action = {
         data: formdata,
       })
         .then((response) => {
-          // console.log(response)
+          //정상작동시 로그인 pg로 다이랙트
+          window.location.href = `${process.env.REACT_APP_FRONT}`
           return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
@@ -35,20 +33,18 @@ export const action = {
       const nickname = formdata.nickname
       const gender = formdata.gender
       const age = formdata.age
-      const id = formdata.id
-
       const email = getCookie("new_social_user_email")
 
-      const token = "Bearer " + getCookie("Authorization")
-      console.log(`${process.env.REACT_APP_SERVER}/api/user/social/update//${email}`)
-      console.log("nickname : " + nickname)
-      console.log("gender : " + gender)
-      console.log("age : " + age)
-      console.log("id : " + id)
-      console.log("token : " + token)
+      //만약 추가정보를 입력하지 않고 시간이 오래 지났을 시 
+      if(typeof email == 'undefined'){
+        alert("시간이 지나 쿠키가 만료되었습니다. 다시 시도해 주십시오.")
+        alert(`${process.env.REACT_APP_FRONT}/user/log-in`)
+        window.location.href = `${process.env.REACT_APP_FRONT}/user/log-in`
+      }
 
+      const token = "Bearer " + getCookie("Authorization")
       
-      //회원 정보 업데이트 하기 
+      //소셜 회원 가입 시 추가정보 입력하기  
       return await axios({
         method: "put",
         url: `${process.env.REACT_APP_SERVER}/api/user/social/update/${email}`,
@@ -61,42 +57,16 @@ export const action = {
       })
         .then((response) => {
           console.log(response.data);
-          return basePath; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+
+          //성공시 home으로 다이랙트
+          window.location.href = `${process.env.REACT_APP_FRONT}`
+          return `${process.env.REACT_APP_FRONT}`; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
           console.log(e);
         });
     }
   ),
-
-  //Email로 회원 pk 조회
-  getID: createAsyncThunk(
-    `UserSlice/getID`,
-    async (thunkAPI) => {
-      console.log("`UserSlice/getID`,")
-      const cookie = getCookie("Authorization")
-      console.log(cookie.split)
-      const token = "Bearer " + getCookie("Authorization")
-      const email = getCookie("new_social_user_email")
-      console.log(`${process.env.REACT_APP_SERVER}/api/user/userId/${email}`)
-      console.log("email : " + email)
-      console.log("token : " + token)
-      //회원 정보 업데이트 할 회원 id 가져오기 
-      return await axios({
-        method: "get",
-        url: `${process.env.REACT_APP_SERVER}/api/user/userId/${email}`,
-        headers : {Authorization : token},
-      })
-        .then((response) => {
-          console.log("UserSlice/getID : " + response.data);
-          return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  ),
-
 
   // 로그인 api
   Login: createAsyncThunk(
@@ -109,7 +79,15 @@ export const action = {
       })
         .then((response) => {
           console.log(response.data )
-          console.log(response)
+          console.log(response.headers)
+          console.log("header : " + response.headers.get("Authorization-Refresh"))
+          const refresh = response.headers.get("Authorization-Refresh")
+          setCookie("Authorization-Refresh",refresh, {path : "/"})
+          console.log("header : " + response.headers.get("authorization") )
+          const authorization = response.headers.get("Authorization")
+          setCookie("Authorization",refresh, {path : "/"})
+          setCookie("email", formdata.userId, {path : "/"})
+          //window.location.href = `${process.env.REACT_APP_FRONT}`
           return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
@@ -155,6 +133,67 @@ export const action = {
         });
     }
   ),
+
+  // 토큰 유효성 확인 api 
+  CheckToken: createAsyncThunk(
+    `UserSlice/CheckToken`,
+    async (thunkAPI) => {
+
+      let refreshToken = getCookie("Authorization-Refresh")
+      //만약 리프레시 토큰이 만료 되었을 시  
+      if(typeof refreshToken == 'undefined'){
+        return null
+      }
+      let accessToken = getCookie("Authorization-Refresh")
+      //만약 엑세스 토큰만 만료 되었을 시 
+      if(typeof accessToken == 'undefined'){
+        return await axios({
+          method: "get",
+          url: `${process.env.REACT_APP_SERVER}/api/user/jwt`,
+          headers : {'Authorization-Refresh' : refreshToken },
+        })
+          .then((response) => {
+            const result = response.data;
+            console.log("res.data : " + result)
+            console.log("header : " + response.headers.get("Authorization-Refresh"))
+            const refresh = response.headers.get("Authorization-Refresh")
+            setCookie("Authorization-Refresh","Bearer "+refresh, {path : "/"})
+            console.log("header : " + response.headers.get("authorization") )
+            const authorization = response.headers.get("Authorization")
+            setCookie("Authorization","Bearer "+refresh, {path : "/"})
+            return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+        })
+          .catch((e) => {
+            console.log(e);
+        });
+
+      }
+    }
+  ),
+
+    // 토큰 유효성 확인 api 
+    Logout: createAsyncThunk(
+      `UserSlice/Logout`,
+      async (id:string, thunkAPI) => {
+  
+        let Token = getCookie("Authorization")
+        //만약 리프레시 토큰이 만료 되었을 시  
+        return await axios({
+          method: "get",
+          url: `${process.env.REACT_APP_SERVER}/logout/${id.value}`,
+          headers : {'Authorization' : Token },
+        })
+          .then((response) => {
+            //토큰 지우기
+            removeCookie("Authorization-Refresh", {path : '/'})
+            removeCookie('Authorization', {path : '/'})
+            return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+        })
+          .catch((e) => {
+            console.log(e);
+        });
+      }
+    ),
 };
 //회원가입
 interface SigninInfo {
