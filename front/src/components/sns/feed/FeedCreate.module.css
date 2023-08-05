@@ -60,6 +60,7 @@
 
     /* 위치 */
     margin-bottom: 2%;
+    
 }
 
 .rightBtns{
@@ -126,9 +127,8 @@
     
     /* border */
     border-radius: 5px;
-}
 
-.makeTagInput > button:hover{
+    /* 컬러 */
     background-color: var(--signiture);
     color: white;
 }
@@ -150,6 +150,31 @@
     /* 크기 */
     width: 100%;
     height: 300px;
+    
+    /* 위치 */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.oneTag{
+    /* 크기 */
+    width: 70px;
+    height: 40px;
+    border-radius: 10px;
+
+    /* 위치 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    margin-bottom: 10px;
+
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+
+    /* 폰트 */
+    font-size: 12px;
 }
 
 .rightBtns{

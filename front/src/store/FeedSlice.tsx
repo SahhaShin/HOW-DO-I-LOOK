@@ -1,25 +1,47 @@
 import { createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import axios from "axios";
+
+// alert창
+import Swal from "sweetalert2";
 
 // axios
 export const action = {
-    
-    //특정 옷 정보 가져오기 O
-    getClothInfo : createAsyncThunk("ClosetSlice/getClothInfo", async(clothesId, thunkAPI)=>{
 
-        try{
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/detail/${clothesId}`);
-            // console.log(response.data);
-            return response.data; // 액션의 payload로 값을 반환해야 합니다.
-        } catch (e) {
-            console.log(e);
-            throw e;
+    // 새로운 피드 등록 O
+    addFeed : createAsyncThunk("ClosetSlice/addFeed", async(formdata:newFeed, thunkAPI)=>{
+
+        await axios.post(`${process.env.REACT_APP_SERVER}/api/feed`, formdata, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         }
+      }).then((res)=>{
+        Swal.fire({
+            icon: 'success',
+            title: '등록 완료',
+            text: '피드가 성공적으로 등록되었습니다.',
+            confirmButtonColor: '#4570F5',
+        })
+
+        return res.data;
+      })
     }),
 
 
 }
 
-
+//새로운 사진 등록 시 폼
+interface newFeed{
+    feedSaveRequestDto:{
+        userId:number,
+        content: string,
+        photoSaveRequestDtoList:[
+            {
+                hashtagList:string[]|null
+            }
+        ]
+    },
+    s3upload:File[],
+}
 
 interface Feed{
     isFollow:boolean,
@@ -30,6 +52,9 @@ interface Feed{
     uploadHashtags:string[],
     uploadPictures:string[],
     declarationModalOpen:boolean,
+
+    // 피드 등록 관련
+    hashtagList:string[],
 }
 
 // 초기화
@@ -45,6 +70,7 @@ const initialState:Feed = {
     uploadHashtags:[],
     uploadPictures:[],
     declarationModalOpen:false,
+    hashtagList:[],
 }
 
 
@@ -78,6 +104,9 @@ const FeedSlice = createSlice({
         },
         changeDeclarationModalOpen(state, action){
             state.declarationModalOpen=action.payload;
+        },
+        addHashtagList(state, action){
+            state.hashtagList.push(action.payload);
         }
 
     },
@@ -102,5 +131,5 @@ const FeedSlice = createSlice({
     }
 });
 
-export let {changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
+export let {addHashtagList,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
 export default FeedSlice.reducer;
