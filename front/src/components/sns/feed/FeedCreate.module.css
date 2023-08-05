@@ -18,6 +18,21 @@
     background-color:white;
 }
 
+.leftSlider{
+    /* 위치 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1%;
+
+    /* 크기 */
+    width: 350px;
+    height: 500px;
+
+    /* 컬러 */
+    background-color:white;
+}
+
 .right{
     /* 위치 */
     display: flex;
@@ -163,9 +178,32 @@
     /* 위치 */
     display: flex;
     flex-wrap: wrap;
+
+    overflow: auto;
 }
 
 .oneTag{
+    /* 크기 */
+    width: 70px;
+    height: 40px;
+    border-radius: 10px;
+
+    /* 위치 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    margin-bottom: 10px;
+
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+
+    /* 폰트 */
+    font-size: 12px;
+}
+
+.oneTag2{
     /* 크기 */
     width: 70px;
     height: 40px;
