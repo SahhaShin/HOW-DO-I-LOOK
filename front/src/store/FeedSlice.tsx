@@ -8,12 +8,13 @@ import Swal from "sweetalert2";
 export const action = {
 
     // 새로운 피드 등록 O
-    addFeed : createAsyncThunk("ClosetSlice/addFeed", async(formdata:newFeed, thunkAPI)=>{
-
+    addFeed : createAsyncThunk("FeedSlice/addFeed", async(formdata:newFeed, thunkAPI)=>{
+        console.log(formdata.feedSaveRequestDto);
         await axios.post(`${process.env.REACT_APP_SERVER}/api/feed`, formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
         }
+        
       }).then((res)=>{
         Swal.fire({
             icon: 'success',

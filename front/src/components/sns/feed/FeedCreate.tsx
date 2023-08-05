@@ -12,7 +12,7 @@ import {action, changeFollow, changeCreateModalOpen} from "../../../store/FeedSl
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { current } from '@reduxjs/toolkit';
+
 
 const FeedCreate = () => {
 
@@ -52,6 +52,9 @@ const FeedCreate = () => {
     //사진등록 마무리 눌렀을 경우 업로드 버튼 생성
     let [uploadEnd, setUploadEnd] = useState<boolean>(false);
 
+    //문구 입력
+    let[statement, setStatement] = useState<string>("");
+
     // 이전 페이지로 이동
     function prevPage(){
         if(page>0) {
@@ -62,7 +65,7 @@ const FeedCreate = () => {
             //이전에 등록했던 사진과 해시태그가 있다면 셋팅해준다.
             if(page>=0){
                 setImgSrc(imageSrcList[page-1]);
-                setHashtags(objectListHash[page-1].hashtags); //null 문제
+                setHashtags(objectListHash[page-1].hashtagList); //null 문제
             }
         }
     }
@@ -80,26 +83,29 @@ const FeedCreate = () => {
             //현재 페이지 정보를 저장하고, 다음 페이지 정보 가져오기
             if(imageSrcList.length>page){
 
-                console.log(`여기 오케1 ${page}`);
-
                 // 사진 등록(백엔드에 보낼 사진리스트에)
                 const newImageSrcList = [...imageSrcList];
                 newImageSrcList.splice(page,1,imgSrc);
                 setImageSrcList(newImageSrcList);
+                console.log(newImageSrcList);
 
                 const newImageFileList = [...imageFileList];
                 newImageFileList.splice(page,1,imgFile);
                 setImageFileList(newImageFileList);
+                console.log(newImageFileList);
 
                 // 해시태그 리스트에 등록 -> 리스트에 객체 형식으로 들어가야함
                 //해시태그 하나도 안달았을 때 빈리스트 들어가는지 확인해야함
                 const newObjectListHash = [...objectListHash];
-                newObjectListHash.splice(page,1,{hashtags});
+                newObjectListHash.splice(page,1,{hashtagList:hashtags});
                 setObjectListHash(newObjectListHash);
+                console.log(newObjectListHash);
 
 
-                if(end) setUploadEnd(true);
-
+                if(end) {
+                    setUploadEnd(true);
+                    return;
+                }    
 
                 setPage(page+1);
 
@@ -108,7 +114,7 @@ const FeedCreate = () => {
                 if(imageSrcList.length>page+1){
                     setUploadEnd(false);
                     setImgSrc(imageSrcList[page+1]);
-                    setHashtags(objectListHash[page+1].hashtags); //null 문제 주의
+                    setHashtags(objectListHash[page+1].hashtagList); //null 문제 주의
                 }else{
                     setImgSrc('');
                     setImaFile(null);
@@ -121,11 +127,13 @@ const FeedCreate = () => {
                 setImageFileList((imageFileList)=>[...imageFileList, imgFile]);
 
                 //objectListHash = [{"여름", "더워"}]
-                const obj = {hashtags};//객체 안의 리스트로 만들기
+                const obj = {hashtagList:hashtags};//객체 안의 리스트로 만들기
                 setObjectListHash((objectListHash)=>[...objectListHash,obj]);
 
-                if(end) setUploadEnd(true);
-
+                if(end) {
+                    setUploadEnd(true);
+                    return;
+                }
                 setPage(page+1);
                 setUploadEnd(false);
 
@@ -148,12 +156,17 @@ const FeedCreate = () => {
             nextPage(true);
         }
         //마지막 이전 페이지 내용까지 저장
+
+        setPage(page+1);
         
 
         //전체 해시태그를 넣어줘야 한다.
         for(let i=0;i<objectListHash.length;i++){
-            for(let j in objectListHash[i]){
-                setHashtags((hashtags)=>[...hashtags, objectListHash[i][j]]);
+            console.log(objectListHash);
+            for(let j in objectListHash[i].hashtagList){
+                console.log(objectListHash[i].length);
+                setHashtags((hashtags)=>[...hashtags, objectListHash[i].hashtagList[j]]);
+                console.log(objectListHash[i].hashtagList[j]);
             }
         }
         
@@ -210,22 +223,37 @@ const FeedCreate = () => {
         setInputHash("");
     }
 
+    //statement 변화 감지 함수
+    const inputStatement = (e: any) => {
+        setStatement(e.target.value);
+    }
+
     function makeNewFeed(){
         //피드 생성 state
         let newFeed = {
             feedSaveRequestDto:{
                 userId:userId,
-                content: "",
-                photoSaveRequestDtoList:[
-                    {
-                        hashtagList:[]
-                    }
-                ]
+                content: statement,
+                photoSaveRequestDtoList:objectListHash
             },
-            s3upload:[]
+            s3upload:imageFileList
         }
-            dispatch(action.addFeed(newFeed));   
+        
+        // 이미지 폼데이터로 저장
+        const formdata = new FormData();
+
+        console.log(imageFileList);
+        console.log(objectListHash);
+        console.log(statement);
+        console.log(newFeed.feedSaveRequestDto);
+
+        formdata.append("s3upload",imageFileList);
+        formdata.append("feedSaveRequestDto", new Blob([JSON.stringify(newFeed.feedSaveRequestDto)],{ type: "application/json" }));
+
+
+        dispatch(action.addFeed(formdata));
     }
+
 
 
     useEffect(()=>{
@@ -302,7 +330,7 @@ const FeedCreate = () => {
                 {   uploadEnd?
                 <div className={`${feedCreateStyle.addedTag}`}>
                     <div>문구 입력</div>
-                        <textarea className={`${feedCreateStyle.textAreaSize}`} placeholder='어떤 기분을 공유하고 싶으신가요?'/>
+                        <textarea onChange={(e)=>inputStatement(e)} className={`${feedCreateStyle.textAreaSize}`} placeholder='어떤 기분을 공유하고 싶으신가요?'/>
                     </div>:
                     <div className={`${feedCreateStyle.addedTag}`}>
                         <div>추가된 해시태그</div>
@@ -324,8 +352,8 @@ const FeedCreate = () => {
                 {/* 버튼 2개 or 1개  */}
                 {   uploadEnd?
                     <div className={`${feedCreateStyle.rightBtns}`}>
-                        {page>0?<button onClick={()=>{prevPage()}}>이전</button>:null}
-                        <button>업로드</button>
+                        {page>=0?<button onClick={()=>{prevPage()}}>이전</button>:null}
+                        <button onClick={()=>makeNewFeed()}>업로드</button>
                     </div>:
                     <div className={`${feedCreateStyle.rightBtns}`}>
                         {page>0?<button onClick={()=>{prevPage()}}>이전</button>:null}
