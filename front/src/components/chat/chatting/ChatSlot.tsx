@@ -9,8 +9,8 @@ const ChatSlot = (props) => {
     const navigate = useNavigate();
 
     function chatStart(){
-        //props.oneRoom.chatRoomCode
-        navigate("/chatroom/" + props.oneRoom.userBId + "/" + props.oneRoom.id);
+        //id는 roomId임
+        navigate("/chatroom/" + props.oneRoom.userBId + "/" +props.oneRoom.id+"/"+ props.oneRoom.chatroomCode);
     }
 
 

@@ -18,12 +18,14 @@ export const action = {
         }
     }), 
 
-    // 방입장 (없으면 새로 만들고 ,있으면 기록을 가져온다.)
-    enterChatRoom : createAsyncThunk("ChatSlice/enterChatRoom", async({userA, userB}, thunkAPI)=>{
+    // 방입장 O (없으면 새로 만들고 ,있으면 채팅 기록을 가져온다.)
+    //파라미터 명은 dispatch 보내는 이름과 똑같아야 한다.
+    enterChatRoom : createAsyncThunk("ChatSlice/enterChatRoom", async({myId, otherId}:chatRoomParticipant, thunkAPI)=>{
         try{
             const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/soloChatRoom`,
-                {userA, userB}
+                {userA:myId, userB:otherId}
             );
+
             return response.data;
         } catch (e) {
             console.log(e);
@@ -47,7 +49,7 @@ interface enterRoom{
     chatContext: [
         {
             chatRoomId: number,
-            chatId: number,
+            chatId: number|null,
             userNickName: string,
             userProfile: string|null,
             createTime: string,
@@ -57,11 +59,18 @@ interface enterRoom{
     chatRoomCode: string
 }
 
+interface chatRoomParticipant{
+    userA : number,
+    userB : number
+}
+
 
 // 초기값 인터페이스
 interface chat{
     chatList : getChatRoomList[],
     chatHistory : enterRoom|null,
+    chatHistoryTime : string|null,
+    chatHistoryDate : string|null,
 }
 
 
@@ -76,7 +85,11 @@ const ChatSlice = createSlice({
     name:'ChatSlice',
     initialState,
     reducers:{
-        
+
+        addChatHistory(state, action){
+            state.chatHistory?.chatContext.push(action.payload);
+        }
+
     },
     extraReducers:(builder) => {
         builder.addCase(action.getChatList.fulfilled, (state, action) => {
@@ -90,5 +103,5 @@ const ChatSlice = createSlice({
     }
 });
 
-export let {} = ChatSlice.actions;
+export let {addChatHistory} = ChatSlice.actions;
 export default ChatSlice.reducer;

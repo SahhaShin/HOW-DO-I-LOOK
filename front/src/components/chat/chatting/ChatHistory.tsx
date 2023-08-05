@@ -8,7 +8,7 @@ import chatHistoryStyle from "./ChatHistory.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action} from "../../../store/ChatSlice";
+import {action, addChatHistory} from "../../../store/ChatSlice";
 
 const ChatHistory = () => {
 
@@ -19,17 +19,6 @@ const ChatHistory = () => {
     const navigate = useNavigate();
 
     const params = useParams();
-        console.log(params);
-
-    // a유저와 b유저가 나눈 채팅 기록
-    // interface ChatList{
-    //     date:string,
-    //     id:string,
-    //     nickname:string,
-    //     profile?:string,
-    //     content:string,
-    //     time:string
-    // }
 
     interface ChatList{
         userId:string,
@@ -45,12 +34,11 @@ const ChatHistory = () => {
     // const profileImg = JSON.parse(); //로그인 구현시 가져올 것
     // const userId = JSON.parse(); //로그인 구현 시 가져올 것
 
-    // const {roomId} = useParams(); //파라미터에 있는 채팅룸 아이디
-    var roomCode = "fcfca771-eb08-45ea-94fe-784d00c4d5d8";
-    
-    const {otherId} = useParams(); //파라미터에 있는 다른 유저 아이디
-
     const client = useRef({}); //useRef는 저장공간 또는 DOM요소에 접근하기 위해 사용되는 React Hook == like query selector
+    const scrollRef = useRef(); //스크롤 조절
+    useEffect(() => {
+        scrollRef.current?.scrollIntoView({behavior : 'smooth'});
+    }, [state.chatHistory])
 
     // 1. 서버와 소켓 연결
     function connect(){
@@ -58,7 +46,6 @@ const ChatHistory = () => {
         client.current = new StompJs.Client({
             brokerURL : 'ws://localhost:8081/ws',
             onConnect: () => {
-                console.log('success');
                 subscribe();
             }
         });
@@ -68,16 +55,44 @@ const ChatHistory = () => {
 
     //2. 채팅방 1:1 구독
     function subscribe(){
-        console.log("구독시작");
-        client.current.subscribe('/sub/soloChat/'+roomCode,(chatMessage)=>{
+
+        // 현재 시간 구하기
+        let today = new Date();
+        let year:string = String(today.getFullYear()); // 년도
+        let month:string = String(today.getMonth() + 1);  // 월
+        let date:string = String(today.getDate());  // 날짜
+        let hours:string = String(today.getHours()); // 시
+        let minutes:string = String(today.getMinutes());  // 분
+        let seconds:string = String(today.getSeconds());  // 초
+
+        if(month.length==1) month="0"+month;
+        if(date.length==1) date="0"+date;
+        if(hours.length==1) hours="0"+hours;
+        if(minutes.length==1) minutes="0"+minutes;
+        if(seconds.length==1) seconds="0"+seconds;
+
+        let totalTime = year+"-"+month+"-"+date+"T"+hours+":"+minutes+":"+seconds;
+
+        client.current.subscribe('/sub/soloChat/'+params.chatroomCode,(chatMessage)=>{
             const message = JSON.parse(chatMessage.body);
-            console.log("qw");
+
+            let addData={
+                chatRoomId: message.roomId,
+                chatId: null,
+                userNickName: nickname,
+                userProfile: null,
+                createTime: totalTime,
+                content: message.chatContent
+            }
+
+            console.log(message)
+
+            dispatch(addChatHistory(addData));
 
             setChatList((_chatList)=>[
                 ..._chatList, message
             ]);
 
-            console.log(chatList);
         });
     }
 
@@ -98,22 +113,22 @@ const ChatHistory = () => {
         }
         // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
         client.current.publish({
-            destination: '/pub/soloChat/'+roomCode,
+            destination: '/pub/soloChat/'+params.chatroomCode,
             body: JSON.stringify({
                 chatContent:chat,
-                roomId:1,
-                userId:1
-                // roomId: roomId,
-                // userId : 1,
-                // nickname: nickname,
-                // profileImg: profileImg,
-                // content: chat,
+                roomId: params.roomId,
+                userId: myId,
+                // chatRoomId:1,
+                // chatId : null,
+                // userNickName: nickname,
+                // userProfile:null,
+                // createTime:null,
+                // content:chat,
             })
 
         });
 
         setChat('');
-        console.log(`${chatList} 여기는 퍼블리시!!`);
     }
 
 
@@ -124,81 +139,20 @@ const ChatHistory = () => {
 
     //지금 내가 어떤 id를 가진 유저인지 확인
     const myId:number = 1;
+    let otherId = params.otherId;
 
+    //채팅 같은 날짜 한 번만 들어오게 하기 위한 변수
+    let [chatDate, setChatDate] = useState<string>("");
+    let [dateDisplay, setDateDisplay] = useState<boolean>(false);
+    function changeDate(date:string){
+        setChatDate(date);
+        setDateDisplay(true);
+    }
 
-    // let [chatList, setChatList] = useState<ChatList[]>([
-    //     {
-    //         date:"2023년 7월 15일 토요일",
-    //         id:"user3",
-    //         nickname:"user3",
-    //         // profile:null,
-    //         content:"피드 잘보고 있어요~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-    //         time:"오후 3:12"
-    //     },{
-    //         date:"2023년 7월 15일 토요일",
-    //         id:"user3",
-    //         nickname:"user3",
-    //         // profile:null,
-    //         content:"저랑 팔로우 해요!",
-    //         time:"오후 3:13"
-    //     },
-    //     {
-    //         date:"2023년 7월 16일 일요일",
-    //         id:"ssafy",
-    //         nickname:"미팅만 50번",
-    //         // profile:null,
-    //         content:"좋아요! 팔로우해요!",
-    //         time:"오전 8:10"
-    //     },
-    //     {
-    //         date:"2023년 7월 16일 일요일",
-    //         id:"ssafy",
-    //         nickname:"미팅만 50번",
-    //         // profile:null,
-    //         content:"좋게 봐주셔서 감사합니다!!",
-    //         time:"오전 8:11"
-    //     },
-    //     {
-    //         date:"2023년 7월 16일 토요일",
-    //         id:"user3",
-    //         nickname:"user3",
-    //         // profile:null,
-    //         content:"꺅 너무 감사합니다 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ",
-    //         time:"오후 3:12"
-    //     },{
-    //         date:"2023년 7월 17일 일요일",
-    //         id:"ssafy",
-    //         nickname:"미팅만 50번",
-    //         // profile:null,
-    //         content:"저번에 해드린 코디는 어떠셨나요?",
-    //         time:"오전 8:10"
-    //     },{
-    //         date:"2023년 7월 17일 일요일",
-    //         id:"ssafy",
-    //         nickname:"미팅만 50번",
-    //         // profile:null,
-    //         content:"반응이 좋았나요?",
-    //         time:"오전 8:10"
-    //     },
-    //     {
-    //         date:"2023년 7월 17일 일요일",
-    //         id:"ssafy",
-    //         nickname:"미팅만 50번",
-    //         // profile:null,
-    //         content:"반응이 좋았나요?",
-    //         time:"오전 8:10"
-    //     },
-    // ]);
+    function chageDateDisplay(){
+        setDateDisplay(false);
+    }
 
-    // 현재 채팅이 들어오는 날짜
-    // let [curDate, setCurDate] = useState<string|null>("");
-    // useEffect(()=>{
-    //     setCurDate(null);
-    // },[]);
-    
-    // function changeCurDate(newDate:string){
-    //     setCurDate(newDate);
-    // }
 
     // 화면 들어올 시 초기화
     useEffect(() => {
@@ -213,13 +167,14 @@ const ChatHistory = () => {
         // let userId = JSON.parse(sessionStorage.getItem("loginUser")).id;
         
         // 과거 채팅했던 내역을 가져와서 저장해야함
-        let otherId = params.otherId;
         dispatch(action.enterChatRoom({myId, otherId}));
 
         connect();
+
+        // 내 채팅 정보는 시간과 내 채팅정보만 있으면 된다.
     
         return () => {
-          localStorage.removeItem("roomId")
+        //   localStorage.removeItem("roomId")
           disconnect();
         }
       }, []);
@@ -231,7 +186,16 @@ const ChatHistory = () => {
                     return(
                         <div key={idx} className={`${chatHistoryStyle.chatArea}`}>
                             {/* 날짜 */}
-                            <div className={`${chatHistoryStyle.date}`}><div>{one.createTime}</div></div>
+                            
+                            {
+                                chatDate===one.createTime.split("T")[0]?null:changeDate(one.createTime.split("T")[0])
+                                
+                            }
+                            {
+                                dateDisplay?<div className={`${chatHistoryStyle.date}`}><div>{one.createTime.split("T")[0]}</div></div>
+                                :null
+                            }
+
                             {params.otherId===one.userId?<div className={`${chatHistoryStyle.oneChat}`}>
                                 {/* 유저 프로필 */}
                                 <div className={`${chatHistoryStyle.profile}`}>
@@ -242,20 +206,30 @@ const ChatHistory = () => {
 
                                 {/* 유저 닉네임, 내용/시간 */}
                                 <div className={`${chatHistoryStyle.mid}`}>
-                                    {/* <div>{one.nickname}</div> */}
+                                 
                                     <div>{one.userNickName}</div>
                                     <div>
                                         <div className={`${chatHistoryStyle.midContent}`}>{one.content}</div>
-                                        {/* <div className={`${chatHistoryStyle.midTime}`}>{one.createTime}</div> */}
-                                        <div className={`${chatHistoryStyle.midTime}`}>{one.createTime}</div>
+                                        
+                                        <div className={`${chatHistoryStyle.midTime}`}>
+                                            {Number(one.createTime.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}
+                                            {one.createTime.split("T")[1].split(":")[0]}:
+                                            {one.createTime.split("T")[1].split(":")[1]}
+                                            <div ref={scrollRef}></div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div> :
                             <div className={`${chatHistoryStyle.oneChat2}`}>
                                 <div className={`${chatHistoryStyle.mid2}`}>    
-                                    {/* <div className={`${chatHistoryStyle.midTime}`}>{one.time}</div> */}
-                                    <div className={`${chatHistoryStyle.midTime}`}>{one.createTime}</div>
+                                    <div className={`${chatHistoryStyle.midTime}`}>
+                                        {Number(one.createTime.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}
+                                        {one.createTime.split("T")[1].split(":")[0]}:
+                                        {one.createTime.split("T")[1].split(":")[1]}
+                                    </div>
                                     <div className={`${chatHistoryStyle.midContent}`}>{one.content}</div>
+                                    <div ref={scrollRef}></div>
                                 </div>
                             </div>}
 
