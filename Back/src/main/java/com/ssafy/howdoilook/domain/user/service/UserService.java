@@ -206,6 +206,20 @@ public class UserService {
         return user.updateUserInfo(userUpdateRequestDto, imageService.updateImage(user.getProfileImg(), multipartFile));
     }
 
+    public void deleteProfileImg(Long userId, UserDetails userDetails) throws AccessException {
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+        imageService.deleteImage(user.getProfileImg());
+
+        user.updateProfileImg(null);
+    }
+
     /*
     * 유저 대표 뱃지 수정
     * */

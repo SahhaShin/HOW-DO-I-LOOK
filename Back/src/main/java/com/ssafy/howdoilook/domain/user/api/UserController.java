@@ -12,9 +12,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.expression.AccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +29,7 @@ import java.io.IOException;
 public class UserController {
 
     private final UserService userService;
+    private final ImageService imageService;
 
     @ApiOperation(value = "일반 회원 가입")
     @PostMapping("/signup")
@@ -144,6 +147,16 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .body(userService.updateUserInfo(id, userUpdateRequestDto, multipartFile, userDetails));
+    }
+
+    @Transactional
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<?> deleteProfileImg(@PathVariable Long userId,
+                                              @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
+
+        userService.deleteProfileImg(userId, userDetails);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
+
     }
 
     @ApiOperation(value = "유저 대표 뱃지 수정", notes = "만약 대표 뱃지가 없다면 X임.")
