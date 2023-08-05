@@ -74,6 +74,9 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Alarm> alarmList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "senderUser", cascade = CascadeType.ALL)
+    List<Alarm> senderAlarmList = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<BlackList> blackList = new ArrayList<>();
 
