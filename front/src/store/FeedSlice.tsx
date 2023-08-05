@@ -52,9 +52,6 @@ interface Feed{
     uploadHashtags:string[],
     uploadPictures:string[],
     declarationModalOpen:boolean,
-
-    // 피드 등록 관련
-    hashtagList:string[],
 }
 
 // 초기화
@@ -70,7 +67,6 @@ const initialState:Feed = {
     uploadHashtags:[],
     uploadPictures:[],
     declarationModalOpen:false,
-    hashtagList:[],
 }
 
 
@@ -105,10 +101,6 @@ const FeedSlice = createSlice({
         changeDeclarationModalOpen(state, action){
             state.declarationModalOpen=action.payload;
         },
-        addHashtagList(state, action){
-            state.hashtagList.push(action.payload);
-        }
-
     },
     extraReducers:(builder) => {
         // builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
@@ -131,5 +123,5 @@ const FeedSlice = createSlice({
     }
 });
 
-export let {addHashtagList,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
+export let {changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
 export default FeedSlice.reducer;
