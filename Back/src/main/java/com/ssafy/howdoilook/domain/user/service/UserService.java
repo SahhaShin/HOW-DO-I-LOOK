@@ -15,13 +15,19 @@ import com.ssafy.howdoilook.global.handler.NoContentException;
 import com.ssafy.howdoilook.global.redis.service.RedisAccessTokenService;
 import com.ssafy.howdoilook.global.redis.service.RedisRankingService;
 import com.ssafy.howdoilook.global.redis.service.RedisRefreshTokenService;
+import com.ssafy.howdoilook.global.s3upload.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.expression.AccessException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,11 +49,14 @@ public class UserService {
 
     private final RedisRankingService redisRankingService;
 
+    private final ImageService imageService;
+
     /*
      * 일반 회원 가입
      * */
     @Transactional
-    public Long signUp(UserSignUpRequestDto userSignUpRequestDto) throws Exception {
+    public Long signUp(UserSignUpRequestDto userSignUpRequestDto, MultipartFile multipartFile) throws Exception {
+
         if(userRepository.findByEmail(userSignUpRequestDto.getEmail()).isPresent())
             throw new Exception("이미 존재하는 이메일입니다.");
 
@@ -59,6 +68,8 @@ public class UserService {
         user.passwordEncode(passwordEncoder);
 
         user.updateShowBadge(BadgeType.X);
+
+        user.updateProfileImg(imageService.saveImage(multipartFile));
 
         User saveUser = userRepository.save(user);
 
@@ -180,14 +191,19 @@ public class UserService {
     }
 
     /*
-    * 유저 정보 변경 (나이, 성별, 이름, 닉네임)
+    * 유저 정보 변경 (나이, 성별, 이름, 닉네임, 프로필 이미지)
     * */
     @Transactional
-    public Long updateUserInfo(Long id, UserUpdateRequestDto userUpdateRequestDto) {
+    public Long updateUserInfo(Long id, UserUpdateRequestDto userUpdateRequestDto, MultipartFile multipartFile, UserDetails userDetails) throws IOException, AccessException {
+        String clientEmail = userDetails.getUsername();
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저 존재 X"));
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
-        return user.updateUserInfo(userUpdateRequestDto);
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+        return user.updateUserInfo(userUpdateRequestDto, imageService.updateImage(user.getProfileImg(), multipartFile));
     }
 
     /*

@@ -4,13 +4,21 @@ import com.ssafy.howdoilook.domain.user.dto.request.UserSearchCondition;
 import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.request.UserBySocialUpdateRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateRequestDto;
+import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.service.UserService;
+import com.ssafy.howdoilook.global.s3upload.ImageService;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.expression.AccessException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,10 +30,11 @@ public class UserController {
 
     @ApiOperation(value = "일반 회원 가입")
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) throws Exception {
+    public ResponseEntity<?> signUp(@RequestPart UserSignUpRequestDto userSignUpRequestDto,
+                                    @RequestPart("s3upload") MultipartFile multipartFile) throws Exception {
 
         return ResponseEntity.ok()
-                .body(userService.signUp(userSignUpRequestDto));
+                .body(userService.signUp(userSignUpRequestDto, multipartFile));
     }
 
     @ApiOperation(value = "회원 탈퇴", notes = "바로 DB에서 삭제됨.")
@@ -129,10 +138,12 @@ public class UserController {
      * */
     @ApiOperation(value = "유저 정보 수정")
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestPart UserUpdateRequestDto userUpdateRequestDto,
+                                        @RequestPart("s3upload") MultipartFile multipartFile,
+                                        @AuthenticationPrincipal UserDetails userDetails) throws IOException, AccessException {
 
         return ResponseEntity.ok()
-                .body(userService.updateUserInfo(id, userUpdateRequestDto));
+                .body(userService.updateUserInfo(id, userUpdateRequestDto, multipartFile, userDetails));
     }
 
     @ApiOperation(value = "유저 대표 뱃지 수정", notes = "만약 대표 뱃지가 없다면 X임.")
@@ -143,7 +154,4 @@ public class UserController {
                 .body(userService.updateShowBadge(id, badge));
     }
 
-    /*
-     * 유저 프로필 사진 업데이트 : 추후 진행 예정
-     * */
 }
