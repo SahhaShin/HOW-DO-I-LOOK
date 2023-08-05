@@ -2,6 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getCookie, setCookie } from "../hook/Cookie";
 
+const basePath = "http://localhost:3000"
+const homePath = "/home"
+const loginPath = "user/log-in"
 
 // axios
 export const action = {
@@ -29,10 +32,53 @@ export const action = {
     `UserSlice/SocialSignin`,
     async (formdata : SocialSigninInfo, thunkAPI) => {
       console.log("`UserSlice/SocialSignin`,")
+      const nickname = formdata.nickname
+      const gender = formdata.gender
+      const age = formdata.age
+      const id = formdata.id
+
       const email = getCookie("new_social_user_email")
+
       const token = "Bearer " + getCookie("Authorization")
-      console.log(`${process.env.REACT_APP_SERVER}/social/update/${email}`)
-      console.log("formdata : " + formdata)
+      console.log(`${process.env.REACT_APP_SERVER}/api/user/social/update//${email}`)
+      console.log("nickname : " + nickname)
+      console.log("gender : " + gender)
+      console.log("age : " + age)
+      console.log("id : " + id)
+      console.log("token : " + token)
+
+      
+      //회원 정보 업데이트 하기 
+      return await axios({
+        method: "put",
+        url: `${process.env.REACT_APP_SERVER}/api/user/social/update/${email}`,
+        data: {
+          "nickname" : nickname,
+          "gender" : gender,
+          "age" : age,
+        },
+        headers : {Authorization : token},
+      })
+        .then((response) => {
+          console.log(response.data);
+          return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  ),
+
+  //Email로 회원 pk 조회
+  getID: createAsyncThunk(
+    `UserSlice/getID`,
+    async (thunkAPI) => {
+      console.log("`UserSlice/getID`,")
+      const cookie = getCookie("Authorization")
+      console.log(cookie.split)
+      const token = "Bearer " + getCookie("Authorization")
+      const email = getCookie("new_social_user_email")
+      console.log(`${process.env.REACT_APP_SERVER}/api/user/userId/${email}`)
       console.log("email : " + email)
       console.log("token : " + token)
       //회원 정보 업데이트 할 회원 id 가져오기 
@@ -42,34 +88,15 @@ export const action = {
         headers : {Authorization : token},
       })
         .then((response) => {
-          console.log(response.data);
-          return response; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+          console.log("UserSlice/getID : " + response.data);
+          return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
           console.log(e);
         });
-
-      
-
-
-
-
-      // //회원 정보 업데이트 하기 
-      // return await axios({
-      //   method: "post",
-      //   url: `${process.env.REACT_APP_SERVER}/social/update/${id}`,
-      //   data: formdata,
-      //   headers : {Authorization : token},
-      // })
-      //   .then((response) => {
-      //     console.log(response.data);
-      //     return response; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
-      //   })
-      //   .catch((e) => {
-      //     console.log(e);
-      //   });
     }
   ),
+
 
   // 로그인 api
   Login: createAsyncThunk(
@@ -145,14 +172,10 @@ interface SocialSigninInfo {
   nickname: string;
   gender: string;
   age: number;
+  id: number;
 }
 
 
-interface SocialSignin {
-  //response
-  formdata: SocialSigninInfo;
-  email: string;
-}
 
 
 interface LoginInfo {
@@ -224,8 +247,12 @@ const UserSlice = createSlice({
     //만약 refesh token도 만료되었으면
     //로그인 페이지로 리다이랙트
     token(state, action) {},
+    //id 저장
+    setId(state, action) {
+      state.id = action.payload
+    },
   },
 });
 
-export let { login, socialLogin } = UserSlice.actions;
+export let { login, socialLogin, setId } = UserSlice.actions;
 export default UserSlice.reducer;

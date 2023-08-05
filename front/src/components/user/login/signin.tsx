@@ -12,7 +12,7 @@ const Login: React.FC = () => {
   let dispatch = useDispatch();
 
   const [name, setname] = useState("");
-  const [email, setemail] = useState("");
+  const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [passworda, setPassworda] = useState("");
@@ -22,6 +22,20 @@ const Login: React.FC = () => {
   const [emailNotice, setEmailNotice] = useState(false);
   const [pwNotice, setPwNotice] = useState(false);
   const [nicknameNotice, setNicknameNotice] = useState(false);
+
+  const typeEmail = (e) => { 
+    setEmail(e.target.value)
+
+  }
+
+  const typeNickname = (e) => { 
+    setNickname(e.target.value)
+
+  }
+
+  const typePW = () => {
+
+  }
 
   const signinClick = () => {
     console.log("일반 회원가입");
@@ -78,7 +92,7 @@ const Login: React.FC = () => {
               id="email"
               placeholder="이메일을 입력해주세요"
               className={`${loginStyle.input}`}
-              onChange={(e) => setemail(e.target.value)}
+              onChange={(e) => typeEmail(e)}
             />
             {pwNotice && <div>사용하실 수 있는 이메일입니다.</div>}
           </div>
@@ -90,7 +104,7 @@ const Login: React.FC = () => {
               type="text"
               id="nickname"
               value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+              onChange={(e) => typeNickname(e)}
               placeholder="사용하실 닉네임을 입력해주세요"
               className={`${loginStyle.input}`}
             />

@@ -7,7 +7,7 @@ import { getCookie, setCookie } from "../../../hook/Cookie";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action} from "../../../store/UserSlice";
+import {action, setId} from "../../../store/UserSlice";
 
 const Login: React.FC = () => {
 
@@ -20,21 +20,32 @@ const Login: React.FC = () => {
   const [age, setAge] = useState('')
 
 
-  const socialRegist = () => {
+  const socialRegist = async () => {
     console.log("-- Sign in clicked -- ")
     console.log("age : " + age)
     console.log("nickname : " + nickname)
     console.log("gender: " + gender)
     console.log(getCookie("new_social_user_email"))
 
-    const email = getCookie("new_social_user_email")
+    
     //소셜 회원가입 추가정보 요청
-    dispatch(action.SocialSignin({
-      'nickname' : nickname,
-      'gender' : gender,
-      'age' : age
-    }, email));
+    try {
+    const idResponse = await dispatch(action.getID());
+    const id = idResponse.payload; // Extract the id from the response
 
+    console.log("id : " + id.value);
+
+    await dispatch(
+      action.SocialSignin({
+        nickname: nickname,
+        gender: gender,
+        age: age,
+        id : id,
+      })
+    );
+  } catch (error) {
+    console.error("Error:", error);
+  }
 
     // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"
     //window.location.href = "http://localhost:8081/oauth2/authorization/kakao"
