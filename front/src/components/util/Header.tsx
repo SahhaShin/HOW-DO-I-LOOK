@@ -20,7 +20,7 @@ const Header = () => {
 
   return (
     <div className={`${UtilStyle.header_total}`}>
-      <div onClick={()=>{navigate(`/`)}} className={`${UtilStyle.header_logo}`}><img src={process.env.PUBLIC_URL + `/img/logo.png`} alt="HDIL" /></div>
+      <div onClick={()=>{navigate(`/`)}} className={`${UtilStyle.header_logo}`}><img onClick={()=>{navigate(`/`)}} src={process.env.PUBLIC_URL + `/img/logo.png`} alt="HDIL" /></div>
       { state.loginYN?
         <div className={`${UtilStyle.etcMenu}`}>
           <div onClick={()=>{navigate(`/closet`)}}>내 옷장</div>

@@ -1,5 +1,25 @@
 import { createSlice} from "@reduxjs/toolkit";
 
+// axios
+export const action = {
+    
+    //특정 옷 정보 가져오기 O
+    getClothInfo : createAsyncThunk("ClosetSlice/getClothInfo", async(clothesId, thunkAPI)=>{
+
+        try{
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/detail/${clothesId}`);
+            // console.log(response.data);
+            return response.data; // 액션의 payload로 값을 반환해야 합니다.
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }),
+
+
+}
+
+
 
 interface Feed{
     isFollow:boolean,
@@ -60,6 +80,25 @@ const FeedSlice = createSlice({
             state.declarationModalOpen=action.payload;
         }
 
+    },
+    extraReducers:(builder) => {
+        // builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
+        //     if(action.payload.type==="TOP"){
+        //         state.clothesTop=action.payload.content;
+        //     }else if(action.payload.type==="BOTTOM"){
+        //         state.clothesBottom=action.payload.content;
+        //     }else if(action.payload.type==="SHOE"){
+        //         state.clothesShoe=action.payload.content;
+        //     }else if(action.payload.type==="ACCESSORY"){
+        //         state.clothesAccessory=action.payload.content;
+        //     }else{
+        //         // all
+        //         state.clothesAll=action.payload.content;
+        //     }
+
+        //     state.clothesListByType=action.payload.content;
+        // })
+        
     }
 });
 

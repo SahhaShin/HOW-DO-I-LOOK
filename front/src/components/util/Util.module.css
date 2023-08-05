@@ -27,6 +27,10 @@
     color:var(--signiture);
 }
 
+.header_logo{
+    cursor: pointer;
+}
+
 .header_logo > img{
     width: 70%;
     margin-left: 3%;
