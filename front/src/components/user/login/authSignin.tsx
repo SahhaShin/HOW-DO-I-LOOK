@@ -25,24 +25,26 @@ const Login: React.FC = () => {
     console.log("age : " + age)
     console.log("nickname : " + nickname)
     console.log("gender: " + gender)
-    console.log(getCookie("new_social_user_email"))
+    // console.log(getCookie("new_social_user_email"))
 
     
     //소셜 회원가입 추가정보 요청
     try {
-    const idResponse = await dispatch(action.getID());
-    const id = idResponse.payload; // Extract the id from the response
+    // const idResponse = await dispatch(action.getID());
+    // const id = idResponse.payload; // Extract the id from the response
 
-    console.log("id : " + id.value);
+    // console.log("id : " + id.value);
 
-    await dispatch(
+    const link = await dispatch(
       action.SocialSignin({
         nickname: nickname,
         gender: gender,
         age: age,
-        id : id,
+        // id : id,
       })
     );
+    // window.location.href = link;
+
   } catch (error) {
     console.error("Error:", error);
   }

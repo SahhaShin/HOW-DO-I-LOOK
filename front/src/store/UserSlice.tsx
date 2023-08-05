@@ -61,7 +61,7 @@ export const action = {
       })
         .then((response) => {
           console.log(response.data);
-          return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+          return basePath; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
           console.log(e);
@@ -172,11 +172,7 @@ interface SocialSigninInfo {
   nickname: string;
   gender: string;
   age: number;
-  id: number;
 }
-
-
-
 
 interface LoginInfo {
   //response
