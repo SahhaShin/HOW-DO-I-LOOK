@@ -24,8 +24,10 @@
 .menuArea{
     /* 크기 */
     width: 300px;
-    flex-shrink: 1;
 
+    /* 위치 */
+    flex-shrink: 1;
+    margin-top: -110px;
     display: flex;
     justify-content: center;
 }
@@ -75,8 +77,6 @@
     text-align: -webkit-center;
 
     height: 700px;
-
-    background-color: aquamarine;
 }
 
 .paginationContainer{
@@ -94,7 +94,7 @@
     overflow: auto;
     text-align: -webkit-center;
     margin-left: 40px;
-    margin-top: 180px;
+    margin-top: 160px;
     
     /* 크기 */
     width: 250px;
