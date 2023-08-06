@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.follow.dto.request.FollowDeleteRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.request.FollowSaveRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FolloweeResponseDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FollowerResponseDto;
+import com.ssafy.howdoilook.domain.follow.dto.response.PerfectFollowResponseDto;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.follow.repository.FollowReposiroty;
 import com.ssafy.howdoilook.domain.user.entity.User;
@@ -63,15 +64,16 @@ public class FollowService {
 
 
     @Transactional
-    public void deleteFollow(FollowDeleteRequestDto followDeleteRequestDto, UserDetails userDetails){
-        String clientEmail = userDetails.getUsername();
+    public void deleteFollow(FollowDeleteRequestDto followDeleteRequestDto){
+//    public void deleteFollow(FollowDeleteRequestDto followDeleteRequestDto, UserDetails userDetails){
+//        String clientEmail = userDetails.getUsername();
 
         User follower = userRepository.findById(followDeleteRequestDto.getFollowerId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
 
-        if (!clientEmail.equals(follower.getEmail())){
-            throw new AccessException("접근 권한이 없습니다.");
-        }
+//        if (!clientEmail.equals(follower.getEmail())){
+//            throw new AccessException("접근 권한이 없습니다.");
+//        }
 
         Follow findFollow = followRepository.findFollowIdByFollowerAndFollowee(
                 followDeleteRequestDto.getFollowerId(), followDeleteRequestDto.getFolloweeId());
@@ -171,5 +173,10 @@ public class FollowService {
         }
 
         return followerResponseDtoList;
+    }
+
+    public List<PerfectFollowResponseDto> getPerfectFollowList() {
+
+        return followRepository.findPerfectFollowers();
     }
 }

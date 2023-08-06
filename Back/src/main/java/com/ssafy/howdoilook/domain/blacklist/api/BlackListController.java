@@ -41,8 +41,10 @@ public class BlackListController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<String> deleteBlackList(@RequestBody BlackListDeleteRequestDto blackListDeleteRequestDto,@AuthenticationPrincipal UserDetails userDetails){
-        blackListService.deleteBlackList(blackListDeleteRequestDto,userDetails);
+    public ResponseEntity<String> deleteBlackList(@RequestBody BlackListDeleteRequestDto blackListDeleteRequestDto){
+//    public ResponseEntity<String> deleteBlackList(@RequestBody BlackListDeleteRequestDto blackListDeleteRequestDto,@AuthenticationPrincipal UserDetails userDetails){
+        blackListService.deleteBlackList(blackListDeleteRequestDto);
+//        blackListService.deleteBlackList(blackListDeleteRequestDto,userDetails);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 

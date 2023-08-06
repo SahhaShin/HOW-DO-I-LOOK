@@ -27,8 +27,12 @@ public class FollowController {
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
     @DeleteMapping("")
-    public ResponseEntity<?> deleteFollow(@RequestBody FollowDeleteRequestDto followDeleteRequestDto, @AuthenticationPrincipal UserDetails userDetails){
-        followService.deleteFollow(followDeleteRequestDto,userDetails);
+    public ResponseEntity<?> deleteFollow(@RequestBody FollowDeleteRequestDto followDeleteRequestDto){
+        System.out.println(followDeleteRequestDto);
+
+        //    public ResponseEntity<?> deleteFollow(@RequestBody FollowDeleteRequestDto followDeleteRequestDto, @AuthenticationPrincipal UserDetails userDetails){
+        followService.deleteFollow(followDeleteRequestDto);
+//        followService.deleteFollow(followDeleteRequestDto,userDetails);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
     //나를 팔로워 하는사람
@@ -60,5 +64,13 @@ public class FollowController {
 
         return ResponseEntity.ok()
                 .body(followService.getAllFollowerList(userId));
+    }
+
+    @ApiOperation(value = "맞팔 전체 리스트")
+    @GetMapping("/list/perfectfollow")
+    public ResponseEntity<?> getPerfectFollowList() {
+
+        return ResponseEntity.ok()
+                .body(followService.getPerfectFollowList());
     }
 }

@@ -55,7 +55,7 @@ public class BadgeService {
             BadgeResponseDto badgeResponseDto = BadgeResponseDto.builder()
                     .badgeId(badge.getId())
                     .badgeType(badge.getBadgeType())
-                    .user(badge.getUser())
+                    .userId(badge.getUser().getId())
                     .build();
 
             badgeResponseDtoList.add(badgeResponseDto);

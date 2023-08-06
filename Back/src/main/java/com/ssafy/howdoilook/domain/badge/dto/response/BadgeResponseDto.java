@@ -15,12 +15,12 @@ public class BadgeResponseDto {
 
     private BadgeType badgeType;
 
-    private User user;
+    private Long userId;
 
     @Builder
-    public BadgeResponseDto(Long badgeId, BadgeType badgeType, User user) {
+    public BadgeResponseDto(Long badgeId, BadgeType badgeType, Long userId) {
         this.badgeId = badgeId;
         this.badgeType = badgeType;
-        this.user = user;
+        this.userId = userId;
     }
 }
