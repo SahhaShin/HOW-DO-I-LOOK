@@ -45,6 +45,7 @@ export const action = {
     deleteFeed : createAsyncThunk("FeedSlice/deleteFeed", async(feedId, thunkAPI)=>{
         try{
             const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
+            console.log(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
             return response.data;
         } catch(e){
             console.log(e);

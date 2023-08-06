@@ -13,6 +13,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useSelector, useDispatch } from "react-redux"; 
 import {action, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
+// alert창
+import Swal from "sweetalert2";
+
 const FeedSlot = () => {
     //redux 관리
     let state = useSelector((state:any)=>state.feed);
@@ -20,6 +23,7 @@ const FeedSlot = () => {
 
     // 유저 정보
     const nickname:string = "user3";
+    const userId = 1;
 
     // 슬라이드 설정
     const settings = {
@@ -32,8 +36,31 @@ const FeedSlot = () => {
 
     //피드 삭제 함수
     function deleteFeed(feedId){
-        dispatch(action.deleteFeed(feedId));
+        Swal.fire({
+            icon: "question",
+            title: "삭제",
+            text: `삭제 하시겠습니까??`,
+            showCancelButton: true,
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소",
+            confirmButtonColor:'#4570F5',
+            customClass: {
+                confirmButton: feedSlotStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+                cancelButton: feedSlotStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+              }
+        }).then((res) => {
+            if (res.isConfirmed) {
+                dispatch(action.deleteFeed(feedId));
+            }
+            else{
+                
+            }
+        });
     }
+
+
+
+    
 
     return(   
         <>
@@ -107,10 +134,10 @@ const FeedSlot = () => {
                                     <img src={process.env.PUBLIC_URL+`/img/feed/comment.png`} onClick={async()=>{dispatch(changeDetailModalOpen(true))}}/>
                                     <p>1개</p>
                                 </div>
-                                <div className={`${feedSlotStyle.feedBtns}`}>
+                                {oneFeed.userId===userId?<div className={`${feedSlotStyle.feedBtns}`}>
                                     <button>수정</button>
                                     <button onClick={()=>deleteFeed(oneFeed.feedId)}>삭제</button>
-                                </div>
+                                </div>:null}
                             </div>
 
                             {/* 날짜 */}
