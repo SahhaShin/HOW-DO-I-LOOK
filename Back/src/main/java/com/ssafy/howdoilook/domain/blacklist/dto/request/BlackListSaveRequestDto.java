@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BlackListSaveRequestDto {
-
     private Long userId;
-
     private Long targetUserId;
 
 }

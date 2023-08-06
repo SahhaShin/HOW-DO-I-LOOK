@@ -15,7 +15,7 @@ public class SoloWebSocketController {
 
     @MessageMapping("/soloChat/{roomCode}")
     @SendTo("/sub/soloChat/{roomCode}")
-    public ChatRecodRequestDto broadCasting(ChatRecodRequestDto requestDto){
+    public ChatRecodRequestDto broadcasting(ChatRecodRequestDto requestDto){
         soloChatRoomService.recordChat(requestDto);
         return requestDto;
     }

@@ -33,14 +33,6 @@ public class BlackListCustomRepositoryImpl implements BlackListCustomRepository{
     }
 
     @Override
-    public List<BlackList> getAllBlackList(Long userId) {
-
-        return jpaQueryFactory.selectFrom(blackList)
-                .where(blackList.user.id.eq(userId))
-                .fetch();
-    }
-
-    @Override
     public Page<BlackList> selectBlackListByUserId(Long userId, Pageable pageable) {
         QueryResults<BlackList> results = jpaQueryFactory.selectFrom(blackList)
                 .where(user.id.eq(userId))
@@ -50,6 +42,4 @@ public class BlackListCustomRepositoryImpl implements BlackListCustomRepository{
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
-
-
 }

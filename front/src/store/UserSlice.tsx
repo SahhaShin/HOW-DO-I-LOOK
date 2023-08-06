@@ -89,7 +89,6 @@ export const action = {
           setCookie("email", formdata.userId, {path : "/"})
           //window.location.href = `${process.env.REACT_APP_FRONT}`
           return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
-
         })
         .catch((e) => {
           console.log(e);

@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.room.repository.RoomRepository;
+package com.ssafy.howdoilook.domain.room.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;

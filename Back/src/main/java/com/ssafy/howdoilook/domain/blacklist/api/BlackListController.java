@@ -32,14 +32,6 @@ public class BlackListController {
         Page<BlackListSelectResponseDto> blackListByUserId = blackListService.findBlackListByUserId(userId,userDetails, pageable);
         return ResponseEntity.ok().body(blackListByUserId);
     }
-
-    @GetMapping("/list/{userId}")
-    public ResponseEntity<?> getAllBlackList(@PathVariable Long userId) {
-
-        return ResponseEntity.ok()
-                .body(blackListService.getAllBlackList(userId));
-    }
-
     @DeleteMapping("")
     public ResponseEntity<String> deleteBlackList(@RequestBody BlackListDeleteRequestDto blackListDeleteRequestDto,@AuthenticationPrincipal UserDetails userDetails){
         blackListService.deleteBlackList(blackListDeleteRequestDto,userDetails);

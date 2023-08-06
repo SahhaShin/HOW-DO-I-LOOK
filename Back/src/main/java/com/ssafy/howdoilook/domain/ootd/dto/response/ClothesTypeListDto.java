@@ -13,10 +13,12 @@ public class ClothesTypeListDto {
 
     private Long clothesId;
     private String clothesPhotoLink;
+    private Long clothesOotdId;
 
     @QueryProjection
-    public ClothesTypeListDto(Long clothesId, String clothesPhotoLink) {
+    public ClothesTypeListDto(Long clothesId, String clothesPhotoLink, Long clothesOotdId) {
         this.clothesId = clothesId;
         this.clothesPhotoLink = clothesPhotoLink;
+        this.clothesOotdId = clothesOotdId;
     }
 }

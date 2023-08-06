@@ -33,22 +33,9 @@ public class FeedController {
         Page<FeedResponseDto> feedResponseDtos = feedService.selectByHashTag(list, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
     }
-
-    //Following버튼 누르면 나오는 피드들
-    @GetMapping("/follow/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<Page<FeedResponseDto>> selectFollowFeed(@PathVariable(name = "userId")Long userId, Pageable pageable){
         Page<FeedResponseDto> feedResponseDtos = feedService.selectByUserFollowee(userId, pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
-    }
-    //특정 user의 피드를 불러오는 기능
-    @GetMapping("/{userId}")
-    public ResponseEntity<Page<FeedResponseDto>> selectUserFeed(@PathVariable(name = "userId")Long userId, Pageable pageable){
-        Page<FeedResponseDto> feedResponseDtos = feedService.selectByUserId(userId,pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
-    }
-    @GetMapping("/liked/{userId}")
-    public ResponseEntity<Page<FeedResponseDto>> selectLikedFeed(@PathVariable(name = "userId")Long userId, Pageable pageable){
-        Page<FeedResponseDto> feedResponseDtos = feedService.selectLikedFeed(userId, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
     }
 

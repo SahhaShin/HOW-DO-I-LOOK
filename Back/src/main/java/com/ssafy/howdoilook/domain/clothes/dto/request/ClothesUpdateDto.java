@@ -10,7 +10,7 @@ import lombok.Setter;
 public class ClothesUpdateDto {
 
     private String type;
-//    private String photoLink;
+    private String photoLink;
     private String name;
     private String brand;
     private String info;

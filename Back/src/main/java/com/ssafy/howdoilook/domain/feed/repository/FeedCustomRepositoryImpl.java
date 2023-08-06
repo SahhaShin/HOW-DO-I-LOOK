@@ -3,11 +3,9 @@ package com.ssafy.howdoilook.domain.feed.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.entity.QFeed;
-import com.ssafy.howdoilook.domain.feedLike.entity.QFeedLike;
 import com.ssafy.howdoilook.domain.feedPhoto.entity.QFeedPhoto;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.entity.QFeedPhotoHashtag;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
@@ -28,7 +26,6 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
     QFeedPhoto feedPhoto = QFeedPhoto.feedPhoto;
     QFeedPhotoHashtag feedPhotoHashtag = QFeedPhotoHashtag.feedPhotoHashtag;
     QHashtag hashtag = QHashtag.hashtag;
-    QFeedLike feedLike = QFeedLike.feedLike;
 
     public FeedCustomRepositoryImpl(EntityManager em) {
         this.jpaQueryFactory = new JPAQueryFactory(em);
@@ -59,7 +56,6 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
                 .leftJoin(feedPhotoHashtag.hashtag, hashtag)
                 .where(builder)
                 .distinct()
-                .orderBy(feed.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -79,38 +75,11 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
                 .leftJoin(feedPhotoHashtag.hashtag, hashtag)
                 .where(builder)
                 .distinct()
-                .orderBy(feed.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
         return new PageImpl(results.getResults(), pageable, results.getTotal());
     }
 
-    @Override
-    public Page<Feed> selectByUserId(Long userId, Pageable pageable) {
-        QueryResults<Feed> results = jpaQueryFactory.selectFrom(feed)
-                .where(feed.user.id.eq(userId))
-                .orderBy(feed.id.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-        return new PageImpl(results.getResults(), pageable, results.getTotal());
-    }
 
-    @Override
-    public Page<Feed> selectLikedFeed(Long userId, Pageable pageable) {
-        JPAQuery<Feed> query = jpaQueryFactory
-                .select(feed)
-                .from(feedLike)
-                .leftJoin(feedLike.feed, feed)
-                .on(feedLike.user.id.eq(userId));
-
-        QueryResults<Feed> results = query
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(feed.id.desc())
-                .fetchResults();
-
-        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
-    }
 }
