@@ -7,22 +7,16 @@ import Swal from "sweetalert2";
 // axios
 export const action = {
     // 옷 분야별 리스트 O
-    getClothesListByType : createAsyncThunk(`ClosetSlice/getClothesListByType`, async({clothesType, userId, pageNum}:ClothesListByTypeReq,thunkAPI)=>{
-        return await axios({
-            method: "get",
-            url:`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,
-           
-        }).then(response=>{
-            let result = {
-                type : clothesType,
-                content : response.data
-            }
-            return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
-        }).catch((e)=>{
+    getClothesListByType : createAsyncThunk("ClosetSlice/getClothesListByType", async({clothesType, userId, pageNum}:ClothesListByTypeReq, thunkAPI)=>{
+        try{
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`);
+            console.log(`${response.data} 익다!!`);
+            return response.data; // 액션의 payload로 값을 반환해야 합니다.
+        } catch (e) {
             console.log(e);
-        })
+            throw e;
+        }
     }),
-
     //OOTD X
     OOTDSave: createAsyncThunk("ClosetSlice/OOTDSave",async ({userId, order, slotIds}:saveOOTD,thunkAPI) => {
         return await axios({
@@ -237,6 +231,7 @@ const ClosetSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
+            console.log(`!!!${action.payload}`);
             if(action.payload.type==="TOP"){
                 state.clothesTop=action.payload.content;
             }else if(action.payload.type==="BOTTOM"){

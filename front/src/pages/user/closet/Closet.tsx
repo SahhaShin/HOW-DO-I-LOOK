@@ -56,8 +56,8 @@ const Closet = () => {
         
         dispatch(action.getClothesListByType({
             clothesType: "TOP",
-            pageNum : 0,
             userId:1,
+            pageNum : 0,
         }));
         
 
@@ -65,32 +65,32 @@ const Closet = () => {
        
         dispatch(action.getClothesListByType({
             clothesType: "BOTTOM",
-            pageNum : 0,
             userId:1,
+            pageNum : 0,
         }));
         
 
         
         dispatch(action.getClothesListByType({
             clothesType: "SHOE",
-            pageNum : 0,
             userId:1,
+            pageNum : 0,
         }));
         
 
  
         dispatch(action.getClothesListByType({
             clothesType: "ACCESSORY",
-            pageNum : 0,
             userId:1,
+            pageNum : 0,
         }));
         
 
        
         dispatch(action.getClothesListByType({
             clothesType: "ALL",
-            pageNum : 0,
             userId:1,
+            pageNum : 0,
         }));
     
     },[])
