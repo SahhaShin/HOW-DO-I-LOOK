@@ -28,7 +28,7 @@ export const action = {
     }),
 
 
-    //피드 전체 리스트 가져오기
+    //피드 전체 리스트 가져오기 O
     getFeedTotalList : createAsyncThunk("FeedSlice/getFeedList", async({size, page}, thunkAPI)=>{
         
         try{
@@ -41,8 +41,23 @@ export const action = {
         }
     }),
 
-    //피드 하나 지우기
+    //피드 하나 지우기 O
     deleteFeed : createAsyncThunk("FeedSlice/deleteFeed", async(feedId, thunkAPI)=>{
+       
+        try{
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
+            console.log(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
+
+    //특정 피드 정보 불러오기 X
+    readFeed : createAsyncThunk("FeedSlice/readFeed", async(feedId, thunkAPI)=>{
+       
         try{
             const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
             console.log(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
@@ -69,6 +84,37 @@ interface newFeed{
     s3upload:File[],
 }
 
+interface specificFeedLikes{
+    feedLikeCountResponseDto:{
+        natural:number,
+        lovely:number,
+        sexy:number,
+        modern:number
+    }
+}
+interface specificFeed{
+    content: {
+            userId: number,
+            feedId: number,
+            feedContent: string,
+            feedCreatedDate: string,
+            feedUpdateDate: string,
+            photoResponseDtoList: [
+                {
+                    id: number,
+                    link: string,
+                    hashtagList: string[]
+                },
+
+            ],
+            feedLikeCountResponseDto: {
+                natural: number,
+                modern: number,
+                lovely: number,
+                sexy: number
+            }
+        }
+}
 interface totalFeed{
     content: [
         {
@@ -131,6 +177,9 @@ interface Feed{
     uploadPictures:string[],
     declarationModalOpen:boolean,
     feedTotalObj:totalFeed|null,
+    detailFeedId : number,
+    detailObj:specificFeed|null,
+    detailObjLikes:specificFeedLikes|null,
 }
 
 // 초기화
@@ -147,6 +196,9 @@ const initialState:Feed = {
     uploadPictures:[],
     declarationModalOpen:false,
     feedTotalObj:null,
+    detailFeedId:0,
+    detailObj:null,
+    detailObjLikes:null,
 }
 
 
@@ -180,6 +232,18 @@ const FeedSlice = createSlice({
         changeDeclarationModalOpen(state, action){
             state.declarationModalOpen=action.payload;
         },
+        changeDetailFeedId(state, action){
+            state.detailFeedId=action.payload;
+
+            //세부피드 오브젝트도 채워준다.
+            //세부피드 좋아요 상황도 채워준다.
+            for(let i=0;i<state.feedTotalObj?.content.length;i++){
+                if(state.feedTotalObj?.content[i].feedId===action.payload){
+                    state.detailObj = state.feedTotalObj?.content[i];
+                    state.detailObjLikes = state.feedTotalObj?.content[i].feedLikeCountResponseDto;
+                }
+            }
+        }
     },
     extraReducers:(builder) => {
         builder.addCase(action.addFeed.fulfilled,(state,action)=>{
@@ -202,5 +266,5 @@ const FeedSlice = createSlice({
     }
 });
 
-export let {changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
+export let {changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
 export default FeedSlice.reducer;

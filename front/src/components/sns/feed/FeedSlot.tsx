@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action, changeDetailFeedId, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -56,6 +56,13 @@ const FeedSlot = () => {
                 
             }
         });
+    }
+
+
+    //피드 수정 버튼을 누르면 피드 수정 창이 뜬다.
+    //피드 수정 창은 create 창과 같다.
+    function modifyFeed(){
+
     }
 
 
@@ -131,7 +138,8 @@ const FeedSlot = () => {
                             {/* comment, count, button */}
                             <div className={`${feedSlotStyle.footer}`}>
                                 <div className={`${feedSlotStyle.comment}`}>
-                                    <img src={process.env.PUBLIC_URL+`/img/feed/comment.png`} onClick={async()=>{dispatch(changeDetailModalOpen(true))}}/>
+                                    {/* 이 버튼을 누르면 댓글 창으로 이동 -> 특정 피드 아이디 전달 */}
+                                    <img src={process.env.PUBLIC_URL+`/img/feed/comment.png`} onClick={async()=>{dispatch(changeDetailModalOpen(true)); dispatch(changeDetailFeedId(oneFeed.feedId));}}/>
                                     <p>1개</p>
                                 </div>
                                 {oneFeed.userId===userId?<div className={`${feedSlotStyle.feedBtns}`}>

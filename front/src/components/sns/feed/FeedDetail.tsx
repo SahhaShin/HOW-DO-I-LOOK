@@ -16,7 +16,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useSelector, useDispatch } from "react-redux"; 
 import {changeFollow, changeDetailModalOpen} from "../../../store/FeedSlice";
 
-const FeedDetail = () => {
+const FeedDetail = (feedId) => {
+
+    console.log(feedId);
 
     //redux 관리
     let state = useSelector((state:any)=>state.feed);
@@ -24,6 +26,7 @@ const FeedDetail = () => {
 
     // 유저 정보
     const nickname:string = "user3";
+    const userId:number = 1;
 
     // 슬라이드 설정
     const settings = {
@@ -67,6 +70,29 @@ const FeedDetail = () => {
         },
     ]);
 
+
+    //like 표시에 따른 요청
+    // function likeOn(type, status){
+    //     //state.detailObjLikes.lovely
+    //     if(type==="lovely"){
+    //         if(status==0){
+
+    //         }else{
+
+    //         }
+    //     }else if(type==="natural"){
+    //         if(state)
+
+    //     }else if(type==="modern"){
+
+    //     }else if(type==="sexy"){
+
+    //     }
+
+    // }
+
+    console.log(state.detailObj?.photoResponseDtoList);
+
     return(
         <div className={`${FeedDetailStyle.container}`}>
             {/* 왼쪽 페이지 */}
@@ -85,7 +111,7 @@ const FeedDetail = () => {
                         <div className={`${FeedDetailStyle.content}`}>
                             {/* 닉네임*/}
                             <div>
-                                <p>{nickname}</p>
+                                <p>{state.detailObj?.userId}</p>
                             </div>
                         </div>
 
@@ -113,21 +139,31 @@ const FeedDetail = () => {
 
                     {/* content */}
                     <div className={`${FeedDetailStyle.content}`}>
-                        햇볕에 타는 게 싫어 ㅠㅠ
+                        {state.detailObj?.feedContent}
                     </div>
 
                     {/* hashtag */}
                     <div className={`${FeedDetailStyle.hashtag}`}>
-                        <button>#여름</button>
-                        <button>#해변</button>
+                        {
+                            state.detailObj?.photoResponseDtoList?.map((onePicture)=>{
+                                return(
+                                    onePicture.hashtagList?.map((oneHash, idxHash)=>{
+                                        return <button key={idxHash}>#{oneHash}</button>
+                                    })
+                                );
+                            })
+                        }
                     </div>
 
                     {/* comment, count, button */}
                     <div className={`${FeedDetailStyle.footer}`}>
-                        <div className={`${FeedDetailStyle.feedBtns}`}>
-                            <button>수정</button>
-                            <button>삭제</button>
-                        </div>
+                        {
+                            userId===state.detailObj?.userId?
+                            <div className={`${FeedDetailStyle.feedBtns}`}>
+                                <button>수정</button>
+                                <button>삭제</button>
+                            </div>:null
+                        }
                     </div>
 
                     {/* 날짜 */}
@@ -143,12 +179,12 @@ const FeedDetail = () => {
                     <img src={process.env.PUBLIC_URL+`/img/feed/closeBtn.png`} onClick={async()=>{dispatch(changeDetailModalOpen(false))}}/>
                 </div>
 
-                {/* 좋아요 4가지 */}
+                {/* 좋아요 4가지 - 0과 1 구분하는 거 다시하고, 좋아요 저장 삭제도 구현해야함 */}
                 <div className={`${FeedDetailStyle.likeBtns}`}>
-                    <button>Lovely</button>
-                    <button>Natural</button>
-                    <button>Modern</button>
-                    <button>Sexy</button>
+                    {state.detailObjLikes.lovely===1?<button onClick={()=>{likeOn("lovely", state.detailObjLikes.lovely)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely ({state.detailObjLikes.lovely}){state.detailObjLikes.lovely}개</button>:<button className={`${FeedDetailStyle.lovelyOff}`}>Lovely ({state.detailObjLikes.lovely})</button>}
+                    {state.detailObjLikes.natural===1?<button onClick={()=>{likeOn("natural", state.detailObjLikes.lovely)}} className={`${FeedDetailStyle.naturalOn}`}>Natural ({state.detailObjLikes.natural})</button>:<button className={`${FeedDetailStyle.naturalOff}`}>Natural ({state.detailObjLikes.natural})</button>}
+                    {state.detailObjLikes.modern===1?<button onClick={()=>{likeOn("modern", state.detailObjLikes.lovely)}} className={`${FeedDetailStyle.modernOn}`}>Modern ({state.detailObjLikes.modern})</button>:<button className={`${FeedDetailStyle.modernOff}`}>Modern ({state.detailObjLikes.modern})</button>}
+                    {state.detailObjLikes.sexy===1?<button onClick={()=>{likeOn("sexy", state.detailObjLikes.lovely)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy ({state.detailObjLikes.sexy})</button>:<button className={`${FeedDetailStyle.sexyOff}`}>Sexy ({state.detailObjLikes.sexy})</button>}
                 </div>
 
 

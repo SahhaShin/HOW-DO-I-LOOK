@@ -37,7 +37,7 @@ const Feed = () => {
         <>
             {
                 // 피드 상세보기 모달
-                state.detailModalOpen?<div className={`${feedStyle.detailModal}`}><FeedDetail/></div>:null
+                state.detailModalOpen?<div className={`${feedStyle.detailModal}`}><FeedDetail feedId={state.detailFeedId}/></div>:null
             }
 
             {
