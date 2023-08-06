@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import feedStyle from "./Feed.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action, changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 // 컴포넌트
 import FeedSlot from '../../../components/sns/feed/FeedSlot';
@@ -23,6 +23,16 @@ const Feed = () => {
     let dispatch = useDispatch();
 
     let [feedList, setFeedList] = useState<any>([1,2,3,4,5,6,7,8,9,10]);
+
+    // 등록된 피드 전체 불러오기
+    // function getFeedTotalList(state,action){
+        
+    // }
+
+    useEffect(()=>{
+        let data = {size:10, page:0};
+        dispatch(action.getFeedTotalList(data));
+    },[])
 
     return(
         <>

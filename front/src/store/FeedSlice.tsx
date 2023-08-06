@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 // axios
 export const action = {
 
-    // 새로운 피드 등록 O
+    // 새로운 피드 등록 X : formdata에 아무것도 안들어옴 
     addFeed : createAsyncThunk("FeedSlice/addFeed", async(formdata:newFeed, thunkAPI)=>{
         console.log(JSON.stringify(formdata));
         await axios.post(`${process.env.REACT_APP_SERVER}/api/feed`, formdata, {
@@ -28,6 +28,13 @@ export const action = {
     }),
 
 
+    getFeedTotalList : createAsyncThunk("FeedSlice/getFeedList", async({size, page}, thunkAPI)=>{
+        await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`).then((res)=>{        
+        console.log(res.data);
+        return res.data;
+      }).catch((e)=>{console.log(e)})
+    }),
+
 }
 
 //새로운 사진 등록 시 폼
@@ -37,8 +44,8 @@ interface newFeed{
         content: string,
         photoSaveRequestDtoList:[
             {
-                hashtagList:string[]|null
-            }
+                hashtagList:string[]
+            },
         ]
     },
     s3upload:File[],
@@ -53,6 +60,7 @@ interface Feed{
     uploadHashtags:string[],
     uploadPictures:string[],
     declarationModalOpen:boolean,
+    feedTotalList:any|null,
 }
 
 // 초기화
@@ -68,6 +76,7 @@ const initialState:Feed = {
     uploadHashtags:[],
     uploadPictures:[],
     declarationModalOpen:false,
+    feedTotalList:null,
 }
 
 
@@ -90,7 +99,6 @@ const FeedSlice = createSlice({
         changeCreateType(state, action){
             state.createType = action.payload;
         },
-
         addHashTag(state, action){
             let hash:string = action.payload;
             state.uploadHashtags.push(hash);
@@ -108,7 +116,11 @@ const FeedSlice = createSlice({
             console.log(`11 ${action.payload}`);
             state.createModalOpen=false;
         })
-        
+
+        builder.addCase(action.getFeedTotalList.fulfilled,(state,action)=>{
+            console.log(`22 ${action.payload}`);
+            state.feedTotalList = action.payload;
+        })
     }
 });
 
