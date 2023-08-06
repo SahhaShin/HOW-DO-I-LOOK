@@ -23,6 +23,12 @@ const Mypage = () => {
     let state_feed = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
 
+    useEffect(() => {
+        // 임시로 로그인유저, 타겟 유저 설정 :
+        dispatch(action.getLoginUser(1));
+        dispatch(action.getTargetUser(1));
+      }, []);
+
     return(
         <>
             {
