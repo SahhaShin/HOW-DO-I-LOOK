@@ -5,7 +5,7 @@ import mypageHeaderStyle from "./MypageHeader.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollowModalOpen, changeFollowMode, changeManageType, changeMenuMode} from "../../../store/MypageSlice";
+import {action, changeFollowModalOpen, changeFollowMode, changeManageType, changeMenuMode} from "../../../store/MypageSlice";
 
 
 const MypageHeader = () => {
@@ -14,6 +14,13 @@ const MypageHeader = () => {
     let state = useSelector((state:any)=>state.mypage);
     let dispatch = useDispatch();
 
+    const loginUserId = 1;
+
+    // 블랙리스트
+    const getBlackList = (loginUserId : number) => {
+
+        dispatch(action.getBlackList(loginUserId));
+    }
 
     return(
         <div className={`${mypageHeaderStyle.total}`}>
@@ -47,7 +54,7 @@ const MypageHeader = () => {
                 <div className={`${mypageHeaderStyle.btns}`}>
                     <button onClick={()=>{dispatch(changeManageType(1)); dispatch(changeMenuMode(1))}}>기본정보</button>
                     <button onClick={()=>{dispatch(changeManageType(1)); dispatch(changeMenuMode(3))}} style={state.menuMode===3?{backgroundColor:"#4570F5", color:"white"}:null}>내 정보 관리</button>
-                    <button onClick={()=>{dispatch(changeFollowMode(3));dispatch(changeFollowModalOpen(true))}}>블랙리스트 관리</button>
+                    <button onClick={()=>{dispatch(changeFollowMode(3));dispatch(changeFollowModalOpen(true)); getBlackList(loginUserId)}}>블랙리스트 관리</button>
                 </div>
             }
         </div>

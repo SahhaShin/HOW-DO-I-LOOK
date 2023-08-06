@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //css
 import mypageStyle from "./Mypage.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollowModalOpen} from "../../../store/MypageSlice";
+import {action, changeFollowModalOpen} from "../../../store/MypageSlice";
 import {changeDetailModalOpen} from "../../../store/FeedSlice";
 
 //컴포넌트
