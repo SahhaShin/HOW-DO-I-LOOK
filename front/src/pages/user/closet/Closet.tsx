@@ -27,6 +27,8 @@ const Closet = () => {
 
     // 페이지네이션, 옷 관리
     let clothesListLen = state.clothesTop?.length;
+    let clothesListType = state.clothesListByType?.length;
+
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(state.page);
     const offset = (page - 1) * limit;
@@ -42,6 +44,53 @@ const Closet = () => {
     }else if(state.clothesTypeKo==="전체"){
         clothesListLen = state.clothesAll?.length;
     }
+
+    //상의 하의 신발 악세서리 전체에 따른 옷 요청을 위한 변수들
+    let selectType = {
+        clothesType: state.clothesTypeEn,
+        pageNum : 0,
+        userId:1,
+    }
+
+    // 화면 초기값 백엔드(api)에 요청
+    useEffect(()=>{
+        
+        // closet 영역 초기 셋팅은 top
+        dispatch(action.getClothesListByType(selectType));
+
+        //ootd에서 상의 하의 신발 악세서리 3개 부분 보여줌
+        dispatch(action.getClothesListByType({
+            clothesType: "TOP",
+            pageNum : 0,
+            userId:1,
+        }));
+
+        dispatch(action.getClothesListByType({
+            clothesType: "BOTTOM",
+            pageNum : 0,
+            userId:1,
+        }));
+
+        dispatch(action.getClothesListByType({
+            clothesType: "SHOE",
+            pageNum : 0,
+            userId:1,
+        }));
+
+        dispatch(action.getClothesListByType({
+            clothesType: "ACCESSORY",
+            pageNum : 0,
+            userId:1,
+        }));
+
+        dispatch(action.getClothesListByType({
+            clothesType: "ALL",
+            pageNum : 0,
+            userId:1,
+        }));
+        // dispatch(action.getOOTDList(init.userId));
+        // console.log("getOOTDList load");
+    },[])
 
     //상의 하의 신발 악세서리 전체에 따른 옷 요청을 위한 변수들
     let selectType = {
@@ -183,14 +232,14 @@ const Closet = () => {
                                 ):(state.clothesTypeKo==="전체" && state.clothesAll.length!==0?state.clothesAll?.map((one,idx)=>
                                     <CLOSETSlot key={idx} one={one}/>
                                 ):<div className={`${closetStyle.noItem}`}>추가된 {state.clothesTypeKo} 이미지가 없습니다.</div>))))
-
                             }   
+                        }
                         </div>
 
                         {/* 페이지네이션 20을 {clothes.length}로 바꿔야 함 */}
                         <div className={`${closetStyle.paginationContainer}`}>
-                            {clothesListLen!==0?<Pagination
-                                total={clothesListLen}
+                            {clothesListType!==0?<Pagination
+                                total={clothesListType}
                                 limit={limit}
                                 page={page}
                                 setPage={setPage}

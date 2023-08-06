@@ -10,6 +10,9 @@ import {action} from "../../../store/ClosetSlice";
 // 직접 만든 slider
 import CLOSETSlider from "./CLOSETSlider";
 
+//부트스트랩
+import Button from 'react-bootstrap/Button';
+
 
 //idx는 몇 번째 ootd 순서인가 1번인가 2번인가를 알려줌
 const OOTDCoordi = (idx) => {
