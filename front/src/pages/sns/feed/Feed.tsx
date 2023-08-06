@@ -3,7 +3,7 @@ import feedStyle from "./Feed.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action, changeModifyModalOpen,changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 // 컴포넌트
 import FeedSlot from '../../../components/sns/feed/FeedSlot';
@@ -15,6 +15,7 @@ import FeedDeclaration from '../../../components/sns/feed/FeedDeclaration';
 import Header from '../../../components/util/Header';
 import Footer from '../../../components/util/Footer';
 import Menu from '../../../components/util/Menu';
+import FeedModify from "../../../components/sns/feed/FeedModify";
 
 const Feed = () => {
 
@@ -38,6 +39,11 @@ const Feed = () => {
             {
                 // 피드 상세보기 모달
                 state.detailModalOpen?<div className={`${feedStyle.detailModal}`}><FeedDetail feedId={state.detailFeedId}/></div>:null
+            }
+
+            {
+                // 피드 수정 모달
+                state.modifyModalOpen?<div className={`${feedStyle.detailModal}`}><FeedModify/></div>:null
             }
 
             {
@@ -110,7 +116,7 @@ const Feed = () => {
             </div>
 
             {/* 피드블러 */}
-            <div onClick={async()=>{dispatch(changeDetailModalOpen(false)); dispatch(changeCreateModalOpen(false));dispatch(changeDeclarationModalOpen(false))}} style={state.detailModalOpen||state.createModalOpen||state.declarationModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
+            <div onClick={async()=>{dispatch(changeDetailModalOpen(false)); dispatch(changeCreateModalOpen(false));dispatch(changeDeclarationModalOpen(false));dispatch(changeModifyModalOpen(false))}} style={state.detailModalOpen||state.createModalOpen||state.declarationModalOpen||state.modifyModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
         </>
     );
 }

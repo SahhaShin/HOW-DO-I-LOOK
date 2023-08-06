@@ -180,6 +180,7 @@ interface Feed{
     detailFeedId : number,
     detailObj:specificFeed|null,
     detailObjLikes:specificFeedLikes|null,
+    modifyModalOpen:boolean,
 }
 
 // 초기화
@@ -199,6 +200,7 @@ const initialState:Feed = {
     detailFeedId:0,
     detailObj:null,
     detailObjLikes:null,
+    modifyModalOpen:false
 }
 
 
@@ -243,7 +245,10 @@ const FeedSlice = createSlice({
                     state.detailObjLikes = state.feedTotalObj?.content[i].feedLikeCountResponseDto;
                 }
             }
-        }
+        },
+        changeModifyModalOpen(state, action){
+            state.modifyModalOpen=action.payload;
+        },
     },
     extraReducers:(builder) => {
         builder.addCase(action.addFeed.fulfilled,(state,action)=>{
@@ -266,5 +271,5 @@ const FeedSlice = createSlice({
     }
 });
 
-export let {changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
+export let {changeModifyModalOpen,changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
 export default FeedSlice.reducer;

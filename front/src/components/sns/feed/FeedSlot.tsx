@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeDetailFeedId, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action, changeModifyModalOpen, changeDetailFeedId, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -127,7 +127,7 @@ const FeedSlot = () => {
                                         return (
                                             <div className={`${feedSlotStyle.onehash}`}>
                                                 {dtoList.hashtagList?.map((oneHash) => (
-                                                    <button>{oneHash}</button>
+                                                    <button>#{oneHash}</button>
                                                 ))}
                                             </div>
                                         );
@@ -143,7 +143,7 @@ const FeedSlot = () => {
                                     <p>1개</p>
                                 </div>
                                 {oneFeed.userId===userId?<div className={`${feedSlotStyle.feedBtns}`}>
-                                    <button>수정</button>
+                                    <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId));}}>수정</button>
                                     <button onClick={()=>deleteFeed(oneFeed.feedId)}>삭제</button>
                                 </div>:null}
                             </div>
@@ -170,12 +170,12 @@ const StyledSlider = styled(Slider)`
   .slick-prev {
     z-index: 1;
     left: 30px;
-    top: 25%;
+    top: 35%;
   }
 
   .slick-next {
     right: 40px;
-    top: 25%;
+    top: 35%;
   }
 
   .slick-prev:before,
