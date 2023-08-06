@@ -9,7 +9,7 @@ export const action = {
 
     // 새로운 피드 등록 O
     addFeed : createAsyncThunk("FeedSlice/addFeed", async(formdata:newFeed, thunkAPI)=>{
-        console.log(formdata.feedSaveRequestDto);
+        console.log(formdata);
         await axios.post(`${process.env.REACT_APP_SERVER}/api/feed`, formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -24,7 +24,7 @@ export const action = {
         })
 
         return res.data;
-      })
+      }).catch((e)=>{console.log(e)})
     }),
 
 
@@ -104,22 +104,10 @@ const FeedSlice = createSlice({
         },
     },
     extraReducers:(builder) => {
-        // builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
-        //     if(action.payload.type==="TOP"){
-        //         state.clothesTop=action.payload.content;
-        //     }else if(action.payload.type==="BOTTOM"){
-        //         state.clothesBottom=action.payload.content;
-        //     }else if(action.payload.type==="SHOE"){
-        //         state.clothesShoe=action.payload.content;
-        //     }else if(action.payload.type==="ACCESSORY"){
-        //         state.clothesAccessory=action.payload.content;
-        //     }else{
-        //         // all
-        //         state.clothesAll=action.payload.content;
-        //     }
-
-        //     state.clothesListByType=action.payload.content;
-        // })
+        builder.addCase(action.addFeed.fulfilled,(state,action)=>{
+            console.log(`11 ${action.payload}`);
+            state.createModalOpen=false;
+        })
         
     }
 });
