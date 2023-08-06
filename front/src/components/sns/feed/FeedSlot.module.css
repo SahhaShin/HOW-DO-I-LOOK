@@ -153,6 +153,10 @@
     color: white;
 }
 
+.onehash{
+    display: flex;
+}
+
 
 .footer{
     display: flex;

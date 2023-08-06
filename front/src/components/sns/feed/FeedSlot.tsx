@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 const FeedSlot = () => {
     //redux 관리
@@ -29,16 +29,19 @@ const FeedSlot = () => {
         slidesToScroll: 1,
     };
 
-    // 몇개의 피드가 있는가?
-    let [feedCount, setFeedCount] = useState<any|null>([1,2,3,4,5,6,7,8,9,10]);
+
+    //피드 삭제 함수
+    function deleteFeed(feedId){
+        dispatch(action.deleteFeed(feedId));
+    }
 
     return(   
         <>
             {
-                state.feedTotalList?.map((oneFeed)=>{
-                    console.log(`야호 !! ${oneFeed}`);
+                state.feedTotalObj?.content.map((oneFeed, idx)=>{
+                    
                     return(
-                        <div className={`${feedSlotStyle.card}`}>
+                        <div key={idx} className={`${feedSlotStyle.card}`}>
                             {/* header */}
                             <div className={`${feedSlotStyle.header}`}>
                                 {/* 왼쪽 : 프로필 사진 -- 이미지 아직 저장 안함 */}
@@ -67,29 +70,35 @@ const FeedSlot = () => {
                             <div className={`${feedSlotStyle.image}`}>
                                 <StyledSlider {...settings}>
                                     {
-
+                                        oneFeed.photoResponseDtoList?.map((onePhoto)=>{
+                                            return(
+                                                <div className={`${feedSlotStyle.slide}`}>
+                                                    <img src={onePhoto.link}/>
+                                                </div>
+                                            );
+                                        })
                                     }
-                                    {/* public img는 절대 경로로 가져와야 함 */}
-                                    <div className={`${feedSlotStyle.slide}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/feed/fasion1.jpg`}/>
-                                    </div>
-
-                                    <div className={`${feedSlotStyle.slide}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/feed/fasion2.jpg`}/>
-                                    </div>
-
                                 </StyledSlider>
                             </div>
 
                             {/* content */}
                             <div className={`${feedSlotStyle.content}`}>
-                                햇볕에 타는 게 싫어 ㅠㅠ
+                                {oneFeed.feedContent}
                             </div>
 
                             {/* hashtag */}
                             <div className={`${feedSlotStyle.hashtag}`}>
-                                <button>#여름</button>
-                                <button>#해변</button>
+                                {
+                                    oneFeed.photoResponseDtoList?.map((dtoList) => {
+                                        return (
+                                            <div className={`${feedSlotStyle.onehash}`}>
+                                                {dtoList.hashtagList?.map((oneHash) => (
+                                                    <button>{oneHash}</button>
+                                                ))}
+                                            </div>
+                                        );
+                                    })
+                                }
                             </div>
 
                             {/* comment, count, button */}
@@ -100,12 +109,12 @@ const FeedSlot = () => {
                                 </div>
                                 <div className={`${feedSlotStyle.feedBtns}`}>
                                     <button>수정</button>
-                                    <button>삭제</button>
+                                    <button onClick={()=>deleteFeed(oneFeed.feedId)}>삭제</button>
                                 </div>
                             </div>
 
                             {/* 날짜 */}
-                            <div className={`${feedSlotStyle.date}`}>23.07.19 09:00</div>
+                            <div className={`${feedSlotStyle.date}`}>{oneFeed.feedCreatedDate.split("T")[0]} {oneFeed.feedCreatedDate.split("T")[1].split(".")[0]}</div>
 
                             {/* 구분선 */}
                             <div className={`${feedSlotStyle.hr}`}></div>
@@ -126,12 +135,12 @@ const StyledSlider = styled(Slider)`
   .slick-prev {
     z-index: 1;
     left: 30px;
-    top: 35%;
+    top: 25%;
   }
 
   .slick-next {
     right: 40px;
-    top: 35%;
+    top: 25%;
   }
 
   .slick-prev:before,

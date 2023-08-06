@@ -22,16 +22,15 @@ const Feed = () => {
     let state = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
 
-    let [feedList, setFeedList] = useState<any>([1,2,3,4,5,6,7,8,9,10]);
-
     // 등록된 피드 전체 불러오기
     // function getFeedTotalList(state,action){
         
     // }
 
     useEffect(()=>{
-        let data = {size:10, page:0};
+        let data = {size:0, page:0};
         dispatch(action.getFeedTotalList(data));
+
     },[])
 
     return(
@@ -84,16 +83,11 @@ const Feed = () => {
                         </div>
 
                         {/* 피드 리스트 */}
-                        {
-                            feedList.map(()=>{
-                                return(
-                                    <div className={`${feedStyle.list}`}>
-                                        <FeedSlot/>
-                                    </div>
-                                );
-                            })
-                        }
-                        
+                       
+                        <div className={`${feedStyle.list}`}>
+                            <FeedSlot/>
+                        </div>
+                               
 
                     </div>
 

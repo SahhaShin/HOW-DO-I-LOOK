@@ -28,11 +28,28 @@ export const action = {
     }),
 
 
+    //피드 전체 리스트 가져오기
     getFeedTotalList : createAsyncThunk("FeedSlice/getFeedList", async({size, page}, thunkAPI)=>{
-        await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`).then((res)=>{        
-        console.log(res.data);
-        return res.data;
-      }).catch((e)=>{console.log(e)})
+        
+        try{
+            console.log(`${size} ${page}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`);
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
+    //피드 하나 지우기
+    deleteFeed : createAsyncThunk("FeedSlice/deleteFeed", async(feedId, thunkAPI)=>{
+        try{
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
     }),
 
 }
@@ -51,6 +68,58 @@ interface newFeed{
     s3upload:File[],
 }
 
+interface totalFeed{
+    content: [
+        {
+            userId: number,
+            feedId: number,
+            feedContent: string,
+            feedCreatedDate: string,
+            feedUpdateDate: string,
+            photoResponseDtoList: [
+                {
+                    id: number,
+                    link: string,
+                    hashtagList: string[]
+                },
+
+            ],
+            feedLikeCountResponseDto: {
+                natural: number,
+                modern: number,
+                lovely: number,
+                sexy: number
+            }
+        }
+    ],
+    pageable: {
+        sort: {
+            empty: boolean,
+            unsorted : boolean,
+            sorted: boolean
+        },
+        offset: number,
+        pageSize: number,
+        pageNumber: number,
+        paged: boolean,
+        unpaged: boolean
+    },
+    last: boolean,
+    totalElements: number,
+    totalPages: number,
+    size: number,
+    number: number,
+    sort: {
+        empty: boolean,
+        unsorted: boolean,
+        sorted: boolean
+    },
+    first: boolean,
+    numberOfElements: number,
+    empty: boolean
+}
+
+
 interface Feed{
     isFollow:boolean,
     detailModalOpen:boolean,
@@ -60,7 +129,7 @@ interface Feed{
     uploadHashtags:string[],
     uploadPictures:string[],
     declarationModalOpen:boolean,
-    feedTotalList:any|null,
+    feedTotalObj:totalFeed|null,
 }
 
 // 초기화
@@ -76,7 +145,7 @@ const initialState:Feed = {
     uploadHashtags:[],
     uploadPictures:[],
     declarationModalOpen:false,
-    feedTotalList:null,
+    feedTotalObj:null,
 }
 
 
@@ -118,8 +187,16 @@ const FeedSlice = createSlice({
         })
 
         builder.addCase(action.getFeedTotalList.fulfilled,(state,action)=>{
-            console.log(`22 ${action.payload}`);
-            state.feedTotalList = action.payload;
+            state.feedTotalObj = action.payload;
+        })
+
+        builder.addCase(action.deleteFeed.fulfilled,(state,action)=>{
+            Swal.fire({
+                icon: 'success',
+                title: '삭제 완료',
+                text: '피드가 성공적으로 삭제되었습니다.',
+                confirmButtonColor: '#4570F5',
+            })
         })
     }
 });
