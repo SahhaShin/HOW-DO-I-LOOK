@@ -9,7 +9,7 @@ export const action = {
 
     // 새로운 피드 등록 O
     addFeed : createAsyncThunk("FeedSlice/addFeed", async(formdata:newFeed, thunkAPI)=>{
-        console.log(formdata);
+        console.log(JSON.stringify(formdata));
         await axios.post(`${process.env.REACT_APP_SERVER}/api/feed`, formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
