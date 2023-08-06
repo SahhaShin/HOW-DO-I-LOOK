@@ -74,6 +74,9 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Alarm> alarmList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "senderUser", cascade = CascadeType.ALL)
+    List<Alarm> senderAlarmList = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<BlackList> blackList = new ArrayList<>();
 
@@ -158,11 +161,12 @@ public class User extends BaseTimeEntity {
     /*
     * 유저 정보 수정
     * */
-    public Long updateUserInfo(UserUpdateRequestDto userUpdateRequestDto) {
+    public Long updateUserInfo(UserUpdateRequestDto userUpdateRequestDto, String profileImg) {
         this.age = userUpdateRequestDto.getAge();
         this.gender = userUpdateRequestDto.getGender();
         this.nickname = userUpdateRequestDto.getNickname();
         this.name = userUpdateRequestDto.getName();
+        this.profileImg = profileImg;
 
         return this.id;
     }
@@ -174,5 +178,9 @@ public class User extends BaseTimeEntity {
         this.showBadgeType = likeType;
 
         return this.id;
+    }
+
+    public void updateProfileImg(String profileImg) {
+        this.profileImg = profileImg;
     }
 }

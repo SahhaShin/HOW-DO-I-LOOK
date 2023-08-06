@@ -3,6 +3,7 @@ package com.ssafy.howdoilook.domain.clothes.repository;
 import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesDetailResponseDto;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
+import com.ssafy.howdoilook.domain.ootd.dto.response.ClothesTypeListDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -18,11 +18,14 @@ public class UserUpdateRequestDto {
 
     private int age;
 
+    private String profileImg;
+
     @Builder
-    public UserUpdateRequestDto(String name, String nickname, Gender gender, int age) {
+    public UserUpdateRequestDto(String name, String nickname, Gender gender, int age, String profileImg) {
         this.name = name;
         this.nickname = nickname;
         this.gender = gender;
         this.age = age;
+        this.profileImg = profileImg;
     }
 }

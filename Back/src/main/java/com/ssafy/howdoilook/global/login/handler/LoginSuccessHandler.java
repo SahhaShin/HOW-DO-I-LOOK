@@ -38,8 +38,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String accessToken = jwtService.createAccessToken(email);
         String refreshToken = jwtService.createRefreshToken();
 
-        httpServletResponse.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-        httpServletResponse.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
+        httpServletResponse.addHeader(jwtService.getAccessHeader(), accessToken);
+        httpServletResponse.addHeader(jwtService.getRefreshHeader(), refreshToken);
 
         httpServletResponse.getWriter().write("Login Success!");
 

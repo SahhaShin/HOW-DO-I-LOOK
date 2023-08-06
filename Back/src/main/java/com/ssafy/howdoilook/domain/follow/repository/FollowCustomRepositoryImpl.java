@@ -8,9 +8,11 @@ import com.ssafy.howdoilook.domain.follow.entity.QFollow;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 
 public class FollowCustomRepositoryImpl implements FollowCustomRepository{
@@ -48,5 +50,21 @@ public class FollowCustomRepositoryImpl implements FollowCustomRepository{
                 .limit(page.getPageSize())
                 .fetchResults();
         return new PageImpl<>(results.getResults(), page, results.getTotal());
+    }
+
+    @Override
+    public List<Follow> findAllFolloweeByUserId(Long userId) {
+
+        return jpaQueryFactory.selectFrom(follow)
+                .where(follow.follower.id.eq(userId))
+                .fetch();
+    }
+
+    @Override
+    public List<Follow> findAllFollowerByUserId(Long userId) {
+
+        return jpaQueryFactory.selectFrom(follow)
+                .where(follow.followee.id.eq(userId))
+                .fetch();
     }
 }

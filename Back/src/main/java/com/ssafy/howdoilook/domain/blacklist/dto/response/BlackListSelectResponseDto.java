@@ -6,16 +6,16 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BlackListSelectResponseDto {
-    private Long id;
-    private String email;
-    private String name;
+    private Long targetUserId;
+
     private String nickname;
 
+    private String profileImg;
+
     @Builder
-    public BlackListSelectResponseDto(Long id, String email, String name, String nickname) {
-        this.id = id;
-        this.email = email;
-        this.name = name;
+    public BlackListSelectResponseDto(Long targetUserId, String nickname, String profileImg) {
+        this.targetUserId = targetUserId;
         this.nickname = nickname;
+        this.profileImg = profileImg;
     }
 }
