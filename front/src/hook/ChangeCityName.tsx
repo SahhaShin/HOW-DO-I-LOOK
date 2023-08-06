@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 //훅 불러오기
-import useGeolocation from '../hook/useGeolocation.tsx';
+import useGeolocation from './useGeolocation.tsx';
 
 //경도 위도를 도시 이름으로 바꿔주기(카카오 api, 역지오코딩)
 interface City{

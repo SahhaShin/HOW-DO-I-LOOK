@@ -1,0 +1,76 @@
+.total{
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.firstArea{
+    /* 인트로 메세지랑 해시태그들 */
+    /* 하이라이트 크기 영향 */
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.intro{
+    /* 위치 */
+    display: inline;
+
+    /* 폰트 */
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.intro > div{
+    /* 인트로 메세지 */
+    display: inline;
+}
+
+.light{
+    /* 위치 */
+    display: absolute;
+    margin-top: -7px;
+    margin-left: 35%;
+
+    /* 크기 */
+    width: 30%;
+    height: 10px;
+
+    /* 컬러 */
+    background-color: pink;
+
+    /* radius */
+    border-radius: 1rem;
+}
+
+.tag{
+    /* 위치 */
+    display: flex;
+    flex-direction: row;
+
+    /* 크기 */
+    width: 40%;
+    height: 40px;
+}
+
+.tag button{
+    display: inline;
+    border-radius: 1rem;
+    margin-right: 10px;
+    border: 1px solid var(--border);
+    height: 100%;
+    background-color: var(--border);
+}
+
+.tag button:hover{
+    background-color: var(--signiture);
+    color: white;
+}
+
+.hr{
+    width: 700px;
+    height: 1px;
+    background-color: var(--border);
+    margin-top: 3%;
+    margin-bottom: 3%;
+}

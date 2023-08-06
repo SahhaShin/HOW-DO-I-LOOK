@@ -28,10 +28,26 @@
     margin-right: 30px;
 }
 
+.slot > img{
+    width: 100%;
+    height: 100%;
+    object-fit:contain;
+}
+
 .bgColor{
     /* 위치 */
     position: absolute;
     z-index: 2;
+
+    /* 크기 */
+    width: 170px;
+    height: 170px;
+    border-radius: 1rem;
+}
+
+.bgColor2{
+    /* 위치 */
+    position: absolute;
 
     /* 크기 */
     width: 170px;
@@ -51,9 +67,25 @@
     /* 위치 */
     margin-left: 1%;
     margin-top: 70px;
+    z-index: 5;
 }
 
 .btn:hover{
     background-color: var(--signiture);
     color:white;
 }
+
+
+.confirmButton {
+    font-size: 16px; /* 확인 버튼에 원하는 폰트 크기를 설정하세요. */
+    /* 기타 확인 버튼에 원하는 스타일을 추가하세요. */
+    width: 100px;
+    height: 50px;
+  }
+  
+  .cancelButton {
+    font-size: 16px; /* 취소 버튼에 원하는 폰트 크기를 설정하세요. */
+    /* 기타 취소 버튼에 원하는 스타일을 추가하세요. */
+    width: 100px;
+    height: 50px;
+  }

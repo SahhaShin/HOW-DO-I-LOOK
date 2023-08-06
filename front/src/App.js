@@ -10,32 +10,33 @@ import { store } from "./store/Store";
 
 //페이지 선언
 import Closet from "./pages/user/closet/Closet";
+import ChatList from "./pages/chat/chatting/ChatList";
+import ChatRoom from "./pages/chat/chatting/ChatRoom";
+import Feed from "./pages/sns/feed/Feed";
+import Mypage from "./pages/user/my_page/Mypage";
+import Live from "./pages/streaming/live/Live"
 import Login from "./pages/user/login/Login";
 import Signin from "./pages/user/login/Signin";
 import AuthSignin from "./pages/user/login/AuthSignin"
 
-//컴포넌트 선언
-import Header from "./components/util/Header"
-
+// import Header from "./components/util/Header"
 
 function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <Header></Header>
-
         <Router>
           <Routes>
             <Route path="/closet" element={<Closet/>}/>
-          </Routes>
-          <Routes>
+            <Route path="/chatlist" element={<ChatList/>}/>
+            <Route path="/chatroom/:otherId/:roomId/:roomCode" element={<ChatRoom/>}/>
+            <Route path="/feed" element={<Feed/>}/>
+            <Route path="/mypage" element={<Mypage/>}/>
+            <Route path="/live" element={<Live/>}/>
             <Route path="/user/log-in" element={<Login/>}/>
-          </Routes>
-          <Routes>
             <Route path="/user/sign-up" element={<Signin/>}/>
-          </Routes>
-          <Routes>
-            <Route path="/auth2/sign-up" element={<AuthSignin/>}/>
+            <Route path="/auth2/sign-up"  element={<AuthSignin/>}/>
+            {/* <Route path="/header"  element={<Header/>}/> */}
           </Routes>
         </Router>
       </div>

@@ -5,6 +5,24 @@
   font-style: normal;
 }
 
+:root {
+  --primary-light: #8abdff;
+  --primary: #6d5dfc;
+  --primary-dark: #5b0eeb;
+  --white: #ffffff;
+  --greyLight-1: #e4ebf5;
+  --greyLight-2: #c8d0e7;
+  --greyLight-3: #bec8e4;
+  --greyDark: #9baacf;
+  --signiture: #4570F5;
+  --border: #f0f0f0;
+  --btnColor: #dfe1e2;
+  --lovelyBtn:#F48FB1;
+  --naturalBtn:#81D4FA;
+  --modernBtn:#212121;
+  --sexyBtn:#E91E63;
+}
+
 
 .App {
   text-align: center;

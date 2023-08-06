@@ -1,15 +1,3 @@
-:root {
-    --primary-light: #8abdff;
-    --primary: #6d5dfc;
-    --primary-dark: #5b0eeb;
-    --white: #ffffff;
-    --greyLight-1: #e4ebf5;
-    --greyLight-2: #c8d0e7;
-    --greyLight-3: #bec8e4;
-    --greyDark: #9baacf;
-    --signiture: #4570F5;
-}
-
 .navbarContainer {
     /* 위치 */
     position: relative;
@@ -26,8 +14,10 @@
     align-items: center;
     position: relative;
 
-    /* 컬러 */
-    background-color: #f0f0f0;
+    background-color: var(--border);
+}    
+.navbar > button{
+    background-color: var(--border);
 }
     
 .activeMenuBlock {
@@ -36,10 +26,10 @@
 
     /* 위치 */
     position: absolute;
-    top: 0;
+    top: -1;
 
     /* 크기 */
-    height: 100%;
+    height: 85px;
     width: 20%;
 
     /* 컬러 */
@@ -82,7 +72,7 @@
     font-size: 15px;
 
     /* 위치 */
-    padding: 5%;;
+    padding: 13%;
 }
     
   

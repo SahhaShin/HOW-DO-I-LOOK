@@ -1,0 +1,73 @@
+.total{
+    /* 크기 */
+    width: 100%;
+    height: 100%;
+}
+
+/* 헤더 */
+.header{
+    /* 크기 */
+    width: 100%;
+    height: 70px;
+
+    /* 위치 */
+    margin-bottom: 5%;
+}
+
+/* 메인 컨텐츠 */
+.main{
+    /* 크기 */
+    width: 100%;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: row;
+}
+
+.menuArea{
+    /* 크기 */
+    width: 300px;
+    flex-shrink: 1;
+
+    display: flex;
+    justify-content: center;
+}
+
+.menuArea > div{
+    position: sticky;
+    top: 0;
+}
+
+/* 중앙 컴포 */
+.mid{
+/* nothing */
+}
+
+
+
+
+
+/* 푸터 */
+.footer{
+    /* 크기 */
+    height: 200px;
+
+    /* 위치 */
+    margin-top: 10%;
+}
+
+
+/* 팔로우 모달 */
+.followModal{
+    position: fixed;
+    z-index: 10;
+    margin-left: 20%;
+}
+
+/* 피드 상세보기 모달 */
+.detailModal{
+    position: fixed;
+    margin-top: 5%;
+    margin-left: 20%;
+    z-index: 10;
+}

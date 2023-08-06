@@ -1,48 +1,46 @@
 //redux
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+
+//redux
+import {changeFollowModalOpen} from "../../../store/MypageSlice";
+import {changeDetailModalOpen} from "../../../store/FeedSlice";
+import { action } from "../../store/UserSlice";
 
 import UtilStyle from "./Util.module.css";
 
-import { getCookie, setCookie } from "../hook/Cookie";
-
-//redux
-import { useSelector, useDispatch } from "react-redux";
-import { action } from "../../store/UserSlice";
 
 const Header = () => {
-  const id = useSelector((state) => state.id);
-  const nickname = useSelector((state) => state.nickname);
+
+  //redux 관리
+  let state = useSelector((state:any)=>state.util);
+  let user = useSelector((state:any)=>state.user);
   let dispatch = useDispatch();
 
-  if(typeof id == undefined){
-    //만약 id가 없다면 회원정보 불러오기 
-  }
+  const navigate = useNavigate();
 
   const logout = () => {
-    console.log("div clicked")
+    console.log(state)
+    console.log(user.id)
         dispatch(
-          action.Logout('1')
+          action.Logout(user.id)
         )
   }
 
   return (
-    <div>
-      {/* 로고 */}
-      <div>
-        <img src={"이미지소스"} alt="로고" />
+    <div className={`${UtilStyle.header_total}`}>
+      <div onClick={()=>{navigate(`/`)}} className={`${UtilStyle.header_logo}`}><img onClick={()=>{navigate(`/`)}} src={process.env.PUBLIC_URL + `/img/logo.png`} alt="HDIL" /></div>
+      { state.loginYN?
+        <div className={`${UtilStyle.etcMenu}`}>
+          <div onClick={()=>{navigate(`/closet`)}}>내 옷장</div>
+          <div onClick={()=>{navigate(`/mypage`)}}>마이페이지</div>
+          <div onClick={()=>{logout()}}>로그아웃</div>
+        </div>:
+        <div className={`${UtilStyle.etcMenu}`}>
+          <div onClick={()=>{logout(`/user/log-in`)}}>로그인</div>
       </div>
-      {/* 로그인 상태라면 */}
-      <div>
-        <a href="#마이페이지">환영합니다. {nickname}님</a>
-        <img src={"프로필사진"} alt="프로필 사진" />
-        <div 
-          onClick={(e) => {logout(e);}}
-        >로그아웃</div>
-      </div>
-      {/* 로그아웃 상태라면 */}
-      <div>
-        <a href={process.env.REACT_APP_FRONT + `/user/log-in`}>로그인</a>
-      </div>
+      }
     </div>
   );
 };

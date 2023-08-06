@@ -1,58 +1,79 @@
-:root {
-    --primary-light: #8abdff;
-    --primary: #6d5dfc;
-    --primary-dark: #5b0eeb;
-    --white: #ffffff;
-    --greyLight-1: #e4ebf5;
-    --greyLight-2: #c8d0e7;
-    --greyLight-3: #bec8e4;
-    --greyDark: #9baacf;
-    --signiture: #4570F5;
+.header_total{
+    /* 크기 */
+    width: 100%;
+    height: 50px;
+    /* 위치 */
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2%;
+    /* border */
+    border-bottom: 1px solid var(--border);
+    
 }
 
+.etcMenu{
+    display: flex;
+    margin-right: 3%;
+    font-weight: 900;
+}
+.etcMenu > div{
+    /* 내 옷장 마이페이지 */
+    width: 70px;
+    margin-right: 0;
+    cursor: pointer;
+}
+
+.etcMenu > div:hover{
+    color:var(--signiture);
+}
+
+.header_logo{
+    cursor: pointer;
+}
+
+.header_logo > img{
+    width: 70%;
+    margin-left: 3%;
+    cursor: pointer;
+}
 .navbarContainer {
     /* 위치 */
-    position: relative;
+    position: sticky;
+    top: 0;
 }
     
 .navbar {
     /* 크기 */
-    width: 100px;
-    height: 300px;
+    width: 200px;
+    height: 350px;
 
     /* 위치 */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    position: relative;
-
-    /* 컬러 */
-    background-color: #f0f0f0;
-
-    margin-left: 20px;
+    margin-top: 180px;
 }
     
 .activeMenuBlock {
     /* 폰트 */
     font-family: 'Pretendard-Regular';
-    align-items: center;
-    text-align: center;
-    vertical-align:middle;
 
     /* 위치 */
     position: absolute;
     top: 0;
 
     /* 크기 */
-    height: 20%;
-    width: 100%;
+    height: 70px;
+    width: 200px;
 
     /* 컬러 */
-    background-color: darkgray;
+    background-color: var(--border);
 
     /* 동적요소 */
-    transition: top 0.3s ease
+    transition: left 0.3s ease;
+
+    border-radius: 10px;
 }
     
 .activeMenuBlock.active {
@@ -66,7 +87,7 @@
 
     /* 위치 */
     position: absolute;
-    top: 50%;
+    bottom: 50%;
     left: 50%;
 
     /* 동적 */
@@ -79,16 +100,13 @@
     font-size: 15px;
 }
     
-/* Hide the text when the block is not active */
 .activeMenuBlock h2 {
-    /* 컬러 */
-    color: #ffffff;
 
     /* 폰트 */
     font-size: 15px;
 
     /* 위치 */
-    padding: 5%;;
+    padding: 15px;
 }
     
   
@@ -104,11 +122,48 @@ button{
 
     /* 폰트 */
     font-size: 15px;
+    color: grey;
 
     /* 크기 */
-    width: 100%;
-    height: 100%;
+    width: 180px;
+    height: 85px;
 
     /* 커서 */
     cursor: pointer;
+
+    background-color: white;
+}
+
+
+/* 푸터 스타일 */
+.footer{
+    display: flex;
+    flex-direction: column;
+    
+
+    height: 170px;
+
+    /* border */
+    border-top: 1px solid var(--border);
+}
+
+.logos{
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+    
+    height: 100%;
+    margin-top: 50px;
+}
+.butterfly{
+    width: 5%;
+    margin-left: 30px;
+}
+.logo{
+    width: 10%;
+}
+.name{
+    margin-left: 95px;
+    /* margin-top: 30px; */
+    text-align: left;
 }
