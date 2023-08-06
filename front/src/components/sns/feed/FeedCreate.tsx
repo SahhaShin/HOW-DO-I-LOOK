@@ -247,9 +247,8 @@ const FeedCreate = () => {
         console.log(statement);
         console.log(newFeed.feedSaveRequestDto);
 
-        formdata.append("s3upload",imageFileList);
         formdata.append("feedSaveRequestDto", new Blob([JSON.stringify(newFeed.feedSaveRequestDto)],{ type: "application/json" }));
-
+        formdata.append("s3upload",imageFileList);
 
         dispatch(action.addFeed(formdata));
     }
