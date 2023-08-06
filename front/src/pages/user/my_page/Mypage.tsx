@@ -15,6 +15,10 @@ import MypageFollowModal from '../../../components/user/my_page/MypageFollowModa
 import MypageFeed from '../../../components/user/my_page/MypageFeed';
 import MypageManagement from '../../../components/user/my_page/MypageManagement';
 import FeedDetail from '../../../components/sns/feed/FeedDetail';
+import Header from "../../../components/util/Header";
+import Menu from "../../../components/util/Menu";
+import Footer from "../../../components/util/Footer";
+
 
 const Mypage = () => {
 
@@ -39,12 +43,12 @@ const Mypage = () => {
             <div className={`${mypageStyle.total}`}>
                 
                 {/* 헤더 */}
-                <div className={`${mypageStyle.header}`}>헤더</div>
+                <div className={`${mypageStyle.header}`}><Header/></div>
 
                 {/* 메인 */}
                 <div className={`${mypageStyle.main}`}>
                     {/* 좌측 메뉴 */}
-                    <div className={`${mypageStyle.menuArea}`}></div>
+                    <div className={`${mypageStyle.menuArea}`}><div><Menu/></div></div>
 
                     {/* 우측 마이페이지 컴포넌트 */}
                     <div className={`${mypageStyle.mid}`}>
@@ -62,7 +66,7 @@ const Mypage = () => {
                 </div>
 
                 {/* 푸터 */}
-                <div className={`${mypageStyle.footer}`}>푸터</div>
+                <div className={`${mypageStyle.footer}`}><Footer/></div>
 
                 {/* 모달 까만창 */}
                 <div onClick={async()=>{dispatch(changeFollowModalOpen(false))}} style={state.followModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"3000px", backgroundColor:"black", opacity:"0.6", marginTop:"-3000px"}:null}></div>

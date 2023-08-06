@@ -135,6 +135,8 @@
 
     /* 위치 */
     margin-right: 2%;
+
+    background-color: var(--border);
 }
 
 .buttons > button:hover{

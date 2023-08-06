@@ -24,7 +24,7 @@ function App() {
           <Routes>
             <Route path="/closet" element={<Closet/>}/>
             <Route path="/chatlist" element={<ChatList/>}/>
-            <Route path="/chatroom/:otherId/:roomId" element={<ChatRoom/>}/>
+            <Route path="/chatroom/:otherId/:roomId/:roomCode" element={<ChatRoom/>}/>
             <Route path="/feed" element={<Feed/>}/>
             <Route path="/mypage" element={<Mypage/>}/>
             <Route path="/live" element={<Live/>}/>
