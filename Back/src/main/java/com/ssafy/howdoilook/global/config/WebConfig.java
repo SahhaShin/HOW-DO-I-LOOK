@@ -14,6 +14,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Authorization-Refresh")
                 .maxAge(3000);
-
     }
 }
