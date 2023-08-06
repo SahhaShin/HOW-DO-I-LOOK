@@ -26,13 +26,14 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FollowService {
-    private final FollowReposiroty followRepository;
+    private final FollowReposiroty followReposiroty;
     private final UserRepository userRepository;
 
     //데이터가 중복으로 삽입되는거 ifelse로 처리했는데 예외로 처리하면 더 좋을거 같다.
     @Transactional
     public Long saveFollow(FollowSaveRequestDto followSaveRequestDto, UserDetails userDetails){
         String clientEmail = userDetails.getUsername();
+
 
         User follower = userRepository.findById(followSaveRequestDto.getFollowerId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
@@ -45,14 +46,14 @@ public class FollowService {
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 followee입니다.",1));
 
         //null값이 아니면 이미 데이터가 있는 것이다.
-        Follow findFollow = followRepository.findFollowIdByFollowerAndFollowee(follower.getId(), followee.getId());
+        Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(follower.getId(), followee.getId());
         //데이터가 없을때(정상일때)
         if (findFollow == null) {
             Follow follow = Follow.builder()
                     .follower(follower)
                     .followee(followee)
                     .build();
-            followRepository.save(follow);
+            followReposiroty.save(follow);
             return follow.getId();
         } else {
             throw new IllegalArgumentException("이미 존재하는 Follow입니다.");
@@ -73,21 +74,27 @@ public class FollowService {
             throw new AccessException("접근 권한이 없습니다.");
         }
 
-        Follow findFollow = followRepository.findFollowIdByFollowerAndFollowee(
+        Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(
                 followDeleteRequestDto.getFollowerId(), followDeleteRequestDto.getFolloweeId());
         //팔로우 관계가 있을 때
         if (findFollow != null) {
-            followRepository.deleteById(findFollow.getId());
+            followReposiroty.deleteById(findFollow.getId());
         }else{
             throw new IllegalArgumentException("존재하지 않는 Follow입니다.");
         }
     }
     //내가 팔로우 하는 사람 리스트 반환
-    public Page<FolloweeResponseDto> selectFolloweeList(Long userId, Pageable page){
+    public Page<FolloweeResponseDto> selectFolloweeList(Long userId, UserDetails userDetails,Pageable page){
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
 
-        Page<Follow> followeeByUserId = followRepository.findFolloweeByUserId(userId, page);
+        String clientEmail = userDetails.getUsername();
+
+        if (!clientEmail.equals(findUser.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+        Page<Follow> followeeByUserId = followReposiroty.findFolloweeByUserId(userId, page);
         List<Follow> content = followeeByUserId.getContent();
 
         List<FolloweeResponseDto> list = new ArrayList<>();
@@ -98,21 +105,27 @@ public class FollowService {
             User followee = follow.getFollowee();
             list.add(FolloweeResponseDto.builder()
                     .id(followee.getId())
-                    .nickname(followee.getNickname())
-                    .profileImg(followee.getProfileImg())
+                    .email(followee.getEmail())
+                    .name(followee.getName())
+                    .nickname((followee.getNickname()))
                     .build()
             );
         }
         return new PageImpl<>(list, followeeByUserId.getPageable(), followeeByUserId.getTotalElements());
     }
-    
     //나를 팔로워 하는사람
-    public Page<FollowerResponseDto> selectFollowerList(Long userId,Pageable page){
+    public Page<FollowerResponseDto> selectFollowerList(Long userId,UserDetails userDetails,Pageable page){
 
         User findUser = userRepository.findById(userId).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 User 입니다.",1));
 
-        Page<Follow> followerByUserId = followRepository.findFollowerByUserId(userId, page);
+        String clientEmail = userDetails.getUsername();
+
+        if (!clientEmail.equals(findUser.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+        Page<Follow> followerByUserId = followReposiroty.findFollowerByUserId(userId, page);
         List<Follow> content = followerByUserId.getContent();
 
         //반환할 dto리스트 선언
@@ -123,53 +136,12 @@ public class FollowService {
             User follower = follow.getFollower();
             FollowerResponseDto followerResponseDto = FollowerResponseDto.builder()
                     .id(follower.getId())
+                    .email(follower.getEmail())
+                    .name(follower.getName())
                     .nickname(follower.getNickname())
-                    .profileImg(follower.getProfileImg())
                     .build();
             list.add(followerResponseDto);
         }
         return new PageImpl<>(list, followerByUserId.getPageable(), followerByUserId.getTotalElements());
-    }
-    
-    /*
-    * 나를 팔로우하는 사람 전체 리스트 반환(Non-Paging) 
-    * */
-    public List<FolloweeResponseDto> getAllFolloweeList(Long userId) {
-        List<Follow> allFolloweeList = followRepository.findAllFolloweeByUserId(userId);
-
-        List<FolloweeResponseDto> followeeResponseDtoList = new ArrayList<>();
-
-        for (Follow follow : allFolloweeList) {
-            FolloweeResponseDto followeeResponseDto = FolloweeResponseDto.builder()
-                    .id(follow.getFollowee().getId())
-                    .nickname(follow.getFollowee().getNickname())
-                    .profileImg(follow.getFollowee().getProfileImg())
-                    .build();
-
-            followeeResponseDtoList.add(followeeResponseDto);
-        }
-
-        return followeeResponseDtoList;
-    }
-    
-    /*
-    * 내가 팔로우하는 사람 전체 리스트 반환(Non-Paging)
-    * */
-    public List<FollowerResponseDto> getAllFollowerList(Long userId) {
-        List<Follow> allFollowerList = followRepository.findAllFollowerByUserId(userId);
-
-        List<FollowerResponseDto> followerResponseDtoList = new ArrayList<>();
-
-        for (Follow follow : allFollowerList) {
-            FollowerResponseDto followerResponseDto = FollowerResponseDto.builder()
-                    .id(follow.getFollower().getId())
-                    .nickname(follow.getFollower().getNickname())
-                    .profileImg(follow.getFollower().getProfileImg())
-                    .build();
-
-            followerResponseDtoList.add(followerResponseDto);
-        }
-
-        return followerResponseDtoList;
     }
 }

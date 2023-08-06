@@ -25,39 +25,28 @@ public class GlobalExceptionHandler {
 //                .body(exception.getStackTrace());
 //    }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<String> handleOtherException(Exception exception){
-//        return ResponseEntity
-//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body(exception.getMessage());
-//    }
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public ResponseEntity<String> handleEmptyResultData(EmptyResultDataAccessException exception){
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(exception.getMessage());
+    }
 
-//    @ExceptionHandler(EmptyResultDataAccessException.class)
-//    public ResponseEntity<String> handleEmptyResultData(EmptyResultDataAccessException exception){
-//        return ResponseEntity
-//                .status(HttpStatus.NOT_FOUND)
-//                .body(exception.getMessage());
-//    }
-//
-//    @ExceptionHandler(IllegalArgumentException.class)
-//    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception){
-//        return ResponseEntity
-//                .status(HttpStatus.BAD_REQUEST)
-//                .body(exception.getMessage());
-//    }
 
-//    // S3 이미지 업로드 실패 예외 핸들러
-//    @ExceptionHandler(RuntimeException.class)
-//    public ResponseEntity<String> handleS3UploadFailure(RuntimeException exception) {
-//        return ResponseEntity
-//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body(exception.getMessage());
-//    }
 
-//    @ExceptionHandler(AccessException.class)
-//    public ResponseEntity<String> handleAccessException(AccessException exception){
-//        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-//                .body(exception.getMessage());
-//    }
 
+
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler(AccessException.class)
+    public ResponseEntity<String> handleAccessException(AccessException exception){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(exception.getMessage());
+    }
 }

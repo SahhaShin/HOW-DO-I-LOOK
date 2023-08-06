@@ -34,12 +34,4 @@ public class RedisRankingController {
         return ResponseEntity.ok()
                 .body(redisRankingService.getRank(likeType, userId));
     }
-
-    @ApiOperation(value = "특정 유저의 좋아요 종류 별 점수 조회")
-    @GetMapping("/score/{userId}")
-    public ResponseEntity<?> getScore(@PathVariable Long userId) {
-
-        return ResponseEntity.ok()
-                .body(redisRankingService.getScore(userId));
-    }
 }

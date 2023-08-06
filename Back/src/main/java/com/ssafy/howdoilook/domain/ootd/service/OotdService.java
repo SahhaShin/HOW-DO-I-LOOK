@@ -14,15 +14,11 @@ import com.ssafy.howdoilook.domain.ootd.repository.OotdRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.expression.AccessException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -36,23 +32,18 @@ public class OotdService {
     private final ClothesOotdRepository clothesOotdRepository;
 
     @Transactional
-    public Long saveOotd(OotdSaveRequestDto ootdSaveRequestDto, UserDetails userDetails) throws AccessException {
-        String clientEmail = userDetails.getUsername();
+    public Long saveOotd(OotdSaveRequestDto ootdSaveRequestDto) {
         User user = userRepository.findById(ootdSaveRequestDto.getUserId())
-                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
-        if (!clientEmail.equals(user.getEmail())){
-            throw new AccessException("접근 권한이 없습니다.");
-        }
+        List<Ootd> findOotd = ootdRepository.findByUser_IdAndOrder(ootdSaveRequestDto.getUserId(), ootdSaveRequestDto.getOrder());
 
-        Optional<Ootd> findOotd = ootdRepository.findByUser_IdAndOrder(ootdSaveRequestDto.getUserId(), ootdSaveRequestDto.getOrder());
-
-        if(findOotd.isPresent()){ // ootd가 등록된 적이 있는 경우
+        if(!findOotd.isEmpty()){ // ootd가 등록된 적이 있는 경우
             for (SlotTypeInterface slotType : SlotType.values()) {
-                updateClothesOotd(findOotd.get(), slotType,ootdSaveRequestDto);
+                updateClothesOotd(findOotd, slotType,ootdSaveRequestDto);
             }
 
-            return findOotd.get().getId();
+            return findOotd.get(0).getId();
         }
 
 
@@ -63,30 +54,33 @@ public class OotdService {
             saveClothesOotd(ootd, ootdSaveRequestDto.getSlotId(slotType.getSlotType()), slotType.getSlotType());
         }
 
+        /**
+         * 모든 슬롯이 다 채워져 있지 않을 수 있으니까 그 때 예외 처리 필요
+         */
+
         return ootd.getId();
 
     }
 
-    private void updateClothesOotd(Ootd findOotd, SlotTypeInterface slotType, OotdSaveRequestDto ootdSaveRequestDto) {
-        Optional<ClothesOotd> findClothesOotd = clothesOotdRepository.findByOotd_IdAndType(findOotd.getId(), slotType.getSlotType());
+    private void updateClothesOotd(List<Ootd> findOotd, SlotTypeInterface slotType, OotdSaveRequestDto ootdSaveRequestDto) {
+        List<ClothesOotd> findClothesOotdList = clothesOotdRepository.findByOotd_IdAndType(findOotd.get(0).getId(), slotType.getSlotType());
 
-        Long slotId = ootdSaveRequestDto.getSlotId(slotType.getSlotType());
-
-        if(slotId == null) {
-            throw new IllegalStateException("슬롯에 빈칸이 들어올 수는 없습니다.");
-        }
-
-        if (findClothesOotd.isEmpty()) {
-            saveClothesOotd(findOotd, slotId, slotType.getSlotType());
+        if (findClothesOotdList.isEmpty()) {
+            saveClothesOotd(findOotd.get(0), ootdSaveRequestDto.getSlotId(slotType.getSlotType()), slotType.getSlotType());
         } else {
-            findClothesOotd.get().update(clothesRepository.findById(slotId)
-                    .orElseThrow(() -> new EmptyResultDataAccessException("해당 옷이 존재하지 않습니다.", 1)));
+            findClothesOotdList.get(0).update(clothesRepository.findById(ootdSaveRequestDto.getSlotId(slotType.getSlotType()))
+                    .orElseThrow(() -> new IllegalArgumentException("해당 옷이 존재하지 않습니다.")));
         }
     }
 
     private void saveClothesOotd(Ootd ootd, Long clothesId, SlotType type) {
+        if (clothesId == null) {
+            return; // ID 값이 null이면 메서드 종료
+        }
 
         Clothes clothes = clothesRepository.findById(clothesId).orElse(null);
+
+        System.out.println(clothes);
 
         if(clothes != null) {
             ClothesOotd clothesOotd = ClothesOotd.builder()
@@ -95,26 +89,21 @@ public class OotdService {
                     .type(type)
                     .build();
             clothesOotdRepository.save(clothesOotd);
-        } else {
-            throw new RuntimeException("해당 옷이 존재하지 않습니다.");
         }
     }
 
     public List<GetOotdListDto> findOotdList(Long userId) {
 
         List<GetOotdListDto> ootds = new ArrayList<>();
+        List<Ootd> findOotds = ootdRepository.findByUser_Id(userId);
 
-        for(int i = 1; i <= 2; i++) {
-            Ootd ootd = ootdRepository.findByUser_IdAndOrder(userId, i).orElse(null);
-
-            Integer order = i;
-
-            if (ootd == null) {
-                // ootd를 한번도 설정된 적 없으면 아무것도 반환하지 않는다.
+        for(int i = 0; i < findOotds.size(); i++) {
+            List<Ootd> ootd = ootdRepository.findByUser_IdAndOrder(userId, i+1);
+            if (ootd.isEmpty()) {
                 continue;
             }
-
-            Long ootdId = ootd.getId();
+            Long ootdId = ootd.get(0).getId();
+            Integer order = i+1;
 
             List<ClothesTypeListDto> topsList = findClothesByType(userId, ootdId, SlotType.TOP, "TOP");
             List<ClothesTypeListDto> bottomsList = findClothesByType(userId, ootdId, SlotType.BOTTOM, "BOTTOM");
@@ -142,12 +131,11 @@ public class OotdService {
 
     private List<ClothesTypeListDto> findClothesByType(Long userId, Long ootdId, SlotType slotType, String clothesType) {
         List<ClothesTypeListDto> clothesList = new ArrayList<>();
-        ClothesTypeListDto findClothesOotd = ootdRepository.findOotdClothes(ootdId, slotType);
-        clothesList.add(findClothesOotd);
+        clothesList.addAll(ootdRepository.findOotdClothes(ootdId, slotType));
         /**
          * 1번 ootd랑 2번 ootd에 같은 옷이 들어가게 될 때 중복 출력 문제
          */
-        clothesList.addAll(ootdRepository.findClothesList(findClothesOotd.getClothesId(), userId, clothesType, ootdId));
+        clothesList.addAll(ootdRepository.findClothesList(userId, clothesType, ootdId));
         return clothesList;
     }
 }

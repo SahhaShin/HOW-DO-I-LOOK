@@ -2,7 +2,6 @@ package com.ssafy.howdoilook.global.redis.service;
 
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
-import com.ssafy.howdoilook.global.redis.dto.response.LikeTypeResponseDto;
 import com.ssafy.howdoilook.global.redis.dto.response.RankingResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -120,55 +119,14 @@ public class RedisRankingService {
         return rankingResponseDto;
     }
 
-    public LikeTypeResponseDto getScore(Long userId) {
-        ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
+    public boolean checkBadge(String likeType, Long userId) {
+        List<RankingResponseDto> badgeOwnerList = this.getBadgeOwnerList(likeType);
 
-        Set<ZSetOperations.TypedTuple<String>> lovelyScoresAndUsers = zSetOperations.reverseRangeWithScores("LOVELY", 0, -1);
-        Set<ZSetOperations.TypedTuple<String>> sexyScoresAndUsers = zSetOperations.reverseRangeWithScores("SEXY", 0, -1);
-        Set<ZSetOperations.TypedTuple<String>> naturalScoresAndUsers = zSetOperations.reverseRangeWithScores("NATURAL", 0, -1);
-        Set<ZSetOperations.TypedTuple<String>> modernScoresAndUsers = zSetOperations.reverseRangeWithScores("MODERN", 0, -1);
-
-        double lovelyScore = 0;
-        double sexyScore = 0;
-        double modernScore = 0;
-        double naturalScore = 0;
-
-        for (ZSetOperations.TypedTuple<String> lovelyScoresAndUser : lovelyScoresAndUsers) {
-            if(lovelyScoresAndUser.getValue().equals(String.valueOf(userId))) {
-                lovelyScore = lovelyScoresAndUser.getScore();
-                break;
-            }
+        for (RankingResponseDto rankingResponseDto : badgeOwnerList) {
+            if(rankingResponseDto.getUserId() == userId)
+                return true;
         }
 
-        for (ZSetOperations.TypedTuple<String> sexyScoresAndUser : sexyScoresAndUsers) {
-            if(sexyScoresAndUser.getValue().equals(String.valueOf(userId))) {
-                sexyScore = sexyScoresAndUser.getScore();
-                break;
-            }
-        }
-
-        for (ZSetOperations.TypedTuple<String> modernScoresAndUser : modernScoresAndUsers) {
-            if(modernScoresAndUser.getValue().equals(String.valueOf(userId))) {
-                modernScore = modernScoresAndUser.getScore();
-                break;
-            }
-        }
-
-        for (ZSetOperations.TypedTuple<String> naturalScoresAndUser : naturalScoresAndUsers) {
-            if(naturalScoresAndUser.getValue().equals(String.valueOf(userId))) {
-                naturalScore = naturalScoresAndUser.getScore();
-                break;
-            }
-        }
-
-        LikeTypeResponseDto likeTypeResponseDto = LikeTypeResponseDto.builder()
-                .userId(userId)
-                .lovelyScore((long) lovelyScore)
-                .sexyScore((long) sexyScore)
-                .modernScore((long) modernScore)
-                .naturalScore((long) naturalScore)
-                .build();
-
-        return likeTypeResponseDto;
+        return false;
     }
 }

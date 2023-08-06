@@ -50,8 +50,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 String refreshToken = jwtService.createRefreshToken();
 
                 // Header에 AccessToken 표시
-                httpServletResponse.addHeader(jwtService.getAccessHeader(), accessToken);
-                httpServletResponse.addHeader(jwtService.getRefreshHeader(), refreshToken);
+                httpServletResponse.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+                httpServletResponse.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
                 Cookie emailCookie = new Cookie("new_social_user_email", oAuth2User.getEmail());
                 emailCookie.setMaxAge(600);
@@ -106,8 +106,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
         String refreshToken = jwtService.createRefreshToken();
 
-        httpServletResponse.addHeader(jwtService.getAccessHeader(), accessToken);
-        httpServletResponse.addHeader(jwtService.getRefreshHeader(), refreshToken);
+        httpServletResponse.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+        httpServletResponse.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
         jwtService.sendAccessAndRefreshToken(httpServletResponse, accessToken, refreshToken);
         jwtService.updateRefreshToken(oAuth2User.getEmail(), refreshToken);
@@ -139,8 +139,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     public Map<String, String> socialLoginSuccessAndSendTokenToFront() {
         Map<String, String> map = new HashMap<>();
 
-        map.put("Authorization", access);
-        map.put("Authorization-Refresh", refresh);
+        map.put("Authorization", "Bearer " + access);
+        map.put("Authorization-Refresh", "Bearer " + refresh);
 
         return map;
     }

@@ -3,8 +3,6 @@ package com.ssafy.howdoilook.domain.userLike.api;
 import com.ssafy.howdoilook.domain.userLike.dto.request.ScoreSaveRequestDto;
 import com.ssafy.howdoilook.domain.userLike.service.UserLikeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.expression.AccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +17,8 @@ public class UserLikeController {
     private final UserLikeService userLikeService;
 
     @PostMapping("/")
-    public ResponseEntity<Long> saveScore(@RequestBody ScoreSaveRequestDto scoreSaveRequestDto) throws AccessException {
+    public ResponseEntity<?> saveScore(@RequestBody ScoreSaveRequestDto scoreSaveRequestDto) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(userLikeService.saveScore(scoreSaveRequestDto));
+        return ResponseEntity.ok().body(userLikeService.saveScore(scoreSaveRequestDto));
     }
 }

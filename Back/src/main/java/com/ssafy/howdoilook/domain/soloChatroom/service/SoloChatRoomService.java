@@ -5,7 +5,7 @@ import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatRoomDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatContextRequestDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecodRequestDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatContextListResponseDto;
-import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChat;
+import com.ssafy.howdoilook.domain.soloChatroom.entity.Chat;
 import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChatRoom;
 import com.ssafy.howdoilook.domain.soloChatroom.repository.SoloRoomRepository.SoloChatRoomRepository;
 import com.ssafy.howdoilook.domain.soloChatroom.repository.soloChatRepository.ChatRepository;
@@ -43,7 +43,7 @@ public class SoloChatRoomService {
         long roomId = room.getId();
         roomId = (roomId % 2 == 0) ? roomId-1 : roomId;
 
-        SoloChat chat = SoloChat.builder()
+        Chat chat = Chat.builder()
                 .roomId(roomId)
                 .userId(user.getId())
                 .content(content)
@@ -116,16 +116,16 @@ public class SoloChatRoomService {
             //채팅방이 짝수면 -1을 해준다. ( 채팅방은 2개씩 생성되고, 채팅은 홀수 채팅방을 기준으로 사용한다. )
             Long roomId = chatRoom.getId();
             roomId = (roomId % 2 == 0) ? roomId - 1 : roomId;
-            List<SoloChat> chatContext = chatRepository.findAllByRoomIdOrderByTimeAsc(roomId.toString());
+            List<Chat> chatContext = chatRepository.findAllByRoomIdOrderByTimeAsc(roomId.toString());
             List<ChatDto> answer = new ArrayList<>();
 
             //Entity To Dto
-            for(SoloChat chat : chatContext){
+            for(Chat chat : chatContext){
                 User user = userRepository.findById(chat.getUserId())
                         .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
                 ChatDto dto = ChatDto.builder()
-                        .chatRoomId(chat.getRoomId())
+                        .chatRoomId(Long.parseLong(chat.getRoomId()))
                         .userNickName(user.getNickname())
                         .userProfile(user.getProfileImg())
                         .time(chat.getTime())
