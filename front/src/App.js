@@ -16,6 +16,12 @@ import Feed from "./pages/sns/feed/Feed";
 import Mypage from "./pages/user/my_page/Mypage";
 import Live from "./pages/streaming/live/Live"
 
+import Login from "./pages/user/login/Login";
+import Signin from "./pages/user/login/Signin";
+import AuthSignin from "./pages/user/login/AuthSignin"
+import Header from "./components/util/Header"
+import Home from "./pages/home/Home"
+
 function App() {
   return (
     <Provider store={store}>
@@ -28,6 +34,13 @@ function App() {
             <Route path="/feed" element={<Feed/>}/>
             <Route path="/mypage" element={<Mypage/>}/>
             <Route path="/live" element={<Live/>}/>
+
+            {/* <Route path="/" element={<LogHin/>}/> */}
+            <Route path="/" element={<Home/>}/>
+            <Route path="/user/log-in" element={<Login/>}/>
+            <Route path="/user/sign-up" element={<Signin/>}/>
+            <Route path="/auth2/sign-up"  element={<AuthSignin/>}/>
+            {/* <Route path="/"  element={<Header/>}/> */}
           </Routes>
         </Router>
       </div>
