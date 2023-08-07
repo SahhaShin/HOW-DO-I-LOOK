@@ -13,6 +13,7 @@ import java.util.Map;
 @RestController
 @Getter
 @RequestMapping("/api/sessions")
+@CrossOrigin(origins = "*")
 public class OpenViduController {
 
     @Value("${OPENVIDU_URL}")
@@ -35,6 +36,7 @@ public class OpenViduController {
     @PostMapping("")
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
+        System.out.println("params = " + params);
         SessionProperties properties = SessionProperties.fromJson(params).build();
         Session session = openvidu.createSession(properties);
         return new ResponseEntity<>(session.getSessionId(), HttpStatus.OK);
@@ -50,6 +52,7 @@ public class OpenViduController {
                                                    @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
         Session session = openvidu.getActiveSession(sessionId);
+        System.out.println("sessionId = " + sessionId);
         if (session == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
