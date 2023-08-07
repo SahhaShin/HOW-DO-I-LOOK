@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.room.entity.chat;
+package com.ssafy.howdoilook.domain.room.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,20 +15,22 @@ import java.sql.Timestamp;
 @Document
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @CompoundIndex(def = "{'roomId' : 1, 'time' : 1}")
-public class RoomChat {
+public class RoomChatImage {
     @Id
     private String id;
     @Indexed
     private long roomId;
-    private long userId;
-    private String content;
+    private String nickName;
+    private String imageURL;
+    private ImageType type;
     private String time;
 
     @Builder
-    public RoomChat(long roomId, long userId, String content) {
+    public RoomChatImage(long roomId, String nickName, String imageURL, ImageType type, String time) {
         this.roomId = roomId;
-        this.userId = userId;
-        this.content = content;
-        time = new Timestamp(System.currentTimeMillis()).toString();
+        this.nickName = nickName;
+        this.imageURL = imageURL;
+        this.type = type;
+        this.time = time;
     }
 }

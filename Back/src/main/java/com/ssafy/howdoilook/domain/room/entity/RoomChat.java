@@ -20,15 +20,16 @@ public class RoomChat {
     private String id;
     @Indexed
     private long roomId;
-    private long userId;
-    private String content;
+    private String nickName;
     private String time;
+    private String content;
+
 
     @Builder
-    public RoomChat(long roomId, long userId, String content) {
+    public RoomChat(long roomId, String nickName, String content, String time) {
         this.roomId = roomId;
-        this.userId = userId;
+        this.nickName = nickName;
         this.content = content;
-        time = new Timestamp(System.currentTimeMillis()).toString();
+        this.time = time;
     }
 }
