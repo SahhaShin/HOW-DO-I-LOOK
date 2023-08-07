@@ -84,7 +84,9 @@
 .followBtn > button{
     border-radius: 5px;
     width: 60px;
+    height: 30px;
     margin-right: 3px;
+    border: 1px solid var(--border);
 }
 .followBtn > button:hover{
     background-color: var(--signiture);

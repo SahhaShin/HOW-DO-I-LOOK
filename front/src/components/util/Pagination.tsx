@@ -1,6 +1,16 @@
 import styled from "styled-components";
 
+//redux
+import { useSelector, useDispatch } from "react-redux"; 
+import {changePage} from "../../store/ClosetSlice";
+
+
 function Pagination({ total, limit, page, setPage }) {
+
+  //redux 관리
+  let state = useSelector((state:any)=>state.closet);
+  let dispatch = useDispatch();
+
   const numPages = Math.ceil(total / limit);
 
   return (
@@ -14,7 +24,7 @@ function Pagination({ total, limit, page, setPage }) {
           .map((_, i) => (
             <Button
               key={i + 1}
-              onClick={() => setPage(i + 1)}
+              onClick={() => {dispatch(changePage(i+1));setPage(i + 1)}}
               aria-current={page === i + 1 ? "page" : null}
             >
               {i + 1}
@@ -37,7 +47,8 @@ const Nav = styled.nav`
 `;
 
 const Button = styled.button`
-  width : 60px;
+  width : 40px;
+  height : 40px;
   border: none;
   border-radius: 8px;
   padding: 8px;

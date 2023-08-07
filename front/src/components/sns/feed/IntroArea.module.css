@@ -8,7 +8,7 @@
 .firstArea{
     /* 인트로 메세지랑 해시태그들 */
     /* 하이라이트 크기 영향 */
-    width: 35%;
+    width: 100%;
     margin-bottom: 30px;
 }
 
@@ -30,9 +30,10 @@
     /* 위치 */
     display: absolute;
     margin-top: -7px;
+    margin-left: 35%;
 
     /* 크기 */
-    width: 100%;
+    width: 30%;
     height: 10px;
 
     /* 컬러 */
@@ -56,6 +57,9 @@
     display: inline;
     border-radius: 1rem;
     margin-right: 10px;
+    border: 1px solid var(--border);
+    height: 100%;
+    background-color: var(--border);
 }
 
 .tag button:hover{
