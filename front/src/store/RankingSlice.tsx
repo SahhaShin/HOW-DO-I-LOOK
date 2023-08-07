@@ -20,7 +20,7 @@ export const action = {
 
 // rankMode : lovely, nature, modern, sexy
 const initialState = {
-    rankMode:"sexy",
+    rankMode:"lovely",
 }
 
 const RankingSlice = createSlice({
