@@ -18,7 +18,8 @@ interface Users{
     role : string | null,
     socialType : string | null,
     socialId : string | null,
-    showBadgeType : string | null
+    showBadgeType : string | null,
+    closetAccess : string | null,
 }
 
 interface Followers{
@@ -209,9 +210,27 @@ export const action = {
         try {
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/${id}`);
 
-            console.log(response.data)
-
             return response.data;
+        } catch(e) {
+            throw e;
+        }
+    }),
+
+    updateUserInfo : createAsyncThunk(`MypageSlice/updateUserInfo`, async({targetUserId, userUpdateData}) => {
+        try {
+            console.log(targetUserId);
+            console.log(userUpdateData);
+
+            let temp = userUpdateData.age;
+            userUpdateData.age = Number(temp);
+
+            console.log(userUpdateData);
+            const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/user/update/info/${targetUserId}`, userUpdateData);
+            // const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/user/update/info/${targetUserId}`, {
+            //     data : userUpdateData
+            // });
+
+            return userUpdateData;
         } catch(e) {
             throw e;
         }
@@ -404,13 +423,23 @@ const MypageSlice = createSlice({
         })
 
         builder.addCase(action.getUserById.fulfilled, (state, action) => {
-            console.log("Zzzzzzzzzzzzzzzzzzz")
             state.followTempUser = action.payload;
+            state.targetUser = action.payload;
+        })
+
+        builder.addCase(action.updateUserInfo.fulfilled, (state, action) => {
+            console.log(action.payload.age)
+
+            state.targetUser.age = action.payload.age;
+            state.targetUser.gender = action.payload.gender;
+            state.targetUser.name = action.payload.name;
+            state.targetUser.nickname = action.payload.nickname;
+            state.targetUser.closetAccess = action.payload.closetAccess;
+
+            console.log(state.targetUser.age)
         })
 
         builder.addCase(action.following.fulfilled, (state, action) => {
-            console.log(action.payload);
-
             state.followingUsers.push({
                 "id" : action.payload,
                 "nickname" : state.followTempUser.nickname,

@@ -29,13 +29,14 @@ const Mypage = () => {
     let state_feed = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
 
+    // 일단 로그인한 유저의 아이디
+    const loginUserId = 1;
+    // 내가 보고있는 유저의 아이디
     const { targetUserId } = useParams();
 
     useEffect(() => {
-        // 임시로 로그인유저, 타겟 유저 설정 :
-        dispatch(action.getLoginUser(1));
-        dispatch(action.getTargetUser(targetUserId));
-      }, []);
+        dispatch(action.getUserById(targetUserId));
+    }, [])
 
     return(
         <>
