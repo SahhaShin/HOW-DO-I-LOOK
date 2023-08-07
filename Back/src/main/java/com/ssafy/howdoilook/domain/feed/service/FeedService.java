@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.feed.service;
 
+import com.ssafy.howdoilook.domain.comment.repository.CommentRepository;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedSaveRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedUpdateRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.PhotoSaveRequestDto;
@@ -49,6 +50,7 @@ public class FeedService {
     private final FollowService followService;
     private final ImageService imageService;
     private final AuthorizationService authorizationService;
+    private final CommentRepository commentRepository;
     private final FeedRepository feedRepository;
     private final FeedPhotoRepository feedPhotoRepository;
     private final UserRepository userRepository;
@@ -182,8 +184,10 @@ public class FeedService {
         for (Feed feed : feedList) {
             FeedResponseDto feedResponseDto = new FeedResponseDto();
             feedResponseDto.setUserId(feed.getUser().getId());
+            feedResponseDto.setUserNickname(feed.getUser().getNickname());
             feedResponseDto.setFeedId(feed.getId());
             feedResponseDto.setFeedContent(feed.getContent());
+            feedResponseDto.setCommentCount(commentRepository.selectCommentCountByFeedId(feed.getId()));
             feedResponseDto.setFeedCreatedDate(feed.getCreatedDate());
             feedResponseDto.setFeedUpdateDate(feed.getModifiedDate());
             feedResponseDto.setFeedLikeCountResponseDto(feedLikeService.countFeedLike(feed.getId()));

@@ -1,9 +1,6 @@
 package com.ssafy.howdoilook.domain.user.api;
 
-import com.ssafy.howdoilook.domain.user.dto.request.UserSearchCondition;
-import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
-import com.ssafy.howdoilook.domain.user.dto.request.UserBySocialUpdateRequestDto;
-import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateRequestDto;
+import com.ssafy.howdoilook.domain.user.dto.request.*;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.service.UserService;
 import com.ssafy.howdoilook.global.s3upload.ImageService;
@@ -33,11 +30,10 @@ public class UserController {
 
     @ApiOperation(value = "일반 회원 가입")
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestPart UserSignUpRequestDto userSignUpRequestDto,
-                                    @RequestPart("s3upload") MultipartFile multipartFile) throws Exception {
+    public ResponseEntity<?> signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) throws Exception {
 
         return ResponseEntity.ok()
-                .body(userService.signUp(userSignUpRequestDto, multipartFile));
+                .body(userService.signUp(userSignUpRequestDto));
     }
 
     @ApiOperation(value = "회원 탈퇴", notes = "바로 DB에서 삭제됨.")
@@ -104,6 +100,14 @@ public class UserController {
                 .body(userService.checkUserNickname(nickname));
     }
 
+    @ApiOperation(value = "이메일로 유저 객체 얻기")
+    @GetMapping("/getuserbyemail/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
+
+        return ResponseEntity.ok()
+                .body(userService.getUserByEmail(email));
+    }
+
     @ApiOperation(value = "유저 검색", notes = "NonPaging")
     @GetMapping("/search")
     public ResponseEntity<?> searchUsers(UserSearchCondition condition) {
@@ -139,14 +143,27 @@ public class UserController {
     /*
      * 유저 정보 업데이트
      * */
-    @ApiOperation(value = "유저 정보 수정")
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestPart UserUpdateRequestDto userUpdateRequestDto,
+
+    @ApiOperation(value = "유저 정보 수정 : only dto 버전")
+    @PutMapping("/update/info/{id}")
+    public ResponseEntity<?> updateUserInfo(@PathVariable Long id, @RequestBody UserUpdateRequestDto userUpdateRequestDto) throws AccessException, IOException {
+
+        System.out.println("id = " + id);
+        System.out.println("userUpdateRequestDto = " + userUpdateRequestDto.getAge());
+        System.out.println("userUpdateRequestDto = " + userUpdateRequestDto.getNickname());
+        
+        return ResponseEntity.ok()
+                .body(userService.updateUserInfo(id, userUpdateRequestDto));
+    }
+
+    @ApiOperation(value = "유저 정보 수정 : dto + 프로필 사진 버전")
+    @PutMapping("/update/infoandimage/{id}")
+    public ResponseEntity<?> updateUserInfoAndImage(@PathVariable Long id, @RequestPart UserUpdateIncludeImageRequestDto userUpdateIncludeImageRequestDto,
                                         @RequestPart("s3upload") MultipartFile multipartFile,
                                         @AuthenticationPrincipal UserDetails userDetails) throws IOException, AccessException {
 
         return ResponseEntity.ok()
-                .body(userService.updateUserInfo(id, userUpdateRequestDto, multipartFile, userDetails));
+                .body(userService.updateUserInfoAndImage(id, userUpdateIncludeImageRequestDto, multipartFile, userDetails));
     }
 
     @Transactional

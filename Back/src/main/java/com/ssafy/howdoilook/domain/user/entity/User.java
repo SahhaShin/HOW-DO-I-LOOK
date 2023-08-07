@@ -12,6 +12,7 @@ import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
 import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChatRoom;
 import com.ssafy.howdoilook.domain.user.dto.request.UserBySocialUpdateRequestDto;
+import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateIncludeImageRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateRequestDto;
 import com.ssafy.howdoilook.domain.userLike.entity.UserLike;
 import lombok.AccessLevel;
@@ -164,14 +165,28 @@ public class User extends BaseTimeEntity {
     }
 
     /*
-    * 유저 정보 수정
+    * 유저 정보 수정 (정보)
     * */
-    public Long updateUserInfo(UserUpdateRequestDto userUpdateRequestDto, String profileImg) {
+    public Long updateUserInfo(UserUpdateRequestDto userUpdateRequestDto) {
         this.age = userUpdateRequestDto.getAge();
         this.gender = userUpdateRequestDto.getGender();
         this.nickname = userUpdateRequestDto.getNickname();
         this.name = userUpdateRequestDto.getName();
+        this.closetAccess = userUpdateRequestDto.getClosetAccess();
+
+        return this.id;
+    }
+
+    /*
+    * 유저 정보 수정 (정보 + 이미지)
+    * */
+    public Long updateUserInfoAndImage(UserUpdateIncludeImageRequestDto userUpdateIncludeImageRequestDto, String profileImg) {
+        this.age = userUpdateIncludeImageRequestDto.getAge();
+        this.gender = userUpdateIncludeImageRequestDto.getGender();
+        this.nickname = userUpdateIncludeImageRequestDto.getNickname();
+        this.name = userUpdateIncludeImageRequestDto.getName();
         this.profileImg = profileImg;
+        this.closetAccess = userUpdateIncludeImageRequestDto.getClosetAccess();
 
         return this.id;
     }

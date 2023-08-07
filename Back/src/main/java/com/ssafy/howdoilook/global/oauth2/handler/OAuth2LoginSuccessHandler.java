@@ -115,6 +115,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         access = accessToken;
         refresh = refreshToken;
 
+        Cookie emailCookie = new Cookie("new_social_user_email", oAuth2User.getEmail());
+        emailCookie.setMaxAge(600);
+        emailCookie.setPath("/");
+        httpServletResponse.addCookie(emailCookie);
+
         // Access Token을 쿠키로 설정
         Cookie accessTokenCookie = new Cookie("Authorization", accessToken);
         accessTokenCookie.setMaxAge(3600); // 1시간 유효한 쿠키로 설정

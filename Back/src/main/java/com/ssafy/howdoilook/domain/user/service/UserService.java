@@ -2,10 +2,7 @@ package com.ssafy.howdoilook.domain.user.service;
 
 import com.ssafy.howdoilook.domain.badge.entity.Badge;
 import com.ssafy.howdoilook.domain.badge.repository.BadgeRepository;
-import com.ssafy.howdoilook.domain.user.dto.request.UserSearchCondition;
-import com.ssafy.howdoilook.domain.user.dto.request.UserSignUpRequestDto;
-import com.ssafy.howdoilook.domain.user.dto.request.UserBySocialUpdateRequestDto;
-import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateRequestDto;
+import com.ssafy.howdoilook.domain.user.dto.request.*;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSearchResponseDto;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSimpleResponseDto;
 import com.ssafy.howdoilook.domain.user.entity.BadgeType;
@@ -56,7 +53,7 @@ public class UserService {
      * 일반 회원 가입
      * */
     @Transactional
-    public Long signUp(UserSignUpRequestDto userSignUpRequestDto, MultipartFile multipartFile) throws Exception {
+    public Long signUp(UserSignUpRequestDto userSignUpRequestDto) throws Exception {
 
         if(userRepository.findByEmail(userSignUpRequestDto.getEmail()).isPresent())
             throw new Exception("이미 존재하는 이메일입니다.");
@@ -69,8 +66,6 @@ public class UserService {
         user.passwordEncode(passwordEncoder);
 
         user.updateShowBadge(BadgeType.X);
-
-        user.updateProfileImg(imageService.saveImage(multipartFile));
 
         user.updateClosetAccess(ClosetAccess.PUBLIC);
 
@@ -189,15 +184,34 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
 
         user.updateShowBadge(BadgeType.X);
+        user.updateClosetAccess(ClosetAccess.PUBLIC);
 
         return user.socialUserInfoUpdate(userBySocialUpdateRequestDto);
     }
 
     /*
-    * 유저 정보 변경 (나이, 성별, 이름, 닉네임, 프로필 이미지)
+    * 유저 정보 변경 (나이, 성별, 이름, 닉네임, 접근 권한)
     * */
     @Transactional
-    public Long updateUserInfo(Long id, UserUpdateRequestDto userUpdateRequestDto, MultipartFile multipartFile, UserDetails userDetails) throws IOException, AccessException {
+    public Long updateUserInfo(Long id, UserUpdateRequestDto userUpdateRequestDto) throws IOException, AccessException {
+//    public Long updateUserInfo(Long id, UserUpdateRequestDto userUpdateRequestDto, UserDetails userDetails) throws IOException, AccessException {
+//        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+//        if (!clientEmail.equals(user.getEmail())){
+//            throw new AccessException("접근 권한이 없습니다.");
+//        }
+        System.out.println("userUpdateRequestDto = " + userUpdateRequestDto.getNickname());
+        System.out.println("userUpdateRequestDto = " + userUpdateRequestDto.getAge());
+        return user.updateUserInfo(userUpdateRequestDto);
+    }
+
+    /*
+    * 유저 정보 변경 (나이, 성별, 이름, 닉네임, 접근 권한, 프로필 이미지)
+    * */
+    @Transactional
+    public Long updateUserInfoAndImage(Long id, UserUpdateIncludeImageRequestDto userUpdateIncludeImageRequestDto, MultipartFile multipartFile, UserDetails userDetails) throws IOException, AccessException {
         String clientEmail = userDetails.getUsername();
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
@@ -206,7 +220,7 @@ public class UserService {
             throw new AccessException("접근 권한이 없습니다.");
         }
 
-        return user.updateUserInfo(userUpdateRequestDto, imageService.updateImage(user.getProfileImg(), multipartFile));
+        return user.updateUserInfoAndImage(userUpdateIncludeImageRequestDto, imageService.updateImage(user.getProfileImg(), multipartFile));
     }
 
     public void deleteProfileImg(Long userId, UserDetails userDetails) throws AccessException {
@@ -250,5 +264,24 @@ public class UserService {
 
 
         return user.updateShowBadge(BadgeType.valueOf(badge));
+    }
+
+    public UserSimpleResponseDto getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException(" 해당 유저존재 X"));
+
+        return UserSimpleResponseDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .nickname(user.getNickname())
+                .gender(user.getGender())
+                .age(user.getAge())
+                .profileImg(user.getProfileImg())
+                .role(user.getRole())
+                .socialType(user.getSocialType())
+                .showBadgeType(user.getShowBadgeType())
+                .closetAccess(user.getClosetAccess())
+                .build();
     }
 }

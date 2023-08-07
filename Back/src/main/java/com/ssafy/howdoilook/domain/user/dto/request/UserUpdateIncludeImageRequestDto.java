@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserUpdateRequestDto {
+public class UserUpdateIncludeImageRequestDto {
 
     private String name;
 
@@ -19,14 +19,17 @@ public class UserUpdateRequestDto {
 
     private int age;
 
+    private String profileImg;
+
     private ClosetAccess closetAccess;
 
     @Builder
-    public UserUpdateRequestDto(String name, String nickname, Gender gender, int age, ClosetAccess closetAccess) {
+    public UserUpdateIncludeImageRequestDto(String name, String nickname, Gender gender, int age, String profileImg, ClosetAccess closetAccess) {
         this.name = name;
         this.nickname = nickname;
         this.gender = gender;
         this.age = age;
+        this.profileImg = profileImg;
         this.closetAccess = closetAccess;
     }
 }

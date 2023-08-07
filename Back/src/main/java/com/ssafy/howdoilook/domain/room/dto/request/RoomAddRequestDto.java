@@ -16,6 +16,5 @@ public class RoomAddRequestDto {
     private int minAge;
     private int maxAge;
     private String gender;
-    private String chatCode;
 
 }
