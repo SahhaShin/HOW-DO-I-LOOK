@@ -22,7 +22,7 @@ public class FollowController {
     private final FollowService followService;
 
     @PostMapping("/save")
-    public ResponseEntity<Long> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto){
+    public ResponseEntity<?> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto){
 //    public ResponseEntity<Long> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails){
         System.out.println("followSaveRequestDto.getFollowerId() = " + followSaveRequestDto.getFollowerId());
         System.out.println("followSaveRequestDto.getFolloweeId() = " + followSaveRequestDto.getFolloweeId());
