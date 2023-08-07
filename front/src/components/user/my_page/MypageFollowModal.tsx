@@ -20,9 +20,10 @@ const MypageFollowModal = () => {
         id:number,
     }
 
-    // 현재 내 아이디
-    let loginUserId = state.loginUser.id;
-    const { targetUserId } = useParams();
+    // 일단 로그인한 유저의 아이디
+  const loginUserId = 1;
+  // 내가 보고있는 유저의 아이디
+  const { targetUserId } = useParams();
 
     
     const [followingData, setFollowingData] = useState({
@@ -32,7 +33,7 @@ const MypageFollowModal = () => {
 
     const changeFollowingData = ((one) => {
         setFollowingData({
-            followerId : targetUserId,
+            followerId : Number(targetUserId),
             followeeId : one.id
         })
     })
@@ -44,7 +45,7 @@ const MypageFollowModal = () => {
 
     const changeDeleteFollowingData = ((one) => {
         setDeleteFollowingData({
-            followerId : targetUserId,
+            followerId : Number(targetUserId),
             followeeId : one.id
         })
         
@@ -57,7 +58,7 @@ const MypageFollowModal = () => {
 
     const changeBlackListDeleteData = ((one) => {
         setBlackListDeleteData({
-            userId : targetUserId,
+            userId : Number(targetUserId),
             targetUserId : one.targetUserId 
         })
     })
@@ -114,8 +115,8 @@ const MypageFollowModal = () => {
         }
 
         for(let i=0; i<state.perfectFollowUsers.length; i++) {
-            if((state.perfectFollowUsers[i].userIdA === targetUserId && state.perfectFollowUsers[i].userIdB === one.id) 
-            || (state.perfectFollowUsers[i].userIdA === one.id && state.perfectFollowUsers[i].userIdB === targetUserId)) {
+            if((state.perfectFollowUsers[i].userIdA === Number(targetUserId) && state.perfectFollowUsers[i].userIdB === one.id) 
+            || (state.perfectFollowUsers[i].userIdA === one.id && state.perfectFollowUsers[i].userIdB === Number(targetUserId))) {
                 return true;
             }
         }
@@ -146,7 +147,7 @@ const MypageFollowModal = () => {
 
                         {/* 팔로우 버튼 */}
 
-                        {state.loginUser.id === targetUserId ?
+                        {loginUserId === Number(targetUserId) ?
                             <div className={`${mypageFollowModalStyle.followBtn}`}>
                             
                             {(state.followMode === 1 && checkPerfectFollow(one)) || state.followMode === 2 ? 
