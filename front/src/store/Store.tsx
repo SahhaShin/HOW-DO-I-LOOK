@@ -7,6 +7,7 @@ import MypageSlice from "./MypageSlice";
 import UtilSlice from "./UtilSlice";
 import ChatSlice from "./ChatSlice";
 import UserSlice from "./UserSlice";
+import RankingSlice from "./RankingSlice";
 
 
 //reducer 등록
@@ -18,5 +19,6 @@ export const store = configureStore({
         util:UtilSlice,
         chat:ChatSlice,
         user:UserSlice,
+        rank:RankingSlice,
     }
 });
