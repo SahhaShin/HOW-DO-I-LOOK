@@ -12,18 +12,23 @@ import java.util.List;
 @NoArgsConstructor
 public class FeedResponseDto {
     private Long userId;
+    private String userNickname;
     private Long feedId;
     private String feedContent;
+    private Long commentCount;
     private LocalDateTime feedCreatedDate;
     private LocalDateTime feedUpdateDate;
     private List<PhotoResponseDto> photoResponseDtoList;
     private FeedLikeCountResponseDto feedLikeCountResponseDto;
 
     @Builder
-    public FeedResponseDto(Long userId, Long feedId, String feedContent, LocalDateTime feedCreatedDate, LocalDateTime feedUpdateDate, List<PhotoResponseDto> photoResponseDtoList, FeedLikeCountResponseDto feedLikeCountResponseDto) {
+
+    public FeedResponseDto(Long userId, String userNickname, Long feedId, String feedContent, Long commentCount, LocalDateTime feedCreatedDate, LocalDateTime feedUpdateDate, List<PhotoResponseDto> photoResponseDtoList, FeedLikeCountResponseDto feedLikeCountResponseDto) {
         this.userId = userId;
+        this.userNickname = userNickname;
         this.feedId = feedId;
         this.feedContent = feedContent;
+        this.commentCount = commentCount;
         this.feedCreatedDate = feedCreatedDate;
         this.feedUpdateDate = feedUpdateDate;
         this.photoResponseDtoList = photoResponseDtoList;

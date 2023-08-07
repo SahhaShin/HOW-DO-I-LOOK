@@ -9,4 +9,6 @@ import java.util.List;
 public interface CommentCustomRepository {
     Page<Comment> selectCommentByFeedId(Long feedId, Pageable page);
     Page<Comment> selectCommentByFeedIdAndParentCommentId(Long feedId, Long parentCommentId, Pageable page);
+
+    Long selectCommentCountByFeedId(Long feedId);
 }
