@@ -34,6 +34,7 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
 }
 
 .topRankerNatural{
@@ -54,6 +55,7 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
 }
 
 .topRankerModern{
@@ -74,6 +76,7 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
 
 }
 
@@ -95,6 +98,7 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
 
 }
 
