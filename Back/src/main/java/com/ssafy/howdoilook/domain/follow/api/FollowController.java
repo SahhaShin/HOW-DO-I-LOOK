@@ -21,9 +21,15 @@ import org.springframework.web.bind.annotation.*;
 public class FollowController {
     private final FollowService followService;
 
-    @PostMapping("")
-    public ResponseEntity<Long> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails){
-        Long id = followService.saveFollow(followSaveRequestDto,userDetails);
+    @PostMapping("/save")
+    public ResponseEntity<Long> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto){
+//    public ResponseEntity<Long> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails){
+        System.out.println("followSaveRequestDto.getFollowerId() = " + followSaveRequestDto.getFollowerId());
+        System.out.println("followSaveRequestDto.getFolloweeId() = " + followSaveRequestDto.getFolloweeId());
+        Long id = followService.saveFollow(followSaveRequestDto);
+//        Long id = followService.saveFollow(followSaveRequestDto,userDetails);
+
+
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
     @DeleteMapping("")

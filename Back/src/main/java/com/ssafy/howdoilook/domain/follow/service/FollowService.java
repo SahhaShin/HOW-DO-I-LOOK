@@ -32,15 +32,18 @@ public class FollowService {
 
     //데이터가 중복으로 삽입되는거 ifelse로 처리했는데 예외로 처리하면 더 좋을거 같다.
     @Transactional
-    public Long saveFollow(FollowSaveRequestDto followSaveRequestDto, UserDetails userDetails){
-        String clientEmail = userDetails.getUsername();
+    public Long saveFollow(FollowSaveRequestDto followSaveRequestDto){
+//    public Long saveFollow(FollowSaveRequestDto followSaveRequestDto, UserDetails userDetails){
+//        String clientEmail = userDetails.getUsername();
 
+        System.out.println("followSaveRequestDto = " + followSaveRequestDto);
+        System.out.println(followSaveRequestDto.getFollowerId());
         User follower = userRepository.findById(followSaveRequestDto.getFollowerId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
 
-        if (!clientEmail.equals(follower.getEmail())){
-            throw new AccessException("접근 권한이 없습니다.");
-        }
+//        if (!clientEmail.equals(follower.getEmail())){
+//            throw new AccessException("접근 권한이 없습니다.");
+//        }
 
         User followee = userRepository.findById(followSaveRequestDto.getFolloweeId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 followee입니다.",1));
@@ -58,8 +61,6 @@ public class FollowService {
         } else {
             throw new IllegalArgumentException("이미 존재하는 Follow입니다.");
         }
-
-
     }
 
 
