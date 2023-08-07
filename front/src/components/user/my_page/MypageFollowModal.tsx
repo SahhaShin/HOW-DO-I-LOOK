@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //css
 import mypageFollowModalStyle from "./MypageFollowModal.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollowModalOpen} from "../../../store/MypageSlice";
+import {action, changeFollowModalOpen} from "../../../store/MypageSlice";
+import {useParams} from 'react-router-dom'
 
 const MypageFollowModal = () => {
 
@@ -16,22 +17,164 @@ const MypageFollowModal = () => {
     interface Follow{
         profileImg?:string,
         nickname:string,
-        id:string,
+        id:number,
     }
 
-    let [users, setUsers] = useState<Follow[]|null>([
-        {
-            nickname:"닉네임1",
-            id:"nick1"
-        },
-        {
-            nickname:"닉네임2",
-            id:"nick2"
-        },
-    ]);
-
     // 현재 내 아이디
-    let id:number = 1;
+    let loginUserId = state.loginUser.id;
+    const { targetUserId } = useParams();
+
+    
+    const [followingData, setFollowingData] = useState({
+        followerId : 0, 
+        followeeId : 0
+    })
+
+    const changeFollowingData = ((one) => {
+        setFollowingData({
+            followerId : targetUserId,
+            followeeId : one.id
+        })
+    })
+
+    const [deleteFollowingData, setDeleteFollowingData] = useState ({
+        followerId : 0,
+        followeeId : 0
+    });
+
+    const changeDeleteFollowingData = ((one) => {
+        setDeleteFollowingData({
+            followerId : targetUserId,
+            followeeId : one.id
+        })
+        
+    })
+
+    const [blackListDeleteData, setBlackListDeleteData] = useState ({
+        userId : 0,
+        targetUserId : 0
+    })
+
+    const changeBlackListDeleteData = ((one) => {
+        setBlackListDeleteData({
+            userId : targetUserId,
+            targetUserId : one.targetUserId 
+        })
+    })
+
+    let usersBucket = state.followMeUsers;
+
+    // followMode에 따라 map에 사용하는 state 다르게
+    useEffect(() => {
+        if(state.followMode === 1) {
+            usersBucket = state.followMeUsers;
+        }
+        else if(state.followMode === 2) {
+            usersBucket = state.followingUsers;
+        }
+        else if(state.followMode === 3) {
+            usersBucket = state.blackListUsers;
+        }
+    }, [state.followMode])
+
+
+    // 팔로우
+    useEffect(() => {
+        if(followingData.followerId === 0 || followingData.followeeId === 0)
+            return;
+
+        dispatch(action.getUserById(followingData.followeeId));
+        dispatch(action.following(followingData));
+    }, [followingData])
+
+    // 팔로우 끊기
+    useEffect(() => {
+        if(deleteFollowingData.followeeId === 0 || deleteFollowingData.followerId === 0)
+            return;
+
+        dispatch(action.deleteFollowing(deleteFollowingData));
+    }, [deleteFollowingData])
+
+    // 블랙리스트 해제
+    useEffect(() => {
+        if(blackListDeleteData.userId === 0 || blackListDeleteData.targetUserId === 0)
+            return;
+
+        dispatch(action.deleteBlackList(blackListDeleteData));
+    }, [blackListDeleteData])
+
+    useEffect(() => {
+        dispatch(action.getPerfectFollowList());
+    }, [])
+
+    // 맞팔 여부 확인
+    let checkPerfectFollow = ((one) => {
+        if(state.perfectFollowUsers.length === 0) {
+            return false;
+        }
+
+        for(let i=0; i<state.perfectFollowUsers.length; i++) {
+            if((state.perfectFollowUsers[i].userIdA === targetUserId && state.perfectFollowUsers[i].userIdB === one.id) 
+            || (state.perfectFollowUsers[i].userIdA === one.id && state.perfectFollowUsers[i].userIdB === targetUserId)) {
+                return true;
+            }
+        }
+
+        return false;
+    })
+
+    const showList = () => {
+        if(state.followMode === 1) {
+            usersBucket = state.followMeUsers;
+        }
+        else if(state.followMode === 2) {
+            usersBucket = state.followingUsers;
+        }
+        else if(state.followMode === 3) {
+            usersBucket = state.blackListUsers;
+        }
+
+        return (
+            usersBucket?.map((one, idx)=>{
+                return(
+                    <div key = {idx} className={`${mypageFollowModalStyle.userInfo}`}>
+                        {/* 프로필 이미지 */}
+                        <div className={`${mypageFollowModalStyle.profileImg}`}><img src={one.profileImg}></img></div>
+
+                        {/* 닉네임 */}
+                        <div className={`${mypageFollowModalStyle.nickname}`}>{one.nickname}</div>
+
+                        {/* 팔로우 버튼 */}
+
+                        {state.loginUser.id === targetUserId ?
+                            <div className={`${mypageFollowModalStyle.followBtn}`}>
+                            
+                            {(state.followMode === 1 && checkPerfectFollow(one)) || state.followMode === 2 ? 
+
+                            <button onClick={ () => {
+                                changeDeleteFollowingData(one)
+                                dispatch(action.getPerfectFollowList());
+                            }}> 끊기 </button> 
+
+                            : 
+
+                            state.followMode === 3 ? <button onClick={ () => {
+                                changeBlackListDeleteData(one)
+                            }}>해제</button> : null}
+                            
+                            {state.followMode === 1 && !checkPerfectFollow(one) ? <button onClick={ () => {
+                                changeFollowingData(one);
+                                dispatch(action.getPerfectFollowList());
+                            }}> 팔로우 </button> : null}
+
+                        </div>
+                        :
+                        null}
+                    </div>
+                );
+            })
+        );
+    }
 
     return(
         <div className={`${mypageFollowModalStyle.modal}`}>
@@ -44,23 +187,7 @@ const MypageFollowModal = () => {
             {/* 메인 */}
             <div className={`${mypageFollowModalStyle.main}`}>
                 {
-                    users?.map((one)=>{
-                        return(
-                            <div className={`${mypageFollowModalStyle.userInfo}`}>
-                                {/* 프로필 이미지 */}
-                                <div className={`${mypageFollowModalStyle.profileImg}`}></div>
-
-                                {/* 닉네임 */}
-                                <div className={`${mypageFollowModalStyle.nickname}`}>{one.nickname}</div>
-
-                                {/* 팔로우 버튼 */}
-                                <div className={`${mypageFollowModalStyle.followBtn}`}>
-                                    {state.followMode===1 || state.followMode===2?<button>끊기</button>:<button>해제</button>}
-                                    {state.followMode===1?<button>팔로우</button>:null}
-                                </div>
-                            </div>
-                        );
-                    })
+                    showList()
                 }
             </div>
 

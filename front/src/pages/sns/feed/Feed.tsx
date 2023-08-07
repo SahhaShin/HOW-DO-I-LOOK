@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import feedStyle from "./Feed.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action, changeModifyModalOpen,changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 // 컴포넌트
 import FeedSlot from '../../../components/sns/feed/FeedSlot';
@@ -12,6 +12,10 @@ import IntroArea from '../../../components/sns/feed/IntroArea';
 import FeedDetail from '../../../components/sns/feed/FeedDetail';
 import FeedCreate from '../../../components/sns/feed/FeedCreate';
 import FeedDeclaration from '../../../components/sns/feed/FeedDeclaration';
+import Header from '../../../components/util/Header';
+import Footer from '../../../components/util/Footer';
+import Menu from '../../../components/util/Menu';
+import FeedModify from "../../../components/sns/feed/FeedModify";
 
 const Feed = () => {
 
@@ -19,13 +23,27 @@ const Feed = () => {
     let state = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
 
-    let [feedList, setFeedList] = useState<any>([1,2,3,4,5,6,7,8,9,10]);
+    // 등록된 피드 전체 불러오기
+    // function getFeedTotalList(state,action){
+        
+    // }
+
+    useEffect(()=>{
+        let data = {size:0, page:0};
+        dispatch(action.getFeedTotalList(data));
+
+    },[])
 
     return(
         <>
             {
                 // 피드 상세보기 모달
-                state.detailModalOpen?<div className={`${feedStyle.detailModal}`}><FeedDetail/></div>:null
+                state.detailModalOpen?<div className={`${feedStyle.detailModal}`}><FeedDetail feedId={state.detailFeedId}/></div>:null
+            }
+
+            {
+                // 피드 수정 모달
+                state.modifyModalOpen?<div className={`${feedStyle.detailModal}`}><FeedModify/></div>:null
             }
 
             {
@@ -37,7 +55,7 @@ const Feed = () => {
                 state.declarationModalOpen?<div className={`${feedStyle.declarationModal}`}><FeedDeclaration/></div>:null
             }
             <div className={`${feedStyle.total}`}>
-                <div className={`${feedStyle.header}`}>header</div>
+                <div className={`${feedStyle.header}`}><Header/></div>
                 
                 <div>
                     {/* 문구 & 해시태그 */}
@@ -51,7 +69,7 @@ const Feed = () => {
                     
                     <div className={`${feedStyle.menuArea}`}>
                         {/* floating menu start */}
-                        menu area
+                        <div><Menu/></div>
                     </div>
 
                     {/* 메인 컨텐츠 시작 */}
@@ -71,16 +89,11 @@ const Feed = () => {
                         </div>
 
                         {/* 피드 리스트 */}
-                        {
-                            feedList.map(()=>{
-                                return(
-                                    <div className={`${feedStyle.list}`}>
-                                        <FeedSlot/>
-                                    </div>
-                                );
-                            })
-                        }
-                        
+                       
+                        <div className={`${feedStyle.list}`}>
+                            <FeedSlot/>
+                        </div>
+                               
 
                     </div>
 
@@ -97,13 +110,13 @@ const Feed = () => {
                     </div>
                 </div>
 
-                <div className={`${feedStyle.footer}`}>footer</div>
+                <div className={`${feedStyle.footer}`}><Footer/></div>
 
                 
             </div>
 
             {/* 피드블러 */}
-            <div onClick={async()=>{dispatch(changeDetailModalOpen(false)); dispatch(changeCreateModalOpen(false));dispatch(changeDeclarationModalOpen(false))}} style={state.detailModalOpen||state.createModalOpen||state.declarationModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
+            <div onClick={async()=>{dispatch(changeDetailModalOpen(false)); dispatch(changeCreateModalOpen(false));dispatch(changeDeclarationModalOpen(false));dispatch(changeModifyModalOpen(false))}} style={state.detailModalOpen||state.createModalOpen||state.declarationModalOpen||state.modifyModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
         </>
     );
 }

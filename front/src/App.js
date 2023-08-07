@@ -14,7 +14,13 @@ import ChatList from "./pages/chat/chatting/ChatList";
 import ChatRoom from "./pages/chat/chatting/ChatRoom";
 import Feed from "./pages/sns/feed/Feed";
 import Mypage from "./pages/user/my_page/Mypage";
-import MypageFollowModal from "./components/user/my_page/MypageFollowModal";
+import Live from "./pages/streaming/live/Live"
+
+import Login from "./pages/user/login/Login";
+import Signin from "./pages/user/login/Signin";
+import AuthSignin from "./pages/user/login/AuthSignin"
+import Header from "./components/util/Header"
+import Home from "./pages/home/Home"
 
 function App() {
   return (
@@ -24,10 +30,17 @@ function App() {
           <Routes>
             <Route path="/closet" element={<Closet/>}/>
             <Route path="/chatlist" element={<ChatList/>}/>
-            <Route path="/chatroom/:otherId/:roomId" element={<ChatRoom/>}/>
+            <Route path="/chatroom/:otherId/:roomId/:roomCode" element={<ChatRoom/>}/>
             <Route path="/feed" element={<Feed/>}/>
             <Route path="/mypage" element={<Mypage/>}/>
-            <Route path="/mypageFollowModal" element={<MypageFollowModal/>}/>
+            <Route path="/live" element={<Live/>}/>
+
+            {/* <Route path="/" element={<LogHin/>}/> */}
+            <Route path="/" element={<Home/>}/>
+            <Route path="/user/log-in" element={<Login/>}/>
+            <Route path="/user/sign-up" element={<Signin/>}/>
+            <Route path="/auth2/sign-up"  element={<AuthSignin/>}/>
+            {/* <Route path="/"  element={<Header/>}/> */}
           </Routes>
         </Router>
       </div>

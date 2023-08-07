@@ -91,6 +91,7 @@
     margin-right: 10px;
     margin-bottom: 5px;
     font-size: 15px;
+    background-color: var(--border);
 }
 
 .btns> div button:hover{
@@ -148,7 +149,14 @@
     border-radius: 10px;
     border-color: black;
     margin-right: 1%;
+    background-color: var(--signiture);
+    color: white;
 }
+
+.onehash{
+    display: flex;
+}
+
 
 .footer{
     display: flex;
@@ -185,6 +193,7 @@
     border-radius: 1rem;
     font-size: 12px;
     margin-right: 3%;
+    background-color: var(--border);
 }
 
 .feedBtns button:hover{
@@ -205,3 +214,17 @@
     margin-top: 1%;
     margin-bottom: 5%;
 }
+
+.confirmButton {
+    font-size: 16px; /* 확인 버튼에 원하는 폰트 크기를 설정하세요. */
+    /* 기타 확인 버튼에 원하는 스타일을 추가하세요. */
+    width: 100px;
+    height: 50px;
+  }
+  
+  .cancelButton {
+    font-size: 16px; /* 취소 버튼에 원하는 폰트 크기를 설정하세요. */
+    /* 기타 취소 버튼에 원하는 스타일을 추가하세요. */
+    width: 100px;
+    height: 50px;
+  }
