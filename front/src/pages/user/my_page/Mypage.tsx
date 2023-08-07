@@ -22,6 +22,8 @@ import Footer from "../../../components/util/Footer";
 
 const Mypage = () => {
 
+    console.log(11);
+
     //redux 관리
     let state = useSelector((state:any)=>state.mypage);
     let state_feed = useSelector((state:any)=>state.feed);

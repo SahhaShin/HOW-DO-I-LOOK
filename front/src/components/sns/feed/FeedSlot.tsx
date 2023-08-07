@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeModifyModalOpen, changeDetailFeedId, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action, calTotalFeedLikes, changeModifyModalOpen, changeDetailFeedId, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -64,9 +64,6 @@ const FeedSlot = () => {
     function modifyFeed(){
 
     }
-
-
-
     
 
     return(   
@@ -139,11 +136,11 @@ const FeedSlot = () => {
                             <div className={`${feedSlotStyle.footer}`}>
                                 <div className={`${feedSlotStyle.comment}`}>
                                     {/* 이 버튼을 누르면 댓글 창으로 이동 -> 특정 피드 아이디 전달 */}
-                                    <img src={process.env.PUBLIC_URL+`/img/feed/comment.png`} onClick={async()=>{dispatch(changeDetailModalOpen(true)); dispatch(changeDetailFeedId(oneFeed.feedId));}}/>
+                                    <img src={process.env.PUBLIC_URL+`/img/feed/comment.png`} onClick={async()=>{dispatch(changeDetailModalOpen(true)); dispatch(changeDetailFeedId(oneFeed.feedId));dispatch(action.getFeedLikeOnMe({"userId":oneFeed.userId, "feedId":oneFeed.feedId}));}}/>
                                     <p>1개</p>
                                 </div>
                                 {oneFeed.userId===userId?<div className={`${feedSlotStyle.feedBtns}`}>
-                                    <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId));}}>수정</button>
+                                    <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId)); dispatch(action.getFeedLikeOnMe({userId:oneFeed.userId,feedId:oneFeed.feedId})); dispatch(calTotalFeedLikes())}}>수정</button>
                                     <button onClick={()=>deleteFeed(oneFeed.feedId)}>삭제</button>
                                 </div>:null}
                             </div>

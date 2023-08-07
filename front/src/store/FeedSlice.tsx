@@ -68,6 +68,20 @@ export const action = {
         }
     }),
 
+    //내가 피드를 눌렀을 때 내가 누른 좋아요 상황을 가져온다. X
+    getFeedLikeOnMe : createAsyncThunk("FeedSlice/getFeedLikeOnMe", async({userId, feedId}, thunkAPI)=>{
+        console.log(`${userId} ${feedId}`);
+        try{
+            
+            // http://localhost:8081/api/feedlike?userId=1&feedId=3
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedlike?userId=${userId}&feedId=${feedId}`);
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
 }
 
 //새로운 사진 등록 시 폼
@@ -86,10 +100,10 @@ interface newFeed{
 
 interface specificFeedLikes{
     feedLikeCountResponseDto:{
-        natural:number,
-        lovely:number,
-        sexy:number,
-        modern:number
+        natural:string|null,
+        lovely:string|null,
+        sexy:string|null,
+        modern:string|null
     }
 }
 interface specificFeed{
@@ -178,9 +192,11 @@ interface Feed{
     declarationModalOpen:boolean,
     feedTotalObj:totalFeed|null,
     detailFeedId : number,
-    detailObj:specificFeed|null,
+    detailObj:specificFeed|null, //특정 피드 정보
     detailObjLikes:specificFeedLikes|null,
+    totalDetailObjLikes : specificFeedLikes|null,
     modifyModalOpen:boolean,
+    modifyHashtagList:string[],
 }
 
 // 초기화
@@ -200,7 +216,9 @@ const initialState:Feed = {
     detailFeedId:0,
     detailObj:null,
     detailObjLikes:null,
-    modifyModalOpen:false
+    totalDetailObjLikes:null,
+    modifyModalOpen:false,
+    modifyHashtagList:[]
 }
 
 
@@ -237,18 +255,26 @@ const FeedSlice = createSlice({
         changeDetailFeedId(state, action){
             state.detailFeedId=action.payload;
 
-            //세부피드 오브젝트도 채워준다.
-            //세부피드 좋아요 상황도 채워준다.
+            //세부피드 오브젝트도 채워준다. -> 이미 피드창 들어올 때 리스트는 채워져있음
             for(let i=0;i<state.feedTotalObj?.content.length;i++){
                 if(state.feedTotalObj?.content[i].feedId===action.payload){
                     state.detailObj = state.feedTotalObj?.content[i];
-                    state.detailObjLikes = state.feedTotalObj?.content[i].feedLikeCountResponseDto;
                 }
             }
         },
         changeModifyModalOpen(state, action){
             state.modifyModalOpen=action.payload;
         },
+        setModifyHashtagList(state, action){
+            //피드 순서대로 붙은 해시태그 리스트가 저장되어 있음 [["하늘", "바다"], ["노인"], ["새"]]
+            for(let i=0;i<state.detailObj?.photoResponseDtoList.length;i++){
+                state.modifyHashtagList.push(state.detailObj?.photoResponseDtoList[i]);
+            }
+        },
+        calTotalFeedLikes(state){
+            state.totalDetailObjLikes = state.detailObj.feedLikeCountResponseDto;
+            console.log(state.totalDetailObjLikes);
+        }
     },
     extraReducers:(builder) => {
         builder.addCase(action.addFeed.fulfilled,(state,action)=>{
@@ -268,8 +294,13 @@ const FeedSlice = createSlice({
                 confirmButtonColor: '#4570F5',
             })
         })
+
+        builder.addCase(action.getFeedLikeOnMe.fulfilled,(state,action)=>{
+            state.detailObjLikes = action.payload; //내가 누른 좋아요 정보
+            console.log(state.detailObjLikes);
+        })
     }
 });
 
-export let {changeModifyModalOpen,changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
+export let {calTotalFeedLikes, changeModifyModalOpen,changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
 export default FeedSlice.reducer;

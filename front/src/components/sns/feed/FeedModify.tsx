@@ -44,8 +44,26 @@ const FeedCreate = () => {
         setStatement(e.target.value);
     }
 
+    //피드 생성
+    //해시태그 input 변화 감지 함수
+    const inputHashtag = (e: any) => {
+        setInputHash(e.target.value);
+    }
+
+    //추가버튼을 누르면 해시태그 리스트에 추가됨
+    const addHashtag = (e) => {
+        e.preventDefault();
+        if(inputHash==="") return;
+
+        setHashtags((hashtags)=>[...hashtags, inputHash]);
+
+        // dispatch(addHashtagList(inputHash));
+        setInputHash("");
+    }
+
     useEffect(()=>{
         setStatement(state.detailObj.feedContent);
+        setHashtags();
     },[])
   
 
@@ -72,29 +90,40 @@ const FeedCreate = () => {
                     <img src={process.env.PUBLIC_URL+`/img/feed/closeBtn.png`} onClick={()=>{dispatch(changeModifyModalOpen(false))}}/>
                 </div>
 
+                <div className={`${feedModifyStyle.makeTag}`}>
+                    <div>해시태그 생성</div>
+                    <form onSubmit={addHashtag} className={`${feedModifyStyle.makeTagInput}`}> 
+                        <input onChange={(e)=>inputHashtag(e)} value={inputHash} type='text' placeholder='ex) 여름'/>
+                        <button>추가</button>
+                    </form>
+                </div>
+
                 
                 {/* 추가된 해시태그 */}
                
                 <div className={`${feedModifyStyle.addedTag}`}>
-                <div className={`${feedModifyStyle.addedTag}`}>
-                        <div>추가된 해시태그</div>
-                        <div className={`${feedModifyStyle.tags}`}>
-                            {
-                                hashtags?.map((one, idx)=>{
-                                    return(
-                                        <div className={`${feedModifyStyle.oneTag}`} key={idx} >
-                                            #{one}
-                                        </div>
-                                    );
-                                })
-                            }
+                    <div>추가된 해시태그</div>
+                    <p>삭제하고 싶은 해시태그를 클릭해주세요</p>
+                    <div className={`${feedModifyStyle.tags}`}>
+                    {
+                        state.modifyHashtagList?.map((onePhoto)=>{
+                            return(onePhoto.hashtagList?.map((oneHash, idx)=>{
+                                return(
+                                    <div className={`${feedModifyStyle.oneTag}`} key={idx} >
+                                        #{oneHash}
+                                    </div>
+                                );
+                            }));
+                        })
+                    }
 
-                        </div>
                     </div>
-
+                </div>
+                
+                <div className={feedModifyStyle.textAreaWrap}>
                     <div>문구 입력</div>
-                        <textarea onChange={(e)=>inputStatement(e)} className={`${feedModifyStyle.textAreaSize}`} placeholder='어떤 기분을 공유하고 싶으신가요?' value={statement}/>
-                    </div>
+                    <textarea onChange={(e)=>inputStatement(e)} className={`${feedModifyStyle.textAreaSize}`} placeholder='어떤 기분을 공유하고 싶으신가요?' value={statement}/>
+                </div>
               
 
                 {/* 버튼 2개 or 1개  */}
