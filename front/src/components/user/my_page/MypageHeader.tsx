@@ -13,14 +13,14 @@ import {
   changeMenuMode,
   changeFollowModalMode
 } from "../../../store/MypageSlice";
-import {useParams} from 'react-router-dom'
+import { useParams } from "react-router-dom";
 
 const MypageHeader = () => {
   //redux 관리
   let state = useSelector((state: any) => state.mypage);
   let dispatch = useDispatch();
 
-  const loginUserId = state.loginUser.id;
+  const loginUserId = 1;
   const { targetUserId } = useParams();
 
   let getBlackList = (targetUserId: number) => {

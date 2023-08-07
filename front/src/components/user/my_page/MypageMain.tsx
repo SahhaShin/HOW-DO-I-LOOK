@@ -20,7 +20,7 @@ const MypageMain = () => {
   let dispatch = useDispatch();
 
   // 일단 로그인한 유저의 아이디
-  const loginUserId = state.loginUser.id;
+  const loginUserId = 1;
   // 내가 보고있는 유저의 아이디
   const { targetUserId } = useParams();
 
@@ -46,50 +46,44 @@ const MypageMain = () => {
     dispatch(action.getLikeScore(targetUserId));
   }
 
-  useEffect(() => {
-    // 임시로 로그인유저, 타겟 유저 설정 :
-    dispatch(action.getLoginUser(1));
-    dispatch(action.getTargetUser(1));
-  }, []);
-
   // 최초 1회 실행
   useEffect(
     () => {
-      getFollowMeList(targetUserId);
+      getFollowMeList(Number(targetUserId));
     },
-    [state.loginUser.id, state.targetUser.id]
+    []
   );
 
   useEffect(() => {
-      getFollowingList(targetUserId);
-  }, [state.loginUser.id, state.targetUser.id])
+      getFollowingList(Number(targetUserId));
+  }, [])
 
   useEffect(() => {
-      getBlackList(targetUserId);
-  }, [state.loginUser.id, state.targetUser.id])
+      getBlackList(Number(targetUserId));
+  }, [])
 
   useEffect(() => {
-      getFeedList(targetUserId);
-  }, [state.loginUser.id, state.targetUser.id])
+      getFeedList(Number(targetUserId));
+  }, [])
 
   useEffect(() => {
-      getLikeFeedList(targetUserId);
-  }, [state.loginUser.id, state.targetUser.id])
+      getLikeFeedList(Number(targetUserId));
+  }, [])
 
   useEffect(() => {
-    getLikeScore(targetUserId);
-  }, [state.loginUser.id, state.targetUser.id])
+    getLikeScore(Number(targetUserId));
+  }, [])
 
   useEffect(() => {
     dispatch(action.getPerfectFollowList());
   }, [state.followMeUsers, state.followingUsers])
 
   useEffect(() => {
-    if(targetUserId === 0)
+    if(Number(targetUserId) === 0)
         return;
 
-    dispatch(action.getBadgeList(targetUserId));
-  }, [state.loginUser.id, state.targetUser.id])
+    dispatch(action.getBadgeList(Number(targetUserId)));
+  }, [])
 
   interface Followers {
     id: number;
