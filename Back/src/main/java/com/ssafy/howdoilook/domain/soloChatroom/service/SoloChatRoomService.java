@@ -62,11 +62,15 @@ public class SoloChatRoomService {
 
         //Entity To Dto
         for (SoloChatRoom chatRoom : chatRoomListPrev){
+            SoloChat lastChat = chatRepository.findTopByRoomIdOrderByTimeDesc(chatRoom.getId());
             ChatRoomDto dto = ChatRoomDto.builder()
                     .id(chatRoom.getId())
                     .userAId(chatRoom.getUserA().getId())
                     .userBId(chatRoom.getUserB().getId())
                     .chatroomCode(chatRoom.getRoomCode())
+                    .anotherNickName(chatRoom.getUserB().getNickname())
+                    .lastChat(lastChat.getContent())
+                    .lastChatTime(lastChat.getTime())
                     .build();
             chatRoomListNext.add(dto);
         }
@@ -116,7 +120,7 @@ public class SoloChatRoomService {
             //채팅방이 짝수면 -1을 해준다. ( 채팅방은 2개씩 생성되고, 채팅은 홀수 채팅방을 기준으로 사용한다. )
             Long roomId = chatRoom.getId();
             roomId = (roomId % 2 == 0) ? roomId - 1 : roomId;
-            List<SoloChat> chatContext = chatRepository.findAllByRoomIdOrderByTimeAsc(roomId.toString());
+            List<SoloChat> chatContext = chatRepository.findAllByRoomIdOrderByTimeAsc(roomId);
             List<ChatDto> answer = new ArrayList<>();
 
             //Entity To Dto

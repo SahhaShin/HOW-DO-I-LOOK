@@ -23,13 +23,14 @@ public class SoloChat {
     private long userId;
     private String content;
     private String time;
-
+    private boolean read;
     @Builder
     public SoloChat(long roomId, long userId, String content) {
         this.roomId = roomId;
         this.userId = userId;
         this.content = content;
-        time = new Timestamp(System.currentTimeMillis()).toString();
+        this.time = new Timestamp(System.currentTimeMillis()).toString();
+        this.read = false;
     }
 }
 
