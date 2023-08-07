@@ -104,6 +104,14 @@ public class UserController {
                 .body(userService.checkUserNickname(nickname));
     }
 
+    @ApiOperation(value = "이메일로 유저 객체 얻기")
+    @GetMapping("/getuserbyemail/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
+
+        return ResponseEntity.ok()
+                .body(userService.getUserByEmail(email));
+    }
+
     @ApiOperation(value = "유저 검색", notes = "NonPaging")
     @GetMapping("/search")
     public ResponseEntity<?> searchUsers(UserSearchCondition condition) {

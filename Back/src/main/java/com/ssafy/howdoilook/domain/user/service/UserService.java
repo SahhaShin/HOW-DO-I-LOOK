@@ -248,4 +248,22 @@ public class UserService {
 
         return user.updateShowBadge(BadgeType.valueOf(badge));
     }
+
+    public UserSimpleResponseDto getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException(" 해당 유저존재 X"));
+
+        return UserSimpleResponseDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .nickname(user.getNickname())
+                .gender(user.getGender())
+                .age(user.getAge())
+                .profileImg(user.getProfileImg())
+                .role(user.getRole())
+                .socialType(user.getSocialType())
+                .showBadgeType(user.getShowBadgeType())
+                .build();
+    }
 }
