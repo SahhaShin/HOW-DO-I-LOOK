@@ -55,7 +55,7 @@ public class UserService {
      * 일반 회원 가입
      * */
     @Transactional
-    public Long signUp(UserSignUpRequestDto userSignUpRequestDto, MultipartFile multipartFile) throws Exception {
+    public Long signUp(UserSignUpRequestDto userSignUpRequestDto) throws Exception {
 
         if(userRepository.findByEmail(userSignUpRequestDto.getEmail()).isPresent())
             throw new Exception("이미 존재하는 이메일입니다.");
@@ -68,8 +68,6 @@ public class UserService {
         user.passwordEncode(passwordEncoder);
 
         user.updateShowBadge(BadgeType.X);
-
-        user.updateProfileImg(imageService.saveImage(multipartFile));
 
         User saveUser = userRepository.save(user);
 

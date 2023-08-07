@@ -33,11 +33,10 @@ public class UserController {
 
     @ApiOperation(value = "일반 회원 가입")
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestPart UserSignUpRequestDto userSignUpRequestDto,
-                                    @RequestPart("s3upload") MultipartFile multipartFile) throws Exception {
+    public ResponseEntity<?> signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) throws Exception {
 
         return ResponseEntity.ok()
-                .body(userService.signUp(userSignUpRequestDto, multipartFile));
+                .body(userService.signUp(userSignUpRequestDto));
     }
 
     @ApiOperation(value = "회원 탈퇴", notes = "바로 DB에서 삭제됨.")
