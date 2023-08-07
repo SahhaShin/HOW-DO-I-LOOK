@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ChatRepository extends MongoRepository<SoloChat, String> {
 
-    List<SoloChat> findAllByRoomIdOrderByTimeAsc(String roomId);
+    List<SoloChat> findAllByRoomIdOrderByTimeAsc(long roomId);
 
+    SoloChat findTopByRoomIdOrderByTimeDesc(long roomId);
 }

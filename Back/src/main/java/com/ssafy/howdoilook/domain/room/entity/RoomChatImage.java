@@ -15,21 +15,22 @@ import java.sql.Timestamp;
 @Document
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @CompoundIndex(def = "{'roomId' : 1, 'time' : 1}")
-public class RoomChat {
+public class RoomChatImage {
     @Id
     private String id;
     @Indexed
     private long roomId;
     private String nickName;
+    private String imageURL;
+    private ImageType type;
     private String time;
-    private String content;
-
 
     @Builder
-    public RoomChat(long roomId, String nickName, String content, String time) {
+    public RoomChatImage(long roomId, String nickName, String imageURL, ImageType type, String time) {
         this.roomId = roomId;
         this.nickName = nickName;
-        this.content = content;
+        this.imageURL = imageURL;
+        this.type = type;
         this.time = time;
     }
 }
