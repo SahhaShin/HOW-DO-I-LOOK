@@ -9,6 +9,7 @@ import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSearchResponseDto;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSimpleResponseDto;
 import com.ssafy.howdoilook.domain.user.entity.BadgeType;
+import com.ssafy.howdoilook.domain.user.entity.ClosetAccess;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.global.handler.NoContentException;
@@ -70,6 +71,8 @@ public class UserService {
         user.updateShowBadge(BadgeType.X);
 
         user.updateProfileImg(imageService.saveImage(multipartFile));
+
+        user.updateClosetAccess(ClosetAccess.PUBLIC);
 
         User saveUser = userRepository.save(user);
 

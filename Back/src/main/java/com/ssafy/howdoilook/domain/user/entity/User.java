@@ -71,6 +71,10 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_show_badge")
     private BadgeType showBadgeType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_closet_access")
+    private ClosetAccess closetAccess;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Alarm> alarmList = new ArrayList<>();
 
@@ -117,7 +121,7 @@ public class User extends BaseTimeEntity {
     List<Badge> badgeList = new ArrayList<>();
 
     @Builder
-    public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId, BadgeType showBadgeType) {
+    public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId, BadgeType showBadgeType, ClosetAccess closetAccess) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -130,6 +134,7 @@ public class User extends BaseTimeEntity {
         this.socialType = socialType;
         this.socialId = socialId;
         this.showBadgeType = showBadgeType;
+        this.closetAccess = closetAccess;
     }
 
     /*
@@ -176,6 +181,15 @@ public class User extends BaseTimeEntity {
     * */
     public Long updateShowBadge(BadgeType likeType) {
         this.showBadgeType = likeType;
+
+        return this.id;
+    }
+
+    /*
+    * 유저 옷장 접근 권한 설정
+    * */
+    public Long updateClosetAccess(ClosetAccess closetAccess) {
+        this.closetAccess = closetAccess;
 
         return this.id;
     }

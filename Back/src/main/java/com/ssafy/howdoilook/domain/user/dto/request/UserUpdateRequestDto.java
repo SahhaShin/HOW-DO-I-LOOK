@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.user.dto.request;
 
+import com.ssafy.howdoilook.domain.user.entity.ClosetAccess;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,12 +21,15 @@ public class UserUpdateRequestDto {
 
     private String profileImg;
 
+    private ClosetAccess closetAccess;
+
     @Builder
-    public UserUpdateRequestDto(String name, String nickname, Gender gender, int age, String profileImg) {
+    public UserUpdateRequestDto(String name, String nickname, Gender gender, int age, String profileImg, ClosetAccess closetAccess) {
         this.name = name;
         this.nickname = nickname;
         this.gender = gender;
         this.age = age;
         this.profileImg = profileImg;
+        this.closetAccess = closetAccess;
     }
 }

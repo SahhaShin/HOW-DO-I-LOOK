@@ -36,8 +36,10 @@ public class UserSimpleResponseDto {
 
     private BadgeType showBadgeType;
 
+    private ClosetAccess closetAccess;
+
     @Builder
-    public UserSimpleResponseDto(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId, BadgeType showBadgeType) {
+    public UserSimpleResponseDto(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId, BadgeType showBadgeType, ClosetAccess closetAccess) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -50,6 +52,7 @@ public class UserSimpleResponseDto {
         this.socialType = socialType;
         this.socialId = socialId;
         this.showBadgeType = showBadgeType;
+        this.closetAccess = closetAccess;
     }
 
     @Builder
@@ -66,5 +69,6 @@ public class UserSimpleResponseDto {
         this.socialType = user.getSocialType();
         this.socialId = user.getSocialId();
         this.showBadgeType = user.getShowBadgeType();
+        this.closetAccess = user.getClosetAccess();
     }
 }
