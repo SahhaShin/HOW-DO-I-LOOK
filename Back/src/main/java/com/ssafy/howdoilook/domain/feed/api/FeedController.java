@@ -53,8 +53,10 @@ public class FeedController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Long> saveFeed(@RequestPart FeedSaveRequestDto feedSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails, @RequestPart("s3upload") List<MultipartFile> multipartFileList){
-        Long id = feedService.saveFeed(feedSaveRequestDto,userDetails,multipartFileList);
+    public ResponseEntity<Long> saveFeed(@RequestPart FeedSaveRequestDto feedSaveRequestDto, @RequestPart("s3upload") List<MultipartFile> multipartFileList){
+//    public ResponseEntity<Long> saveFeed(@RequestPart FeedSaveRequestDto feedSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails, @RequestPart("s3upload") List<MultipartFile> multipartFileList){
+        Long id = feedService.saveFeed(feedSaveRequestDto, multipartFileList);
+//        Long id = feedService.saveFeed(feedSaveRequestDto,userDetails,multipartFileList);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }

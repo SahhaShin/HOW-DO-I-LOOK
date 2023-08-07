@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.feedLike.controller;
+package com.ssafy.howdoilook.domain.feedLike.api;
 
 import com.ssafy.howdoilook.domain.feedLike.dto.request.FeedLikeDeleteRequestDto;
 import com.ssafy.howdoilook.domain.feedLike.dto.request.FeedLikeSaveRequestDto;
@@ -18,8 +18,11 @@ public class FeedLikeController {
 
     private final FeedLikeService feedLikeService;
     @PostMapping("")
-    public ResponseEntity<Long> saveFeedLike(@RequestBody FeedLikeSaveRequestDto feedLikeSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails){
-        Long id = feedLikeService.saveFeedLike(feedLikeSaveRequestDto,userDetails);
+    public ResponseEntity<Long> saveFeedLike(@RequestBody FeedLikeSaveRequestDto feedLikeSaveRequestDto) {
+//    public ResponseEntity<Long> saveFeedLike(@RequestBody FeedLikeSaveRequestDto feedLikeSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails){
+
+        Long id = feedLikeService.saveFeedLike(feedLikeSaveRequestDto);
+//        Long id = feedLikeService.saveFeedLike(feedLikeSaveRequestDto,userDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 

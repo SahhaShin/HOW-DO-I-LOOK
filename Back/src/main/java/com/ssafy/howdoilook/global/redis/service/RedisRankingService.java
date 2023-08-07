@@ -71,23 +71,32 @@ public class RedisRankingService {
     public List<RankingResponseDto> getBadgeOwnerList(String likeType) {
         List<User> userList = userRepository.findAll();
 
-        Long badgeCnt = (long) (userList.size() / 2);
+        Long badgeCnt = (long) (userList.size() / 10);
+
+        if(badgeCnt == 0)
+            badgeCnt = 1L;
 
         ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
 
         Set<String> badgeSet = zSetOperations.range(likeType, 0, badgeCnt - 1);
         Set<ZSetOperations.TypedTuple<String>> rankingWithScores = zSetOperations.reverseRangeWithScores(likeType, 0, -1);
 
+        System.out.println("rankingWithScores = " + rankingWithScores);
+        
         List<Long> valueList = new ArrayList<>();
 
         for (ZSetOperations.TypedTuple<String> tuple : rankingWithScores)
             valueList.add(tuple.getScore().longValue());
 
+        
+        
         List<String> badgeList = new ArrayList<>(badgeSet);
-
+        System.out.println("badgeList = " + badgeList);
+        
         List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
 
         for(int i=0; i<badgeList.size(); i++) {
+            System.out.println("badgeList.get(i) = " + badgeList.get(i));
             User user = userRepository.findById(Long.parseLong(badgeList.get(i))).get();
 
             RankingResponseDto rankingResponseDto = RankingResponseDto.builder()

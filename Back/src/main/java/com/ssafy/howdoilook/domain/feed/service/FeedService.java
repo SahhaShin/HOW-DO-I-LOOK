@@ -90,8 +90,10 @@ public class FeedService {
     }
 
     @Transactional
-    public Long saveFeed(FeedSaveRequestDto feedSaveRequestDto, UserDetails userDetails, List<MultipartFile> multipartFileList) {
-        authorizationService.auth(feedSaveRequestDto.getUserId(), userDetails);
+    public Long saveFeed(FeedSaveRequestDto feedSaveRequestDto, List<MultipartFile> multipartFileList) {
+//    public Long saveFeed(FeedSaveRequestDto feedSaveRequestDto, UserDetails userDetails, List<MultipartFile> multipartFileList) {
+
+//        authorizationService.auth(feedSaveRequestDto.getUserId(), userDetails);
 
         for (int i = 0; i < multipartFileList.size(); i++) {
             try {
