@@ -8,9 +8,9 @@ import Swal from "sweetalert2";
 export const action = {
 
     // 새로운 피드 등록 X : formdata에 아무것도 안들어옴 
-    addFeed : createAsyncThunk("FeedSlice/addFeed", async(formdata:newFeed, thunkAPI)=>{
-        console.log(JSON.stringify(formdata));
-        await axios.post(`${process.env.REACT_APP_SERVER}/api/feed`, formdata, {
+    addFeed : createAsyncThunk("FeedSlice/addFeed", async(newFeed, thunkAPI)=>{
+        console.log(newFeed);
+        await axios.post(`${process.env.REACT_APP_SERVER}/api/feed`, newFeed, {
         headers: {
           "Content-Type": "multipart/form-data",
         }
