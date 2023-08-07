@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //css
 import mypageStyle from "./Mypage.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollowModalOpen} from "../../../store/MypageSlice";
+import {action, changeFollowModalOpen} from "../../../store/MypageSlice";
 import {changeDetailModalOpen} from "../../../store/FeedSlice";
+
+import {useParams} from 'react-router-dom'
 
 //컴포넌트
 import MypageHeader from '../../../components/user/my_page/MypageHeader';
@@ -22,12 +24,18 @@ import Footer from "../../../components/util/Footer";
 
 const Mypage = () => {
 
-    console.log(11);
-
     //redux 관리
     let state = useSelector((state:any)=>state.mypage);
     let state_feed = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
+
+    const { targetUserId } = useParams();
+
+    useEffect(() => {
+        // 임시로 로그인유저, 타겟 유저 설정 :
+        dispatch(action.getLoginUser(1));
+        dispatch(action.getTargetUser(targetUserId));
+      }, []);
 
     return(
         <>
