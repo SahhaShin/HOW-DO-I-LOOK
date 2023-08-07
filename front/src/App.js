@@ -19,8 +19,8 @@ import Live from "./pages/streaming/live/Live"
 import Login from "./pages/user/login/Login";
 import Signin from "./pages/user/login/Signin";
 import AuthSignin from "./pages/user/login/AuthSignin"
-import Header from "./components/util/Header"
 import Home from "./pages/home/Home"
+import Ranking from "./pages/sns/rank/Ranking";
 
 function App() {
   return (
@@ -40,6 +40,7 @@ function App() {
             <Route path="/user/log-in" element={<Login/>}/>
             <Route path="/user/sign-up" element={<Signin/>}/>
             <Route path="/auth2/sign-up"  element={<AuthSignin/>}/>
+            <Route path="/Ranking" element={<Ranking/>} />
             {/* <Route path="/"  element={<Header/>}/> */}
           </Routes>
         </Router>
