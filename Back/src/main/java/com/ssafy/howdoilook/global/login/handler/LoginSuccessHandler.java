@@ -40,6 +40,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         httpServletResponse.addHeader(jwtService.getAccessHeader(), accessToken);
         httpServletResponse.addHeader(jwtService.getRefreshHeader(), refreshToken);
+        httpServletResponse.addHeader("new_basic_user_email", email);
 
         Cookie emailCookie = new Cookie("new_basic_user_email", email);
         emailCookie.setMaxAge(600);
