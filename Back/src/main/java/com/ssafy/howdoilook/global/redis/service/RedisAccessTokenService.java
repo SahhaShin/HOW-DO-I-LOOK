@@ -19,10 +19,10 @@ public class RedisAccessTokenService {
     * Key-Value 설정
     * */
     @Transactional
-    public void setRedisAccessToken(String accessToken) {
+    public void setRedisAccessToken(String accessToken, String type) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
-        valueOperations.set("[BlackList] : " + accessToken, "logout", Duration.ofMinutes(1440));
+        valueOperations.set("[BlackList] : " + accessToken, type, Duration.ofMinutes(1440));
     }
 
 

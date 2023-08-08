@@ -43,9 +43,9 @@ public class UserService {
 
     private final RedisAccessTokenService redisAccessTokenService;
 
-    private final BadgeRepository badgeRepository;
-
     private final RedisRankingService redisRankingService;
+
+    private final BadgeRepository badgeRepository;
 
     private final ImageService imageService;
 
@@ -87,7 +87,9 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
 
-        logout(accessToken, user.getId());
+        redisRefreshTokenService.deleteRefreshToken(user.getEmail());
+        redisAccessTokenService.setRedisAccessToken(accessToken, "QUIT");
+        redisRankingService.deleteScore(id);
 
         userRepository.deleteById(user.getId());
 
@@ -102,7 +104,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
 
         redisRefreshTokenService.deleteRefreshToken(user.getEmail());
-        redisAccessTokenService.setRedisAccessToken(accessToken);
+        redisAccessTokenService.setRedisAccessToken(accessToken, "LOGOUT");
         
         return "로그아웃 성공(accessToken blacklist 추가 및 refreshToken 삭제)";
     }

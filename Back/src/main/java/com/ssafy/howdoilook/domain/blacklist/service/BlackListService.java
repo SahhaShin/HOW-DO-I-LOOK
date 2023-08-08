@@ -110,8 +110,6 @@ public class BlackListService {
             throw new AccessException("접근 권한이 없습니다.");
         }
 
-        System.out.println("!!!!!!!!!!!!");
-
         List<BlackListSelectResponseDto> blackListSelectResponseDtoList = new ArrayList<>();
 
         List<BlackList> blackList = blackListRepository.getAllBlackList(userId);
@@ -126,8 +124,6 @@ public class BlackListService {
 
             blackListSelectResponseDtoList.add(blackListSelectResponseDto);
         }
-
-        System.out.println(blackListSelectResponseDtoList.get(0));
 
         return blackListSelectResponseDtoList;
 

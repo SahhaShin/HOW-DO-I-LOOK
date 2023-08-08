@@ -36,8 +36,19 @@ public class RedisRefreshTokenService {
 
         String refreshToken = valueOperations.get(email);
 
-        redisTemplate.delete(refreshToken);
-        redisTemplate.delete(email);
+        if(refreshToken == null) {
+            System.out.println("해당 요소(Email, RefreshToken)가 Redis에 존재하지 않아서 삭제할 수 없습니다.");
+            return;
+        }
+
+        Boolean deleteRefreshTokenCheck = redisTemplate.delete(refreshToken);
+        Boolean deleteEmailCheck = redisTemplate.delete(email);
+
+        if (deleteRefreshTokenCheck && deleteEmailCheck) {
+            System.out.println("Keys deleted");
+        } else {
+            System.out.println("No keys deleted");
+        }
     }
 
     /*
