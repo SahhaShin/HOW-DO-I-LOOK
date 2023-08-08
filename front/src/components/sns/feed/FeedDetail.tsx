@@ -25,7 +25,8 @@ const FeedDetail = (props) => {
     let dispatch = useDispatch();
 
     // 유저 정보
-    const loginUser = sessionStorage.getItem("loginUser");
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+    console.log(loginUser);
     const nickname:string = "user3";
     const userId:number = 1;
 
@@ -72,32 +73,34 @@ const FeedDetail = (props) => {
     ]);
 
 
-    //like 표시에 따른 요청
-    // function likeOn(type, status){
-    //     //state.detailObjLikes.lovely
-    //     if(type==="lovely"){
-    //         if(status==0){
+    //개인 like 표시에 따른 요청
+    function likeOn(type, status){
+        //state.detailObjLikes.lovely
 
-    //         }else{
-
-    //         }
-    //     }else if(type==="natural"){
-    //         if(state)
-
-    //     }else if(type==="modern"){
-
-    //     }else if(type==="sexy"){
-
-    //     }
-
-    // }
+        if(status===0){
+            dispatch(action.feedLike({feedId:props.feedId, userId:loginUser.id, type:type}));
+        }else{
+            dispatch(action.deleteLike({feedId:props.feedId, userId:loginUser.id, type:type}));
+        }
+    }
 
     useEffect(()=>{
-        dispatch(action.getFeedLikeOnMe({userId:loginUser.userId, feedId:props.feedId}));
-        dispatch(calTotalFeedLikes());
-    },[state.detailObjLikes])
+        dispatch(action.getFeedLikeOnMe({userId:loginUser.id, feedId:props.feedId}));
 
-    console.log(state.detailObjLikes);
+        let data = {size:0, page:0};
+        dispatch(action.getFeedTotalList(data));
+        
+    },[state.likeOk])
+
+    useEffect(()=>{
+        dispatch(calTotalFeedLikes());
+    },[state.feedTotalObj.feedLikeCountResponseDto])
+
+    useEffect(()=>{
+        dispatch(action.getComment(props.feedId));
+    },[])
+
+    console.log(`state.detailObjLikes ${state.detailObjLikes?.lovelyType}`);
     console.log(state.totalDetailObjLikes);
 
     return(
@@ -188,10 +191,10 @@ const FeedDetail = (props) => {
 
                 {/* 좋아요 4가지 - 0과 1 구분하는 거 다시하고, 좋아요 저장 삭제도 구현해야함 */}
                 <div className={`${FeedDetailStyle.likeBtns}`}>
-                    {state.detailObjLikes?.lovelyType!==null?<button onClick={()=>{likeOn("lovely", state.totalDetailObjLikes?.lovely)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>:<button className={`${FeedDetailStyle.lovelyOff}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>}
-                    {state.detailObjLikes?.naturalType!==null?<button onClick={()=>{likeOn("natural", state.totalDetailObjLikes?.natural)}} className={`${FeedDetailStyle.naturalOn}`}>Natural ({state.totalDetailObjLikes?.natural})</button>:<button className={`${FeedDetailStyle.naturalOff}`}>Natural ({state.totalDetailObjLikes?.natural})</button>}
-                    {state.detailObjLikes?.modernType!==null?<button onClick={()=>{likeOn("modern", state.totalDetailObjLikes?.modern)}} className={`${FeedDetailStyle.modernOn}`}>Modern ({state.totalDetailObjLikes?.modern})</button>:<button className={`${FeedDetailStyle.modernOff}`}>Modern ({state.totalDetailObjLikes?.modern})</button>}
-                    {state.detailObjLikes?.sexyType!==null?<button onClick={()=>{likeOn("sexy", state.totalDetailObjLikes?.sexy)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>:<button className={`${FeedDetailStyle.sexyOff}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>}
+                    {state.detailObjLikes?.lovelyType!==null?<button onClick={()=>{likeOn("LOVELY", state.totalDetailObjLikes?.lovely)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>:<button onClick={()=>{likeOn("LOVELY", state.totalDetailObjLikes?.lovely)}} className={`${FeedDetailStyle.lovelyOff}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>}
+                    {state.detailObjLikes?.naturalType!==null?<button onClick={()=>{likeOn("NATURAL", state.totalDetailObjLikes?.natural)}} className={`${FeedDetailStyle.naturalOn}`}>Natural ({state.totalDetailObjLikes?.natural})</button>:<button onClick={()=>{likeOn("NATURAL", state.totalDetailObjLikes?.natural)}} className={`${FeedDetailStyle.naturalOff}`}>Natural ({state.totalDetailObjLikes?.natural})</button>}
+                    {state.detailObjLikes?.modernType!==null?<button onClick={()=>{likeOn("MODERN", state.totalDetailObjLikes?.modern)}} className={`${FeedDetailStyle.modernOn}`}>Modern ({state.totalDetailObjLikes?.modern})</button>:<button onClick={()=>{likeOn("MODERN", state.totalDetailObjLikes?.modern)}} className={`${FeedDetailStyle.modernOff}`}>Modern ({state.totalDetailObjLikes?.modern})</button>}
+                    {state.detailObjLikes?.sexyType!==null?<button onClick={()=>{likeOn("SEXY", state.totalDetailObjLikes?.sexy)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>:<button onClick={()=>{likeOn("SEXY", state.totalDetailObjLikes?.sexy)}} className={`${FeedDetailStyle.sexyOff}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>}
                 </div>
 
 
@@ -207,7 +210,7 @@ const FeedDetail = (props) => {
                     <div className={`${FeedDetailStyle.oneComment}`}>
                         {
                             // 주 댓글
-                            mainCmt?.map((one)=>{
+                            state.commentList.map((one)=>{
                                 return(
                                     <div>
                                         <div className={`${FeedDetailStyle.cmtLine}`}>
@@ -218,7 +221,8 @@ const FeedDetail = (props) => {
                                                         <div className={`${FeedDetailStyle.profileCircle_G2}`}>
                                                             <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
                                                         </div>
-                                                        <p>{one.nickname}</p>
+                                                        {/* 백에서 바꿔주면 nickName으로 고쳐야함 */}
+                                                        <p>{one.userId}</p>
                                                     </div>
                                                 </div>
 

@@ -70,7 +70,7 @@ export const action = {
        
         try{
             const token = await CheckToken();
-            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`,{
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`,{
                 headers:{"Authorization":token}
             });
             
@@ -91,7 +91,8 @@ export const action = {
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedlike?userId=${userId}&feedId=${feedId}`,{
                 headers:{"Authorization":token}
             });
-            console.log(`개인 좋아요 정보! ${response.data}`);
+
+            console.log(`내가 조아한다고!! ${response.data}`);
             return response.data;
         } catch(e){
             console.log(e);
@@ -99,6 +100,67 @@ export const action = {
         }
     }),
 
+
+    // 피드 좋아요 등록 post O
+    feedLike : createAsyncThunk("FeedSlice/feedLike", async({feedId, userId, type}:registLike, thunkAPI)=>{
+        console.log(`post ${feedId} ${userId} ${type}`);
+        const token = await CheckToken();
+        await axios.post(`${process.env.REACT_APP_SERVER}/api/feedlike`, {feedId, userId, type}, {
+        headers: {
+          "Authorization" : token,
+        }
+        
+      }).then((res)=>{
+        return type;
+      }).catch((e)=>{console.log(e)})
+    }),
+
+
+    // 피드 좋아요 취소 delete O
+    deleteLike : createAsyncThunk("FeedSlice/feedNoLike", async({feedId, userId, type}:registLike, thunkAPI)=>{
+       console.log(`delete ${feedId} ${userId} ${type}`);
+        try{
+            const token = await CheckToken();
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feedlike`,{
+                headers:{"Authorization":token},
+                data : {"feedId":feedId, "userId":userId, "type":type},
+            });
+            
+            return type;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
+
+    //댓글 읽어들이기
+    getComment : createAsyncThunk("FeedSlice/getComment", async(feedId, thunkAPI)=>{
+        console.log(`${feedId}`);
+        try{
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/comment/${feedId}?size=20&page=0`,{
+                headers:{"Authorization":token}
+            });
+
+            console.log(`댓글이당!! ${response.data}`);
+
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
+}
+
+
+// 피드 좋아요 취소 폼
+interface registLike{
+    feedId : number,
+    userId : number,
+    type : string
 }
 
 //새로운 사진 등록 시 폼
@@ -209,6 +271,13 @@ interface totalFeed{
     numberOfElements: number,
     empty: boolean
 }
+interface comment{
+    "commentId": number,
+    "userId": number,
+    "feedId": number,
+    "parentCommentId": number|null, //대댓글일 때만 작성
+    "content": string
+}
 
 
 interface Feed{
@@ -227,14 +296,16 @@ interface Feed{
     totalDetailObjLikes : specificFeedTotalLikes|null,
     modifyModalOpen:boolean,
     modifyHashtagList:string[],
+    commentList: comment[],
     feedAddOk:boolean,
+    likeOk:boolean,
 }
 
 // 초기화
 //isFollow : 팔로우 여부
 //sortType : 1 all 2 following
 //createType : 1 사진추가 2 마무리
-// detailObjectLikes : 나만 누른 라이크 갯수 정보
+// detailObjLikes : 나만 누른 라이크 갯수 정보
 // totalDetailObjLikes : 모든 사람이 누른 라이크 갯수 정보
 // feedTotalObj : 피드 정보를 받아오면 오브젝트 형태로 들어감 (주로 content를 씀)
 const initialState:Feed = {
@@ -253,7 +324,9 @@ const initialState:Feed = {
     totalDetailObjLikes:null,
     modifyModalOpen:false,
     modifyHashtagList:[],
-    feedAddOk:false,
+    commentList : [], //댓글 리스트
+    feedAddOk:false, //피드 등록 시 ok라는 신호를 보내는 용도
+    likeOk:false,
 }
 
 
@@ -309,7 +382,7 @@ const FeedSlice = createSlice({
             }
         },
         calTotalFeedLikes(state){
-            state.totalDetailObjLikes = state.detailObj.feedLikeCountResponseDto;
+            state.totalDetailObjLikes = state.detailObj?.feedLikeCountResponseDto;
             console.log(state.totalDetailObjLikes);
         }
     },
@@ -342,9 +415,21 @@ const FeedSlice = createSlice({
             }
         })
 
+        builder.addCase(action.getComment.fulfilled,(state,action)=>{
+            state.commentList=action.payload.content;
+        })
+
         builder.addCase(action.getFeedLikeOnMe.fulfilled,(state,action)=>{
             state.detailObjLikes = action.payload; //내가 누른 좋아요 정보
-            console.log(state.detailObjLikes);
+            console.log(`네기 젛이힌디거!! 2 ${action.payload.sexyType}`);
+        })
+
+        builder.addCase(action.feedLike.fulfilled,(state,action)=>{
+            state.likeOk = true;
+        })
+
+        builder.addCase(action.deleteLike.fulfilled,(state,action)=>{
+            state.likeOk=false;
         })
     }
 });

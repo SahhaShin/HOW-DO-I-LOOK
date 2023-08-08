@@ -137,7 +137,7 @@ const FeedSlot = () => {
                                     {/* 이 버튼을 누르면 댓글 창으로 이동 -> 특정 피드 아이디 전달 */}
                                     {/* dispatch(action.getFeedLikeOnMe({"userId":loginUser.id, "feedId":oneFeed.feedId})); 이거 제외 */}
                                     <img src={process.env.PUBLIC_URL+`/img/feed/comment.png`} onClick={async()=>{dispatch(changeDetailModalOpen(true)); dispatch(changeDetailFeedId(oneFeed.feedId));}}/>
-                                    <p>1개</p>
+                                    <p>{oneFeed.commentCount}</p>
                                 </div>
                                 {oneFeed.userId===loginUser.id?<div className={`${feedSlotStyle.feedBtns}`}>
                                     <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId)); dispatch(action.getFeedLikeOnMe({userId:oneFeed.userId,feedId:oneFeed.feedId}));}}>수정</button>

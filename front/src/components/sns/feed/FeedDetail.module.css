@@ -332,6 +332,8 @@
     /* 전체 댓글 대댓글 */
     width: 600px;
     height: 305px;
+
+    overflow: auto;
 }
 .cmtLine{
     /* 위치 */
