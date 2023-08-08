@@ -29,6 +29,11 @@ const Ranking = () => {
         dispatch(action_ranking.getRankingList("LOVELY"));
     }, [])
 
+    // 로딩 컴포넌트 필요함
+    // if (state.rankingList.length === 0) {
+    //     return <div>Loading...</div>;
+    // }
+
     // useMemo(() => {
     //     return dispatch(action_ranking.getRankingList("LOVELY"))
     // }, [state.rankingList])
@@ -98,14 +103,14 @@ const Ranking = () => {
                     )}
                    
                     {/* 페이지네이션   20을 {clothes.length}로 바꿔야 함 */}
-                    <div className={`${rankingStyle.paginationContainer}`}>
+                    {/* <div className={`${rankingStyle.paginationContainer}`}>
                         <Pagination
                             total={20}
                             limit={limit}
                             page={page}
                             setPage={setPage}
                         />
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
