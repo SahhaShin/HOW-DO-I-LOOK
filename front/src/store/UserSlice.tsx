@@ -37,7 +37,7 @@ export const action = {
       const email = getCookie("new_social_user_email");
 
       //만약 추가정보를 입력하지 않고 시간이 오래 지났을 시
-      if (typeof email == "undefined") {
+      if (typeof email == "undefined" || typeof email === null) {
         alert("시간이 지나 쿠키가 만료되었습니다. 다시 시도해 주십시오.");
         alert(`${process.env.REACT_APP_FRONT}/user/log-in`);
         window.location.href = `${process.env.REACT_APP_FRONT}/user/log-in`;
@@ -79,17 +79,17 @@ export const action = {
         data: formdata,
       })
         .then((response) => {
-          console.log(response.data);
-          console.log(response.headers);
-          console.log(
-            "header : " + response.headers.get("Authorization-Refresh")
-          );
+          // console.log(response.data);
+          // console.log(response.headers);
+          // console.log(
+          //   "header : " + response.headers.get("Authorization-Refresh")
+          // );
           const refresh = response.headers.get("Authorization-Refresh");
           setCookie("Authorization-Refresh", refresh, {
             path: "/",
             maxAge: 3600 * 24 * 2 * 7,
           });
-          console.log("header : " + response.headers.get("authorization"));
+          // console.log("header : " + response.headers.get("authorization"));
           const authorization = response.headers.get("Authorization");
           setCookie("Authorization", authorization, {
             path: "/",
@@ -115,7 +115,7 @@ export const action = {
   CheckToken: createAsyncThunk(`UserSlice/CheckToken`, async (thunkAPI) => {
     let basic_email = getCookie("new_basic_user_emai");
     //만약 리프레시 토큰이 만료 되었을 시
-    if (typeof basic_email == "undefined") {
+    if (typeof basic_email == "undefined" || typeof basic_email === null) {
       return null;
     }
 
@@ -126,7 +126,7 @@ export const action = {
     }
     let accessToken = "Bearer " + getCookie("Authorization-Refresh");
     //만약 엑세스 토큰만 만료 되었을 시
-    if (typeof accessToken == "undefined") {
+    if (typeof accessToken == "undefined" || typeof accessToken === null) {
       return await axios({
         method: "get",
         url: `${process.env.REACT_APP_SERVER}/api/user/jwt`,
@@ -134,16 +134,16 @@ export const action = {
       })
         .then((response) => {
           const result = response.data;
-          console.log("res.data : " + result);
-          console.log(
-            "header : " + response.headers.get("Authorization-Refresh")
-          );
+          // console.log("res.data : " + result);
+          // console.log(
+          //   "header : " + response.headers.get("Authorization-Refresh")
+          // );
           const refresh = response.headers.get("Authorization-Refresh");
           setCookie("Authorization-Refresh", refresh, {
             path: "/",
             maxAge: 3600 * 24 * 2 * 7,
           });
-          console.log("header : " + response.headers.get("authorization"));
+          // console.log("header : " + response.headers.get("authorization"));
           const authorization = response.headers.get("Authorization");
           setCookie("Authorization", authorization, {
             path: "/",
@@ -172,6 +172,10 @@ export const action = {
         removeCookie("Authorization", { path: "/" });
         removeCookie("new_basic_user_email", { path: "/" });
         removeCookie("new_social_user_email", { path: "/" });
+
+        // Session에 로그인 유저 정보 삭제
+        sessionStorage.removeItem("loginUser");
+
         window.location.href = `${process.env.REACT_APP_FRONT}/user/log-in`;
 
         return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
@@ -186,25 +190,25 @@ export const action = {
     `UserSlice/GetUserInfo`,
     async (email: string, thunkAPI) => {
       let Token = "Bearer " + getCookie("Authorization");
-      //만약 리프레시 토큰이 만료 되었을 시
-      console.log("email : " + email);
+
       return await axios({
         method: "get",
         url: `${process.env.REACT_APP_SERVER}/api/user/getuserbyemail/${email}`,
         headers: { Authorization: Token },
       })
         .then((response) => {
-          console.log("res.data from Action : ");
-          console.log(response.data);
+          // console.log("res.data from Action : ");
+          // console.log(response.data);
           removeCookie("new_basic_user_email", { path: "/" });
           removeCookie("new_social_user_email", { path: "/" });
-          console.log("res.data from Session : ");
-          window.localStorage.setItem(
-            "userInfo",
+          console.log("res.data from Sesㄴㄷ채sion : ");
+
+          window.sessionStorage.setItem(
+            "loginUser",
             JSON.stringify(response.data)
           );
-          const userInfo = window.localStorage.getItem("userInfo");
-          console.log(userInfo);
+          const userInfo = JSON.parse(window.sessionStorage.getItem("loginUser"));
+          // console.log(userInfo);
           return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {

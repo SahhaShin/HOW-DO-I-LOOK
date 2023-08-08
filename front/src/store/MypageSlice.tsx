@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import {useDispatch} from "react-redux"
 
-
+import {CheckToken} from "../hook/UserApi"
 
 // 임시
 interface Users{
@@ -300,7 +300,13 @@ export const action = {
     // 블랙리스트 조회
     getBlackList : createAsyncThunk(`MypageSlice/getBlackList`, async(userId) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/blacklist/list/${userId}`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/blacklist/list/${userId}`, {
+                headers: {
+                    "Authorization": token
+                }
+            });
 
             return response.data;
         } catch(e) {
@@ -456,7 +462,10 @@ const MypageSlice = createSlice({
         })
 
         builder.addCase(action.getBlackList.fulfilled, (state, action) => {
+            console.log("??")
+            console.log(action.payload)
             state.blackListUsers = action.payload;
+            console.log(state.blackListUsers)
         })
 
         builder.addCase(action.deleteBlackList.fulfilled, (state, action) => {
