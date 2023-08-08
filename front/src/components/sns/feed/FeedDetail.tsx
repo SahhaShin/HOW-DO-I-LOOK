@@ -26,9 +26,6 @@ const FeedDetail = (props) => {
 
     // 유저 정보
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
-    console.log(loginUser);
-    const nickname:string = "user3";
-    const userId:number = 1;
 
     // 슬라이드 설정
     const settings = {
@@ -50,16 +47,6 @@ const FeedDetail = (props) => {
         content:string,
     }
 
-    let [mainCmt, setMainCmt] = useState<comment[]|null>([
-        {
-            mainCmtNo:1,
-            dateTime:"23.07.19 09:10",
-            id:"user1",
-            nickname:"user1",
-            // profile:null,
-            content:"타는거 진짜 싫어요 ㅠㅠ",
-        },
-    ]);
     let [subCmt, setSubCmt] = useState<comment[]|null>([
         {
             mainCmtNo:1,
@@ -84,6 +71,7 @@ const FeedDetail = (props) => {
         }
     }
 
+
     useEffect(()=>{
         dispatch(action.getFeedLikeOnMe({userId:loginUser.id, feedId:props.feedId}));
 
@@ -98,7 +86,7 @@ const FeedDetail = (props) => {
 
     useEffect(()=>{
         dispatch(action.getComment(props.feedId));
-    },[])
+    },[state.commentList])
 
     console.log(`state.detailObjLikes ${state.detailObjLikes?.lovelyType}`);
     console.log(state.totalDetailObjLikes);
@@ -168,7 +156,7 @@ const FeedDetail = (props) => {
                     {/* comment, count, button */}
                     <div className={`${FeedDetailStyle.footer}`}>
                         {
-                            userId===state.detailObj?.userId?
+                            loginUser.id===state.detailObj?.userId?
                             <div className={`${FeedDetailStyle.feedBtns}`}>
                                 <button>수정</button>
                                 <button>삭제</button>
@@ -204,7 +192,7 @@ const FeedDetail = (props) => {
                     {/* 댓글 상황 */}
                     <div className={`${FeedDetailStyle.commentCnt}`}>
                         <p>유저 댓글</p>
-                        <p>2개</p>
+                        {/* <p>2개</p> */}
                     </div>
 
                     <div className={`${FeedDetailStyle.oneComment}`}>
@@ -244,7 +232,7 @@ const FeedDetail = (props) => {
                                                 <div className={`${FeedDetailStyle.btnAndDate}`}>
                                                     <div className={`${FeedDetailStyle.rightBtns}`}>
                                                         <button>수정</button>
-                                                        <button>삭제</button>
+                                                        <button onClick={()=>dispatch(action.deleteComment(one.commentId))}>삭제</button>
                                                     </div>
                                                     <div className={`${FeedDetailStyle.btnDate}`}>{one.dateTime}</div>
                                                 </div>

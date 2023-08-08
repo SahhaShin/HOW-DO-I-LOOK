@@ -134,7 +134,7 @@ export const action = {
     }),
 
 
-    //댓글 읽어들이기
+    //댓글 읽어들이기 O
     getComment : createAsyncThunk("FeedSlice/getComment", async(feedId, thunkAPI)=>{
         console.log(`${feedId}`);
         try{
@@ -144,7 +144,39 @@ export const action = {
                 headers:{"Authorization":token}
             });
 
-            console.log(`댓글이당!! ${response.data}`);
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
+    //댓글 수정 X
+    updateComment : createAsyncThunk("FeedSlice/updateComment", async({commentId, comment}, thunkAPI)=>{
+        console.log(`${commentId}`);
+        try{
+            const token = await CheckToken();
+
+            const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/comment/${commentId}`,{comment},{
+                headers:{"Authorization":token}
+            });
+
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
+    // 댓글 삭제 O
+    deleteComment : createAsyncThunk("FeedSlice/deleteComment", async(commentId, thunkAPI)=>{
+        console.log(`${commentId}`);
+        try{
+            const token = await CheckToken();
+
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/comment/${commentId}`,{
+                headers:{"Authorization":token}
+            });
 
             return response.data;
         } catch(e){
@@ -400,7 +432,7 @@ const FeedSlice = createSlice({
             Swal.fire({
                 icon: 'success',
                 title: '삭제 완료',
-                text: '피드가 성공적으로 삭제되었습니다.',
+                text: '피드가 삭제되었습니다.',
                 confirmButtonColor: '#4570F5',
             })
 
@@ -417,6 +449,24 @@ const FeedSlice = createSlice({
 
         builder.addCase(action.getComment.fulfilled,(state,action)=>{
             state.commentList=action.payload.content;
+        })
+
+        builder.addCase(action.deleteComment.fulfilled,(state,action)=>{
+
+            //리스트에서 해당 댓글 삭제
+            for(let i=0;i<state.commentList.length;i++){
+                if(state.commentList[i].commentId == action.payload){
+                    state.commentList.splice(i,1);
+                    break;
+                }
+            }
+
+            Swal.fire({
+                icon: 'success',
+                title: '삭제 완료',
+                text: '댓글이 삭제되었습니다.',
+                confirmButtonColor: '#4570F5',
+            })
         })
 
         builder.addCase(action.getFeedLikeOnMe.fulfilled,(state,action)=>{
