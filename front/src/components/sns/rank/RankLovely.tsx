@@ -154,7 +154,7 @@ const RankingLovely = () => {
                 {/* 그 이하 순위 */}
                 <div className={`${rankingStyle.etcRanker}`}>
                     {
-                        state.rankingList?.map((oneUser, idx)=>{
+                        state.partRankingList?.map((oneUser, idx)=>{
                             
                         return(
                             
