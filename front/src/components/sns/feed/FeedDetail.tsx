@@ -27,6 +27,9 @@ const FeedDetail = (props) => {
     // 유저 정보
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
+    // 댓글인풋
+    const [commentInput, setCommentInput] = useState<string>("");
+
     // 슬라이드 설정
     const settings = {
         dots:true,
@@ -71,6 +74,25 @@ const FeedDetail = (props) => {
         }
     }
 
+    //댓글 등록 
+    function addComment(){
+        dispatch(action.addComment({
+            userId:loginUser.id,
+            feedId:state.detailObj.feedId,
+            parentId:null,
+            content:commentInput,
+        }))
+
+        setCommentInput("");
+    }
+
+    // 엔터 쳐도 댓글 등록
+    function activeEnter(e){
+        if(e.key==="Enter"){
+            addComment();
+        }
+    }
+
 
     useEffect(()=>{
         dispatch(action.getFeedLikeOnMe({userId:loginUser.id, feedId:props.feedId}));
@@ -86,7 +108,7 @@ const FeedDetail = (props) => {
 
     useEffect(()=>{
         dispatch(action.getComment(props.feedId));
-    },[state.commentList])
+    },[state.addCommentOk])
 
     console.log(`state.detailObjLikes ${state.detailObjLikes?.lovelyType}`);
     console.log(state.totalDetailObjLikes);
@@ -291,8 +313,9 @@ const FeedDetail = (props) => {
                     {/* 댓글쓰는 칸 */}
                     <div className={`${FeedDetailStyle.writeCommentWrapper}`}>
                         <div className={`${FeedDetailStyle.writeComment}`}>
-                            <input/>
-                            <button>게시</button>
+                            <input value={commentInput} onChange={(e)=>{setCommentInput(e.target.value)}} onKeyDown={(e)=>{activeEnter(e)}}/>
+                            {/* {userId, feedId, parentId, content} */}
+                            <button onClick={()=>{addComment()}} >게시</button>
                         </div>
                     </div>
                 </div>

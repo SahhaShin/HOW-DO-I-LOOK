@@ -170,11 +170,26 @@ export const action = {
 
     // 댓글 삭제 O
     deleteComment : createAsyncThunk("FeedSlice/deleteComment", async(commentId, thunkAPI)=>{
-        console.log(`${commentId}`);
         try{
             const token = await CheckToken();
 
             const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/comment/${commentId}`,{
+                headers:{"Authorization":token}
+            });
+
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
+    //댓글 등록
+    addComment : createAsyncThunk("FeedSlice/addComment", async({userId, feedId, parentId, content}, thunkAPI)=>{
+        try{
+            const token = await CheckToken();
+
+            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/comment`,{userId, feedId, parentId, content},{
                 headers:{"Authorization":token}
             });
 
@@ -331,6 +346,7 @@ interface Feed{
     commentList: comment[],
     feedAddOk:boolean,
     likeOk:boolean,
+    addCommentOk:boolean
 }
 
 // 초기화
@@ -359,6 +375,7 @@ const initialState:Feed = {
     commentList : [], //댓글 리스트
     feedAddOk:false, //피드 등록 시 ok라는 신호를 보내는 용도
     likeOk:false,
+    addCommentOk:false,
 }
 
 
@@ -461,6 +478,9 @@ const FeedSlice = createSlice({
                 }
             }
 
+            state.addCommentOk = true;
+            state.addCommentOk = false;
+
             Swal.fire({
                 icon: 'success',
                 title: '삭제 완료',
@@ -468,6 +488,15 @@ const FeedSlice = createSlice({
                 confirmButtonColor: '#4570F5',
             })
         })
+
+        //댓글달기
+        builder.addCase(action.addComment.fulfilled,(state,action)=>{
+            //commentPK값 준다.
+            console.log(action.payload);
+            state.addCommentOk = true;
+            state.addCommentOk = false;
+        })
+
 
         builder.addCase(action.getFeedLikeOnMe.fulfilled,(state,action)=>{
             state.detailObjLikes = action.payload; //내가 누른 좋아요 정보

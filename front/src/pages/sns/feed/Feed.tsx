@@ -35,7 +35,7 @@ const Feed = () => {
 
     useEffect(()=>{
         dispatch(calTotalFeedLikes());
-    },[state.feedTotalObj])
+    },[state.feedTotalObj, state.addCommentOk])
 
     return(
         <>
