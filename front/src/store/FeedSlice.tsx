@@ -177,7 +177,7 @@ export const action = {
                 headers:{"Authorization":token}
             });
 
-            return response.data;
+            return commentId;
         } catch(e){
             console.log(e);
             throw e;
@@ -471,15 +471,14 @@ const FeedSlice = createSlice({
         builder.addCase(action.deleteComment.fulfilled,(state,action)=>{
 
             //리스트에서 해당 댓글 삭제
+            console.log(action.payload);
             for(let i=0;i<state.commentList.length;i++){
                 if(state.commentList[i].commentId == action.payload){
+                    console.log(i);
                     state.commentList.splice(i,1);
                     break;
                 }
             }
-
-            state.addCommentOk = true;
-            state.addCommentOk = false;
 
             Swal.fire({
                 icon: 'success',
@@ -493,8 +492,8 @@ const FeedSlice = createSlice({
         builder.addCase(action.addComment.fulfilled,(state,action)=>{
             //commentPK값 준다.
             console.log(action.payload);
-            state.addCommentOk = true;
-            state.addCommentOk = false;
+            if(state.addCommentOk===true) state.addCommentOk=false;
+            else state.addCommentOk=true;
         })
 
 

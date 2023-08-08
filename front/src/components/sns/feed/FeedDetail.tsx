@@ -95,18 +95,22 @@ const FeedDetail = (props) => {
 
 
     useEffect(()=>{
+        // 내 좋아요 기록
         dispatch(action.getFeedLikeOnMe({userId:loginUser.id, feedId:props.feedId}));
 
+        // 전체 피드 가져옴 (갯수가 있어서)
         let data = {size:0, page:0};
         dispatch(action.getFeedTotalList(data));
         
     },[state.likeOk])
 
     useEffect(()=>{
+        // 전체 피드 가져오면 그 안에 like 만 추출해서 계산
         dispatch(calTotalFeedLikes());
     },[state.feedTotalObj.feedLikeCountResponseDto])
 
     useEffect(()=>{
+        // 댓글 가져오기
         dispatch(action.getComment(props.feedId));
     },[state.addCommentOk])
 

@@ -31,7 +31,7 @@ const Feed = () => {
     useEffect(()=>{
         let data = {size:0, page:0};
         dispatch(action.getFeedTotalList(data));
-    },[state.feedAddOk, state.likeOk])
+    },[state.feedAddOk, state.likeOk, state.addCommentOk, state.commentList])
 
     useEffect(()=>{
         dispatch(calTotalFeedLikes());
