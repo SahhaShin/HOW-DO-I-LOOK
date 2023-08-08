@@ -12,6 +12,9 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+// alert창
+import Swal from "sweetalert2";
+
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action, changeFollow, changeDetailModalOpen, calTotalFeedLikes} from "../../../store/FeedSlice";
@@ -97,6 +100,31 @@ const FeedDetail = (props) => {
         if(e.key==="Enter"){
             addComment();
         }
+    }
+
+
+    //피드 삭제 함수
+    function deleteFeed(feedId){
+        Swal.fire({
+            icon: "question",
+            title: "삭제",
+            text: `삭제 하시겠습니까??`,
+            showCancelButton: true,
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소",
+            confirmButtonColor:'#4570F5',
+            customClass: {
+                confirmButton: FeedDetailStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+                cancelButton: FeedDetailStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+              }
+        }).then((res) => {
+            if (res.isConfirmed) {
+                dispatch(action.deleteFeed(feedId));
+            }
+            else{
+                
+            }
+        });
     }
 
     useEffect(()=>{
@@ -193,7 +221,7 @@ const FeedDetail = (props) => {
                             loginUser.id===state.detailObj?.userId?
                             <div className={`${FeedDetailStyle.feedBtns}`}>
                                 <button>수정</button>
-                                <button>삭제</button>
+                                <button onClick={()=>deleteFeed(state.detailObj?.feedId)}>삭제</button>
                             </div>:null
                         }
                     </div>

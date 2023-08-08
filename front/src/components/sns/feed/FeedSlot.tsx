@@ -67,7 +67,7 @@ const FeedSlot = () => {
 
     return(   
         <>
-            {
+            {  state.feedTotalObj?.content.length!==0?
                 state.feedTotalObj?.content.map((oneFeed, idx)=>{
                     
                     return(
@@ -152,7 +152,7 @@ const FeedSlot = () => {
                             <div className={`${feedSlotStyle.hr}`}></div>
                         </div>
                     );
-                })
+                }):<div className={`${feedSlotStyle.noresult}`}>검색 결과가 없습니다.</div>
                 
             }
         </>     

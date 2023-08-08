@@ -230,6 +230,7 @@ interface search{
     page:number
 }
 
+
 // 피드 좋아요 취소 폼
 interface registLike{
     feedId : number,
@@ -399,7 +400,7 @@ const initialState:Feed = {
     totalDetailObjLikes:null,
     modifyModalOpen:false,
     modifyHashtagList:[],
-    commentList : [], //댓글 리스트
+    commentList :[], //댓글 리스트
     feedAddOk:false, //피드 등록 시 ok라는 신호를 보내는 용도
     likeOk:false,
     addCommentOk:false,
@@ -544,6 +545,8 @@ const FeedSlice = createSlice({
             state.feedTotalObj = action.payload;
             console.log(state.feedTotalObj);
         })
+
+       
     }
 });
 
