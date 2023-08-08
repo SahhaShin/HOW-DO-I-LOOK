@@ -545,6 +545,8 @@ const MypageSlice = createSlice({
 
         builder.addCase(action_mypage.getFeedList.fulfilled, (state, action) => {
             state.feedList = action.payload;
+            console.log(state.feedList);
+            console.log(action.payload);
         })
 
         builder.addCase(action_mypage.getLikeFeedList.fulfilled, (state, action) => {
