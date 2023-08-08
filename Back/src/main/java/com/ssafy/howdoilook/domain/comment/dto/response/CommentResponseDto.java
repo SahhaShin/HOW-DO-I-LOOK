@@ -10,7 +10,7 @@ public class CommentResponseDto {
     //작성자
     private Long userId;
     //닉네임
-    private String userNickName;
+    private String userNickname;
     //피드아이디
     private Long feedId;
     //부모댓글아이디
@@ -19,10 +19,10 @@ public class CommentResponseDto {
     private String content;
 
     @Builder
-    public CommentResponseDto(Long commentId, Long userId, String userNickName, Long feedId, Long parentCommentId, String content) {
+    public CommentResponseDto(Long commentId, Long userId, String userNickname, Long feedId, Long parentCommentId, String content) {
         this.commentId = commentId;
         this.userId = userId;
-        this.userNickName = userNickName;
+        this.userNickname = userNickname;
         this.feedId = feedId;
         this.parentCommentId = parentCommentId;
         this.content = content;
