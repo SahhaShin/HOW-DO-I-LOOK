@@ -153,17 +153,20 @@ const FeedDetail = (props) => {
 
                     {/* image */}
                     <div className={`${FeedDetailStyle.image}`}>
-                        <StyledSlider {...settings}>
+                        {//detailObj
+                            <StyledSlider {...settings}>
                             {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${FeedDetailStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/feed/fasion1.jpg`}/>
-                            </div>
-
-                            <div className={`${FeedDetailStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/feed/fasion2.jpg`}/>
-                            </div>
-
+                            {
+                                state.detailObj.photoResponseDtoList?.map((onePhoto)=>{
+                                    return(
+                                        <div className={`${FeedDetailStyle.slide}`}>
+                                            <img src={onePhoto.link}/>
+                                        </div>
+                                    );
+                                })
+                            }
                         </StyledSlider>
+                        }
                     </div>
 
                     {/* content */}
