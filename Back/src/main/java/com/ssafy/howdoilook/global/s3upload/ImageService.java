@@ -6,7 +6,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
-import org.opencv.core.*;
+//import org.opencv.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -29,8 +29,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
+//import org.opencv.imgcodecs.Imgcodecs;
+//import org.opencv.imgproc.Imgproc;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,18 +42,16 @@ public class ImageService {
     private String apiKey;
 
     // AILabTools API key
-    private static final String AILabToolsApiKey = "ipsWjTMN35Y4kSBJcndaUVKwHJkjUXHlts1grROSTc7CfeG8AEQZ0PpQAbIyoyLz";
+    private static final String AILabToolsApiKey = "";
 
     @Autowired
     AmazonS3Client amazonS3Client;
 
-    public String saveImage(MultipartFile multipartFile) throws IOException {
+    public String saveImage2(MultipartFile multipartFile) throws IOException {
 
         if(multipartFile.isEmpty()) {
             throw new IllegalArgumentException("사진이 없으면 사진을 저장할 수 없습니다.");
         }
-
-        byte[] resultImageBytes = removeImageBackground(multipartFile);
 
         String originalName = multipartFile.getOriginalFilename(); // 파일 이름
 
@@ -336,83 +334,11 @@ public class ImageService {
 //        return originalName + formatDate;
 //    }
 
+
     /**
      * AILabTools API를 이용하여 이미지 배경 제거 후 S3에 저장하는 메서드
      */
-//    public String saveImage(MultipartFile multipartFile) throws IOException {
-//
-//        if (multipartFile.isEmpty()) {
-//            throw new IllegalArgumentException("사진이 없으면 사진을 저장할 수 없습니다.");
-//        }
-//
-//        // 이미지 배경 제거
-//        byte[] resultImageBytes = removeImageBackground(multipartFile);
-//
-//        // 파일명 중복을 피하기 위해 날짜 추가
-//        String originalName = multipartFile.getOriginalFilename();
-//        String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("-yyyyMMdd-HHmmss"));
-//        String fileName = originalName + formatDate;
-//
-//        long size = resultImageBytes.length; // 파일 크기
-//
-//        ObjectMetadata objectMetaData = new ObjectMetadata();
-//        objectMetaData.setContentType(multipartFile.getContentType());
-//        objectMetaData.setContentLength(size);
-//
-//        try {
-//            // S3에 업로드
-//            amazonS3Client.putObject(
-//                    new PutObjectRequest(S3Bucket, fileName, new ByteArrayInputStream(resultImageBytes), objectMetaData)
-//                            .withCannedAcl(CannedAccessControlList.PublicRead)
-//            );
-//        } catch (AmazonClientException e) {
-//            throw new RuntimeException("S3에 이미지를 업로드하는데 실패했습니다.", e);
-//        }
-//
-//        String imagePath = amazonS3Client.getUrl(S3Bucket, fileName).toString(); // 접근 가능한 URL 가져오기
-//
-//        if (imagePath == null) {
-//            throw new IllegalArgumentException("이미지 경로를 가져오지 못하였습니다.");
-//        }
-//
-//        return imagePath;
-//    }
-//
-//    /**
-//     * AILabTools API를 이용하여 이미지 배경 제거 메서드
-//     */
-//    private byte[] removeImageBackground(MultipartFile multipartFile) throws IOException {
-//
-//        String removeBgUrl = "https://www.ailabapi.com/api/cutout/general/furniture-background-removal"; // AILabTools API url
-//
-//        // AILabTools API 요청에 필요한 헤더 설정
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-//        headers.set("Authorization", "Bearer " + AILabToolsApiKey);
-//
-//        // AILabTools API 요청에 필요한 파라미터 설정
-//        MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();
-//        requestBody.add("image_file", new ByteArrayResource(multipartFile.getBytes()) {
-//            @Override
-//            public String getFilename() {
-//                return multipartFile.getOriginalFilename();
-//            }
-//        });
-//
-//        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-//
-//        // AILabTools API 호출
-//        RestTemplate restTemplate = new RestTemplate();
-//        ResponseEntity<byte[]> response = restTemplate.postForEntity(removeBgUrl, requestEntity, byte[].class);
-//
-//        if (response.getStatusCode().is2xxSuccessful()) {
-//            return response.getBody();
-//        } else {
-//            throw new RuntimeException("AILabTools API 호출이 실패했습니다.");
-//        }
-//    }
-
-    public String saveImage3(MultipartFile multipartFile) throws IOException {
+    public String saveImage(MultipartFile multipartFile) throws IOException {
 
         if (multipartFile.isEmpty()) {
             throw new IllegalArgumentException("사진이 없으면 사진을 저장할 수 없습니다.");
@@ -435,7 +361,7 @@ public class ImageService {
         try {
             // S3에 업로드
             amazonS3Client.putObject(
-                    new PutObjectRequest(S3Bucket, fileName, new ByteArrayResource(resultImageBytes), objectMetaData)
+                    new PutObjectRequest(S3Bucket, fileName, new ByteArrayInputStream(resultImageBytes), objectMetaData)
                             .withCannedAcl(CannedAccessControlList.PublicRead)
             );
         } catch (AmazonClientException e) {
@@ -456,7 +382,7 @@ public class ImageService {
      */
     private byte[] removeImageBackground(MultipartFile multipartFile) throws IOException {
 
-        String removeBgUrl = "https://api.ailabtools.com/remove_background"; // AILabTools API url
+        String removeBgUrl = "https://www.ailabapi.com/api/cutout/general/furniture-background-removal"; // AILabTools API url
 
         // AILabTools API 요청에 필요한 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -484,4 +410,6 @@ public class ImageService {
             throw new RuntimeException("AILabTools API 호출이 실패했습니다.");
         }
     }
+
+
 }
