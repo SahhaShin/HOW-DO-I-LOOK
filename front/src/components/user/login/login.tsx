@@ -41,8 +41,8 @@ const Login: React.FC = () => {
   };
 
   const socialLoginClick = (brand) => {
-    console.log("브랜드 로그인");
-    console.log("brand : " + brand);
+    // console.log("브랜드 로그인");
+    // console.log("brand : " + brand);
     // socialLogin(brand);
 
     const ApiUrl = "http://localhost:8081/oauth2/authorization/";
@@ -51,93 +51,95 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className={`${loginStyle}`}>
-      <h1>로그인</h1>
-      <form onSubmit={login} className={`${loginStyle.login}`}>
-        <div>
+    <div className={`${loginStyle.total}`}>
+      <div className={`${loginStyle.loginWrapper}`}>
+        <h1>로그인</h1>
+        <form onSubmit={login} className={`${loginStyle.login}`}>
           <div>
-            <label htmlFor="email" className={`${loginStyle.lable}`}>
-              <p>이메일</p>
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="이메일을 입력해주세요"
-              className={`${loginStyle.input}`}
-              onChange={(e) => setemail(e.target.value)}
-            />
+            <div>
+              <label htmlFor="email" className={`${loginStyle.lable}`}>
+                <p>이메일</p>
+              </label>
+              <input
+                type="email"
+                id="email"
+                placeholder="이메일을 입력해주세요"
+                className={`${loginStyle.input}`}
+                onChange={(e) => setemail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="userPW" className={`${loginStyle.lable}`}>
+                <p>비밀번호</p>
+              </label>
+              <input
+                type="password"
+                id="userPW"
+                placeholder="비밀번호를 입력해주세요"
+                className={`${loginStyle.input}`}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="userPW" className={`${loginStyle.lable}`}>
-              <p>비밀번호</p>
-            </label>
-            <input
-              type="password"
-              id="userPW"
-              placeholder="비밀번호를 입력해주세요"
-              className={`${loginStyle.input}`}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-        </div>
 
-        <div>
-          <div className={`${loginStyle.rememberID}`}>
-            {/* <input type="checkbox" id="rememberID" onChange={(e) => setRememberID(e.target.value)}/>
-            <label htmlFor="rememberID">
-              <p>아이디 저장</p>
-            </label> */}
+          <div>
+            <div className={`${loginStyle.rememberID}`}>
+              {/* <input type="checkbox" id="rememberID" onChange={(e) => setRememberID(e.target.value)}/>
+              <label htmlFor="rememberID">
+                <p>아이디 저장</p>
+              </label> */}
+            </div>
+            <input
+              type="button"
+              value={"로그인"}
+              className={`${loginStyle.submit}`}
+              onClick={(e) => {
+                loginClick(e);
+              }}
+            />
           </div>
-          <input
-            type="button"
-            value={"로그인"}
-            className={`${loginStyle.submit}`}
-            onClick={(e) => {
-              loginClick(e);
-            }}
-          />
+        </form>
+        <div>
+          <a href={process.env.REACT_APP_FRONT + `/user/sign-up`} className={`${loginStyle.signin}`}>
+            혹시 아직 회원이 아니십니까? <strong>회원가입</strong>
+          </a>
         </div>
-      </form>
-      <div>
-        <a href={process.env.REACT_APP_FRONT + `/user/sign-up`} className={`${loginStyle.signin}`}>
-          혹시 아직 회원이 아니십니까? <strong>회원가입</strong>
-        </a>
-      </div>
-      <div className={`${loginStyle.line}`}>소셜 로그인</div>
-      <div className={`${loginStyle.social}`}>
-        <button
-          type="button"
-          onClick={(e) => {
-            socialLoginClick("google", e);
-          }}
-        >
-          <img
-            src={process.env.PUBLIC_URL + `/img/login/google.png`}
-            alt="구글 로그인"
-          />
-        </button>
-        <button
-          type="button"
-          onClick={(e) => {
-            socialLoginClick("naver", e);
-          }}
-        >
-          <img
-            src={process.env.PUBLIC_URL + `/img/login/naver.png`}
-            alt="네이버 로그인"
-          />
-        </button>
-        <button
-          type="button"
-          onClick={(e) => {
-            socialLoginClick("kakao", e);
-          }}
-        >
-          <img
-            src={process.env.PUBLIC_URL + `/img/login/kakao.png`}
-            alt="카카오 로그인"
-          />
-        </button>
+        <div className={`${loginStyle.line}`}>소셜 로그인</div>
+        <div className={`${loginStyle.social}`}>
+          <button
+            type="button"
+            onClick={(e) => {
+              socialLoginClick("google", e);
+            }}
+          >
+            <img
+              src={process.env.PUBLIC_URL + `/img/login/google.png`}
+              alt="구글 로그인"
+            />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              socialLoginClick("naver", e);
+            }}
+          >
+            <img
+              src={process.env.PUBLIC_URL + `/img/login/naver.png`}
+              alt="네이버 로그인"
+            />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              socialLoginClick("kakao", e);
+            }}
+          >
+            <img
+              src={process.env.PUBLIC_URL + `/img/login/kakao.png`}
+              alt="카카오 로그인"
+            />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 //css
-//import closetStyle from "./Login.css";
+import loginStyle from "./Login.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
@@ -9,7 +9,7 @@ import {action} from "../../../store/UserSlice";
 
 //컴포넌트
 import Login from "../../../components/user/login/login";
-import Header from "../../../components/util/Header";
+// import Header from "../../../components/util/Header";
 
 
 
@@ -24,8 +24,8 @@ const LoginPage = () => {
 
 
     return(
-        <div>
-            <Header></Header>
+        <div className={`${loginStyle.container}`}>
+            {/* <Header></Header> */}
             <Login></Login>
 
         </div>

@@ -23,6 +23,9 @@
   --sexyBtn:#E91E63;
 }
 
+*{
+  font-family: 'Pretendard-Regular';
+}
 
 .App {
   text-align: center;

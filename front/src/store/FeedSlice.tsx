@@ -4,14 +4,20 @@ import axios from "axios";
 // alert창
 import Swal from "sweetalert2";
 
+// 시큐리티 토큰
+import {CheckToken} from "../hook/UserApi";
+
 // axios
 export const action = {
 
     // 새로운 피드 등록 X : formdata에 아무것도 안들어옴 
     addFeed : createAsyncThunk("FeedSlice/addFeed", async(newFeed, thunkAPI)=>{
-        console.log(newFeed);
+        
+        const token = await CheckToken();
+
         await axios.post(`${process.env.REACT_APP_SERVER}/api/feed`, newFeed, {
         headers: {
+          "Authorization" : token,
           "Content-Type": "multipart/form-data",
         }
         
@@ -31,9 +37,13 @@ export const action = {
     //피드 전체 리스트 가져오기 O
     getFeedTotalList : createAsyncThunk("FeedSlice/getFeedList", async({size, page}, thunkAPI)=>{
         
+        const token = await CheckToken();
+
         try{
             console.log(`${size} ${page}`);
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`,{
+                "Authorization" : token,
+            });
             return response.data;
         } catch(e){
             console.log(e);
