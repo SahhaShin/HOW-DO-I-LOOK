@@ -184,7 +184,7 @@ export const action = {
         }
     }),
 
-    //댓글 등록
+    //댓글 등록 O
     addComment : createAsyncThunk("FeedSlice/addComment", async({userId, feedId, parentId, content}, thunkAPI)=>{
         try{
             const token = await CheckToken();
@@ -200,8 +200,35 @@ export const action = {
         }
     }),
 
+
+    // 피드 해시태그 검색
+    //querystring으로 offset,page, hashtag 값 넘겨주기, hashtag 값은 중복해서 넘기기 가능
+    // ex)?hashtag=신발&hashtag=조던&size=2&page=0
+    searchHash : createAsyncThunk("FeedSlice/searchHash", async({hashtag, size, page}:search, thunkAPI)=>{
+        try{
+            const token = await CheckToken();
+            console.log(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}&size=${size}&page=${page}`);
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}&size=${size}&page=${page}`,{
+                headers:{"Authorization":token}
+            });
+
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
 }
 
+
+//검색 폼
+interface search{
+    hashtag:string, //해시태그 리스트형이 아닌 정제한 줄줄이 스테이트먼트
+    size:number,
+    page:number
+}
 
 // 피드 좋아요 취소 폼
 interface registLike{
@@ -510,6 +537,12 @@ const FeedSlice = createSlice({
         builder.addCase(action.deleteLike.fulfilled,(state,action)=>{
             if(state.likeOk===true) state.likeOk = false;
             else state.likeOk = true;
+        })
+
+        // 해시태그 검색 
+        builder.addCase(action.searchHash.fulfilled,(state,action)=>{
+            state.feedTotalObj = action.payload;
+            console.log(state.feedTotalObj);
         })
     }
 });
