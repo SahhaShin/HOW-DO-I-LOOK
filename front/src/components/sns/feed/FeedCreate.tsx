@@ -64,6 +64,7 @@ const FeedCreate = () => {
             //이전으로 이동한 페이지가 0보다 작지 않으면,
             //이전에 등록했던 사진과 해시태그가 있다면 셋팅해준다.
             if(page>=0){
+                // console.log(page);//0
                 setImgSrc(imageSrcList[page-1]);
                 setHashtags(objectListHash[page-1].hashtagList); //null 문제
             }
@@ -71,6 +72,7 @@ const FeedCreate = () => {
     }
 
     //다음 페이지로 이동
+    // 다음누르고 이전갔다가 업로드 누르면 해시태그가 2번 저장되는 이슈가 있다.
     function nextPage(end:boolean){
         // 페이지 이동 전에 사진이 등록되었는지 확인한다.
         if(imgSrc===''){
@@ -84,42 +86,51 @@ const FeedCreate = () => {
             if(imageSrcList.length>page){
 
                 // 사진 등록(백엔드에 보낼 사진리스트에)
-                const newImageSrcList = [...imageSrcList];
-                newImageSrcList.splice(page,1,imgSrc);
-                setImageSrcList(newImageSrcList);
-                console.log(newImageSrcList);
+                if(imgSrc!==null){
+                    const newImageSrcList = [...imageSrcList];
+                    newImageSrcList.splice(page,1,imgSrc);
+                    setImageSrcList(newImageSrcList);
+                    console.log(newImageSrcList);
+                }
 
-                const newImageFileList = [...imageFileList];
-                newImageFileList.splice(page,1,imgFile);
-                setImageFileList(newImageFileList);
-                console.log(newImageFileList);
+                if(imgFile!==null){
 
-                // 해시태그 리스트에 등록 -> 리스트에 객체 형식으로 들어가야함
-                //해시태그 하나도 안달았을 때 빈리스트 들어가는지 확인해야함
-                const newObjectListHash = [...objectListHash];
-                newObjectListHash.splice(page,1,{hashtagList:hashtags});
-                setObjectListHash(newObjectListHash);
-                console.log(newObjectListHash);
+                    const newImageFileList = [...imageFileList];
+                    newImageFileList.splice(page,1,imgFile);
+                    setImageFileList(newImageFileList);
+                    console.log(newImageFileList);
 
 
-                if(end) {
-                    setUploadEnd(true);
-                    return;
-                }    
+                    // 해시태그 리스트에 등록 -> 리스트에 객체 형식으로 들어가야함
+                    //해시태그 하나도 안달았을 때 빈리스트 들어가는지 확인해야함
+                    const newObjectListHash = [...objectListHash];
+                    newObjectListHash.splice(page,1,{hashtagList:hashtags});
+                    setObjectListHash(newObjectListHash);
+                    console.log(`현재 내가 지우는 페이지는! ${page}`);
+                    console.log(newObjectListHash);
+                }
 
-                setPage(page+1);
+  
+                // console.log(page); //1
 
                 //다음페이지 정보 가져오기
-                console.log(`${imageSrcList.length} ${page+1}`);
                 if(imageSrcList.length>page+1){
                     setUploadEnd(false);
                     setImgSrc(imageSrcList[page+1]);
+                    console.log(imageSrcList[page+1]);
                     setHashtags(objectListHash[page+1].hashtagList); //null 문제 주의
                 }else{
                     setImgSrc('');
                     setImaFile(null);
                     setHashtags([]);
                 }
+
+                if(end) {
+                    setUploadEnd(true);
+                    return;
+                }  
+
+                setPage(page+1);
 
             }else{
                 //새로운 페이지라 사진을 등록해야함
@@ -130,10 +141,12 @@ const FeedCreate = () => {
                 const obj = {hashtagList:hashtags};//객체 안의 리스트로 만들기
                 setObjectListHash((objectListHash)=>[...objectListHash,obj]);
 
+                // 마무리 버튼을 눌렀다.
                 if(end) {
                     setUploadEnd(true);
                     return;
                 }
+
                 setPage(page+1);
                 setUploadEnd(false);
 
@@ -161,12 +174,10 @@ const FeedCreate = () => {
         
 
         //전체 해시태그를 넣어줘야 한다.
+        setHashtags([]); // 마지막으로 본게 hashtag에 남아있어서 계속 마지막으로 본 해시태그가 하나 더 추가되는 이슈가 있었다. 빈 어레이로 만들어주면 해결
         for(let i=0;i<objectListHash.length;i++){
-            console.log(objectListHash);
             for(let j in objectListHash[i].hashtagList){
-                console.log(objectListHash[i].length);
                 setHashtags((hashtags)=>[...hashtags, objectListHash[i].hashtagList[j]]);
-                console.log(objectListHash[i].hashtagList[j]);
             }
         }
         
@@ -228,7 +239,7 @@ const FeedCreate = () => {
         setStatement(e.target.value);
     }
 
-    function makeNewFeed(){
+    async function makeNewFeed(){
         //피드 생성 state
         let newFeed = {
             feedSaveRequestDto:{
@@ -249,21 +260,37 @@ const FeedCreate = () => {
 
         if(newFeed.feedSaveRequestDto.photoSaveRequestDtoList.length>0){
             formdata.append("feedSaveRequestDto", new Blob([JSON.stringify(newFeed.feedSaveRequestDto)],{type: "application/json"}));
-            formdata.append("s3upload",imageFileList);
+            // formdata.append("s3upload",imageFileList);
 
             // imageFileList를 순회하며 formdata에 이미지 파일들을 추가
             for (let i = 0; i < imageFileList.length; i++) {
-                formdata.append("s3upload", imageFileList[i]);
+                const file = imageFileList[i];
+                if (file instanceof File) {
+                    console.log(file);
+                    formdata.append("s3upload", file);
+                }
             }
+            
 
-            dispatch(action.addFeed(formdata));
+            // 폼 객체 key 와 value 값을 순회.
+            let entries = formdata.entries();
+            for (const pair of entries) {
+                console.log(pair[0]+ ', ' + pair[1]); 
+            }
+            sendFormdata(formdata);
         }
+    }
+
+    async function sendFormdata(formdata){
+        console.log(formdata);
+        dispatch(action.addFeed(formdata));
     }
 
 
 
+
     useEffect(()=>{
-        console.log("render");
+        // console.log("render");
     },[page, uploadEnd, hashtags])
 
 
