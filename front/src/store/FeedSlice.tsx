@@ -39,6 +39,8 @@ export const action = {
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`,{
                 headers:{"Authorization":token}
             });
+
+            console.log(response.data);
             return response.data;
         } catch(e){
             console.log(e);
@@ -67,8 +69,11 @@ export const action = {
     readFeed : createAsyncThunk("FeedSlice/readFeed", async(feedId, thunkAPI)=>{
        
         try{
-            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
-            console.log(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
+            const token = await CheckToken();
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`,{
+                headers:{"Authorization":token}
+            });
+            
             return response.data;
         } catch(e){
             console.log(e);
@@ -80,9 +85,13 @@ export const action = {
     getFeedLikeOnMe : createAsyncThunk("FeedSlice/getFeedLikeOnMe", async({userId, feedId}, thunkAPI)=>{
         console.log(`${userId} ${feedId}`);
         try{
-            
+            const token = await CheckToken();
             // http://localhost:8081/api/feedlike?userId=1&feedId=3
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedlike?userId=${userId}&feedId=${feedId}`);
+            //sexyType:SEXY, lovelyType:null 등으로 보여짐
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedlike?userId=${userId}&feedId=${feedId}`,{
+                headers:{"Authorization":token}
+            });
+            console.log(`개인 좋아요 정보! ${response.data}`);
             return response.data;
         } catch(e){
             console.log(e);
@@ -106,6 +115,7 @@ interface newFeed{
     s3upload:File[],
 }
 
+// 피드 내가 누른 좋아요 현황
 interface specificFeedLikes{
     feedLikeCountResponseDto:{
         natural:string|null,
@@ -114,11 +124,23 @@ interface specificFeedLikes{
         modern:string|null
     }
 }
+
+// 피드 전체 좋아요 수
+interface specificFeedTotalLikes{
+    feedLikeCountResponseDto:{
+        natural:number,
+        lovely:number,
+        sexy:number,
+        modern:number
+    }
+}
 interface specificFeed{
     content: {
             userId: number,
+            userNickname:string,
             feedId: number,
             feedContent: string,
+            commentCount : number,
             feedCreatedDate: string,
             feedUpdateDate: string,
             photoResponseDtoList: [
@@ -202,15 +224,19 @@ interface Feed{
     detailFeedId : number,
     detailObj:specificFeed|null, //특정 피드 정보
     detailObjLikes:specificFeedLikes|null,
-    totalDetailObjLikes : specificFeedLikes|null,
+    totalDetailObjLikes : specificFeedTotalLikes|null,
     modifyModalOpen:boolean,
     modifyHashtagList:string[],
+    feedAddOk:boolean,
 }
 
 // 초기화
 //isFollow : 팔로우 여부
 //sortType : 1 all 2 following
 //createType : 1 사진추가 2 마무리
+// detailObjectLikes : 나만 누른 라이크 갯수 정보
+// totalDetailObjLikes : 모든 사람이 누른 라이크 갯수 정보
+// feedTotalObj : 피드 정보를 받아오면 오브젝트 형태로 들어감 (주로 content를 씀)
 const initialState:Feed = {
     isFollow : false,
     detailModalOpen : false,
@@ -226,7 +252,8 @@ const initialState:Feed = {
     detailObjLikes:null,
     totalDetailObjLikes:null,
     modifyModalOpen:false,
-    modifyHashtagList:[]
+    modifyHashtagList:[],
+    feedAddOk:false,
 }
 
 
@@ -267,6 +294,8 @@ const FeedSlice = createSlice({
             for(let i=0;i<state.feedTotalObj?.content.length;i++){
                 if(state.feedTotalObj?.content[i].feedId===action.payload){
                     state.detailObj = state.feedTotalObj?.content[i];
+                    console.log(`여기야!! ${i}`);
+                    break;
                 }
             }
         },
@@ -287,6 +316,7 @@ const FeedSlice = createSlice({
     extraReducers:(builder) => {
         builder.addCase(action.addFeed.fulfilled,(state,action)=>{
             state.createModalOpen=false;
+            state.feedAddOk = true;
         })
 
         builder.addCase(action.getFeedTotalList.fulfilled,(state,action)=>{

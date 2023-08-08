@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //css
 import FeedDetailStyle from "./FeedDetail.module.css";
@@ -14,17 +14,18 @@ import 'slick-carousel/slick/slick-theme.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollow, changeDetailModalOpen} from "../../../store/FeedSlice";
+import {action, changeFollow, changeDetailModalOpen, calTotalFeedLikes} from "../../../store/FeedSlice";
 
-const FeedDetail = (feedId) => {
+const FeedDetail = (props) => {
 
-    console.log(feedId);
+    console.log(props.feedId);
 
     //redux 관리
     let state = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
 
     // 유저 정보
+    const loginUser = sessionStorage.getItem("loginUser");
     const nickname:string = "user3";
     const userId:number = 1;
 
@@ -91,7 +92,13 @@ const FeedDetail = (feedId) => {
 
     // }
 
-    console.log(state.detailObj?.photoResponseDtoList);
+    useEffect(()=>{
+        dispatch(action.getFeedLikeOnMe({userId:loginUser.userId, feedId:props.feedId}));
+        dispatch(calTotalFeedLikes());
+    },[state.detailObjLikes])
+
+    console.log(state.detailObjLikes);
+    console.log(state.totalDetailObjLikes);
 
     return(
         <div className={`${FeedDetailStyle.container}`}>
@@ -181,10 +188,10 @@ const FeedDetail = (feedId) => {
 
                 {/* 좋아요 4가지 - 0과 1 구분하는 거 다시하고, 좋아요 저장 삭제도 구현해야함 */}
                 <div className={`${FeedDetailStyle.likeBtns}`}>
-                    {state.detailObjLikes?.lovelyType!==null?<button onClick={()=>{likeOn("lovely", state.totalDetailObjLikes.lovely)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely ({state.totalDetailObjLikes.lovely}){state.totalDetailObjLikes.lovely}개</button>:<button className={`${FeedDetailStyle.lovelyOff}`}>Lovely ({state.totalDetailObjLikes.lovely})</button>}
-                    {state.detailObjLikes?.naturalType!==null?<button onClick={()=>{likeOn("natural", state.totalDetailObjLikes.natural)}} className={`${FeedDetailStyle.naturalOn}`}>Natural ({state.totalDetailObjLikes.natural})</button>:<button className={`${FeedDetailStyle.naturalOff}`}>Natural ({state.totalDetailObjLikes.natural})</button>}
-                    {state.detailObjLikes?.modernType!==null?<button onClick={()=>{likeOn("modern", state.totalDetailObjLikes.modern)}} className={`${FeedDetailStyle.modernOn}`}>Modern ({state.totalDetailObjLikes.modern})</button>:<button className={`${FeedDetailStyle.modernOff}`}>Modern ({state.totalDetailObjLikes.modern})</button>}
-                    {state.detailObjLikes?.sexyType!==null?<button onClick={()=>{likeOn("sexy", state.totalDetailObjLikes.sexy)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy ({state.totalDetailObjLikes.sexy})</button>:<button className={`${FeedDetailStyle.sexyOff}`}>Sexy ({state.totalDetailObjLikes.sexy})</button>}
+                    {state.detailObjLikes?.lovelyType!==null?<button onClick={()=>{likeOn("lovely", state.totalDetailObjLikes?.lovely)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>:<button className={`${FeedDetailStyle.lovelyOff}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>}
+                    {state.detailObjLikes?.naturalType!==null?<button onClick={()=>{likeOn("natural", state.totalDetailObjLikes?.natural)}} className={`${FeedDetailStyle.naturalOn}`}>Natural ({state.totalDetailObjLikes?.natural})</button>:<button className={`${FeedDetailStyle.naturalOff}`}>Natural ({state.totalDetailObjLikes?.natural})</button>}
+                    {state.detailObjLikes?.modernType!==null?<button onClick={()=>{likeOn("modern", state.totalDetailObjLikes?.modern)}} className={`${FeedDetailStyle.modernOn}`}>Modern ({state.totalDetailObjLikes?.modern})</button>:<button className={`${FeedDetailStyle.modernOff}`}>Modern ({state.totalDetailObjLikes?.modern})</button>}
+                    {state.detailObjLikes?.sexyType!==null?<button onClick={()=>{likeOn("sexy", state.totalDetailObjLikes?.sexy)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>:<button className={`${FeedDetailStyle.sexyOff}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>}
                 </div>
 
 

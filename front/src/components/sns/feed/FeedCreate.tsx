@@ -260,7 +260,6 @@ const FeedCreate = () => {
 
         if(newFeed.feedSaveRequestDto.photoSaveRequestDtoList.length>0){
             formdata.append("feedSaveRequestDto", new Blob([JSON.stringify(newFeed.feedSaveRequestDto)],{type: "application/json"}));
-            // formdata.append("s3upload",imageFileList);
 
             // imageFileList를 순회하며 formdata에 이미지 파일들을 추가
             for (let i = 0; i < imageFileList.length; i++) {
@@ -284,7 +283,7 @@ const FeedCreate = () => {
     async function sendFormdata(formdata){
         console.log(formdata);
         dispatch(action.addFeed(formdata));
-        
+
         let data = {size:0, page:0};
         dispatch(action.getFeedTotalList(data));
     }
