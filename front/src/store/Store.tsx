@@ -8,6 +8,7 @@ import UtilSlice from "./UtilSlice";
 import ChatSlice from "./ChatSlice";
 import UserSlice from "./UserSlice";
 import RankingSlice from "./RankingSlice";
+import FollowSlice from "./FollowSlice";
 
 
 //reducer 등록
@@ -20,5 +21,6 @@ export const store = configureStore({
         chat:ChatSlice,
         user:UserSlice,
         rank:RankingSlice,
+        follow:FollowSlice,
     }
 });
