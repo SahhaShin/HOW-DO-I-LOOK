@@ -185,7 +185,7 @@ const FeedDetail = (props) => {
                             <StyledSlider {...settings}>
                             {/* public img는 절대 경로로 가져와야 함 */}
                             {
-                                state.detailObj.photoResponseDtoList?.map((onePhoto)=>{
+                                state.detailObj?.photoResponseDtoList?.map((onePhoto)=>{
                                     return(
                                         <div className={`${FeedDetailStyle.slide}`}>
                                             <img src={onePhoto.link}/>
