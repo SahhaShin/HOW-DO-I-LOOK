@@ -4,13 +4,21 @@ import axios from "axios";
 // alert창
 import Swal from "sweetalert2";
 
+import {CheckToken} from "../hook/UserApi"
+
 // axios
 export const action = {
 
     //채팅 리스트 불러오기 O
     getChatList : createAsyncThunk("ChatSlice/getChatList", async(userId, thunkAPI)=>{
         try{
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/soloChatRoom/${userId}`);
+            const token = await CheckToken();
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/soloChatRoom/${userId}`,{
+                headers: {
+                  "Authorization" : token
+                }
+                
+              });
             return response.data;
         } catch (e) {
             console.log(e);
@@ -22,8 +30,13 @@ export const action = {
     //파라미터 명은 dispatch 보내는 이름과 똑같아야 한다.
     enterChatRoom : createAsyncThunk("ChatSlice/enterChatRoom", async({myId, otherId}:chatRoomParticipant, thunkAPI)=>{
         try{
-            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/soloChatRoom`,
-                {userA:myId, userB:otherId}
+            const token = await CheckToken();
+            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/soloChatRoom`,{userA:myId, userB:otherId},{
+                headers: {
+                  "Authorization" : token
+                }
+                
+              }
             );
 
             return response.data;

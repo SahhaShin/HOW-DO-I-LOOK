@@ -45,10 +45,10 @@ const ChatList = () => {
 
 
     // 유저가 소통했던 채팅방 목록 보여주기
-    const userId = 1;
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
     useEffect(() => {
-        dispatch(action.getChatList(userId));
+        dispatch(action.getChatList(loginUser.id));
         setLen(state.chatList.length);
     },[])
 
