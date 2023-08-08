@@ -3,7 +3,7 @@ import rankingStyle from "./RankingLovely.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action} from "../../../store/RankingSlice";
+import {action_ranking} from "../../../store/RankingSlice";
 
 
 
@@ -13,19 +13,13 @@ const RankingNatural = () => {
     interface userInfo{
         score: number,
         nickname : string,
+        profileImg : string | null
     }
     const [rankingInfo, setRankingInfo] = useState<userInfo[]>([
         {
-            score:400,
-            nickname:"삼순이",
-        },
-        {
-            score:300,
-            nickname:"사순이",
-        },
-        {
-            score:200,
-            nickname:"오순이",
+            score:0,
+            nickname:"",
+            profileImg: "",
         }
     ]);
 

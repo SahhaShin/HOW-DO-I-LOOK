@@ -1,32 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import rankingStyle from "./RankingLovely.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action} from "../../../store/RankingSlice";
+import {action_ranking} from "../../../store/RankingSlice";
 
 
 
 const RankingLovely = () => {
 
-    interface userInfo{
-        score: number,
-        nickname : string,
+    //redux 관리
+    let state = useSelector((state: any) => state.rank);
+    let dispatch = useDispatch();
+
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+
+    console.log(state.rankingList)
+    console.log(state.rankingList[0])
+
+    // 로딩 컴포넌트 필요함
+    if (state.rankingList.length === 0) {
+        return <div>Loading...</div>;
     }
-    const [rankingInfo, setRankingInfo] = useState<userInfo[]>([
-        {
-            score:400,
-            nickname:"삼순이",
-        },
-        {
-            score:300,
-            nickname:"사순이",
-        },
-        {
-            score:200,
-            nickname:"오순이",
-        }
-    ]);
 
     return(
         <div className={`${rankingStyle.contentArea}`}>
@@ -37,30 +32,31 @@ const RankingLovely = () => {
                 {/* 2위 */}
                 <div className={`${rankingStyle.rankSet}`}>
                     <div className={`${rankingStyle.notFirst}`}>
-                        <img src={`${process.env.PUBLIC_URL}/img/ranking/cuteRanking1.jpg`}/>
+                        <img src={state.rankingList[1].profileImg}/>
                     </div>
 
-                    <div className={`${rankingStyle.score}`}>430점</div>
-                    <div className={`${rankingStyle.nickname}`}>워뇽</div>
+                    <div className={`${rankingStyle.score}`}>{state.rankingList[1].score}</div>
+                    <div className={`${rankingStyle.nickname}`}>{state.rankingList[1].nickname}</div>
                 </div>
                 
                 {/* 1위 */}
                 <div className={`${rankingStyle.rankSet}`}>
                     <div className={`${rankingStyle.first}`}>
-                        <img src={`${process.env.PUBLIC_URL}/img/ranking/cuteRanking2.jpg`}/>
+                        <img src={state.rankingList[0].profileImg}/>
+               
                     </div>
-                    <div className={`${rankingStyle.score}`}>450점</div>
-                    <div className={`${rankingStyle.nickname}`}>winter</div>
+                    <div className={`${rankingStyle.score}`}>{state.rankingList[0].score}</div>
+                    <div className={`${rankingStyle.nickname}`}>{state.rankingList[0].nickname}</div>
                 </div>
                 
                 {/* 3위 */}
                 <div className={`${rankingStyle.rankSet}`}>
                     <div className={`${rankingStyle.notFirst}`}>
-                        <img src={`${process.env.PUBLIC_URL}/img/ranking/cuteRanking3.jpg`}/>
+                        <img src={state.rankingList[2].profileImg}/>
                     </div>
 
-                    <div className={`${rankingStyle.score}`}>410점</div>
-                    <div className={`${rankingStyle.nickname}`}>하니</div>
+                    <div className={`${rankingStyle.score}`}>{state.rankingList[2].score}</div>
+                    <div className={`${rankingStyle.nickname}`}>{state.rankingList[2].nickname}</div>
                 </div>
                 
 
@@ -70,14 +66,16 @@ const RankingLovely = () => {
             {/* 그 이하 순위 */}
             <div className={`${rankingStyle.etcRanker}`}>
                 {
-                    rankingInfo.map((oneUser, idx)=>{
+                    state.rankingList?.slice(3).map((oneUser, idx)=>{
+                        
                     return(
-                        <div className={`${rankingStyle.userSlotLovely}`}>
+                        
+                        <div key={idx} className={`${rankingStyle.userSlotLovely}`}>
                             {/* 순위 / 프로필 이미지 / 닉네임 / 점수 */}
                             <div>{idx+4}위</div>
 
                             <div className={`${rankingStyle.profileImg}`}>
-                                <img src={`${process.env.PUBLIC_URL}/img/ranking/cuteRanking3.jpg`}/>
+                                <img src={oneUser.profileImg}/>
                             </div>
 
                             <div>{oneUser.nickname}</div>

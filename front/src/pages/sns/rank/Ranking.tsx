@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import rankingStyle from "./Ranking.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeRankMode} from "../../../store/RankingSlice";
+import {action_ranking, changeRankMode} from "../../../store/RankingSlice";
 
 
 // 컴포넌트
@@ -20,28 +20,22 @@ import RankingSexy from "../../../components/sns/rank/RankSexy";
 const Ranking = () => {
 
     //redux 관리
-    let state = useSelector((state:any)=>state.rank);
+    let state = useSelector((state: any) => state.rank);
     let dispatch = useDispatch();
 
-    interface userInfo{
-        score: number,
-        nickname : string,
-    }
-    const [rankingInfo, setRankingInfo] = useState<userInfo[]>([
-        {
-            score:400,
-            nickname:"삼순이",
-        },
-        {
-            score:300,
-            nickname:"사순이",
-        },
-        {
-            score:200,
-            nickname:"오순이",
-        }
-    ]);
 
+
+    useEffect(() => {
+        dispatch(action_ranking.getRankingList("LOVELY"));
+    }, [])
+
+    // useMemo(() => {
+    //     return dispatch(action_ranking.getRankingList("LOVELY"))
+    // }, [state.rankingList])
+
+    console.log(state.rankingList)
+    console.log(state.rankingList[0])
+    console.log(state.rankingList[0]?.nickname)
     //select 값 유지
     const [likeSelect, setLikeSelect] = useState<string>("lovely");
 

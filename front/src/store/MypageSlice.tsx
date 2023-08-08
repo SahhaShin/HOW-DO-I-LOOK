@@ -167,7 +167,7 @@ const initialState:Mypage = {
 
 export const action_mypage = {
     // 임시로 로그인 유저 
-    getLoginUser : createAsyncThunk(`MyPageSlice/getLoginUser`, async(userId) => {
+    getLoginUser : createAsyncThunk(`MypageSlice/getLoginUser`, async(userId) => {
         try {
             const token = await CheckToken();
 
@@ -184,7 +184,7 @@ export const action_mypage = {
     }),
 
     // 임시로 타겟 유저
-    getTargetUser : createAsyncThunk(`MyPageSlice/getTargetUser`, async(userId) => {
+    getTargetUser : createAsyncThunk(`MypageSlice/getTargetUser`, async(userId) => {
         try {
             const token = await CheckToken();
 

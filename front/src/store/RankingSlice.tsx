@@ -4,23 +4,46 @@ import Swal from "sweetalert2";
 
 import {useDispatch} from "react-redux"
 
+import {CheckToken} from "../hook/UserApi"
 
-export const action = {
-    
-    // getLoginUser : createAsyncThunk(`MyPageSlice/getLoginUser`, async(userId) => {
-    //     try {
-    //         const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/${userId}`);
- 
-    //         return response.data;
-    //     } catch(e) {
-    //         throw e;
-    //     }
-    // }),
+interface Ranking {
+    rankMode : string,
+    rankingList : rank[]
 }
 
-// rankMode : lovely, nature, modern, sexy
-const initialState = {
+interface rank {
+    userId : number,
+    email : string, 
+    score : number,
+    nickname : string,
+    profileImg : string | null,
+    rank : number,
+    likeType : string
+}
+
+const initialState:Ranking = {
+    // rankMode : lovely, nature, modern, sexy
     rankMode:"lovely",
+    rankingList:[],
+}
+
+export const action_ranking = {
+    
+    getRankingList : createAsyncThunk(`RankingSlice/getRankingList`, async(type) => {
+        const token = await CheckToken();
+
+        console.log(type)
+
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/ranking/list/${type}`, {
+            headers : {
+                "Authorization" : token,
+            }
+        });
+
+        console.log(response.data);
+
+        return response.data;
+    })
 }
 
 const RankingSlice = createSlice({
@@ -35,9 +58,12 @@ const RankingSlice = createSlice({
 
     extraReducers: (builder) => {
         
-        // builder.addCase(action.getLoginUser.fulfilled, (state, action) => {
-        //     state.loginUser = action.payload;
-        // })
+        builder.addCase(action_ranking.getRankingList.fulfilled, (state, action) => {
+            state.rankingList = action.payload;
+
+            console.log(action.payload)
+            console.log(state.rankingList)
+        })
     }
 });
 
