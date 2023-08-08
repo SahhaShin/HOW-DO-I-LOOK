@@ -30,6 +30,12 @@ const FeedDetail = (props) => {
     // 댓글인풋
     const [commentInput, setCommentInput] = useState<string>("");
 
+    //수정모드 감지
+    const [updateMode, setUpdateMode] = useState<boolean>(false);
+
+    // 수정 인풋
+    const [updateInput, setUpdateInput] = useState<string>("");
+
     // 슬라이드 설정
     const settings = {
         dots:true,
@@ -93,7 +99,6 @@ const FeedDetail = (props) => {
         }
     }
 
-
     useEffect(()=>{
         // 내 좋아요 기록
         dispatch(action.getFeedLikeOnMe({userId:loginUser.id, feedId:props.feedId}));
@@ -107,7 +112,7 @@ const FeedDetail = (props) => {
     useEffect(()=>{
         // 전체 피드 가져오면 그 안에 like 만 추출해서 계산
         dispatch(calTotalFeedLikes());
-    },[state.feedTotalObj.feedLikeCountResponseDto])
+    },[state.feedTotalList])
 
     useEffect(()=>{
         // 댓글 가져오기
@@ -204,11 +209,12 @@ const FeedDetail = (props) => {
                 </div>
 
                 {/* 좋아요 4가지 - 0과 1 구분하는 거 다시하고, 좋아요 저장 삭제도 구현해야함 */}
+                {/* state.totalDetailObjLikes?.lovely */}
                 <div className={`${FeedDetailStyle.likeBtns}`}>
-                    {state.detailObjLikes?.lovelyType!==null?<button onClick={()=>{likeOn("LOVELY", state.totalDetailObjLikes?.lovely)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>:<button onClick={()=>{likeOn("LOVELY", state.totalDetailObjLikes?.lovely)}} className={`${FeedDetailStyle.lovelyOff}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>}
-                    {state.detailObjLikes?.naturalType!==null?<button onClick={()=>{likeOn("NATURAL", state.totalDetailObjLikes?.natural)}} className={`${FeedDetailStyle.naturalOn}`}>Natural ({state.totalDetailObjLikes?.natural})</button>:<button onClick={()=>{likeOn("NATURAL", state.totalDetailObjLikes?.natural)}} className={`${FeedDetailStyle.naturalOff}`}>Natural ({state.totalDetailObjLikes?.natural})</button>}
-                    {state.detailObjLikes?.modernType!==null?<button onClick={()=>{likeOn("MODERN", state.totalDetailObjLikes?.modern)}} className={`${FeedDetailStyle.modernOn}`}>Modern ({state.totalDetailObjLikes?.modern})</button>:<button onClick={()=>{likeOn("MODERN", state.totalDetailObjLikes?.modern)}} className={`${FeedDetailStyle.modernOff}`}>Modern ({state.totalDetailObjLikes?.modern})</button>}
-                    {state.detailObjLikes?.sexyType!==null?<button onClick={()=>{likeOn("SEXY", state.totalDetailObjLikes?.sexy)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>:<button onClick={()=>{likeOn("SEXY", state.totalDetailObjLikes?.sexy)}} className={`${FeedDetailStyle.sexyOff}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>}
+                    {state.detailObjLikes?.lovelyType!==null?<button onClick={()=>{likeOn("LOVELY", 1)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>:<button onClick={()=>{likeOn("LOVELY", 0)}} className={`${FeedDetailStyle.lovelyOff}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>}
+                    {state.detailObjLikes?.naturalType!==null?<button onClick={()=>{likeOn("NATURAL", 1)}} className={`${FeedDetailStyle.naturalOn}`}>Natural ({state.totalDetailObjLikes?.natural})</button>:<button onClick={()=>{likeOn("NATURAL", 0)}} className={`${FeedDetailStyle.naturalOff}`}>Natural ({state.totalDetailObjLikes?.natural})</button>}
+                    {state.detailObjLikes?.modernType!==null?<button onClick={()=>{likeOn("MODERN", 1)}} className={`${FeedDetailStyle.modernOn}`}>Modern ({state.totalDetailObjLikes?.modern})</button>:<button onClick={()=>{likeOn("MODERN", 0)}} className={`${FeedDetailStyle.modernOff}`}>Modern ({state.totalDetailObjLikes?.modern})</button>}
+                    {state.detailObjLikes?.sexyType!==null?<button onClick={()=>{likeOn("SEXY", 1)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>:<button onClick={()=>{likeOn("SEXY", 0)}} className={`${FeedDetailStyle.sexyOff}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>}
                 </div>
 
 
@@ -240,10 +246,12 @@ const FeedDetail = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className={`${FeedDetailStyle.cmtContent}`}>
-                                                    {one.content}
-                                                </div>
-
+                                                {/* 댓글 본문 */}
+                                              
+                                                    <div className={`${FeedDetailStyle.cmtContent}`}>
+                                                        {one.content}
+                                                    </div>
+                                                
                                             </div>
 
                                             
@@ -257,10 +265,10 @@ const FeedDetail = (props) => {
                                                 {/* 수정 삭제 시간 */}
                                                 <div className={`${FeedDetailStyle.btnAndDate}`}>
                                                     <div className={`${FeedDetailStyle.rightBtns}`}>
-                                                        <button>수정</button>
+                                                        {/* <button onClick={()=>{updateComment(one.content)}}>수정</button> */}
                                                         <button onClick={()=>dispatch(action.deleteComment(one.commentId))}>삭제</button>
                                                     </div>
-                                                    <div className={`${FeedDetailStyle.btnDate}`}>{one.dateTime}</div>
+                                                    <div className={`${FeedDetailStyle.btnDate}`}>수정 시간 필요</div>
                                                 </div>
                                             </div>
                                         </div>

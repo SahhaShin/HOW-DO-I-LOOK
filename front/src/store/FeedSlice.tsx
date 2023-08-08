@@ -503,11 +503,13 @@ const FeedSlice = createSlice({
         })
 
         builder.addCase(action.feedLike.fulfilled,(state,action)=>{
-            state.likeOk = true;
+            if(state.likeOk===true) state.likeOk = false;
+            else state.likeOk = true;
         })
 
         builder.addCase(action.deleteLike.fulfilled,(state,action)=>{
-            state.likeOk=false;
+            if(state.likeOk===true) state.likeOk = false;
+            else state.likeOk = true;
         })
     }
 });
