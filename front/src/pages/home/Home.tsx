@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { action } from "../../store/UserSlice";
+import { action_user } from "../../store/UserSlice";
 
 import { getCookie } from "../../hook/Cookie";
 import { getUserInfo, CheckToken } from "../../hook/UserApi";
@@ -22,10 +22,10 @@ const Home: React.FC = () => {
     const bEmail = getCookie("new_basic_user_email");
     if (typeof sEmail != "undefined") {
       console.log("sEmail");
-      dispatch(action.GetUserInfo(sEmail));
+      dispatch(action_user.GetUserInfo(sEmail));
     } else if (typeof bEmail != "undefined") {
       console.log("bEmail");
-      dispatch(action.GetUserInfo(bEmail));
+      dispatch(action_user.GetUserInfo(bEmail));
     } else {
       //window.location.href = `${process.env.REACT_APP_FRONT}/user/log-in`;
     }

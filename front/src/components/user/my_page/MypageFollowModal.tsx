@@ -5,7 +5,7 @@ import mypageFollowModalStyle from "./MypageFollowModal.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeFollowModalOpen} from "../../../store/MypageSlice";
+import {action_mypage, changeFollowModalOpen} from "../../../store/MypageSlice";
 import {useParams} from 'react-router-dom'
 
 const MypageFollowModal = () => {
@@ -21,7 +21,7 @@ const MypageFollowModal = () => {
     }
 
     // 일단 로그인한 유저의 아이디
-  const loginUserId = 1;
+    const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
   // 내가 보고있는 유저의 아이디
   const { targetUserId } = useParams();
 
@@ -84,8 +84,8 @@ const MypageFollowModal = () => {
         if(followingData.followerId === 0 || followingData.followeeId === 0)
             return;
 
-        dispatch(action.getUserById(followingData.followeeId));
-        dispatch(action.following(followingData));
+        dispatch(action_mypage.getUserById(followingData.followeeId));
+        dispatch(action_mypage.following(followingData));
     }, [followingData])
 
     // 팔로우 끊기
@@ -93,7 +93,7 @@ const MypageFollowModal = () => {
         if(deleteFollowingData.followeeId === 0 || deleteFollowingData.followerId === 0)
             return;
 
-        dispatch(action.deleteFollowing(deleteFollowingData));
+        dispatch(action_mypage.deleteFollowing(deleteFollowingData));
     }, [deleteFollowingData])
 
     // 블랙리스트 해제
@@ -101,11 +101,11 @@ const MypageFollowModal = () => {
         if(blackListDeleteData.userId === 0 || blackListDeleteData.targetUserId === 0)
             return;
 
-        dispatch(action.deleteBlackList(blackListDeleteData));
+        dispatch(action_mypage.deleteBlackList(blackListDeleteData));
     }, [blackListDeleteData])
 
     useEffect(() => {
-        dispatch(action.getPerfectFollowList());
+        dispatch(action_mypage.getPerfectFollowList());
     }, [])
 
     // 맞팔 여부 확인
@@ -147,14 +147,14 @@ const MypageFollowModal = () => {
 
                         {/* 팔로우 버튼 */}
 
-                        {loginUserId === Number(targetUserId) ?
+                        {loginUser.id === Number(targetUserId) ?
                             <div className={`${mypageFollowModalStyle.followBtn}`}>
                             
                             {(state.followMode === 1 && checkPerfectFollow(one)) || state.followMode === 2 ? 
 
                             <button onClick={ () => {
                                 changeDeleteFollowingData(one)
-                                dispatch(action.getPerfectFollowList());
+                                dispatch(action_mypage.getPerfectFollowList());
                             }}> 끊기 </button> 
 
                             : 
@@ -165,7 +165,7 @@ const MypageFollowModal = () => {
                             
                             {state.followMode === 1 && !checkPerfectFollow(one) ? <button onClick={ () => {
                                 changeFollowingData(one);
-                                dispatch(action.getPerfectFollowList());
+                                dispatch(action_mypage.getPerfectFollowList());
                             }}> 팔로우 </button> : null}
 
                         </div>
