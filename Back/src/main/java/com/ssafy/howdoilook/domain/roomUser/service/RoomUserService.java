@@ -28,16 +28,16 @@ public class RoomUserService {
     private final RoomRepository roomRepository;
 
     @Transactional
-    public RoomUserAddResponseDto addRoomUser(Long userId, Long roomId) throws AccessException {
-//    public RoomUserAddResponseDto addRoomUser(Long userId, Long roomId, UserDetails userDetails) throws AccessException {
+    public RoomUserAddResponseDto addRoomUser(Long userId, Long roomId, UserDetails userDetails) throws AccessException {
 
-//        String clientEmail = userDetails.getUsername();
+        String clientEmail = userDetails.getUsername();
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
-//        if (!clientEmail.equals(user.getEmail())){
-//            throw new AccessException("접근 권한이 없습니다.");
-//        }
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 방이 존재하지 않습니다.", 1));

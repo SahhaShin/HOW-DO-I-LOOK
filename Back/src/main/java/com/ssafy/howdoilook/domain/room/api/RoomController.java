@@ -22,12 +22,10 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("")
-    public ResponseEntity<Long> addRoom(@RequestBody RoomAddRequestDto roomAddRequestDto) throws AccessException {
-//    public ResponseEntity<Long> addRoom(@RequestBody RoomAddRequestDto roomAddRequestDto,
-//                                        @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
+    public ResponseEntity<Long> addRoom(@RequestBody RoomAddRequestDto roomAddRequestDto,
+                                        @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
 
-//        return ResponseEntity.status(HttpStatus.CREATED).body(roomService.addRoom(roomAddRequestDto, userDetails));
-        return ResponseEntity.status(HttpStatus.CREATED).body(roomService.addRoom(roomAddRequestDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomService.addRoom(roomAddRequestDto, userDetails));
     }
 
     @PutMapping("/{roomId}")

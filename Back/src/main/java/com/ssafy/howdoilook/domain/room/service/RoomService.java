@@ -97,16 +97,15 @@ public class RoomService {
     }
 
     @Transactional
-    public Long addRoom(RoomAddRequestDto roomAddRequestDto) throws AccessException {
-//    public Long addRoom(RoomAddRequestDto roomAddRequestDto, UserDetails userDetails) throws AccessException {
-//        String clientEmail = userDetails.getUsername();
+    public Long addRoom(RoomAddRequestDto roomAddRequestDto, UserDetails userDetails) throws AccessException {
+        String clientEmail = userDetails.getUsername();
 
         User user = userRepository.findById(roomAddRequestDto.getHostId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
-//        if (!clientEmail.equals(user.getEmail())){
-//            throw new AccessException("접근 권한이 없습니다.");
-//        }
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         Room room = Room.builder()
                 .code(roomAddRequestDto.getCode())
@@ -121,7 +120,7 @@ public class RoomService {
 
         Room saveRoom = roomRepository.save(room);
 
-        roomUserService.addRoomUser(saveRoom.getHost().getId(), saveRoom.getId());
+        roomUserService.addRoomUser(saveRoom.getHost().getId(), saveRoom.getId(), userDetails);
 
         return room.getId();
     }

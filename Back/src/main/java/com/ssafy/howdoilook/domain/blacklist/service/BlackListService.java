@@ -83,16 +83,15 @@ public class BlackListService {
         }
     }
     @Transactional
-    public void deleteBlackList(BlackListDeleteRequestDto blackListDeleteRequestDto){
-//    public void deleteBlackList(BlackListDeleteRequestDto blackListDeleteRequestDto,UserDetails userDetails){
-//        String clientEmail = userDetails.getUsername();
+    public void deleteBlackList(BlackListDeleteRequestDto blackListDeleteRequestDto,UserDetails userDetails){
+        String clientEmail = userDetails.getUsername();
 
         User user = userRepository.findById(blackListDeleteRequestDto.getUserId()).orElseThrow(
                 () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
 
-//        if (!clientEmail.equals(user.getEmail())) {
-//            throw new AccessException("접근 권한이 없습니다.");
-//        }
+        if (!clientEmail.equals(user.getEmail())) {
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
 
         BlackList blackList = blackListRepository.selectBlackListByUserIdTargetUserId(blackListDeleteRequestDto.getUserId(),
@@ -101,7 +100,18 @@ public class BlackListService {
         blackListRepository.deleteById(blackList.getId());
     }
 
-    public List<BlackListSelectResponseDto> getAllBlackList(Long userId) {
+    public List<BlackListSelectResponseDto> getAllBlackList(Long userId, UserDetails userDetails) {
+        String clientEmail = userDetails.getUsername();
+
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
+
+        if (!clientEmail.equals(user.getEmail())) {
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+        System.out.println("!!!!!!!!!!!!");
+
         List<BlackListSelectResponseDto> blackListSelectResponseDtoList = new ArrayList<>();
 
         List<BlackList> blackList = blackListRepository.getAllBlackList(userId);
@@ -116,6 +126,8 @@ public class BlackListService {
 
             blackListSelectResponseDtoList.add(blackListSelectResponseDto);
         }
+
+        System.out.println(blackListSelectResponseDtoList.get(0));
 
         return blackListSelectResponseDtoList;
 

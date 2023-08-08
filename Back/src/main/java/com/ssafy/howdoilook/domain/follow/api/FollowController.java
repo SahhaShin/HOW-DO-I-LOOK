@@ -22,23 +22,15 @@ public class FollowController {
     private final FollowService followService;
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto){
-//    public ResponseEntity<Long> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails){
-        System.out.println("followSaveRequestDto.getFollowerId() = " + followSaveRequestDto.getFollowerId());
-        System.out.println("followSaveRequestDto.getFolloweeId() = " + followSaveRequestDto.getFolloweeId());
-        Long id = followService.saveFollow(followSaveRequestDto);
-//        Long id = followService.saveFollow(followSaveRequestDto,userDetails);
-
+    public ResponseEntity<Long> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails){
+        Long id = followService.saveFollow(followSaveRequestDto,userDetails);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
     @DeleteMapping("")
-    public ResponseEntity<?> deleteFollow(@RequestBody FollowDeleteRequestDto followDeleteRequestDto){
-        System.out.println(followDeleteRequestDto);
+    public ResponseEntity<?> deleteFollow(@RequestBody FollowDeleteRequestDto followDeleteRequestDto, @AuthenticationPrincipal UserDetails userDetails){
+        followService.deleteFollow(followDeleteRequestDto,userDetails);
 
-        //    public ResponseEntity<?> deleteFollow(@RequestBody FollowDeleteRequestDto followDeleteRequestDto, @AuthenticationPrincipal UserDetails userDetails){
-        followService.deleteFollow(followDeleteRequestDto);
-//        followService.deleteFollow(followDeleteRequestDto,userDetails);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
     //나를 팔로워 하는사람

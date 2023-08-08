@@ -38,16 +38,15 @@ public class FeedLikeService {
     private final RedisRankingService redisRankingService;
 
     @Transactional
-    public Long saveFeedLike(FeedLikeSaveRequestDto feedLikeSaveRequestDto){
-//    public Long saveFeedLike(FeedLikeSaveRequestDto feedLikeSaveRequestDto, UserDetails userDetails){
-//        String clientEmail = userDetails.getUsername();
+    public Long saveFeedLike(FeedLikeSaveRequestDto feedLikeSaveRequestDto, UserDetails userDetails){
+        String clientEmail = userDetails.getUsername();
 
         User findUser = userRepository.findById(feedLikeSaveRequestDto.getUserId()).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
 
-//        if (!clientEmail.equals(findUser.getEmail())){
-//            throw new AccessException("접근 권한이 없습니다.");
-//        }
+        if (!clientEmail.equals(findUser.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         Feed findFeed = feedRepository.findById(feedLikeSaveRequestDto.getFeedId()).orElseThrow(
                 ()->new EmptyResultDataAccessException("존재하지 않는 Feed입니다.",1));

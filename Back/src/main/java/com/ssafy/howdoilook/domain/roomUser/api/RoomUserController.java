@@ -19,13 +19,10 @@ public class RoomUserController {
 
     @PostMapping("")
     public ResponseEntity<RoomUserAddResponseDto> addRoomUser(@RequestParam(value = "userId") Long userId,
-                                                              @RequestParam(value = "roomId") Long roomId) throws AccessException {
-//    public ResponseEntity<RoomUserAddResponseDto> addRoomUser(@RequestParam(value = "userId") Long userId,
-//                                                              @RequestParam(value = "roomId") Long roomId,
-//                                                              @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
+                                                              @RequestParam(value = "roomId") Long roomId,
+                                                              @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
 
-//        return ResponseEntity.status(HttpStatus.CREATED).body(roomUserService.addRoomUser(userId, roomId, userDetails));
-        return ResponseEntity.status(HttpStatus.CREATED).body(roomUserService.addRoomUser(userId, roomId));
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomUserService.addRoomUser(userId, roomId, userDetails));
     }
 
     @DeleteMapping("")
