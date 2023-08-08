@@ -6,7 +6,7 @@ import mypageMainStyle from "./MypageMain.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import {
-  action,
+  action_mypage,
   changeFollowModalOpen,
   changeFollowMode,
   changeMenuMode,
@@ -20,30 +20,30 @@ const MypageMain = () => {
   let dispatch = useDispatch();
 
   // 일단 로그인한 유저의 아이디
-  const loginUserId = 1;
+  const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
   // 내가 보고있는 유저의 아이디
   const { targetUserId } = useParams();
 
   let getFollowMeList = (targetUserId: number) => {
-    dispatch(action.getFollowMeList(targetUserId));
+    dispatch(action_mypage.getFollowMeList(targetUserId));
   };
   let getFollowingList = (targetUserId: number) => {
-    dispatch(action.getFollowingList(targetUserId));
+    dispatch(action_mypage.getFollowingList(targetUserId));
   };
   let getBlackList = (targetUserId: number) => {
-    dispatch(action.getBlackList(targetUserId));
+    dispatch(action_mypage.getBlackList(targetUserId));
   };
 
   let getFeedList = (targetUserId: number) => {
-    dispatch(action.getFeedList(targetUserId));
+    dispatch(action_mypage.getFeedList(targetUserId));
   };
 
   let getLikeFeedList = (targetUserId: number) => {
-    dispatch(action.getLikeFeedList(targetUserId));
+    dispatch(action_mypage.getLikeFeedList(targetUserId));
   };
 
   let getLikeScore = (targetUserId: number) => {
-    dispatch(action.getLikeScore(targetUserId));
+    dispatch(action_mypage.getLikeScore(targetUserId));
   }
 
   // 최초 1회 실행
@@ -75,14 +75,14 @@ const MypageMain = () => {
   }, [])
 
   useEffect(() => {
-    dispatch(action.getPerfectFollowList());
+    dispatch(action_mypage.getPerfectFollowList());
   }, [state.followMeUsers, state.followingUsers])
 
   useEffect(() => {
     if(Number(targetUserId) === 0)
         return;
 
-    dispatch(action.getBadgeList(Number(targetUserId)));
+    dispatch(action_mypage.getBadgeList(Number(targetUserId)));
   }, [])
 
   interface Followers {

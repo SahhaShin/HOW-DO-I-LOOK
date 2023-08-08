@@ -4,14 +4,10 @@ import { getCookie, setCookie, removeCookie } from "./Cookie";
 // 토큰 만료 되었는가 확인하기
 //Bearer를 붙어서 반환해준다
 export async function CheckToken() {
-
-  console.log("checkToken ");
-
   //만약 리프레시 토큰이 만료 되었을 시
   let refreshToken = getCookie("Authorization-Refresh");
 
-  if ((typeof refreshToken == "undefined") || (typeof refreshToken === null)) {
-    console.log("refreshToken expire ");
+  if (typeof refreshToken == "undefined" || typeof refreshToken === null) {
     window.location.href = `${process.env.REACT_APP_FRONT}/user/log-in`;
     return null;
   }
@@ -19,10 +15,7 @@ export async function CheckToken() {
   let accessToken = getCookie("Authorization");
 
   //만약 엑세스 토큰만 만료 되었을 시
-  if ((typeof accessToken == "undefined") || (typeof accessToken === null)) {
-
-    console.log("accessToken expire ");
-
+  if (typeof accessToken == "undefined" || typeof accessToken === null) {
     return await axios({
       method: "get",
       url: `${process.env.REACT_APP_SERVER}/api/user/jwt`,
@@ -30,8 +23,6 @@ export async function CheckToken() {
     })
       .then((response) => {
         const result = response.data;
-
-        console.log("res.data : " + result);
 
         const refresh = response.headers.get("Authorization-Refresh");
 
@@ -50,10 +41,9 @@ export async function CheckToken() {
         return "Bearer " + authorization;
       })
       .catch((e) => {
-        console.log(e);
+        throw e;
       });
-  } 
-  else {
+  } else {
     return "Bearer " + accessToken;
   }
 }
@@ -68,11 +58,11 @@ export async function CheckEmail(email: String) {
   })
     .then((response) => {
       const result = response.data;
-      console.log("email check : " + result);
+
       return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
     })
     .catch((e) => {
-      console.log(e);
+      throw e;
     });
 }
 
@@ -86,19 +76,17 @@ export async function CheckNickName(nickname: String) {
   })
     .then((response) => {
       const result = response.data;
-      console.log("nickname check : " + result);
+
       return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
     })
     .catch((e) => {
-      console.log(e);
+      throw e;
     });
 }
 
 //user 정보 가져오기
 export const getUserInfo = () => {
-  // console.log(window.sessionStorage.getItem("userInfo"))
-  // console.log(JSON.parse(window.sessionStorage.getItem("userInfo")));
-
   const userInfo = window.sessionStorage.getItem("loginUser");
+
   return userInfo;
 };

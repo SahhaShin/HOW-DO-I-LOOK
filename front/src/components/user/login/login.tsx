@@ -3,7 +3,7 @@ import loginStyle from "./login.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { login, socialLogin, action } from "../../../store/UserSlice";
+import { login, socialLogin, action_user } from "../../../store/UserSlice";
 
 //cookie
 import { getCookie, setCookie } from "../../../hook/Cookie";
@@ -30,7 +30,7 @@ const Login: React.FC = () => {
 
 
     dispatch(
-      action.Login({
+      action_user.Login({
         email: email,
         password: password,
       })
@@ -46,7 +46,7 @@ const Login: React.FC = () => {
     // socialLogin(brand);
 
     const ApiUrl = "http://localhost:8081/oauth2/authorization/";
-    // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"
+    // window.location.href = "http://localhost:8081/login/oauth2/authorization/kakao"
     window.location.href = ApiUrl + brand;
   };
 

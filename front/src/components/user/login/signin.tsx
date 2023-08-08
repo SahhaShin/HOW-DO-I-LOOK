@@ -3,7 +3,7 @@ import loginStyle from "./login.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { action } from "../../../store/UserSlice";
+import { action_user } from "../../../store/UserSlice";
 // import { isVisible } from "@testing-library/user-event/dist/types/utils";
 
 const Login: React.FC = () => {
@@ -59,7 +59,7 @@ const Login: React.FC = () => {
     else { 
       //회원가입 요청
       dispatch(
-        action.Signin({
+        action_user.Signin({
           email: email,
           password: password,
           name: name,

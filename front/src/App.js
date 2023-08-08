@@ -15,6 +15,8 @@ import ChatRoom from "./pages/chat/chatting/ChatRoom";
 import Feed from "./pages/sns/feed/Feed";
 import Mypage from "./pages/user/my_page/Mypage";
 import Live from "./pages/streaming/live/Live";
+import Streaming from "./components/streaming/live/App";
+
 
 import Login from "./pages/user/login/Login";
 import Signin from "./pages/user/login/Signin";
@@ -40,6 +42,7 @@ function App() {
             <Route path="/feed" element={<Feed />} />
             <Route path="/mypage/:targetUserId" element={<Mypage />} />
             <Route path="/live" element={<Live />} />
+            <Route path="/streaming" element={<Streaming />} />
 
             {/* <Route path="/" element={<LogHin/>}/> */}
 

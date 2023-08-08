@@ -8,17 +8,18 @@ import UtilSlice from "./UtilSlice";
 import ChatSlice from "./ChatSlice";
 import UserSlice from "./UserSlice";
 import RankingSlice from "./RankingSlice";
-
+import StreamingSlice from "./StreamingSlice";
 
 //reducer 등록
 export const store = configureStore({
-    reducer:{
-        closet:ClosetSlice,
-        feed:FeedSlice,
-        mypage:MypageSlice,
-        util:UtilSlice,
-        chat:ChatSlice,
-        user:UserSlice,
-        rank:RankingSlice,
-    }
+  reducer: {
+    closet: ClosetSlice,
+    feed: FeedSlice,
+    mypage: MypageSlice,
+    util: UtilSlice,
+    chat: ChatSlice,
+    user: UserSlice,
+    rank: RankingSlice,
+    streaming: StreamingSlice,
+  },
 });
