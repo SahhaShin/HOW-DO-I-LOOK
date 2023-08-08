@@ -91,16 +91,13 @@ interface Mypage{
     blackListUsers:BlackLists[], // 블랙리스트
     manageType:number,
     followTempUser: Users,
+    targetUser: Users
 
     feedList : Feeds[],
     likeFeedList : Feeds[],
 
     likeScore : likeScore,
     badgeList : Badges[]
-
-    // 임시로 loginUser 세팅해볼게연
-    loginUser : Users,
-    targetUser : Users, 
 }
 
 interface FollowerListInterface {
@@ -138,33 +135,6 @@ const initialState:Mypage = {
     },
     badgeList: [],
 
-    // 임시로 loginUser, targetUser 세팅
-    loginUser: {
-        id : 0,
-        email : "",
-        name : "",
-        nickname : null,
-        gender : null,
-        profileImg: null,
-        age : null,
-        role : null,
-        socialType : null,
-        socialId : null,
-        showBadgeType : null
-    },
-    targetUser: {
-        id : 0,
-        email : "",
-        name : "",
-        nickname : null,
-        gender : null,
-        profileImg: null,
-        age : null,
-        role : null,
-        socialType : null,
-        socialId : null,
-        showBadgeType : null
-    },
     followTempUser: {
         id : 0,
         email : "",
@@ -176,17 +146,36 @@ const initialState:Mypage = {
         role : null,
         socialType : null,
         socialId : null,
-        showBadgeType : null
+        showBadgeType : null,
+        closetAccess : null
     },
+    targetUser: {
+        id: 0,
+        email: "",
+        name: "",
+        nickname: null,
+        gender: null,
+        profileImg: null,
+        age: 0,
+        role: null,
+        socialType: null,
+        socialId: null,
+        showBadgeType: null,
+        closetAccess : null
+    }
 }
 
-export const action = {
-    
-
+export const action_mypage = {
     // 임시로 로그인 유저 
     getLoginUser : createAsyncThunk(`MyPageSlice/getLoginUser`, async(userId) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/${userId}`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/${userId}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
  
             return response.data;
         } catch(e) {
@@ -197,7 +186,13 @@ export const action = {
     // 임시로 타겟 유저
     getTargetUser : createAsyncThunk(`MyPageSlice/getTargetUser`, async(userId) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/${userId}`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/${userId}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
 
             return response.data;
         } catch(e) {
@@ -208,7 +203,13 @@ export const action = {
     // id로 유저 찾기
     getUserById : createAsyncThunk(`MypageSlice/getUserById`, async(id) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/${id}`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/${id}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
 
             return response.data;
         } catch(e) {
@@ -218,17 +219,16 @@ export const action = {
 
     updateUserInfo : createAsyncThunk(`MypageSlice/updateUserInfo`, async({targetUserId, userUpdateData}) => {
         try {
-            console.log(targetUserId);
-            console.log(userUpdateData);
+            const token = await CheckToken();
 
             let temp = userUpdateData.age;
             userUpdateData.age = Number(temp);
 
-            console.log(userUpdateData);
-            const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/user/update/info/${targetUserId}`, userUpdateData);
-            // const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/user/update/info/${targetUserId}`, {
-            //     data : userUpdateData
-            // });
+            const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/user/update/info/${targetUserId}`, userUpdateData, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
 
             return userUpdateData;
         } catch(e) {
@@ -236,10 +236,32 @@ export const action = {
         }
     }),
 
+     quitUser : createAsyncThunk(`MypageSlice/quitUser`, async(user_id) => {
+        try {
+            const token = await CheckToken();
+
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/user/quit/${user_id}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
+
+            return response.data;
+        } catch(e) {
+            throw e;
+        }
+     }),
+
     // 팔로잉 리스트
     getFollowingList : createAsyncThunk(`MypageSlice/getFollowingList`, async(userId) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/follower/${userId}`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/follower/${userId}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
 
             return response.data;
         } catch(e) {
@@ -251,7 +273,13 @@ export const action = {
     // 팔로워 리스트
     getFollowMeList : createAsyncThunk(`MypageSlice/getFollowMeList`, async(userId) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/followee/${userId}`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/followee/${userId}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
 
             return response.data;
         } catch(e) {
@@ -262,7 +290,13 @@ export const action = {
     // 맞팔 리스트
     getPerfectFollowList : createAsyncThunk(`MypageSlice/getPerfectFollowList`, async() => {
         try{
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/perfectfollow`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/perfectfollow`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
 
             return response.data;
         } catch(e) {
@@ -272,10 +306,14 @@ export const action = {
 
     // 팔로잉 추가
     following : createAsyncThunk(`MypageSlice/following`, async(followingData) => {
-        
+        const token = await CheckToken();
 
         try {
-            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/follow/save`, followingData);
+            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/follow/save`, followingData, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
             
             return followingData.followeeId;
 
@@ -287,8 +325,13 @@ export const action = {
     // 팔로잉 끊기
     deleteFollowing : createAsyncThunk(`MypageSlice/deleteFollowing`, async(deleteFollowingData) => {
         try {
+            const token = await CheckToken();
+
             const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/follow`, {
                 data : deleteFollowingData,
+                headers : {
+                    "Authorization" : token
+                }
             });
 
             return deleteFollowingData.followeeId;
@@ -304,7 +347,7 @@ export const action = {
 
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/blacklist/list/${userId}`, {
                 headers: {
-                    "Authorization": token
+                    "Authorization" : token
                 }
             });
 
@@ -317,8 +360,13 @@ export const action = {
     // 블랙리스트 삭제
     deleteBlackList : createAsyncThunk(`MypageSlice/deleteBlackList`, async(blackListDeleteData) => {
         try {
+            const token = await CheckToken();
+
             const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/blacklist`, {
                 data : blackListDeleteData,
+                headers : {
+                    "Authorization" : token
+                }
             });
 
             return blackListDeleteData.targetUserId;
@@ -331,7 +379,13 @@ export const action = {
     // 내 피드 리스트
     getFeedList : createAsyncThunk(`MypageSlice/getFeedList`, async(id) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/${id}?page=0&size=10000`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/${id}?page=0&size=10000`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
 
             return response.data;
         }
@@ -343,7 +397,13 @@ export const action = {
     // 내가 좋아요 누른 피드 리스트
     getLikeFeedList : createAsyncThunk(`MypageSlice/getLikeFeedList`, async(id) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/liked/${id}`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/liked/${id}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
 
             return response.data;
         } catch(e) {
@@ -354,7 +414,13 @@ export const action = {
     // 보고있는 사람의 좋아요 점수 표시
     getLikeScore : createAsyncThunk(`MypageSlice/getLikeScore`, async(user_id) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/ranking/score/${user_id}`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/ranking/score/${user_id}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
 
             return response.data;
         }
@@ -365,7 +431,13 @@ export const action = {
 
     getBadgeList : createAsyncThunk(`MypageSlice/getBadgeList`, async(user_id) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/badge/list/${user_id}`);
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/badge/list/${user_id}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
 
             return response.data;
         } catch(e) {
@@ -419,33 +491,29 @@ const MypageSlice = createSlice({
     extraReducers: (builder) => {
         
         // 임시로 loginUser
-        builder.addCase(action.getLoginUser.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.getLoginUser.fulfilled, (state, action) => {
             state.loginUser = action.payload;
         })
 
         // 임시로 targetUser
-        builder.addCase(action.getTargetUser.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.getTargetUser.fulfilled, (state, action) => {
             state.targetUser = action.payload;
         })
 
-        builder.addCase(action.getUserById.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.getUserById.fulfilled, (state, action) => {
             state.followTempUser = action.payload;
             state.targetUser = action.payload;
         })
 
-        builder.addCase(action.updateUserInfo.fulfilled, (state, action) => {
-            console.log(action.payload.age)
-
+        builder.addCase(action_mypage.updateUserInfo.fulfilled, (state, action) => {
             state.targetUser.age = action.payload.age;
             state.targetUser.gender = action.payload.gender;
             state.targetUser.name = action.payload.name;
             state.targetUser.nickname = action.payload.nickname;
             state.targetUser.closetAccess = action.payload.closetAccess;
-
-            console.log(state.targetUser.age)
         })
 
-        builder.addCase(action.following.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.following.fulfilled, (state, action) => {
             state.followingUsers.push({
                 "id" : action.payload,
                 "nickname" : state.followTempUser.nickname,
@@ -453,22 +521,19 @@ const MypageSlice = createSlice({
             });
         })
 
-        builder.addCase(action.getFollowingList.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.getFollowingList.fulfilled, (state, action) => {
             state.followingUsers = action.payload;
         })
 
-        builder.addCase(action.getFollowMeList.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.getFollowMeList.fulfilled, (state, action) => {
             state.followMeUsers = action.payload;
         })
 
-        builder.addCase(action.getBlackList.fulfilled, (state, action) => {
-            console.log("??")
-            console.log(action.payload)
+        builder.addCase(action_mypage.getBlackList.fulfilled, (state, action) => {
             state.blackListUsers = action.payload;
-            console.log(state.blackListUsers)
         })
 
-        builder.addCase(action.deleteBlackList.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.deleteBlackList.fulfilled, (state, action) => {
             for(let i=0; i<state.blackListUsers.length; i++) {
                 if(state.blackListUsers[i].targetUserId === action.payload) {
                     state.blackListUsers.splice(i, 1);
@@ -478,19 +543,19 @@ const MypageSlice = createSlice({
             }
         })
 
-        builder.addCase(action.getFeedList.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.getFeedList.fulfilled, (state, action) => {
             state.feedList = action.payload;
         })
 
-        builder.addCase(action.getLikeFeedList.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.getLikeFeedList.fulfilled, (state, action) => {
             state.likeFeedList = action.payload;
         })
 
-        builder.addCase(action.getLikeScore.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.getLikeScore.fulfilled, (state, action) => {
             state.likeScore = action.payload;
         })
 
-        builder.addCase(action.deleteFollowing.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.deleteFollowing.fulfilled, (state, action) => {
             for(let i=0; i<state.followingUsers.length; i++) {
                 if(state.followingUsers[i].id === action.payload) {
                     state.followingUsers.splice(i, 1);
@@ -500,11 +565,11 @@ const MypageSlice = createSlice({
             }
         })
 
-        builder.addCase(action.getPerfectFollowList.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.getPerfectFollowList.fulfilled, (state, action) => {
             state.perfectFollowUsers = action.payload;
         })
 
-        builder.addCase(action.getBadgeList.fulfilled, (state, action) => {
+        builder.addCase(action_mypage.getBadgeList.fulfilled, (state, action) => {
             state.badgeList = action.payload;
         })
     }

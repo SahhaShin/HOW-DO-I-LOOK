@@ -3,7 +3,7 @@ import loginStyle from "./login.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { login, socialLogin, action } from "../../../store/UserSlice";
+import { login, socialLogin, action_user } from "../../../store/UserSlice";
 
 //cookie
 import { getCookie, setCookie } from "../../../hook/Cookie";
@@ -30,7 +30,7 @@ const Login: React.FC = () => {
 
 
     dispatch(
-      action.Login({
+      action_user.Login({
         email: email,
         password: password,
       })

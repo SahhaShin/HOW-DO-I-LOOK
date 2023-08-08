@@ -7,7 +7,7 @@ import { getCookie, setCookie } from "../../../hook/Cookie";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, setId} from "../../../store/UserSlice";
+import {action_user, setId} from "../../../store/UserSlice";
 
 const Login: React.FC = () => {
 
@@ -30,7 +30,7 @@ const Login: React.FC = () => {
     
     //소셜 회원가입 추가정보 요청
     dispatch(
-      action.SocialSignin({
+      action_user.SocialSignin({
         nickname: nickname,
         gender: gender,
         age: age,

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action} from "../../../store/UserSlice";
+import {action_user} from "../../../store/UserSlice";
 
 //컴포넌트
 import Login from "../../../components/user/login/login";

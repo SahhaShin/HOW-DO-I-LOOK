@@ -5,7 +5,7 @@ import mypageStyle from "./Mypage.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeFollowModalOpen} from "../../../store/MypageSlice";
+import {action_mypage, changeFollowModalOpen} from "../../../store/MypageSlice";
 import {changeDetailModalOpen} from "../../../store/FeedSlice";
 
 import {useParams} from 'react-router-dom'
@@ -29,13 +29,12 @@ const Mypage = () => {
     let state_feed = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
 
-    // 일단 로그인한 유저의 아이디
-    const loginUserId = 1;
-    // 내가 보고있는 유저의 아이디
+    const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
+
     const { targetUserId } = useParams();
 
     useEffect(() => {
-        dispatch(action.getUserById(targetUserId));
+        dispatch(action_mypage.getUserById(targetUserId));
     }, [])
 
     return(
