@@ -94,6 +94,7 @@ const ChatSlice = createSlice({
     extraReducers:(builder) => {
         builder.addCase(action.getChatList.fulfilled, (state, action) => {
             state.chatList = action.payload;
+            console.log(state.chatList);
         })
 
         builder.addCase(action.enterChatRoom.fulfilled, (state, action) => {
