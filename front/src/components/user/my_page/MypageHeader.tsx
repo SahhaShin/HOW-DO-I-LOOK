@@ -6,7 +6,7 @@ import mypageHeaderStyle from "./MypageHeader.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import {
-  action,
+  action_mypage,
   changeFollowModalOpen,
   changeFollowMode,
   changeManageType,
@@ -20,11 +20,11 @@ const MypageHeader = () => {
   let state = useSelector((state: any) => state.mypage);
   let dispatch = useDispatch();
 
-  const loginUserId = 1;
+  const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
   const { targetUserId } = useParams();
 
   let getBlackList = (targetUserId: number) => {
-    dispatch(action.getBlackList(targetUserId));
+    dispatch(action_mypage.getBlackList(targetUserId));
   };
 
   return (

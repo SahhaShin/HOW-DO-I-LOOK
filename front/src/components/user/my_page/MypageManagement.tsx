@@ -6,7 +6,9 @@ import mypageManagementStyle from "./MypageManagement.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { action, changeManageType } from "../../../store/MypageSlice";
+import { action_mypage, changeManageType } from "../../../store/MypageSlice";
+
+import {action_user} from "../../../store/UserSlice"
 
 const MypageManagement = () => {
   //redux 관리
@@ -14,7 +16,7 @@ const MypageManagement = () => {
   let dispatch = useDispatch();
 
   // 일단 로그인한 유저의 아이디
-  const loginUserId = 1;
+  const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
   // 내가 보고있는 유저의 아이디
   const { targetUserId } = useParams();
 
@@ -27,10 +29,6 @@ const MypageManagement = () => {
   });
 
   // userUpdateData 변화 감지 함수
-  //   const senseUserUpdateData = (event: any) => {
-  //     console.log(event.target);
-  //     setUserUpdateData(event.target.value);
-  //   };
   const senseUserUpdateData = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -190,17 +188,19 @@ const MypageManagement = () => {
                 >
                   수정하기
                 </button>
-                <button>탈퇴하기</button>
+                <button onClick={() => {
+                  dispatch(
+                    action_user.Logout(loginUser.id)
+                  )
+                  dispatch(action_mypage.quitUser(loginUser.id));
+                }}>탈퇴하기</button>
               </div>
             : <div>
                 <button
                   onClick={() => {
-                    console.log(targetUserId);
-                    console.log(userUpdateData);
                     dispatch(
-                      action.updateUserInfo({ targetUserId, userUpdateData })
+                      action_mypage.updateUserInfo({ targetUserId, userUpdateData })
                     );
-                    console.log("!!");
 
                     dispatch(changeManageType(2));
                   }}

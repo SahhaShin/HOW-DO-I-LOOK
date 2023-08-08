@@ -4,7 +4,7 @@ import { getCookie, setCookie, removeCookie } from "../hook/Cookie";
 import { getUserInfo } from "../hook/UserApi";
 
 // axios
-export const action = {
+export const action_user = {
   // 회원가입 api
   Signin: createAsyncThunk(
     `UserSlice/Signin`,
@@ -160,7 +160,7 @@ export const action = {
   // 로그아웃  api
   Logout: createAsyncThunk(`UserSlice/Logout`, async (id: string, thunkAPI) => {
     let Token = "Bearer " + getCookie("Authorization");
-    //만약 리프레시 토큰이 만료 되었을 시
+
     return await axios({
       method: "get",
       url: `${process.env.REACT_APP_SERVER}/api/user/logout/${id}`,
@@ -274,33 +274,33 @@ const UserSlice = createSlice({
   initialState,
   reducers: {
     //로그인 후 메인페이지에서 유저정보 가져오기
-    getUserInfo(state, action) {
-      state.brand = action.payload;
+    getUserInfo(state, action_user) {
+      state.brand = action_user.payload;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(action.GetUserInfo.fulfilled, (state, action) => {
+    builder.addCase(action_user.GetUserInfo.fulfilled, (state, action_user) => {
       console.log("res.data from exRedux : ");
-      console.log(action.payload);
-      state.id = action.payload.id;
-      state.age = action.payload.age;
-      state.email = action.payload.email;
-      state.gender = action.payload.gender;
-      state.name = action.payload.name;
-      state.nickname = action.payload.nickname;
-      state.profileImg = action.payload.profileImg;
-      state.role = action.payload.role;
-      state.showBadgeType = action.payload.showBadgeType;
-      state.socialId = action.payload.socialId;
-      state.socialType = action.payload.socialType;
+      console.log(action_user.payload);
+      state.id = action_user.payload.id;
+      state.age = action_user.payload.age;
+      state.email = action_user.payload.email;
+      state.gender = action_user.payload.gender;
+      state.name = action_user.payload.name;
+      state.nickname = action_user.payload.nickname;
+      state.profileImg = action_user.payload.profileImg;
+      state.role = action_user.payload.role;
+      state.showBadgeType = action_user.payload.showBadgeType;
+      state.socialId = action_user.payload.socialId;
+      state.socialType = action_user.payload.socialType;
     });
-    builder.addCase(action.Logout.fulfilled, (state, action) => {
+    builder.addCase(action_user.Logout.fulfilled, (state, action_user) => {
       console.log("logout !  ");
-      console.log(action.payload);
+      console.log(action_user.payload);
       Object.assign(state, initialState);
     });
   },
 });
 
-export let { login, socialLogin, setId } = UserSlice.actions;
+export let { login, socialLogin, setId, Logout } = UserSlice.actions;
 export default UserSlice.reducer;
