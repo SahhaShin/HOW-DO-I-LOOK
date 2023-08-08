@@ -4,15 +4,18 @@ import axios from "axios";
 // alert창
 import Swal from "sweetalert2";
 
+import {CheckToken} from "../hook/UserApi"
+
 // axios
 export const action = {
 
-    // 새로운 피드 등록 X : formdata에 아무것도 안들어옴 
+    // 새로운 피드 등록
     addFeed : createAsyncThunk("FeedSlice/addFeed", async(newFeed, thunkAPI)=>{
-        console.log(newFeed);
+        const token = await CheckToken();
         await axios.post(`${process.env.REACT_APP_SERVER}/api/feed`, newFeed, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Authorization" : token
         }
         
       }).then((res)=>{
@@ -23,17 +26,19 @@ export const action = {
             confirmButtonColor: '#4570F5',
         })
 
-        return res.data;
+        // return res.data;
+        return newFeed;
       }).catch((e)=>{console.log(e)})
     }),
 
 
     //피드 전체 리스트 가져오기 O
     getFeedTotalList : createAsyncThunk("FeedSlice/getFeedList", async({size, page}, thunkAPI)=>{
-        
         try{
-            console.log(`${size} ${page}`);
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`);
+            const token = await CheckToken();
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`,{
+                headers:{"Authorization":token}
+            });
             return response.data;
         } catch(e){
             console.log(e);
@@ -45,9 +50,12 @@ export const action = {
     deleteFeed : createAsyncThunk("FeedSlice/deleteFeed", async(feedId, thunkAPI)=>{
        
         try{
-            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
-            console.log(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`);
-            return response.data;
+            const token = await CheckToken();
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feed/${feedId}`,{
+                headers:{"Authorization":token}
+            });
+
+            return feedId;
         } catch(e){
             console.log(e);
             throw e;
@@ -278,7 +286,6 @@ const FeedSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder.addCase(action.addFeed.fulfilled,(state,action)=>{
-            console.log(`11 ${action.payload}`);
             state.createModalOpen=false;
         })
 
@@ -293,6 +300,16 @@ const FeedSlice = createSlice({
                 text: '피드가 성공적으로 삭제되었습니다.',
                 confirmButtonColor: '#4570F5',
             })
+
+            console.log(action.payload);
+
+            // 리스트에서 제거
+            for(let i=0;i<state.feedTotalObj?.content.length;i++){
+                if(state.feedTotalObj?.content[i].feedId==action.payload){
+                    state.feedTotalObj?.content.splice(i,1);
+                    console.log(i);
+                }
+            }
         })
 
         builder.addCase(action.getFeedLikeOnMe.fulfilled,(state,action)=>{

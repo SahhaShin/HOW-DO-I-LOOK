@@ -21,9 +21,8 @@ const FeedSlot = () => {
     let state = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
 
-    // 유저 정보
-    const nickname:string = "user3";
-    const userId = 1;
+    //유저정보
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
     // 슬라이드 설정
     const settings = {
@@ -84,9 +83,9 @@ const FeedSlot = () => {
                                 </div>
                                 {/* 중앙 */}
                                 <div className={`${feedSlotStyle.content}`}>
-                                    {/* 닉네임 -- 현재는 아이디로 대체 */}
+                                    {/* 닉네임 */}
                                     <div>
-                                        <p>{oneFeed.userId}</p>
+                                        <p>{oneFeed.userNickname}</p>
                                     </div>
                                 </div>
 
@@ -136,10 +135,10 @@ const FeedSlot = () => {
                             <div className={`${feedSlotStyle.footer}`}>
                                 <div className={`${feedSlotStyle.comment}`}>
                                     {/* 이 버튼을 누르면 댓글 창으로 이동 -> 특정 피드 아이디 전달 */}
-                                    <img src={process.env.PUBLIC_URL+`/img/feed/comment.png`} onClick={async()=>{dispatch(changeDetailModalOpen(true)); dispatch(changeDetailFeedId(oneFeed.feedId));dispatch(action.getFeedLikeOnMe({"userId":oneFeed.userId, "feedId":oneFeed.feedId}));}}/>
+                                    <img src={process.env.PUBLIC_URL+`/img/feed/comment.png`} onClick={async()=>{dispatch(changeDetailModalOpen(true)); dispatch(changeDetailFeedId(oneFeed.feedId));dispatch(action.getFeedLikeOnMe({"userId":loginUser.id, "feedId":oneFeed.feedId}));}}/>
                                     <p>1개</p>
                                 </div>
-                                {oneFeed.userId===userId?<div className={`${feedSlotStyle.feedBtns}`}>
+                                {oneFeed.userId===loginUser.id?<div className={`${feedSlotStyle.feedBtns}`}>
                                     <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId)); dispatch(action.getFeedLikeOnMe({userId:oneFeed.userId,feedId:oneFeed.feedId})); dispatch(calTotalFeedLikes())}}>수정</button>
                                     <button onClick={()=>deleteFeed(oneFeed.feedId)}>삭제</button>
                                 </div>:null}

@@ -29,7 +29,7 @@ const FeedCreate = () => {
     };
 
     //유저정보
-    const userId = 1;
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
     //사진 등록 시 피드 해시태그 관리
     let [inputHash, setInputHash] = useState<string>("");//input에서 쓰고 있는 해시태그
@@ -243,7 +243,7 @@ const FeedCreate = () => {
         //피드 생성 state
         let newFeed = {
             feedSaveRequestDto:{
-                userId:userId,
+                userId:loginUser?.id,
                 content: statement,
                 photoSaveRequestDtoList:objectListHash
             },
@@ -284,6 +284,9 @@ const FeedCreate = () => {
     async function sendFormdata(formdata){
         console.log(formdata);
         dispatch(action.addFeed(formdata));
+        
+        let data = {size:0, page:0};
+        dispatch(action.getFeedTotalList(data));
     }
 
 

@@ -31,7 +31,6 @@ const Feed = () => {
     useEffect(()=>{
         let data = {size:0, page:0};
         dispatch(action.getFeedTotalList(data));
-
     },[])
 
     return(
