@@ -332,6 +332,8 @@
     /* 전체 댓글 대댓글 */
     width: 600px;
     height: 305px;
+
+    overflow: auto;
 }
 .cmtLine{
     /* 위치 */
@@ -412,6 +414,9 @@
 }
 
 .rightBtns{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 80px;
     height: 20px;
 }
@@ -633,3 +638,17 @@
     margin-bottom: 5px;
     margin-top: 3px;
 }
+
+.confirmButton {
+    font-size: 16px; /* 확인 버튼에 원하는 폰트 크기를 설정하세요. */
+    /* 기타 확인 버튼에 원하는 스타일을 추가하세요. */
+    width: 100px;
+    height: 50px;
+  }
+  
+  .cancelButton {
+    font-size: 16px; /* 취소 버튼에 원하는 폰트 크기를 설정하세요. */
+    /* 기타 취소 버튼에 원하는 스타일을 추가하세요. */
+    width: 100px;
+    height: 50px;
+  }
