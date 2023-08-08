@@ -168,7 +168,7 @@ const FeedDetail = (props) => {
                         <div className={`${FeedDetailStyle.content}`}>
                             {/* 닉네임*/}
                             <div>
-                                <p>{state.detailObj?.userId}</p>
+                                <p>{state.detailObj?.userNickname}</p>
                             </div>
                         </div>
 
@@ -273,7 +273,7 @@ const FeedDetail = (props) => {
                                                             <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
                                                         </div>
                                                         {/* 백에서 바꿔주면 nickName으로 고쳐야함 */}
-                                                        <p>{one.userId}</p>
+                                                        <p style={{width:"100px"}}>{one.userNickname}</p>
                                                     </div>
                                                 </div>
 
