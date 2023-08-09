@@ -3,7 +3,7 @@ package com.ssafy.howdoilook.domain.soloChatroom.service;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.ChatDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatRoomDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatContextRequestDto;
-import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecodRequestDto;
+import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecordRequestDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatContextListResponseDto;
 import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChat;
 import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChatRoom;
@@ -41,7 +41,7 @@ public class SoloChatRoomService {
 
     //채팅시 채팅 기록 MongoDB에 저장
     @Transactional
-    public void recordChat(ChatRecodRequestDto requestDto, SoloChatRoom room){
+    public void recordChat(ChatRecordRequestDto requestDto, SoloChatRoom room){
         String content = requestDto.getChatContent();
 
         User user = userRepository.findById(requestDto.getUserId())

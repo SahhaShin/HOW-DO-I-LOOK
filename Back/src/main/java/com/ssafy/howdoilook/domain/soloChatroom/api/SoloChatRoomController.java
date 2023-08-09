@@ -20,7 +20,7 @@ public class SoloChatRoomController {
     private final SoloChatRoomService soloChatRoomService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getChatList(@PathVariable("id") long userId){
+    public ResponseEntity<?> getChatRoomList(@PathVariable("id") long userId){
         List<ChatRoomDto> result = soloChatRoomService.getUserChatRoom(userId);
         return new ResponseEntity<List<ChatRoomDto>>(result, HttpStatus.OK);
     }
