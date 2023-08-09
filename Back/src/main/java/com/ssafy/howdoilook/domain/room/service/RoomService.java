@@ -19,7 +19,6 @@ import com.ssafy.howdoilook.domain.roomUser.entity.RoomUserType;
 import com.ssafy.howdoilook.domain.roomUser.repository.RoomUserRepository;
 
 import com.ssafy.howdoilook.domain.roomUser.service.RoomUserService;
-import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecodRequestDto;
 
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
