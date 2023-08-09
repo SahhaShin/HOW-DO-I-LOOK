@@ -13,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 @RequiredArgsConstructor
 public class SoloChatMQService {
     private final BlockingQueue<ChatRecodRequestDto> messageQueue = new LinkedBlockingQueue<>();
-    private static final QUEUE_KEY_PREFIX = "SoloChat"
+//    private static final QUEUE_KEY_PREFIX = "SoloChat"
     public void enqueu(ChatRecodRequestDto requestDto){
         messageQueue.offer(requestDto);
     }

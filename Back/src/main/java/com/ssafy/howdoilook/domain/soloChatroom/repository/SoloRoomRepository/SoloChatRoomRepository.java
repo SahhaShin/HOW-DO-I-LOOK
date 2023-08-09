@@ -20,8 +20,8 @@ public interface SoloChatRoomRepository extends JpaRepository<SoloChatRoom,Long>
 //    Optional<SoloChatRoom> findByUserAAndUserB(@Param("userAId") long userAId, @Param("userBId") long userBId);
     Optional<SoloChatRoom> findByUserAAndUserB(User userA, User userB);
 
-    @Query("SELECT c FROM SoloChatRoom c WHERE c.userA.id = :userId ORDER BY c.chatUpdateDate DESC")
-    List<SoloChatRoom> findByUserA(@Param("userId") long userId);
+    @Query("SELECT c FROM SoloChatRoom c WHERE (c.userA.id = :userId and c.userB.id = :userId) ORDER BY c.chatUpdateDate DESC")
+    List<SoloChatRoom> findByUser(@Param("userId") long userId);
 
     Optional<SoloChatRoom> findById(long id);
 

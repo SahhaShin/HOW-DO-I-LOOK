@@ -57,7 +57,7 @@ public class SoloChatRoomService {
     @Transactional
     public List<ChatRoomDto> getUserChatRoom(Long userId){
 
-        List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUserA(userId);
+        List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUser(userId);
         List<ChatRoomDto> chatRoomListNext = new ArrayList<>();
 
         //Entity To Dto
