@@ -17,17 +17,18 @@ public class SoloWebSocketController {
 
     @MessageMapping("/soloChat/{roomCode}")
     @SendTo("/sub/soloChat/{roomCode}")
-    public ChatRecodRequestDto broadCasting(@DestinationVariable String roomCode, ChatRecodRequestDto requestDto){
+    public ChatRecodRequestDto broadCasting(ChatRecodRequestDto requestDto){
         /*
         1. 무결성 체크 ( jwt 토큰 vs db 조회 )
         2. 메시지큐에 저장 ( 추후 데이터 저장 및 알림 추가 )
         3. return을 통해 데이터 송신
          */
-        //1 로직 추가하기
+        //1. 무결성 체크
+        soloChatRoomService.check();
+        //2. 메시지큐에 저장
+        soloChatMQService.enqueue(requestDto);
 
-        //2 메시지큐에 저장
-        soloChatMQService.enqueu(requestDto);
-//        soloChatRoomService.recordChat(requestDto);
+        //3. 채팅 뿌리기
         return requestDto;
     }
 

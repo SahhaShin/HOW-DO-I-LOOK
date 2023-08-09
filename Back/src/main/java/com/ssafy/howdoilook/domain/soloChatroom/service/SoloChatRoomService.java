@@ -28,7 +28,12 @@ public class SoloChatRoomService {
     private final UserRepository userRepository;
     private final SoloChatRoomRepository soloChatRoomRepository;
     private final ChatRepository chatRepository;
-    
+
+
+    @Transactional
+    public String checkNickName(ChatRecodRequestDto requestDto){
+
+    }
     //채팅시 채팅 기록 MongoDB에 저장
     @Transactional
     public void recordChat(ChatRecodRequestDto requestDto){
