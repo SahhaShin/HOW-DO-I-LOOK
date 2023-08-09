@@ -65,6 +65,8 @@ public class UserService {
 
         user.passwordEncode(passwordEncoder);
 
+        user.updateProfileImage("https://howdobucket.s3.ap-northeast-2.amazonaws.com/DefaultProfile.png");
+
         user.updateShowBadge(BadgeType.X);
 
         user.updateClosetAccess(ClosetAccess.PUBLIC);

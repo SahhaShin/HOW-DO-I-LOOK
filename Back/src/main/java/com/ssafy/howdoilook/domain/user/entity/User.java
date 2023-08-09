@@ -177,6 +177,12 @@ public class User extends BaseTimeEntity {
         return this.id;
     }
 
+    public Long updateProfileImage(String profileImg) {
+        this.profileImg = profileImg;
+
+        return this.id;
+    }
+
     /*
     * 유저 정보 수정 (정보 + 이미지)
     * */
