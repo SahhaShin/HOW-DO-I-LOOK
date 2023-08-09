@@ -4,25 +4,15 @@
 }
 /* 버튼을 둘러싼 div */
 .buttons {
-	width: 100%;
+	width: 50%;
 	position: absolute;
 	top: 100%;
-    left: 50%;
-    transform: translate(-50%, -100%);
+    left: 100%;
+    transform: translate(-100%, -100%);
 	justify-content : space-evenly;
 	display: flex;
 	/* flex: auto; */
-}
-/* input 태그 공통 내용 */
-input{
-
-	/* background-img : url('이미지 위치'); */
-	/* background-repeat : no-repeat; */
-	/* backgroupd-size : 13px; */
-	height: 60px;
-	width: 60px;
-	/* border-radius: 30px; */
-	border: none;
+	text-align: center ;
 }
 
 img{
@@ -31,8 +21,17 @@ img{
 	border: none;
 }
 .activeButton {
-	background-color: Green;
+	
+	height: 40px;
+	width: 130px;
+	border-radius: 10px;
+	margin: auto 0 ;
+	background-color: rgb(127, 243, 127);
 }
 .disableButton {
-	background-color: rgb(128, 15, 0);
+	height: 40px;
+	width: 130px;
+	border-radius: 10px;
+	margin: auto 0 ;
+	background-color: rgb(232, 119, 104);
 }
