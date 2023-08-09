@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import rankingStyle from "./Ranking.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeRankMode} from "../../../store/RankingSlice";
+import {action_ranking, changeRankMode} from "../../../store/RankingSlice";
 
 
 // 컴포넌트
@@ -11,8 +11,9 @@ import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
 import Pagination from "../../../components/util/Pagination";
+import MyRank from "../../../components/sns/rank/MyRank";
 import RankingLovely from "../../../components/sns/rank/RankLovely";
-import RankingNatural from "../../../components/sns/rank/RankNature";
+import RankingNatural from "../../../components/sns/rank/RankNatural";
 import RankingModern from "../../../components/sns/rank/RankModern";
 import RankingSexy from "../../../components/sns/rank/RankSexy";
 
@@ -20,28 +21,30 @@ import RankingSexy from "../../../components/sns/rank/RankSexy";
 const Ranking = () => {
 
     //redux 관리
-    let state = useSelector((state:any)=>state.rank);
+    let state = useSelector((state: any) => state.rank);
     let dispatch = useDispatch();
 
-    interface userInfo{
-        score: number,
-        nickname : string,
-    }
-    const [rankingInfo, setRankingInfo] = useState<userInfo[]>([
-        {
-            score:400,
-            nickname:"삼순이",
-        },
-        {
-            score:300,
-            nickname:"사순이",
-        },
-        {
-            score:200,
-            nickname:"오순이",
-        }
-    ]);
 
+
+    useEffect(() => {
+        dispatch(action_ranking.getRankingList("LOVELY"));
+        dispatch(action_ranking.getRankingList("SEXY"))
+        dispatch(action_ranking.getRankingList("NATURAL"))
+        dispatch(action_ranking.getRankingList("MODERN"))
+    }, [])
+
+    // 로딩 컴포넌트 필요함
+    // if (state.rankingList.length === 0) {
+    //     return <div>Loading...</div>;
+    // }
+
+    // useMemo(() => {
+    //     return dispatch(action_ranking.getRankingList("LOVELY"))
+    // }, [state.rankingList])
+
+    console.log(state.rankingList)
+    console.log(state.rankingList[0])
+    console.log(state.rankingList[0]?.nickname)
     //select 값 유지
     const [likeSelect, setLikeSelect] = useState<string>("lovely");
 
@@ -64,6 +67,15 @@ const Ranking = () => {
         }
     }
 
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
     return(
         <div>
             <div className={`${rankingStyle.total}`}>
@@ -79,6 +91,7 @@ const Ranking = () => {
                     <div><Menu/></div>
                 </div>
 
+
                 {/* 메인 컨텐츠 시작 */}
                 
                 <div className={`${rankingStyle.contentArea}`}>
@@ -92,7 +105,12 @@ const Ranking = () => {
                             <option value="sexy">Sexy</option>
                         </select>
                     </div>
-                    <div>7/19 자정 기준</div> 
+                    <div>{year}/{month}/{day} {hours}:{minutes}:{seconds}</div> 
+                </div>
+
+                {/* 내 순위 */}
+                <div>
+                    <div><MyRank></MyRank></div>
                 </div>
 
                     {state.rankMode==="lovely"?<RankingLovely/>:(
@@ -104,14 +122,14 @@ const Ranking = () => {
                     )}
                    
                     {/* 페이지네이션   20을 {clothes.length}로 바꿔야 함 */}
-                    <div className={`${rankingStyle.paginationContainer}`}>
+                    {/* <div className={`${rankingStyle.paginationContainer}`}>
                         <Pagination
                             total={20}
                             limit={limit}
                             page={page}
                             setPage={setPage}
                         />
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
