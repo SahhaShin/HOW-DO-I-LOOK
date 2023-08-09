@@ -59,11 +59,15 @@ public class JwtService {
     public String createAccessToken(String email) {
         Date now = new Date();
 
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
         // JWT 토큰 생성
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 만료시간 설정
                 .withClaim(EMAIL_CLAIM, email)
+                .withClaim("nickname", user.getNickname())
                 .sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, SecretKey로 암호화
     }
 
