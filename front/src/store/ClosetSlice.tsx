@@ -32,9 +32,11 @@ export const action = {
             throw e;
         }
     }),
-    //OOTD X
+    //OOTD O
+    //옷 id 같은 것끼리도 저장 가능
     OOTDSave: createAsyncThunk("ClosetSlice/OOTDSave",async ({userId, order, slotIds}:saveOOTD,thunkAPI) =>{
         try{
+            console.log(`${userId} ${order} ${slotIds.ACCESSORY1}`);
             const token = await CheckToken();
             const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/ootd`,{userId,order,slotIds},{
                 headers: {
@@ -43,7 +45,14 @@ export const action = {
                 
             });
 
-            return response.data; // 액션의 payload로 값을 반환해야 합니다.
+            let saveOOTD = {
+                userId,
+                order,
+                slotIds,
+            }
+
+            return saveOOTD;
+
         } catch (e) {
             console.log(e);
             throw e;
@@ -206,6 +215,9 @@ interface closet{
     page:number,
 
     clothRegistOk:boolean,
+
+    OOTD1 : saveOOTD|null,
+    OOTD2 : saveOOTD|null,
 }
 
 
@@ -230,6 +242,10 @@ const initialState:closet = {
     page:0,
 
     clothRegistOk : false,
+
+    // OOTD 저장 옷 번호
+    OOTD1 : null,
+    OOTD2 : null,
 }
 
 
@@ -316,10 +332,26 @@ const ClosetSlice = createSlice({
             })
 
         })
+        builder.addCase(action.OOTDSave.fulfilled, (state, action) => {
+            //ootd 저장
+            if(action.payload.order==1){
+                state.OOTD1 = action.payload;
+            }else{
+                state.OOTD2 = action.payload;
+            }
+
+            Swal.fire({
+                icon: 'success',
+                title: '등록 완료',
+                text: 'OOTD를 성공적으로 등록하였습니다.',
+                confirmButtonColor: '#4570F5',
+            })
+
+        })
 
 
     }
 });
 
-export let {changeModalOpen, changeMode, setNewClothes,changeClothesType,changePage, changeClothesId, changeClothesLink} = ClosetSlice.actions;
+export let {changeModalOpen, changeMode,changeClothesType,changePage, changeClothesId, changeClothesLink} = ClosetSlice.actions;
 export default ClosetSlice.reducer;

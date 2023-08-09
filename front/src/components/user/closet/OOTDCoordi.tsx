@@ -8,8 +8,8 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux"; 
 import {action} from "../../../store/ClosetSlice";
 
-// 직접 만든 slider
-// import CLOSETSlider from "./CLOSETSlider";
+// alert창
+import Swal from "sweetalert2";
 
 //slick import
 import Slider from 'react-slick';
@@ -17,9 +17,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 
-
 //idx는 몇 번째 ootd 순서인가 1번인가 2번인가를 알려줌
-const OOTDCoordi = (idx) => {
+const OOTDCoordi = (props) => {
 
     const settings = {
         arrows:true,
@@ -32,12 +31,40 @@ const OOTDCoordi = (idx) => {
     //redux 관리
     let state = useSelector((state:any)=>state.closet);
     let dispatch = useDispatch();
-   
-    
+
+
+    // 슬라이더의 현재 인덱스와 이미지 정보를 관리하는 상태
+    //1) 상의
+    const [currentTOPSlideIndex, setCurrentTOPSlideIndex] = useState(0);
+    const [currentTOPImageInfo, setCurrentTOPImageInfo] = useState({}); // 이미지 정보를 저장하는 객체 형태
+
+    //2) 하의
+    const [currentBOTTOMSlideIndex, setCurrentBOTTOMSlideIndex] = useState(0);
+    const [currentBOTTOMImageInfo, setCurrentBOTTOMImageInfo] = useState({});
+
+
+    //3) 신발
+    const [currentSHOESlideIndex, setCurrentSHOESlideIndex] = useState(0);
+    const [currentSHOEImageInfo, setCurrentSHOEImageInfo] = useState({});
+
+
+    //4) 악세1
+    const [currentACC1SlideIndex, setCurrentACC1SlideIndex] = useState(0);
+    const [currentACC1ImageInfo, setCurrentACC1ImageInfo] = useState({});
+
+
+    //5) 악세2
+    const [currentACC2SlideIndex, setCurrentACC2SlideIndex] = useState(0);
+    const [currentACC2ImageInfo, setCurrentACC2ImageInfo] = useState({});
+
+
+    //6) 악세3
+    const [currentACC3SlideIndex, setCurrentACC3SlideIndex] = useState(0);
+    const [currentACC3ImageInfo, setCurrentACC3ImageInfo] = useState({});
 
 
     // ootd 저장
-    interface slotIds{
+    interface clothes{
         TOP:number,
         BOTTOM:number,
         SHOE:number,
@@ -45,20 +72,51 @@ const OOTDCoordi = (idx) => {
         ACCESSORY2:number,
         ACCESSORY3:number
     }
-
-    let order = idx;
-    let [TOP,setTOP] = useState<number|null>();
-    let [BOTTOM,setBOTTOM] = useState<number|null>();
-    let [SHOE,setSHOE] = useState<number|null>();
-    let [ACCESSOTY1,setACCESSOTY1] = useState<number|null>();
-    let [ACCESSOTY2,setACCESSOTY2] = useState<number|null>();
-    let [ACCESSOTY3,setACCESSOTY3] = useState<number|null>();
     
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
     const userId:number = loginUser.id;
 
     function saveOOTD(){
-        dispatch(action.OOTDSave(userId,order,clothesIds));
+
+        let slotIds:clothes={
+            TOP:currentTOPImageInfo?.clothesId,
+            BOTTOM:currentBOTTOMImageInfo?.clothesId,
+            SHOE:currentSHOEImageInfo?.clothesId,
+            ACCESSORY1:currentACC1ImageInfo?.clothesId,
+            ACCESSORY2:currentACC2ImageInfo?.clothesId,
+            ACCESSORY3:currentACC3ImageInfo?.clothesId
+        }
+
+        if(slotIds.TOP===undefined){
+            if(state.clothesTop.length>=1) slotIds.TOP=state.clothesTop[0].clothesId;
+        }
+        if(slotIds.BOTTOM===undefined){
+            if(state.clothesBottom.length>=1) slotIds.BOTTOM=state.clothesBottom[0].clothesId;
+        }
+        if(slotIds.SHOE===undefined){
+            if(state.clothesShoe.length>=1) slotIds.SHOE=state.clothesShoe[0].clothesId;
+        }
+        if(slotIds.ACCESSORY1===undefined){
+            if(state.clothesAccessory.length>=1) slotIds.ACCESSORY1=state.clothesAccessory[0].clothesId;
+        }
+        if(slotIds.ACCESSORY2===undefined){
+            if(state.clothesAccessory.length>=1) slotIds.ACCESSORY2=state.clothesAccessory[0].clothesId;
+        }
+        if(slotIds.ACCESSORY3===undefined){
+            if(state.clothesAccessory.length>=1) slotIds.ACCESSORY3=state.clothesAccessory[0].clothesId;
+        }
+
+        if(slotIds.TOP===undefined || slotIds.BOTTOM===undefined || slotIds.SHOE===undefined || slotIds.ACCESSORY1===undefined || slotIds.ACCESSORY2===undefined || slotIds.ACCESSORY3===undefined){
+            Swal.fire({
+                icon: 'warning',
+                title: 'Closet을 채워주세요 :)',
+                text: '최소 옷/바지/신발 각 1벌과 악세서리 3개를 채워주세요!',
+                confirmButtonColor: '#4570F5',
+            })
+            return;
+        }
+     
+        dispatch(action.OOTDSave({userId:userId,order:props.idx,slotIds:slotIds}));
     }
 
     // 화면 단 : 이 부분은 백엔드에서 데이터 넘겨주면 map 형태로 다시 바꿀 것임
@@ -66,84 +124,64 @@ const OOTDCoordi = (idx) => {
         // 전체
         <div className={`${coordiStyle.totalArea}`}>
             <div className={`${coordiStyle.oneCloset}`}>
+
                 {/* 상의 하의 신발 */}
                 <div className={`${coordiStyle.ootd}`}>
-
                     {/* 상의 */}
-                    {/* <div className={`${coordiStyle.carousal}`}>
-                        <CLOSETSlider clothesType={"TOP"}/>
-                    </div> */}
-
-
-                    {/* 하의 */}
-                    {/* <div className={`${coordiStyle.carousal}`}>
-                        <CLOSETSlider clothesType={"BOTTOM"}/>
-                    </div> */}
-
-                    {/* 신발 */}
-                    {/* <div className={`${coordiStyle.carousal}`}>
-                        <CLOSETSlider clothesType={"SHOE"}/>
-                    </div> */}
+                    <div className={`${coordiStyle.carousal}`}>
+                        <StyledSlider {...settings}
+                            beforeChange={(oldIndex, newIndex) => {
+                                // 슬라이더의 현재 인덱스 업데이트
+                                setCurrentTOPSlideIndex(newIndex);
                 
-                </div>
+                                // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
+                                const currentSlide = state.clothesTop[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                setCurrentTOPImageInfo(currentSlide);
+                            }}
+                        >
 
-                {/* 악세서리 3칸 */}
-                {/* <div className={`${coordiStyle.ootd_etc}`}> */}
-
-                    {/* 악세서리1 */}
-                    {/* <div className={`${coordiStyle.carousal_etc}`}>
-                        <CLOSETSlider clothesType={"ACCESSORY"}/>
-                    </div> */}
-
-                    {/* 악세서리2 */}
-                    {/* <div className={`${coordiStyle.carousal_etc}`}>
-                        <CLOSETSlider clothesType={"ACCESSORY"}/>
-                    </div> */}
-
-                    {/* 악세서리3 */}
-                    {/* <div className={`${coordiStyle.carousal_etc}`}>
-                        <CLOSETSlider clothesType={"ACCESSORY"}/>
-                    </div>
-                </div> */}
-
-                {/* 상의 하의 신발 */}
-                <div className={`${coordiStyle.ootd}`}>
-                    {/* 상의 */}
-                    <div className={`${coordiStyle.carousal}`}>
-                        <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/top1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/top2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/top3.png`}/>
-                            </div>
+                            {
+                                state.clothesTop.map((oneT)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideT}`}>
+                                            <img src={oneT.photoLink}/>
+                                        </div>
+                                    );
+                                })
+                            }
 
                         </StyledSlider>
+
+                        {/* <div>
+                            <p>현재 보고 있는 이미지 정보:</p>
+                            <pre>{JSON.stringify(currentBOTTOMImageInfo, null, 2)}</pre>
+                        </div> */}
 
                     </div>
 
 
                     {/* 하의 */}
                     <div className={`${coordiStyle.carousal}`}>
-                        <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bottom1.png`}/>
-                            </div>
+                        <StyledSlider {...settings}
+                            beforeChange={(oldIndex, newIndex) => {
+                                // 슬라이더의 현재 인덱스 업데이트
+                                setCurrentBOTTOMSlideIndex(newIndex);
+                
+                                // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
+                                const currentSlide = state.clothesBottom[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                setCurrentBOTTOMImageInfo(currentSlide);
+                            }}
+                        >
 
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bottom2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bottom3.png`}/>
-                            </div>
+                            {
+                                state.clothesBottom.map((oneB)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideB}`}>
+                                            <img src={oneB.photoLink}/>
+                                        </div>
+                                    );
+                                })
+                            }
 
                         </StyledSlider>
 
@@ -151,19 +189,25 @@ const OOTDCoordi = (idx) => {
 
                     {/* 신발 */}
                     <div className={`${coordiStyle.carousal}`}>
-                        <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/shoes1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/shoes2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/shoes3.png`}/>
-                            </div>
+                        <StyledSlider {...settings}
+                            beforeChange={(oldIndex, newIndex) => {
+                                // 슬라이더의 현재 인덱스 업데이트
+                                setCurrentSHOESlideIndex(newIndex);
+                
+                                // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
+                                const currentSlide = state.clothesShoe[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                setCurrentSHOEImageInfo(currentSlide);
+                            }}
+                        >
+                            {
+                                state.clothesShoe.map((oneS)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideS}`}>
+                                            <img src={oneS?.photoLink}/>
+                                        </div>
+                                    );
+                                })
+                            }
 
                         </StyledSlider>
 
@@ -176,23 +220,25 @@ const OOTDCoordi = (idx) => {
 
                     {/* 악세서리1 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
-                        <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/earing1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/socks1.png`}/>
-                            </div>
+                        <StyledSlider {...settings}
+                            beforeChange={(oldIndex, newIndex) => {
+                                // 슬라이더의 현재 인덱스 업데이트
+                                setCurrentACC1SlideIndex(newIndex);
+                
+                                // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
+                                const currentSlide = state.clothesAccessory[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                setCurrentACC1ImageInfo(currentSlide);
+                            }}
+                        >
+                            {
+                                state.clothesAccessory.map((oneA)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideA1}`}>
+                                            <img src={oneA?.photoLink}/>
+                                        </div>
+                                    );
+                                })
+                            }
 
                         </StyledSlider>
 
@@ -200,23 +246,26 @@ const OOTDCoordi = (idx) => {
 
                     {/* 악세서리2 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
-                        <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/earing1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/socks1.png`}/>
-                            </div>
+                        <StyledSlider {...settings}
+                            beforeChange={(oldIndex, newIndex) => {
+                                // 슬라이더의 현재 인덱스 업데이트
+                                setCurrentACC2SlideIndex(newIndex);
+                
+                                // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
+                                const currentSlide = state.clothesAccessory[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                setCurrentACC2ImageInfo(currentSlide);
+                            }}
+                        >
+                            {
+                                state.clothesAccessory.map((oneA)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideA2}`}>
+                                            <img src={oneA?.photoLink}/>
+                                        </div>
+                                    );
+                                })
+                            }
+                            
 
                         </StyledSlider>
 
@@ -224,23 +273,25 @@ const OOTDCoordi = (idx) => {
 
                     {/* 악세서리3 */}
                     <div className={`${coordiStyle.carousal_etc}`}>
-                        <StyledSlider {...settings}>
-                            {/* public img는 절대 경로로 가져와야 함 */}
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/bag2.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/earing1.png`}/>
-                            </div>
-
-                            <div className={`${coordiStyle.slide_etc}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/clothes/socks1.png`}/>
-                            </div>
+                        <StyledSlider {...settings}
+                            beforeChange={(oldIndex, newIndex) => {
+                                // 슬라이더의 현재 인덱스 업데이트
+                                setCurrentACC3SlideIndex(newIndex);
+                
+                                // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
+                                const currentSlide = state.clothesAccessory[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                setCurrentACC3ImageInfo(currentSlide);
+                            }}
+                        >
+                            {
+                                state.clothesAccessory.map((oneA)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideA3}`}>
+                                            <img src={oneA?.photoLink}/>
+                                        </div>
+                                    );
+                                })
+                            }
 
                         </StyledSlider>
 
@@ -249,7 +300,7 @@ const OOTDCoordi = (idx) => {
 
                 
             </div>
-            <div className={`${coordiStyle.btn} ${coordiStyle.btn__secondary}`}><p>저장</p></div>
+            <div onClick={()=>{saveOOTD()}} className={`${coordiStyle.btn} ${coordiStyle.btn__secondary}`}><p>저장</p></div>
 
         </div>
         
@@ -290,6 +341,28 @@ const StyledSlider = styled(Slider)`
 
     li.slick-active button:before {
       color: white;
+    }
+  }
+  .slick-slider {
+    .slick-list {
+      .slick-slide {
+        div {
+          // beforeChange 이벤트 핸들러 정의
+          .slick-slide-inner {
+            .slick-slide {
+              &:beforeChange {
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;
