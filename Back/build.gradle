@@ -73,6 +73,9 @@ dependencies {
 
     // OpenCV
 //    implementation 'org.openpnp:opencv:4.5.4'
+
+    // Apache Commons Exec
+    implementation 'org.apache.commons:commons-exec:1.3'
 }
 
 tasks.named('test') {
