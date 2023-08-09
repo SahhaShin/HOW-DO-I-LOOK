@@ -7,6 +7,7 @@ import liveStyle from "./Live.module.css";
 import LiveMenu from '../../../components/streaming/live/LiveMenu';
 import LiveChat from '../../../components/streaming/live/LiveChat';
 import LiveAdvisor from '../../../components/streaming/live/LiveAdvisor';
+import Streaming from "../../../components/streaming/live/Streaming"
 
 
 const Live = () => {
@@ -20,7 +21,9 @@ const Live = () => {
                 </div>
 
                 {/* 스트리밍 영상 */}
-                <div className={`${liveStyle.video}`}></div>
+                <div className={`${liveStyle.video}`}>
+                    <Streaming/>
+                </div>
 
                 {/* 채팅 */}
                 <div className={`${liveStyle.chat}`}>

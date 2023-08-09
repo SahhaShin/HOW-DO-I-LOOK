@@ -1,0 +1,38 @@
+
+.stream-container {
+	padding: 0;
+}
+/* 버튼을 둘러싼 div */
+.buttons {
+	width: 100%;
+	position: absolute;
+	top: 100%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+	justify-content : space-evenly;
+	display: flex;
+	/* flex: auto; */
+}
+/* input 태그 공통 내용 */
+input{
+
+	/* background-img : url('이미지 위치'); */
+	/* background-repeat : no-repeat; */
+	/* backgroupd-size : 13px; */
+	height: 60px;
+	width: 60px;
+	/* border-radius: 30px; */
+	border: none;
+}
+
+img{
+	height: 30px;
+	/* width: 60px; */
+	border: none;
+}
+.activeButton {
+	background-color: Green;
+}
+.disableButton {
+	background-color: rgb(128, 15, 0);
+}
