@@ -28,70 +28,149 @@ const MypageHeader = () => {
   };
 
   const [followingData, setFollowingData] = useState({
-    id : 0,
-    targetId : 0,
-    nickname : "",
-    profileImg : ""
-  })
-
-  const changeFollowingData = (() => {
-      setFollowingData({
-        id : loginUser.id,
-        targetId : Number(watchingUserId),
-        nickname : state.targetUser.nickname,
-        profileImg : state.targetUser.profileImg
-      })
-  })
-
-  /////////////////////////////////////////////////////////////////////
-
-
-  const [deleteFollowingData, setDeleteFollowingData] = useState ({
-    id : 0,
-    targetId : 0,
-    nickname : "",
-    profileImg : ""
+    id: 0,
+    targetId: 0,
+    nickname: "",
+    profileImg: ""
   });
 
-  const changeDeleteFollowingData = (() => {
-      setDeleteFollowingData({
-          followerId : loginUser.id,
-          followeeId : Number(targetUserId)
-      })
-  })
+  const changeFollowingData = () => {
+    setFollowingData({
+      id: loginUser.id,
+      targetId: Number(watchingUserId),
+      nickname: state.targetUser.nickname,
+      profileImg: state.targetUser.profileImg
+    });
+  };
+
+  const [deleteFollowingData, setDeleteFollowingData] = useState({
+    id: 0,
+    targetId: 0,
+    nickname: "",
+    profileImg: ""
+  });
+
+  const changeDeleteFollowingData = () => {
+    setDeleteFollowingData({
+      id: loginUser.id,
+      targetId: Number(watchingUserId),
+      nickname: state.targetUser.nickname,
+      profileImg: state.targetUser.profileImg
+    });
+  };
+
+  const [addBlackListData, setAddBlackListData] = useState({
+    id: 0,
+    targetId: 0,
+    nickname: "",
+    profileImg: ""
+  });
+
+  const changeAddBlackListData = () => {
+    setAddBlackListData({
+      id: loginUser.id,
+      targetId: Number(watchingUserId),
+      nickname: state.targetUser.nickname,
+      profileImg: state.targetUser.profileImg
+    });
+  };
+
+  const [deleteBlackListData, setDeleteBlackListData] = useState({
+    id: 0,
+    targetId: 0,
+    nickname: "",
+    profileImg: ""
+  });
+
+  const changeDeleteBlackListData = () => {
+    setDeleteBlackListData({
+      id: loginUser.id,
+      targetId: Number(watchingUserId),
+      nickname: state.targetUser.nickname,
+      profileImg: state.targetUser.profileImg
+    });
+  };
 
   // 팔로우
-  useEffect(() => {
-    if(followingData.followeeId === 0 || followingData.followerId === 0)
-      return;
+  useEffect(
+    () => {
+      if (followingData.id === 0 || followingData.targetId === 0) return;
 
-    dispatch(action_mypage.getUserById(followingData.followeeId));
-    dispatch(action_mypage.following(followingData));
-  }, [followingData])
+      // dispatch(action_mypage.getUserById(followingData.followeeId));
+      dispatch(action_mypage.follow(followingData));
+    },
+    [followingData]
+  );
 
   // 팔로우 끊기
-  useEffect(() => {
-    if(deleteFollowingData.followeeId === 0 || deleteFollowingData.followerId === 0)
-      return;
+  useEffect(
+    () => {
+      if (deleteFollowingData.id === 0 || deleteFollowingData.targetId === 0)
+        return;
 
-    dispatch(action_mypage.deleteFollowing(deleteFollowingData));
-  }, [deleteFollowingData])
+      dispatch(action_mypage.unfollow(deleteFollowingData));
+    },
+    [deleteFollowingData]
+  );
 
-  const checkFollowing = (() => {
-    console.log(Number(targetUserId))
-    console.log(state.followingUsers)
-    for(let i=0; i<state.followingUsers.length; i++) {
-      console.log(state.followingUsers[i].id)
+  // 블랙리스트 등록
+  useEffect(
+    () => {
+      if (addBlackListData.id === 0 || addBlackListData.targetId === 0) return;
 
-        if(Number(targetUserId) === state.followingUsers[i].id) {
-          console.log("true")
-          
-          return true;
-        }      
+      dispatch(action_mypage.addBlackList(addBlackListData));
+    },
+    [addBlackListData]
+  );
+
+  // 블랙리스트 해제
+  useEffect(
+    () => {
+      if (deleteBlackListData.id === 0 || deleteBlackListData.targetId === 0)
+        return;
+
+      dispatch(action_mypage.deleteBlackList(deleteBlackListData));
+    },
+    [deleteBlackListData]
+  );
+
+  const checkFollowing = () => {
+    for (let i = 0; i < state.myFollowingUsers.length; i++) {
+      if (Number(watchingUserId) === state.myFollowingUsers[i].id) return true;
     }
-    console.log("false")
+
     return false;
-  })
+  };
+
+  const checkBlackList = () => {
+    console.log(state.blackListUsers);
+
+    for (let i = 0; i < state.blackListUsers.length; i++) {
+      if (Number(watchingUserId) === state.blackListUsers[i].targetUserId) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  useEffect(
+    () => {
+      if (
+        state.myFollowingUsers.length === 0 ||
+        state.blackListUsers.length === 0
+      )
+        return;
+
+      checkFollowing();
+      checkBlackList();
+    },
+    [state.blackListUsers, state.myFollowingUsers]
+  );
+
+  // if (state.blackListUsers.length === 0) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className={`${mypageHeaderStyle.total}`}>
@@ -138,41 +217,64 @@ const MypageHeader = () => {
             >
               기본정보
             </button>
-            {loginUser.id === Number(targetUserId) ?
-            <button
-            onClick={() => {
-              dispatch(changeManageType(1));
-              dispatch(changeMenuMode(3));
-            }}
-            style={
-              state.menuMode === 3
-                ? { backgroundColor: "#4570F5", color: "white" }
-                : null
-            }
-          >
-            내 정보 관리
-          </button> 
-          : (checkFollowing()
-            ?
-            <button onClick={() => {
-              changeDeleteFollowingData();
-              dispatch(action_mypage.getPerfectFollowList());
-            }}>팔로잉 취소</button>
-            :
-            <button onClick={() => {
-              changeFollowingData();
-              dispatch(action_mypage.getPerfectFollowList());
-            }}>팔로잉하기</button>)
-          }
-            <button
-              onClick={() => {
-                dispatch(changeFollowMode(3));
-                dispatch(changeFollowModalOpen(true));
-                dispatch(changeFollowModalMode(3));
-              }}
-            >
-              블랙리스트 관리
-            </button>
+            {loginUser.id === Number(watchingUserId)
+              ? <button
+                  onClick={() => {
+                    dispatch(changeManageType(1));
+                    dispatch(changeMenuMode(3));
+                  }}
+                  style={
+                    state.menuMode === 3
+                      ? { backgroundColor: "#4570F5", color: "white" }
+                      : null
+                  }
+                >
+                  내 정보 관리
+                </button>
+              : checkFollowing()
+                ? <button
+                    onClick={() => {
+                      changeDeleteFollowingData();
+                      dispatch(action_mypage.getPerfectFollowList());
+                    }}
+                  >
+                    팔로잉 취소
+                  </button>
+                : <button
+                    onClick={() => {
+                      changeFollowingData();
+                      dispatch(action_mypage.getPerfectFollowList());
+                    }}
+                  >
+                    팔로잉하기
+                  </button>}
+            {loginUser.id === Number(watchingUserId)
+              ? <button
+                  onClick={() => {
+                    dispatch(changeFollowMode(3));
+                    dispatch(changeFollowModalOpen(true));
+                    dispatch(changeFollowModalMode(3));
+                  }}
+                >
+                  블랙리스트 관리
+                </button>
+              : checkBlackList()
+                ? <button
+                    onClick={() => {
+                      changeDeleteBlackListData();
+                      dispatch(action_mypage.getBlackList(loginUser.id));
+                    }}
+                  >
+                    블랙리스트 취소
+                  </button>
+                : <button
+                    onClick={() => {
+                      changeAddBlackListData();
+                      dispatch(action_mypage.getBlackList(loginUser.id));
+                    }}
+                  >
+                    블랙리스트 등록
+                  </button>}
           </div>}
     </div>
   );
