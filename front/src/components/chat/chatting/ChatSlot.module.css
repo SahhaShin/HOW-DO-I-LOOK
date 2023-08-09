@@ -41,6 +41,8 @@
     justify-content: center;
     text-align: left;
     margin-left: 50px;
+
+    width: 100px;
 }
 
 .content > div > p{
