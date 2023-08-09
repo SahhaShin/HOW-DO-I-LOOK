@@ -3,15 +3,24 @@ import chatSlotStyle from './ChatSlot.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const ChatSlot = (props) => {
+    //oneRoom이 들어옴
+    // interface getChatRoomList{
+    //     id: number,
+    //     userAId: number,
+    //     userBId: number,
+    //     chatroomCode: string,
+    // }
 
-    console.log(props);
 
     const navigate = useNavigate();
 
+    const timeSplit = props.oneRoom.lastChatTime.split("T")[0];
+    const minutesSplit = props.oneRoom.lastChatTime.split(".")[0].split("T")[1];
     function chatStart(){
         //id는 roomId임
         navigate("/chatroom/" + props.oneRoom.userBId + "/" +props.oneRoom.id+"/"+ props.oneRoom.chatroomCode);
     }
+
 
 
     return(
@@ -29,12 +38,12 @@ const ChatSlot = (props) => {
                 <div className={`${chatSlotStyle.content}`}>
                     {/* 닉네임, 시간 */}
                     <div>
-                        <p>닉네임 안줌</p>
-                        <p>오후 3:12</p>
+                        <p className={`${chatSlotStyle.nickname}`}>{props.oneRoom.anotherNickName}</p>
+                        <p className={`${chatSlotStyle.time}`}>{timeSplit} {minutesSplit}</p>
                     </div>
 
                     {/* 내용 */}
-                    <div>피드 잘보고 있어요~</div>
+                    <div>{props.oneRoom.lastChat}</div>
                 </div>
 
                 {/* 우측 : 입장 버튼 */}

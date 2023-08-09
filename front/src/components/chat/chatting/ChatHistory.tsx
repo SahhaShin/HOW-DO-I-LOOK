@@ -17,20 +17,27 @@ const ChatHistory = () => {
     let dispatch = useDispatch();
 
     const navigate = useNavigate();
-
+    
     const params = useParams();
-
+    
     interface ChatList{
-        userId:string,
-        roomId:string,
-        chatContent:string,
+        "chatRoomId": number,
+        "userNickName": string,
+        "userProfile": string|null,
+        "time": string,
+        "content": string
     }
-
+    
     let [chatList, setChatList] = useState<ChatList[]|null>([]); //채팅방 사람들의 채팅 내역들
     let [chat, setChat] = useState<string|null>(''); //내가 치고 있는 채팅
     let [otherNickname, setNickname] = useState<string>(''); //상대방 닉네임
-
-    const nickname:string = "user3"; //나의 닉네임
+    
+    //지금 내가 어떤 id를 가진 유저인지 확인
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+    const myId:number = loginUser.id;
+    let otherId = params.otherId;
+    
+    const nickname:string = loginUser.nickname; //나의 닉네임
     // const profileImg = JSON.parse(); //로그인 구현시 가져올 것
     // const userId = JSON.parse(); //로그인 구현 시 가져올 것
 
@@ -78,11 +85,11 @@ const ChatHistory = () => {
 
             let addData={
                 chatRoomId: message.roomId,
-                chatId: null,
                 userNickName: nickname,
                 userProfile: null,
-                createTime: totalTime,
+                time: totalTime,
                 content: message.chatContent
+                // chatId: null,
             }
 
             console.log(message)
@@ -126,6 +133,7 @@ const ChatHistory = () => {
                 // content:chat,
             })
 
+            
         });
 
         setChat('');
@@ -137,9 +145,6 @@ const ChatHistory = () => {
         client.current.deactivate();
     };
 
-    //지금 내가 어떤 id를 가진 유저인지 확인
-    const myId:number = 1;
-    let otherId = params.otherId;
 
     //채팅 같은 날짜 한 번만 들어오게 하기 위한 변수
     let [chatDate, setChatDate] = useState<string>("");
@@ -157,46 +162,38 @@ const ChatHistory = () => {
     // 화면 들어올 시 초기화
     useEffect(() => {
 
-        // url 접근 막기
-        // let roomId2 = localStorage.getItem("roomId")
-        // if (roomId2 == null) {
-        //   navigate("/home")
-        //   return
-        // }
-    
-        // let userId = JSON.parse(sessionStorage.getItem("loginUser")).id;
-        
-        // 과거 채팅했던 내역을 가져와서 저장해야함
+        // 과거 채팅했던 내역을 가져와서 저장해야함 -> chatRoom
         dispatch(action.enterChatRoom({myId, otherId}));
-
         connect();
 
         // 내 채팅 정보는 시간과 내 채팅정보만 있으면 된다.
     
         return () => {
-        //   localStorage.removeItem("roomId")
+
           disconnect();
         }
       }, []);
 
+      console.log(state.chatHistory);
+
     return(
         <div className={`${chatHistoryStyle.total}`}>
             <div className={`${chatHistoryStyle.totalChat}`}>
-                {state.chatHistory?.chatContext && state.chatHistory?.chatContext.map((one, idx)=>{
+                {state.chatHistory && state.chatHistory?.map((one, idx)=>{
                     return(
                         <div key={idx} className={`${chatHistoryStyle.chatArea}`}>
                             {/* 날짜 */}
                             
                             {
-                                chatDate===one.createTime.split("T")[0]?null:changeDate(one.createTime.split("T")[0])
+                                chatDate===one.time?.split("T")[0]?null:changeDate(one.time?.split("T")[0])
                                 
                             }
                             {
-                                dateDisplay?<div className={`${chatHistoryStyle.date}`}><div>{one.createTime.split("T")[0]}</div></div>
+                                dateDisplay?<div className={`${chatHistoryStyle.date}`}><div>{one.time?.split("T")[0]}</div></div>
                                 :null
                             }
 
-                            {params.otherId===one.userId?<div className={`${chatHistoryStyle.oneChat}`}>
+                            {params.otherId===loginUser.id?<div className={`${chatHistoryStyle.oneChat}`}>
                                 {/* 유저 프로필 */}
                                 <div className={`${chatHistoryStyle.profile}`}>
                                     <div className={`${chatHistoryStyle.profileCircle_G}`}>
@@ -212,9 +209,9 @@ const ChatHistory = () => {
                                         <div className={`${chatHistoryStyle.midContent}`}>{one.content}</div>
                                         
                                         <div className={`${chatHistoryStyle.midTime}`}>
-                                            {Number(one.createTime.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}
-                                            {one.createTime.split("T")[1].split(":")[0]}:
-                                            {one.createTime.split("T")[1].split(":")[1]}
+                                            {Number(one.time?.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}
+                                            {one.time?.split("T")[1].split(":")[0]}:
+                                            {one.time?.split("T")[1].split(":")[1]}
                                             <div ref={scrollRef}></div>
                                         </div>
 
@@ -224,9 +221,9 @@ const ChatHistory = () => {
                             <div className={`${chatHistoryStyle.oneChat2}`}>
                                 <div className={`${chatHistoryStyle.mid2}`}>    
                                     <div className={`${chatHistoryStyle.midTime}`}>
-                                        {Number(one.createTime.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}
-                                        {one.createTime.split("T")[1].split(":")[0]}:
-                                        {one.createTime.split("T")[1].split(":")[1]}
+                                        {Number(one.time?.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}
+                                        {one.time?.split("T")[1].split(":")[0]}:
+                                        {one.time?.split("T")[1].split(":")[1]}
                                     </div>
                                     <div className={`${chatHistoryStyle.midContent}`}>{one.content}</div>
                                     <div ref={scrollRef}></div>

@@ -59,17 +59,11 @@ interface getChatRoomList{
 
 //방에 들어가면 그 방에 있던 채팅 정보와 상대방 정보가 보임
 interface enterRoom{
-    chatContext: [
-        {
-            chatRoomId: number,
-            chatId: number|null,
-            userNickName: string,
-            userProfile: string|null,
-            createTime: string,
-            content: string
-        }
-    ],
-    chatRoomCode: string
+    "chatRoomId": number,
+    "userNickName": string,
+    "userProfile": string|null,
+    "time": string,
+    "content": string
 }
 
 interface chatRoomParticipant{
@@ -84,6 +78,7 @@ interface chat{
     chatHistory : enterRoom|null,
     chatHistoryTime : string|null,
     chatHistoryDate : string|null,
+    registOk : boolean,
 }
 
 
@@ -100,7 +95,7 @@ const ChatSlice = createSlice({
     reducers:{
 
         addChatHistory(state, action){
-            state.chatHistory?.chatContext.push(action.payload);
+            state.chatHistory?.push(action.payload);
         }
 
     },
@@ -111,7 +106,9 @@ const ChatSlice = createSlice({
         })
 
         builder.addCase(action.enterChatRoom.fulfilled, (state, action) => {
-            state.chatHistory = action.payload;
+            state.chatHistory = action.payload.chatContext;
+
+            console.log(`dd = ${action.payload.chatContext}`);
         })
 
     }
