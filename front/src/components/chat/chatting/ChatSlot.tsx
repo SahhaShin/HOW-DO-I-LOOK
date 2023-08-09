@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import chatSlotStyle from './ChatSlot.module.css';
 import { useNavigate } from 'react-router-dom';
+//redux
+import { useSelector, useDispatch } from "react-redux"; 
+import {action} from "../../../store/ChatSlice";
 
 const ChatSlot = (props) => {
     //oneRoom이 들어옴
@@ -11,12 +14,17 @@ const ChatSlot = (props) => {
     //     chatroomCode: string,
     // }
 
+    //redux 관리
+    let state = useSelector((state:any)=>state.chat);
+    let dispatch = useDispatch();
+
 
     const navigate = useNavigate();
 
     const timeSplit = props.oneRoom.lastChatTime.split("T")[0];
     const minutesSplit = props.oneRoom.lastChatTime.split(".")[0].split("T")[1];
     function chatStart(){
+        dispatch(action.searchUser(props.oneRoom.userBId));
         //id는 roomId임
         navigate("/chatroom/" + props.oneRoom.userBId + "/" +props.oneRoom.id+"/"+ props.oneRoom.chatroomCode);
     }

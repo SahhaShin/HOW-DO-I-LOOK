@@ -133,12 +133,6 @@ const ChatHistory = () => {
                 chatContent:chat,
                 roomId: params.roomId,
                 userId: myId,
-                // chatRoomId:1,
-                // chatId : null,
-                // userNickName: nickname,
-                // userProfile:null,
-                // createTime:null,
-                // content:chat,
             })
 
             
@@ -157,14 +151,6 @@ const ChatHistory = () => {
     //채팅 같은 날짜 한 번만 들어오게 하기 위한 변수
     let [chatDate, setChatDate] = useState<string>("");
     let [dateDisplay, setDateDisplay] = useState<boolean>(false);
-    function changeDate(date:string){
-        setChatDate(date);
-        setDateDisplay(true);
-    }
-
-    function chageDateDisplay(){
-        setDateDisplay(false);
-    }
 
 
     // 화면 들어올 시 초기화
@@ -180,9 +166,7 @@ const ChatHistory = () => {
 
           disconnect();
         }
-      }, []);
-
-      console.log(state.chatHistory);
+      }, [state.userNickName]);
 
     return(
         <div className={`${chatHistoryStyle.total}`}>
@@ -224,7 +208,6 @@ const ChatHistory = () => {
                                             {Number(one.time?.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}
                                             {one.time?.split("T")[1].split(":")[0]}:
                                             {one.time?.split("T")[1].split(":")[1]}
-                                            {/* <div ref={scrollRef}></div> */}
                                         </div>
 
                                     </div>
@@ -238,7 +221,6 @@ const ChatHistory = () => {
                                         {one.time?.split("T")[1].split(":")[1]}
                                     </div>
                                     <div className={`${chatHistoryStyle.midContent}`}>{one.content}</div>
-                                    {/* <div ref={scrollRef}></div> */}
                                 </div>
                             </div>}
 

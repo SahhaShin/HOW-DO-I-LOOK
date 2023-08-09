@@ -28,10 +28,11 @@ const ChatRoom = () => {
 
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
+
     useEffect(() => {
         // 과거 채팅했던 내역을 가져와서 저장해야함
         dispatch(action.enterChatRoom({myId:loginUser.id, otherId:params.otherId}));
-      }, []);
+      }, [state.otherNickname]);
 
     return(
         <div className={`${chatRoomStyle.total}`}>
@@ -49,15 +50,15 @@ const ChatRoom = () => {
                         <div>
                             <div className={`${chatRoomStyle.chatHeader}`}>
                                 {/* 닉네임 안들어옴 */}
-                                <div className={`${chatRoomStyle.nickname}`}>{state.chatHistory?.anotherNickName}</div>
+                                <div className={`${chatRoomStyle.nickname}`}>{state.otherNickname}</div>
                                 <div onClick={()=>{navigate("/chatList")}} className={`${chatRoomStyle.exitWrapper}`}><button className={`${chatRoomStyle.exit}`}>나가기</button></div>
                             </div>
                             
                         </div>
                         <div className={`${chatRoomStyle.chatting}`}><ChatHistory/></div>
-
                     </div>
                 </div>
+
             </div>
 
             {/* 푸터 */}
