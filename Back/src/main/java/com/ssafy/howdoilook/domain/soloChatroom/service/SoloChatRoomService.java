@@ -60,14 +60,15 @@ public class SoloChatRoomService {
         //Entity To Dto
         for (SoloChatRoom chatRoom : chatRoomListPrev){
             SoloChat lastChat = chatRepository.findTopByRoomIdOrderByTimeDesc(chatRoom.getId());
+
             ChatRoomDto dto = ChatRoomDto.builder()
                     .id(chatRoom.getId())
                     .userAId(chatRoom.getUserA().getId())
                     .userBId(chatRoom.getUserB().getId())
                     .chatroomCode(chatRoom.getRoomCode())
                     .anotherNickName(chatRoom.getUserB().getNickname())
-                    .lastChat(lastChat.getContent())
-                    .lastChatTime(lastChat.getTime())
+                    .lastChat((lastChat != null) ? lastChat.getContent() : "채팅이 내용이 없습니다.")
+                    .lastChatTime((lastChat != null) ? lastChat.getContent() : "00:00:00")
                     .build();
             chatRoomListNext.add(dto);
         }
