@@ -15,10 +15,9 @@ public interface SoloChatRoomRepository extends JpaRepository<SoloChatRoom,Long>
 
     int countByUserAAndUserB(User userA, User userB);
 
-
-//    @Query("SELECT c FROM SoloChatRoom c WHERE (c.userA = :userAId AND c.userB = :userBId) OR (c.userA = :userBId AND c.userB = :userAId)")
-//    Optional<SoloChatRoom> findByUserAAndUserB(@Param("userAId") long userAId, @Param("userBId") long userBId);
-    Optional<SoloChatRoom> findByUserAAndUserB(User userA, User userB);
+    @Query("SELECT c FROM SoloChatRoom c " +
+            "WHERE (c.userA = :userA AND c.userB = :userB) OR (c.userA = :userB AND c.userB = :userA)")
+    Optional<SoloChatRoom> findByUserAAndUserB(@Param("userA")User userA, @Param("userB")User userB);
 
     @Query("SELECT c FROM SoloChatRoom c WHERE (c.userA.id = :userId and c.userB.id = :userId) ORDER BY c.chatUpdateDate DESC")
     List<SoloChatRoom> findByUser(@Param("userId") long userId);

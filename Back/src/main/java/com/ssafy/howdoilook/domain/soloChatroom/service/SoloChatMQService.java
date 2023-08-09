@@ -2,7 +2,13 @@ package com.ssafy.howdoilook.domain.soloChatroom.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.howdoilook.domain.alarm.dto.request.AlarmSaveRequestDto;
+import com.ssafy.howdoilook.domain.alarm.entity.AlarmType;
+import com.ssafy.howdoilook.domain.alarm.service.AlarmService;
+import com.ssafy.howdoilook.domain.room.entity.RoomChat;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecodRequestDto;
+import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChatRoom;
+import com.ssafy.howdoilook.domain.soloChatroom.repository.SoloRoomRepository.SoloChatRoomRepository;
 import com.ssafy.howdoilook.global.handler.ImageException;
 import com.ssafy.howdoilook.global.handler.SerializationException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +27,8 @@ import static org.springframework.data.mongodb.util.BsonUtils.toJson;
 public class SoloChatMQService {
     private final RedisTemplate<String, String> redisTemplate;
     private final SoloChatRoomService soloChatRoomService;
+    private final AlarmService alarmService;
+    private final SoloChatRoomRepository soloChatRoomRepository;
     private static final String QUEUE_KEY = "SoloChat";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -51,10 +59,24 @@ public class SoloChatMQService {
         ChatRecodRequestDto chatMessage = dequeue();
 
         if(chatMessage != null){
-            //알림에 추가하는 기능 추가
+            //채팅에 대한 알림 추가
+            System.out.println(chatMessage.getRoomId());
+            SoloChatRoom room = soloChatRoomRepository.findById(chatMessage.getRoomId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 채팅방은 존재하지 않습니다"));
 
-            //저장 로직 추가
-            soloChatRoomService.recordChat(chatMessage);
+            long senderId = chatMessage.getUserId();
+            long receiverId = (senderId == room.getUserA().getId()) ? room.getUserB().getId() : room.getUserA().getId();
+
+            AlarmSaveRequestDto alarmDto = AlarmSaveRequestDto.builder()
+                    .type(AlarmType.CHAT)
+                    .alarmSenderId(chatMessage.getUserId())
+                    .alarmreceiverId(receiverId)
+                    .alarmSenderId(senderId)
+                    .build();
+            alarmService.saveAlarm(alarmDto);
+
+            //채팅 로그 저장 로직
+            soloChatRoomService.recordChat(chatMessage, room);
         }
     }
 

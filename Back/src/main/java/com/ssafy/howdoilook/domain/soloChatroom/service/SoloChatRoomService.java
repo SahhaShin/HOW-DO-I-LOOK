@@ -12,6 +12,8 @@ import com.ssafy.howdoilook.domain.soloChatroom.repository.soloChatRepository.Ch
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,18 +31,18 @@ public class SoloChatRoomService {
     private final SoloChatRoomRepository soloChatRoomRepository;
     private final ChatRepository chatRepository;
 
+    private final int PAGESIZE = 30;
 
-    @Transactional
-    public String checkNickName(ChatRecodRequestDto requestDto){
+//    @Transactional
+//    public String checkJWT(ChatRecodRequestDto requestDto){
+//
+//    }
 
-    }
+
     //채팅시 채팅 기록 MongoDB에 저장
     @Transactional
-    public void recordChat(ChatRecodRequestDto requestDto){
+    public void recordChat(ChatRecodRequestDto requestDto, SoloChatRoom room){
         String content = requestDto.getChatContent();
-
-        SoloChatRoom room = soloChatRoomRepository.findById(requestDto.getRoomId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 채팅방은 존재하지 않습니다"));
 
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
@@ -56,6 +58,7 @@ public class SoloChatRoomService {
         soloChatRoomRepository.UpdateChatDate(roomId, LocalDateTime.now());
         chatRepository.save(chat);
     }
+
 
 
     //특정 유저가 진행했던 채팅방 리스트 반환
@@ -74,24 +77,26 @@ public class SoloChatRoomService {
                     .userBId(chatRoom.getUserB().getId())
                     .chatroomCode(chatRoom.getRoomCode())
                     .anotherNickName(chatRoom.getUserB().getNickname())
-                    .lastChat(lastChat.getContent())
-                    .lastChatTime(lastChat.getTime().toString())
+                    .lastChat((lastChat == null) ? "대화내용이 없습니다.":lastChat.getContent())
+                    .lastChatTime((lastChat == null) ? "":lastChat.getTime().toString())
                     .build();
             chatRoomListNext.add(dto);
         }
         return chatRoomListNext;
     }
 
-    //채팅방 입장 Mongodb
+
+    //채팅방 입장 Mongodb ( 채팅 내용 반환 )
     @Transactional
-    public ChatContextListResponseDto enterUser(ChatContextRequestDto requestDto){
+    public ChatContextListResponseDto enterChatRoom(ChatContextRequestDto requestDto){
         User userA = userRepository.findById(requestDto.getUserA())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
         User userB = userRepository.findById(requestDto.getUserB())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
-        int isExist = soloChatRoomRepository.countByUserAAndUserB(userA, userB);
+        int isExist = soloChatRoomRepository.countByUserAAndUserB(userA, userB)
+                + soloChatRoomRepository.countByUserAAndUserB(userB, userA);
         //기존 채팅방이 없다면
         if(isExist == 0){
             String roomCode = UUID.randomUUID().toString();
@@ -102,11 +107,9 @@ public class SoloChatRoomService {
                     .build();
             soloChatRoomRepository.save(chatRoom);
 
-
             ChatContextListResponseDto responseDto = ChatContextListResponseDto.builder()
                     .chatRoomCode(roomCode)
                     .build();
-
             return responseDto;
         }
         //기존 채팅방이 있다면
@@ -116,31 +119,40 @@ public class SoloChatRoomService {
 
             Long roomId = chatRoom.getId();
 
-            List<SoloChat> chatContext = chatRepository.findAllByRoomIdOrderByTimeAsc(roomId);
-            List<ChatDto> answer = new ArrayList<>();
-
-            //Entity To Dto
-            for(SoloChat chat : chatContext){
-                User user = userRepository.findById(chat.getUserId())
-                        .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
-
-                ChatDto dto = ChatDto.builder()
-                        .chatRoomId(chat.getRoomId())
-                        .userNickName(user.getNickname())
-                        .userProfile(user.getProfileImg())
-                        .time(chat.getTime().toString())
-                        .content(chat.getContent())
-                        .build();
-                answer.add(dto);
-            }
-
-            //make ResponseDto
-            ChatContextListResponseDto responseDto = ChatContextListResponseDto.builder()
-                    .chatContext(answer)
-                    .chatRoomCode(chatRoom.getRoomCode())
-                    .build();
-            return responseDto;
+            //최근 채팅 리스트 반환
+            return getChat(chatRoom.getId(), 0);
         }
+    }
+    @Transactional
+    public ChatContextListResponseDto getChat(long roomId, int page){
+        SoloChatRoom chatRoom = soloChatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 채팅방은 존재하지 않습니다"));
+
+        Pageable pageable = PageRequest.of(page,PAGESIZE);
+        List<SoloChat> chatContext = chatRepository.findAllByRoomIdOrderByTimeAsc(roomId, pageable);
+        List<ChatDto> answer = new ArrayList<>();
+
+        //Entity To Dto
+        for(SoloChat chat : chatContext){
+            User user = userRepository.findById(chat.getUserId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+
+            ChatDto dto = ChatDto.builder()
+                    .chatRoomId(chat.getRoomId())
+                    .userNickName(user.getNickname())
+                    .userProfile(user.getProfileImg())
+                    .time(chat.getTime().toString())
+                    .content(chat.getContent())
+                    .build();
+            answer.add(dto);
+        }
+
+        //make ResponseDto
+        ChatContextListResponseDto responseDto = ChatContextListResponseDto.builder()
+                .chatContext(answer)
+                .chatRoomCode(chatRoom.getRoomCode())
+                .build();
+        return responseDto;
     }
 
 //    //채팅방 입장   Mysql ( Mongodb로 마이그레이션 완료 )
