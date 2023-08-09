@@ -13,7 +13,7 @@ class Streaming extends Component {
 
         //session에서 유저 정보를 가져온다. 
         const user = window.sessionStorage.getItem("loginUser")
-        const sessionid = window.sessionStorage.getItem("sessionid")
+        const sessionid = "session"//window.sessionStorage.getItem("sessionid")
         console.log(user)
         //가져온 user정보를 this.state에 입력 
         //
@@ -38,6 +38,8 @@ class Streaming extends Component {
         this.handleChangeUserName = this.handleChangeUserName.bind(this);
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         this.onbeforeunload = this.onbeforeunload.bind(this);
+        // this.closeSession = this.closeSession.bind(this);
+        
     }
 
     componentDidMount() {
@@ -91,10 +93,10 @@ class Streaming extends Component {
         }
     }
 
-    joinSession() {
+    async joinSession() {
         //Openvidu 객체 생성 하는 코드
         this.OV = new OpenVidu();
-        const isStreamer = (this.state.myUserName === this.state.mySessionId);
+        const isStreamer = this.state.myUserName === this.state.mySessionId;
 
 
         //세션을 설정하는 부분
@@ -105,7 +107,6 @@ class Streaming extends Component {
             },
             () => {
                 var mySession = this.state.session;
-
                 
                 //세션에서 생성되는 이벤트가 발생되면 메서드가 실행된다.
                 //새로운 스트림이 생성되었을 때 실행되는 메서드
@@ -144,8 +145,8 @@ class Streaming extends Component {
                             let publisher = await this.OV.initPublisherAsync(undefined, {
                                 audioSource: undefined, // The source of audio. If undefined default microphone
                                 videoSource: undefined, // The source of video. If undefined default webcam
-                                publishAudio: isStreamer, //(this.state.sessionId=this.session.user)?true:false, // Whether you want to start publishing with your audio unmuted or not
-                                publishVideo: isStreamer, //(this.state.sessionId=this.session.user)?true:false, // Whether you want to start publishing with your video enabled or not
+                                publishAudio: (isStreamer)?true:false, //(this.state.sessionId=this.session.user)?true:false, // Whether you want to start publishing with your audio unmuted or not
+                                publishVideo: (isStreamer)?true:false, //(this.state.sessionId=this.session.user)?true:false, // Whether you want to start publishing with your video enabled or not
                                 resolution: '640x480', // The resolution of your video
                                 frameRate: 30, // The frame rate of your video
                                 insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
@@ -182,26 +183,48 @@ class Streaming extends Component {
                             console.log('There was an error connecting to the session:', error.code, error.message);
                         });
                 });
+
+               
             },
+            
         );
+        if(!isStreamer){
+
+            if (this.state.publisher) {
+                // 발행된 스트림을 제거하고 구독 취소
+                await this.state.session.unpublish(this.state.publisher);
+                // 발행자 제거 후 상태 업데이트
+                this.setState({
+                    publisher: undefined
+                });
+            }
+        }
     }
 
     leaveSession() { 
         //지금 세션 가져온다.
         const mySession = this.state.session;
-
+        const isStreamer = this.state.myUserName === this.state.mySessionId;
+        
         //연결 해제 메서드를 실행한다.
         if (mySession) {
             mySession.disconnect();
+            if(isStreamer){
+                this.closeSession(mySession.sessionId); // 서버에 세션 닫기 요청 보내기
+            }
         }
+
+        //session에서 유저 정보를 가져온다. 
+        const user = window.sessionStorage.getItem("loginUser")
+        const sessionid = "session"//window.sessionStorage.getItem("sessionid")
 
         //openvidu 객체를 제거함.
         this.OV = null;
         this.setState({
             session: undefined,
             subscribers: [],
-            mySessionId: 'SessionA',
-            myUserName: 'Participant' + Math.floor(Math.random() * 100),
+            mySessionId: sessionid,
+            myUserName: user.id,
             mainStreamManager: undefined,
             publisher: undefined
         });
@@ -245,6 +268,7 @@ class Streaming extends Component {
     //카메라 끄기/켜기
     async toggleCamera(e) {
         console.log("Camera ON/Off")
+ 
         
         const cameraOn = this.state.cameraOn;
         this.setState({
@@ -266,6 +290,7 @@ class Streaming extends Component {
         const myUserName = this.state.myUserName;
         const cameraOn = this.state.cameraOn;
         const audioOn = this.state.audioOn;
+        const isStreamer = this.state.myUserName === this.state.mySessionId;
 
         return (
             <div className="container">
@@ -314,6 +339,14 @@ class Streaming extends Component {
                     <div id="session">
                         <div id="session-header" className='buttons'>
                             {/* <h1 id="session-title">{mySessionId}</h1> */}
+                            {isStreamer ? (
+                            <input
+                                className="btn btn-large btn-danger"
+                                type="button"
+                                id="buttonLeaveSession"
+                                onClick={this.leaveSession}
+                                value="Leave session"
+                            />):null}
                             <button className={(cameraOn)?"activeButton":"disableButton"} onClick={this.toggleCamera}><img src={process.env.PUBLIC_URL + `/img/live/camera.png`} alt='카메라'/> 카메라 {(cameraOn)?"끄기":"켜기"}</button>   
                             <button className={(audioOn)?"activeButton":"disableButton"} onClick={this.toggleAudio}><img src={process.env.PUBLIC_URL + `/img/live/audio.png`} alt='마이크'/>마이크 {(audioOn)?"끄기":"켜기"}</button>                          
                         </div>
@@ -364,6 +397,53 @@ class Streaming extends Component {
         });
         return response.data; // The token
     }
+
+    async closeSession(sessionId) {
+        try {
+            // 세션 정보 가져오기
+            const sessionResponse = await axios.get(APPLICATION_SERVER_URL + `api/sessions/${sessionId}`,{},{
+                headers: { 'Content-Type': 'application/json', },
+            });
+            const session = sessionResponse.data;
+    
+            // 연결 정보 가져오기
+            const connections = session.connections;
+    
+            // 연결을 하나씩 끊음
+            for (const connection of connections) {
+                await this.disconnectConnection(sessionId, connection.connectionId);
+            }
+    
+            // 모든 연결이 끊어진 후 세션을 닫음
+            await this.endSession(sessionId);
+        } catch (error) {
+            console.error('Error closing session:', error);
+        }
+    }
+    
+    async disconnectConnection(sessionId, connectionId) {
+        try {
+            await axios.delete(APPLICATION_SERVER_URL + `api/sessions/${sessionId}/connections/${connectionId}`, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            console.log(`Connection ${connectionId} disconnected successfully.`);
+        } catch (error) {
+            console.error(`Error disconnecting connection ${connectionId}:`, error);
+        }
+    }
+    
+    async endSession(sessionId) {
+        try {
+            await axios.delete(APPLICATION_SERVER_URL + `api/sessions/${sessionId}`, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            console.log(`Session ${sessionId} closed successfully.`);
+        } catch (error) {
+            console.error(`Error closing session ${sessionId}:`, error);
+        }
+    }
+    
+
 }
 
 export default Streaming;
