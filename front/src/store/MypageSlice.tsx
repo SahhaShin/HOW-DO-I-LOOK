@@ -85,9 +85,13 @@ interface Mypage{
     followMode:number,
     followModalOpen : boolean,
     followModalMode : number,
-    followMeUsers:Followers[], // 팔로워 
-    followingUsers:Followers[], // 팔로잉 
+    myFollowerUsers:Followers[], // 내 팔로워 
+    myFollowingUsers:Followers[], // 내 팔로잉
+    yourFollowerUsers:Followers[], // 상대의 팔로워
+    yourFollowingUsers:Followers[],// 상대의 팔로잉 
+    
     perfectFollowUsers:PerfectFollow[] // 맞팔
+
     blackListUsers:BlackLists[], // 블랙리스트
     manageType:number,
     followTempUser: Users,
@@ -117,8 +121,12 @@ const initialState:Mypage = {
     followMode:2,
     manageType:1,
     followModalOpen : false,
-    followMeUsers:[], // 팔로워
-    followingUsers:[], // 팔로잉
+
+    myFollowerUsers:[], // 내 팔로워 
+    myFollowingUsers:[], // 내 팔로잉
+    yourFollowerUsers:[], // 상대의 팔로워
+    yourFollowingUsers:[],// 상대의 팔로잉 
+
     perfectFollowUsers:[], // 맞팔 리스트
 
     blackListUsers:[],  // 블랙리스트
@@ -252,12 +260,12 @@ export const action_mypage = {
         }
      }),
 
-    // 팔로잉 리스트
-    getFollowingList : createAsyncThunk(`MypageSlice/getFollowingList`, async(userId) => {
+    // 내 팔로잉 리스트
+    getMyFollowingList : createAsyncThunk(`MypageSlice/getMyFollowingList`, async(myId) => {
         try {
             const token = await CheckToken();
 
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/follower/${userId}`, {
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/my/followee/${myId}`, {
                 headers : {
                     "Authorization" : token
                 }
@@ -270,12 +278,63 @@ export const action_mypage = {
     }),
 
 
-    // 팔로워 리스트
-    getFollowMeList : createAsyncThunk(`MypageSlice/getFollowMeList`, async(userId) => {
+    // 내 팔로워 리스트
+    getMyFollowerList : createAsyncThunk(`MypageSlice/getMyFollowerList`, async(myId) => {
         try {
             const token = await CheckToken();
 
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/followee/${userId}`, {
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/my/follower/${myId}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            });
+
+            return response.data;
+        } catch(e) {
+            throw e;
+        }
+    }),
+
+    // 타인의 팔로잉 리스트
+    getYourFollowingList : createAsyncThunk(`MypageSlice/getYourFollowingList`, async(yourId) => {
+        try {
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/your/followee/${yourId}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            })
+
+            return response.data;
+        } catch(e) {
+            throw e;
+        }
+    }),
+
+    // 타인의 팔로워 리스트
+    getYourFollowerList : createAsyncThunk(`MypageSlice/getYourFollowerList`, async(yourId) => {
+        try {
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/list/your/follower/${yourId}`, {
+                headers : {
+                    "Authorization" : token
+                }
+            }) 
+
+            return response.data;
+        } catch(e) {
+            throw e;
+        }
+    }),
+
+    // 블랙리스트
+    getBlackList : createAsyncThunk(`MypageSlice/getBlackList`, async(myId) => {
+        try {
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/blacklist/list/${myId}`, {
                 headers : {
                     "Authorization" : token
                 }
@@ -304,26 +363,26 @@ export const action_mypage = {
         }
     }),
 
-    // 팔로잉 추가
-    following : createAsyncThunk(`MypageSlice/following`, async(followingData) => {
+    // 팔로우
+    follow : createAsyncThunk(`MypageSlice/follow`, async(followingData) => {
         const token = await CheckToken();
 
         try {
-            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/follow/save`, followingData, {
+            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/follow`, followingData, {
                 headers : {
                     "Authorization" : token
                 }
             });
             
-            return followingData.followeeId;
+            return followingData;
 
         } catch(e) {
             throw e;
         }
     }),
 
-    // 팔로잉 끊기
-    deleteFollowing : createAsyncThunk(`MypageSlice/deleteFollowing`, async(deleteFollowingData) => {
+    // 언팔로우
+    unfollow : createAsyncThunk(`MypageSlice/unfollow`, async(deleteFollowingData) => {
         try {
             const token = await CheckToken();
 
@@ -334,28 +393,13 @@ export const action_mypage = {
                 }
             });
 
-            return deleteFollowingData.followeeId;
+            return deleteFollowingData;
         } catch(e) {
             throw e;
         }
     }),
 
-    // 블랙리스트 조회
-    getBlackList : createAsyncThunk(`MypageSlice/getBlackList`, async(userId) => {
-        try {
-            const token = await CheckToken();
-
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/blacklist/list/${userId}`, {
-                headers: {
-                    "Authorization" : token
-                }
-            });
-
-            return response.data;
-        } catch(e) {
-            throw e;
-        }
-    }),
+    // 블랙리스트 추가
 
     // 블랙리스트 삭제
     deleteBlackList : createAsyncThunk(`MypageSlice/deleteBlackList`, async(blackListDeleteData) => {
@@ -439,8 +483,6 @@ export const action_mypage = {
                 }
             });
 
-            console.log(response.data)
-
             return response.data;
         } catch(e) {
             throw e;
@@ -497,7 +539,6 @@ const MypageSlice = createSlice({
         })
 
         builder.addCase(action_mypage.getUserById.fulfilled, (state, action) => {
-            state.followTempUser = action.payload;
             state.targetUser = action.payload;
         })
 
@@ -509,24 +550,64 @@ const MypageSlice = createSlice({
             state.targetUser.closetAccess = action.payload.closetAccess;
         })
 
-        builder.addCase(action_mypage.following.fulfilled, (state, action) => {
-            state.followingUsers.push({
-                "id" : action.payload,
-                "nickname" : state.followTempUser.nickname,
-                "profileImg" : state.followTempUser.profileImg
-            });
+        builder.addCase(action_mypage.getMyFollowingList.fulfilled, (state, action) => {
+            state.myFollowingUsers = action.payload;
         })
 
-        builder.addCase(action_mypage.getFollowingList.fulfilled, (state, action) => {
-            state.followingUsers = action.payload;
+        builder.addCase(action_mypage.getMyFollowerList.fulfilled, (state, action) => {
+            state.myFollowerUsers = action.payload;
         })
 
-        builder.addCase(action_mypage.getFollowMeList.fulfilled, (state, action) => {
-            state.followMeUsers = action.payload;
+        builder.addCase(action_mypage.getYourFollowingList.fulfilled, (state, action) => {
+            state.yourFollowingUsers = action.payload;
+        })
+
+        builder.addCase(action_mypage.getYourFollowerList.fulfilled, (state, action) => {
+            state.yourFollowerUsers = action.payload;
         })
 
         builder.addCase(action_mypage.getBlackList.fulfilled, (state, action) => {
             state.blackListUsers = action.payload;
+        })
+
+        builder.addCase(action_mypage.follow.fulfilled, (state, action) => {
+            const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
+            
+            if(action.payload.id === loginUser.id) {
+                state.myFollowingUsers.push({
+                    "id" : action.payload.targetId,
+                    "nickname" : state.followTempUser.nickname,
+                    "profileImg" : state.followTempUser.profileImg
+                });
+                
+                state.yourFollowerUsers.push({
+                    "id" : action.payload.id,
+                    "nickname" : ,
+                    "profileImg" : 
+                });
+            } else if(action.payload.targetId === loginUser.id) {
+                state.myFollowerUsers.push({
+                    "id" : action.payload.id,
+                    "nickname" : ,
+                    "profileImg" : 
+                });
+
+                state.yourFollowingUsers.push({
+                    "id" : action.payload.targetId,
+                    "nickname" : ,
+                    "profileImg" : 
+                });
+            }
+        })
+
+        builder.addCase(action_mypage.unfollow.fulfilled, (state, action) => {
+            for(let i=0; i<state.followingUsers.length; i++) {
+                if(state.followingUsers[i].id === action.payload.targetId) {
+                    state.followingUsers.splice(i, 1);
+                    
+                    break;
+                }
+            }
         })
 
         builder.addCase(action_mypage.deleteBlackList.fulfilled, (state, action) => {
@@ -551,22 +632,11 @@ const MypageSlice = createSlice({
             state.likeScore = action.payload;
         })
 
-        builder.addCase(action_mypage.deleteFollowing.fulfilled, (state, action) => {
-            for(let i=0; i<state.followingUsers.length; i++) {
-                if(state.followingUsers[i].id === action.payload) {
-                    state.followingUsers.splice(i, 1);
-                    
-                    break;
-                }
-            }
-        })
-
         builder.addCase(action_mypage.getPerfectFollowList.fulfilled, (state, action) => {
             state.perfectFollowUsers = action.payload;
         })
 
         builder.addCase(action_mypage.getBadgeList.fulfilled, (state, action) => {
-            console.log(action.payload)
             state.badgeList = action.payload;
         })
     }

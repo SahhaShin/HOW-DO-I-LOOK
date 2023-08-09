@@ -33,7 +33,7 @@ const MypageFollowModal = () => {
 
     const changeFollowingData = ((one) => {
         setFollowingData({
-            followerId : Number(targetUserId),
+            followerId : loginUser.id,
             followeeId : one.id
         })
     })
@@ -45,7 +45,7 @@ const MypageFollowModal = () => {
 
     const changeDeleteFollowingData = ((one) => {
         setDeleteFollowingData({
-            followerId : Number(targetUserId),
+            followerId : loginUser.id,
             followeeId : one.id
         })
         
@@ -58,7 +58,7 @@ const MypageFollowModal = () => {
 
     const changeBlackListDeleteData = ((one) => {
         setBlackListDeleteData({
-            userId : Number(targetUserId),
+            userId : loginUser.id,
             targetUserId : one.targetUserId 
         })
     })

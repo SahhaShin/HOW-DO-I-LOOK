@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //css
 import mypageHeaderStyle from "./MypageHeader.module.css";
@@ -21,11 +21,77 @@ const MypageHeader = () => {
   let dispatch = useDispatch();
 
   const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
-  const { targetUserId } = useParams();
+  const { watchingUserId } = useParams();
 
-  let getBlackList = (targetUserId: number) => {
-    dispatch(action_mypage.getBlackList(targetUserId));
+  let getBlackList = (watchingUserId: number) => {
+    dispatch(action_mypage.getBlackList(watchingUserId));
   };
+
+  const [followingData, setFollowingData] = useState({
+    id : 0,
+    targetId : 0,
+    nickname : "",
+    profileImg : ""
+  })
+
+  const changeFollowingData = (() => {
+      setFollowingData({
+        id : loginUser.id,
+        targetId : Number(watchingUserId),
+        nickname : state.targetUser.nickname,
+        profileImg : state.targetUser.profileImg
+      })
+  })
+
+  /////////////////////////////////////////////////////////////////////
+
+
+  const [deleteFollowingData, setDeleteFollowingData] = useState ({
+    id : 0,
+    targetId : 0,
+    nickname : "",
+    profileImg : ""
+  });
+
+  const changeDeleteFollowingData = (() => {
+      setDeleteFollowingData({
+          followerId : loginUser.id,
+          followeeId : Number(targetUserId)
+      })
+  })
+
+  // 팔로우
+  useEffect(() => {
+    if(followingData.followeeId === 0 || followingData.followerId === 0)
+      return;
+
+    dispatch(action_mypage.getUserById(followingData.followeeId));
+    dispatch(action_mypage.following(followingData));
+  }, [followingData])
+
+  // 팔로우 끊기
+  useEffect(() => {
+    if(deleteFollowingData.followeeId === 0 || deleteFollowingData.followerId === 0)
+      return;
+
+    dispatch(action_mypage.deleteFollowing(deleteFollowingData));
+  }, [deleteFollowingData])
+
+  const checkFollowing = (() => {
+    console.log(Number(targetUserId))
+    console.log(state.followingUsers)
+    for(let i=0; i<state.followingUsers.length; i++) {
+      console.log(state.followingUsers[i].id)
+
+        if(Number(targetUserId) === state.followingUsers[i].id) {
+          console.log("true")
+          
+          return true;
+        }      
+    }
+    console.log("false")
+    return false;
+  })
 
   return (
     <div className={`${mypageHeaderStyle.total}`}>
@@ -72,19 +138,32 @@ const MypageHeader = () => {
             >
               기본정보
             </button>
+            {loginUser.id === Number(targetUserId) ?
             <button
-              onClick={() => {
-                dispatch(changeManageType(1));
-                dispatch(changeMenuMode(3));
-              }}
-              style={
-                state.menuMode === 3
-                  ? { backgroundColor: "#4570F5", color: "white" }
-                  : null
-              }
-            >
-              내 정보 관리
-            </button>
+            onClick={() => {
+              dispatch(changeManageType(1));
+              dispatch(changeMenuMode(3));
+            }}
+            style={
+              state.menuMode === 3
+                ? { backgroundColor: "#4570F5", color: "white" }
+                : null
+            }
+          >
+            내 정보 관리
+          </button> 
+          : (checkFollowing()
+            ?
+            <button onClick={() => {
+              changeDeleteFollowingData();
+              dispatch(action_mypage.getPerfectFollowList());
+            }}>팔로잉 취소</button>
+            :
+            <button onClick={() => {
+              changeFollowingData();
+              dispatch(action_mypage.getPerfectFollowList());
+            }}>팔로잉하기</button>)
+          }
             <button
               onClick={() => {
                 dispatch(changeFollowMode(3));
