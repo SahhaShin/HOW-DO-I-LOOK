@@ -11,8 +11,9 @@ import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
 import Pagination from "../../../components/util/Pagination";
+import MyRank from "../../../components/sns/rank/MyRank";
 import RankingLovely from "../../../components/sns/rank/RankLovely";
-import RankingNatural from "../../../components/sns/rank/RankNature";
+import RankingNatural from "../../../components/sns/rank/RankNatural";
 import RankingModern from "../../../components/sns/rank/RankModern";
 import RankingSexy from "../../../components/sns/rank/RankSexy";
 
@@ -27,6 +28,9 @@ const Ranking = () => {
 
     useEffect(() => {
         dispatch(action_ranking.getRankingList("LOVELY"));
+        dispatch(action_ranking.getRankingList("SEXY"))
+        dispatch(action_ranking.getRankingList("NATURAL"))
+        dispatch(action_ranking.getRankingList("MODERN"))
     }, [])
 
     // 로딩 컴포넌트 필요함
@@ -63,6 +67,15 @@ const Ranking = () => {
         }
     }
 
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
     return(
         <div>
             <div className={`${rankingStyle.total}`}>
@@ -78,6 +91,7 @@ const Ranking = () => {
                     <div><Menu/></div>
                 </div>
 
+
                 {/* 메인 컨텐츠 시작 */}
                 
                 <div className={`${rankingStyle.contentArea}`}>
@@ -91,7 +105,12 @@ const Ranking = () => {
                             <option value="sexy">Sexy</option>
                         </select>
                     </div>
-                    <div>7/19 자정 기준</div> 
+                    <div>{year}/{month}/{day} {hours}:{minutes}:{seconds}</div> 
+                </div>
+
+                {/* 내 순위 */}
+                <div>
+                    <div><MyRank></MyRank></div>
                 </div>
 
                     {state.rankMode==="lovely"?<RankingLovely/>:(

@@ -220,7 +220,7 @@
   border-radius: 50%;
 
   /* 컬러 */
-  color: white;
+  /* color: white; */
 
   /* 폰트 */
   font-weight: 900;
@@ -235,16 +235,20 @@
 
 /* 랭킹 타입마다 이부분 css가 다름 */
 .userSlotLovely > div:nth-child(1) {
-  background-color: #ff9a9e;
+  /* background-color: #ff9a9e; */
+  background-color: black;
 }
 .userSlotNatural > div:nth-child(1) {
-  background-color: #96e6a1;
+  /* background-color: #96e6a1; */
+  background-color: black;
 }
 .userSlotModern > div:nth-child(1) {
-  background-color: #29323c;
+  /* background-color: #29323c; */
+  background-color: black;
 }
 .userSlotSexy > div:nth-child(1) {
-  background-color: #d787e4;
+  /* background-color: #d787e4; */
+  background-color: black;
 }
 
 .userSlotLovely > div:nth-child(3),
@@ -272,6 +276,30 @@
   /* 폰트 */
   font-weight: 900;
   font-size: 20px;
+}
+
+.MyLovelyRank {
+  color: #ff9a9e;
+}
+
+.MyNaturalRank {
+  color: #96e6a1;
+}
+
+.MySexyRank {
+  color: #d787e4;
+}
+
+.MyModernRank {
+  color: #29323c;
+}
+
+.blackRank {
+  color: black;
+}
+
+.whiteRank {
+  color: white;
 }
 
 .paginationContainer {

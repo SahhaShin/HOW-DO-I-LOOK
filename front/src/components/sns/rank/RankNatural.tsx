@@ -7,10 +7,7 @@ import rankingStyle from "./RankingLovely.module.css";
 import { useSelector, useDispatch } from "react-redux"; 
 import {action_ranking} from "../../../store/RankingSlice";
 
-
-
-
-const RankingSexy = () => {
+const RankingNatural = () => {
 
     //redux 관리
     let state = useSelector((state: any) => state.rank);
@@ -24,7 +21,7 @@ const RankingSexy = () => {
 
     const numPages = Math.ceil(total / limit); // 올림으로 페이지 수 계산
 
-    const type = "SEXY";
+    const type = "NATURAL";
 
     useEffect(() => {
         dispatch(action_ranking.getTop3Rank(type));
@@ -47,7 +44,7 @@ const RankingSexy = () => {
             <div className={`${rankingStyle.contentArea}`}>
 
                 {/* 1~3위 : 순위에 맞게 색깔이 바껴야함 */}
-                <div className={`${rankingStyle.topRankerSexy}`}>
+                <div className={`${rankingStyle.topRankerNatural}`}>
                     
                     {/* 2위 */}
                     <div className={`${rankingStyle.rankSet}`}>
@@ -56,7 +53,7 @@ const RankingSexy = () => {
                         </div>
 
                         <div className={`${rankingStyle.score} ${
-                                state.top3RankingList[1].userId === loginUser.id ? rankingStyle.MySexyRank : null}`}>{state.top3RankingList[1].nickname}</div>
+                                state.top3RankingList[1].userId === loginUser.id ? rankingStyle.MyNaturalRank : null}`}>{state.top3RankingList[1].nickname}</div>
                         <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[1].score}</div>
                     </div>
                     
@@ -67,7 +64,7 @@ const RankingSexy = () => {
                 
                         </div>
                         <div className={`${rankingStyle.score} ${
-                                state.top3RankingList[0].userId === loginUser.id ? rankingStyle.MySexyRank : null}`}>{state.top3RankingList[0].nickname}</div>
+                                state.top3RankingList[0].userId === loginUser.id ? rankingStyle.MyNaturalRank : null}`}>{state.top3RankingList[0].nickname}</div>
                         <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[0].score}</div>
                     </div>
                     
@@ -78,7 +75,7 @@ const RankingSexy = () => {
                         </div>
 
                         <div className={`${rankingStyle.score} ${
-                                state.top3RankingList[2].userId === loginUser.id ? rankingStyle.MySexyRank : null}`}>{state.top3RankingList[2].nickname}</div>
+                                state.top3RankingList[2].userId === loginUser.id ? rankingStyle.MyNaturalRank : null}`}>{state.top3RankingList[2].nickname}</div>
                         <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[2].score}</div>
                     </div>
                     
@@ -93,8 +90,8 @@ const RankingSexy = () => {
                             
                         return(
                             
-                            <div key={idx} className={`${rankingStyle.userSlotSexy} ${
-                                oneUser.userId === loginUser.id ? rankingStyle.MySexyRank : rankingStyle.whiteRank
+                            <div key={idx} className={`${rankingStyle.userSlotNatural} ${
+                                oneUser.userId === loginUser.id ? rankingStyle.MyNaturalRank : rankingStyle.whiteRank
                             } `}>
                                 {/* 순위 / 프로필 이미지 / 닉네임 / 점수 */}
                                 <div>{oneUser.rank}위</div>
@@ -103,9 +100,9 @@ const RankingSexy = () => {
                                     <img src={oneUser.profileImg}/>
                                 </div>
 
-                                <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MySexyRank : rankingStyle.blackRank}`}>{oneUser.nickname}</div>
+                                <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MyNaturalRank : rankingStyle.blackRank}`}>{oneUser.nickname}</div>
 
-                                <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MySexyRank : rankingStyle.blackRank}`}>{oneUser.score}</div>
+                                <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MyNaturalRank : rankingStyle.blackRank}`}>{oneUser.score}</div>
                             </div>
                         );   
                         })
@@ -176,4 +173,4 @@ const Button = styled.button`
   }
 `;
 
-export default RankingSexy;
+export default RankingNatural;

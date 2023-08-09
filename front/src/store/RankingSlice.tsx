@@ -10,6 +10,8 @@ interface Ranking {
   rankMode: string;
   rankingList: rank[];
   partRankingList: rank[];
+  myRank: rank;
+  top3RankingList: rank[];
 }
 
 interface rank {
@@ -26,7 +28,17 @@ const initialState: Ranking = {
   // rankMode : lovely, nature, modern, sexy
   rankMode: "lovely",
   rankingList: [],
-  partRankingList: []
+  partRankingList: [],
+  myRank: {
+    userId: 0,
+    email: "",
+    score: 0,
+    nickname: "",
+    profileImg: "",
+    rank: 0,
+    likeType: ""
+  },
+  top3RankingList: [],
 };
 
 export const action_ranking = {
@@ -75,7 +87,39 @@ export const action_ranking = {
         throw e;
       }
     }
-  )
+  ),
+
+  getMyRank: createAsyncThunk(`RankingSlice/getMyRank`, async({type, loginUserId}) => {
+    try {
+      const token = await CheckToken();
+
+      const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/ranking/${loginUserId}/${type}`, {
+        headers: {
+          Authorization: token
+        }
+      })
+      
+      return response.data;
+    } catch(e) {
+      throw e;
+    }
+  }),
+
+  getTop3Rank: createAsyncThunk(`RankingSlice/getTop3Rank`, async(type) => {
+    try {
+      const token = await CheckToken();
+
+      const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/ranking/list/top/${type}`, {
+        headers: {
+          Authorization: token
+        }
+      })
+
+      return response.data;
+    } catch(e) {
+      throw e;
+    }
+  })
 };
 
 const RankingSlice = createSlice({
@@ -105,6 +149,14 @@ const RankingSlice = createSlice({
         state.partRankingList = action.payload;
       }
     );
+
+    builder.addCase(action_ranking.getMyRank.fulfilled, (state, action) => {
+      state.myRank = action.payload;
+    })
+
+    builder.addCase(action_ranking.getTop3Rank.fulfilled, (state, action) => {
+      state.top3RankingList = action.payload;
+    })
   }
 });
 

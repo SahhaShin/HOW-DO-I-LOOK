@@ -439,6 +439,8 @@ export const action_mypage = {
                 }
             });
 
+            console.log(response.data)
+
             return response.data;
         } catch(e) {
             throw e;
@@ -489,13 +491,7 @@ const MypageSlice = createSlice({
     },
 
     extraReducers: (builder) => {
-        
-        // 임시로 loginUser
-        builder.addCase(action_mypage.getLoginUser.fulfilled, (state, action) => {
-            state.loginUser = action.payload;
-        })
 
-        // 임시로 targetUser
         builder.addCase(action_mypage.getTargetUser.fulfilled, (state, action) => {
             state.targetUser = action.payload;
         })
@@ -570,6 +566,7 @@ const MypageSlice = createSlice({
         })
 
         builder.addCase(action_mypage.getBadgeList.fulfilled, (state, action) => {
+            console.log(action.payload)
             state.badgeList = action.payload;
         })
     }

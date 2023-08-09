@@ -7,8 +7,6 @@ import rankingStyle from "./RankingLovely.module.css";
 import { useSelector, useDispatch } from "react-redux"; 
 import {action_ranking} from "../../../store/RankingSlice";
 
-
-
 const RankingLovely = () => {
 
     //redux 관리
@@ -17,98 +15,30 @@ const RankingLovely = () => {
 
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
-    // // 로딩 컴포넌트 필요함
-    // if (state.rankingList.length === 0) {
-    //     return <div>Loading...</div>;
-    // }
-
-    // return(
-    //     <div className={`${rankingStyle.contentArea}`}>
-
-    //         {/* 1~3위 : 순위에 맞게 색깔이 바껴야함 */}
-    //         <div className={`${rankingStyle.topRankerLovely}`}>
-                
-    //             {/* 2위 */}
-    //             <div className={`${rankingStyle.rankSet}`}>
-    //                 <div className={`${rankingStyle.notFirst}`}>
-    //                     <img src={state.rankingList[1].profileImg}/>
-    //                 </div>
-
-    //                 <div className={`${rankingStyle.score}`}>{state.rankingList[1].score}</div>
-    //                 <div className={`${rankingStyle.nickname}`}>{state.rankingList[1].nickname}</div>
-    //             </div>
-                
-    //             {/* 1위 */}
-    //             <div className={`${rankingStyle.rankSet}`}>
-    //                 <div className={`${rankingStyle.first}`}>
-    //                     <img src={state.rankingList[0].profileImg}/>
-               
-    //                 </div>
-    //                 <div className={`${rankingStyle.score}`}>{state.rankingList[0].score}</div>
-    //                 <div className={`${rankingStyle.nickname}`}>{state.rankingList[0].nickname}</div>
-    //             </div>
-                
-    //             {/* 3위 */}
-    //             <div className={`${rankingStyle.rankSet}`}>
-    //                 <div className={`${rankingStyle.notFirst}`}>
-    //                     <img src={state.rankingList[2].profileImg}/>
-    //                 </div>
-
-    //                 <div className={`${rankingStyle.score}`}>{state.rankingList[2].score}</div>
-    //                 <div className={`${rankingStyle.nickname}`}>{state.rankingList[2].nickname}</div>
-    //             </div>
-                
-
-    //         </div>
-
-
-    //         {/* 그 이하 순위 */}
-    //         <div className={`${rankingStyle.etcRanker}`}>
-    //             {
-    //                 state.rankingList?.slice(3).map((oneUser, idx)=>{
-                        
-    //                 return(
-                        
-    //                     <div key={idx} className={`${rankingStyle.userSlotLovely}`}>
-    //                         {/* 순위 / 프로필 이미지 / 닉네임 / 점수 */}
-    //                         <div>{idx+4}위</div>
-
-    //                         <div className={`${rankingStyle.profileImg}`}>
-    //                             <img src={oneUser.profileImg}/>
-    //                         </div>
-
-    //                         <div>{oneUser.nickname}</div>
-
-    //                         <div>{oneUser.score}</div>
-    //                     </div>
-    //                 );   
-    //                 })
-    //             }
-    //         </div>
-    //     </div>
-    // );
-
-
-
-
-    ////
-
-
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
-    const total = 100;
+    const total = state.rankingList.length;
 
-    const numPages = total / limit;
+    const numPages = Math.ceil(total / limit); // 올림으로 페이지 수 계산
 
     const type = "LOVELY";
 
     useEffect(() => {
-        console.log(page)
-        console.log(limit)
+        dispatch(action_ranking.getTop3Rank(type));
+    }, [])
+
+    useEffect(() => {
         dispatch(action_ranking.getPartRankingList({type, page, limit}));
     }, [page])
 
-    console.log(state.partRankingList)
+
+    if (state.partRankingList.length === 0) {
+        return <div>Loading...</div>;
+      }
+
+    if(state.rankingList.length === 0) {
+        return <div>Loading...</div>
+    }
 
     return(
         <div>
@@ -120,31 +50,34 @@ const RankingLovely = () => {
                     {/* 2위 */}
                     <div className={`${rankingStyle.rankSet}`}>
                         <div className={`${rankingStyle.notFirst}`}>
-                            {/* <img src={state.rankingList[1].profileImg}/> */}
+                            <img src={state.top3RankingList[1].profileImg}/>
                         </div>
 
-                        <div className={`${rankingStyle.score}`}>score2</div>
-                        <div className={`${rankingStyle.nickname}`}>nickname2</div>
+                        <div className={`${rankingStyle.score} ${
+                                state.top3RankingList[1].userId === loginUser.id ? rankingStyle.MyLovelyRank : null}`}>{state.top3RankingList[1].nickname}</div>
+                        <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[1].score}</div>
                     </div>
                     
                     {/* 1위 */}
-                    <div className={`${rankingStyle.rankSet}`}>
+                    <div className={`${rankingStyle.rankSet }`}>
                         <div className={`${rankingStyle.first}`}>
-                            {/* <img src={state.rankingList[0].profileImg}/> */}
+                            <img src={state.top3RankingList[0].profileImg}/>
                 
                         </div>
-                        <div className={`${rankingStyle.score}`}>score1</div>
-                        <div className={`${rankingStyle.nickname}`}>nickname1</div>
+                        <div className={`${rankingStyle.score} ${
+                                state.top3RankingList[0].userId === loginUser.id ? rankingStyle.MyLovelyRank : null}`}>{state.top3RankingList[0].nickname}</div>
+                        <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[0].score}</div>
                     </div>
                     
                     {/* 3위 */}
                     <div className={`${rankingStyle.rankSet}`}>
                         <div className={`${rankingStyle.notFirst}`}>
-                            {/* <img src={state.rankingList[2].profileImg}/> */}
+                            <img src={state.top3RankingList[2].profileImg}/>
                         </div>
 
-                        <div className={`${rankingStyle.score}`}>score3</div>
-                        <div className={`${rankingStyle.nickname}`}>nickname3</div>
+                        <div className={`${rankingStyle.score} ${
+                                state.top3RankingList[2].userId === loginUser.id ? rankingStyle.MyLovelyRank : null}`}>{state.top3RankingList[2].nickname}</div>
+                        <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[2].score}</div>
                     </div>
                     
 
@@ -158,17 +91,19 @@ const RankingLovely = () => {
                             
                         return(
                             
-                            <div key={idx} className={`${rankingStyle.userSlotLovely}`}>
+                            <div key={idx} className={`${rankingStyle.userSlotLovely} ${
+                                oneUser.userId === loginUser.id ? rankingStyle.MyLovelyRank : rankingStyle.whiteRank
+                            } `}>
                                 {/* 순위 / 프로필 이미지 / 닉네임 / 점수 */}
-                                <div>{idx+1}위</div>
+                                <div>{oneUser.rank}위</div>
 
                                 <div className={`${rankingStyle.profileImg}`}>
                                     <img src={oneUser.profileImg}/>
                                 </div>
 
-                                <div>{oneUser.nickname}</div>
+                                <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MyLovelyRank : rankingStyle.blackRank}`}>{oneUser.nickname}</div>
 
-                                <div>{oneUser.score}</div>
+                                <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MyLovelyRank : rankingStyle.blackRank}`}>{oneUser.score}</div>
                             </div>
                         );   
                         })
@@ -186,7 +121,7 @@ const RankingLovely = () => {
                     .map((_, i) => (
                         <Button
                             key={i + 1}
-                            onClick={() => {dispatch(changePage(i+1));setPage(i + 1)}}
+                            onClick={() => {setPage(i + 1)}}
                             aria-current={page === i + 1 ? "page" : null}
                         >
                             {i + 1}
