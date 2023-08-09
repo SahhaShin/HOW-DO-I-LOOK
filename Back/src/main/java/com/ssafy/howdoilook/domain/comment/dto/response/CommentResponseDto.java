@@ -2,6 +2,8 @@ package com.ssafy.howdoilook.domain.comment.dto.response;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,14 +19,17 @@ public class CommentResponseDto {
     private Long parentCommentId;
     //내용
     private String content;
+    private LocalDateTime modifiedDate;
+
 
     @Builder
-    public CommentResponseDto(Long commentId, Long userId, String userNickname, Long feedId, Long parentCommentId, String content) {
+    public CommentResponseDto(Long commentId, Long userId, String userNickname, Long feedId, Long parentCommentId, String content, LocalDateTime modifiedDate) {
         this.commentId = commentId;
         this.userId = userId;
         this.userNickname = userNickname;
         this.feedId = feedId;
         this.parentCommentId = parentCommentId;
         this.content = content;
+        this.modifiedDate = modifiedDate;
     }
 }
