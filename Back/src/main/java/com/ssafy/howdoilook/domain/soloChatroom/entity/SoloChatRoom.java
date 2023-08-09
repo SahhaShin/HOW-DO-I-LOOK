@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Getter
@@ -33,10 +35,13 @@ public class SoloChatRoom extends BaseTimeEntity {
     @Column(name = "solo_chatroom_code")
     private String roomCode;
 
+    @Column(name = "chat_update_date")
+    private LocalDateTime chatUpdateDate;
     @Builder
     public SoloChatRoom(User userA, User userB, String roomCode) {
         this.userA = userA;
         this.userB = userB;
         this.roomCode = roomCode;
+        chatUpdateDate = LocalDateTime.now();
     }
 }

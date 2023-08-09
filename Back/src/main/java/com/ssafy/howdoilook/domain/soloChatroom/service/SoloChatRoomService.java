@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,9 +40,7 @@ public class SoloChatRoomService {
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
-        //채팅방이 짝수면 -1을 해준다. ( 채팅방은 2개씩 생성되고, 채팅은 홀수 채팅방을 기준으로 사용한다. )
         long roomId = room.getId();
-        roomId = (roomId % 2 == 0) ? roomId-1 : roomId;
 
         SoloChat chat = SoloChat.builder()
                 .roomId(roomId)
@@ -49,6 +48,7 @@ public class SoloChatRoomService {
                 .content(content)
                 .build();
 
+        soloChatRoomRepository.UpdateChatDate(roomId, LocalDateTime.now());
         chatRepository.save(chat);
     }
 
@@ -70,7 +70,7 @@ public class SoloChatRoomService {
                     .chatroomCode(chatRoom.getRoomCode())
                     .anotherNickName(chatRoom.getUserB().getNickname())
                     .lastChat(lastChat.getContent())
-                    .lastChatTime(lastChat.getTime())
+                    .lastChatTime(lastChat.getTime().toString())
                     .build();
             chatRoomListNext.add(dto);
         }
@@ -89,22 +89,14 @@ public class SoloChatRoomService {
         int isExist = soloChatRoomRepository.countByUserAAndUserB(userA, userB);
         //기존 채팅방이 없다면
         if(isExist == 0){
-            //a-b, b-a 채팅방 2개 생성 ( 채팅방 검색을 위해 2개를 생성하지만 실제 pk값은 홀수 채팅방의 pk값만 사용한다. )
             String roomCode = UUID.randomUUID().toString();
-            SoloChatRoom chatRoom1 = SoloChatRoom.builder()
+            SoloChatRoom chatRoom = SoloChatRoom.builder()
                     .userA(userA)
                     .userB(userB)
                     .roomCode(roomCode)
                     .build();
+            soloChatRoomRepository.save(chatRoom);
 
-            SoloChatRoom chatRoom2 = SoloChatRoom.builder()
-                    .userA(userB)
-                    .userB(userA)
-                    .roomCode(roomCode)
-                    .build();
-
-            soloChatRoomRepository.save(chatRoom1);
-            soloChatRoomRepository.save(chatRoom2);
 
             ChatContextListResponseDto responseDto = ChatContextListResponseDto.builder()
                     .chatRoomCode(roomCode)
@@ -115,11 +107,10 @@ public class SoloChatRoomService {
         //기존 채팅방이 있다면
         else{
             SoloChatRoom chatRoom = soloChatRoomRepository.findByUserAAndUserB(userA, userB)
-                                        .orElseThrow(() -> new IllegalArgumentException("해당 채팅방은 존재하지 않습니다"));
+                    .orElseThrow(() -> new IllegalArgumentException("해당 채팅방은 존재하지 않습니다"));
 
-            //채팅방이 짝수면 -1을 해준다. ( 채팅방은 2개씩 생성되고, 채팅은 홀수 채팅방을 기준으로 사용한다. )
             Long roomId = chatRoom.getId();
-            roomId = (roomId % 2 == 0) ? roomId - 1 : roomId;
+
             List<SoloChat> chatContext = chatRepository.findAllByRoomIdOrderByTimeAsc(roomId);
             List<ChatDto> answer = new ArrayList<>();
 
@@ -132,7 +123,7 @@ public class SoloChatRoomService {
                         .chatRoomId(chat.getRoomId())
                         .userNickName(user.getNickname())
                         .userProfile(user.getProfileImg())
-                        .time(chat.getTime())
+                        .time(chat.getTime().toString())
                         .content(chat.getContent())
                         .build();
                 answer.add(dto);
