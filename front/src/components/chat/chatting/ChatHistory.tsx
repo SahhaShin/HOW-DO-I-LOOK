@@ -31,7 +31,7 @@ const ChatHistory = () => {
     let [chatList, setChatList] = useState<ChatList[]|null>([]); //채팅방 사람들의 채팅 내역들
     let [chat, setChat] = useState<string|null>(''); //내가 치고 있는 채팅
     let [otherNickname, setNickname] = useState<string>(''); //상대방 닉네임
-    
+   
     //지금 내가 어떤 id를 가진 유저인지 확인
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
     const myId:number = loginUser.id;
@@ -42,10 +42,18 @@ const ChatHistory = () => {
     // const userId = JSON.parse(); //로그인 구현 시 가져올 것
 
     const client = useRef({}); //useRef는 저장공간 또는 DOM요소에 접근하기 위해 사용되는 React Hook == like query selector
-    const scrollRef = useRef(); //스크롤 조절
+    
+    // 스크롤 조절하기
+    const scrollRef = useRef();//스크롤 조절
+    const chatDiv = document.getElementsByClassName("totalChat");
+    chatDiv.scrollTop = chat.scrollHeight;
+
     useEffect(() => {
-        scrollRef.current?.scrollIntoView({behavior : 'smooth'});
-    }, [state.chatHistory])
+    	// 현재 스크롤 위치 === scrollRef.current.scrollTop
+        // 스크롤 길이 === scrollRef.current.scrollHeight
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    });
+
 
     // 1. 서버와 소켓 연결
     function connect(){
@@ -178,22 +186,26 @@ const ChatHistory = () => {
 
     return(
         <div className={`${chatHistoryStyle.total}`}>
-            <div className={`${chatHistoryStyle.totalChat}`}>
+            <div className={`${chatHistoryStyle.totalChat}`} ref={scrollRef}>
                 {state.chatHistory && state.chatHistory?.map((one, idx)=>{
+                    const currentDate = one.time?.split("T")[0];
+                    const prevMessage = state.chatHistory[idx - 1];
+
+                    // 이전 메시지의 날짜와 현재 메시지의 날짜를 비교하여 다른 경우에만 날짜 표시
+                    const shouldDisplayDate =
+                        !prevMessage || prevMessage.time?.split("T")[0] !== currentDate;
+
                     return(
                         <div key={idx} className={`${chatHistoryStyle.chatArea}`}>
                             {/* 날짜 */}
-                            
-                            {
-                                chatDate===one.time?.split("T")[0]?null:changeDate(one.time?.split("T")[0])
-                                
-                            }
-                            {
-                                dateDisplay?<div className={`${chatHistoryStyle.date}`}><div>{one.time?.split("T")[0]}</div></div>
-                                :null
-                            }
 
-                            {params.otherId===loginUser.id?<div className={`${chatHistoryStyle.oneChat}`}>
+                            {shouldDisplayDate && (
+                                <div className={`${chatHistoryStyle.date}`}>
+                                    <div>{currentDate}</div>
+                                </div>
+                            )}
+
+                            {one.userNickName!==loginUser.nickname?<div className={`${chatHistoryStyle.oneChat}`}>
                                 {/* 유저 프로필 */}
                                 <div className={`${chatHistoryStyle.profile}`}>
                                     <div className={`${chatHistoryStyle.profileCircle_G}`}>
@@ -212,7 +224,7 @@ const ChatHistory = () => {
                                             {Number(one.time?.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}
                                             {one.time?.split("T")[1].split(":")[0]}:
                                             {one.time?.split("T")[1].split(":")[1]}
-                                            <div ref={scrollRef}></div>
+                                            {/* <div ref={scrollRef}></div> */}
                                         </div>
 
                                     </div>
@@ -226,7 +238,7 @@ const ChatHistory = () => {
                                         {one.time?.split("T")[1].split(":")[1]}
                                     </div>
                                     <div className={`${chatHistoryStyle.midContent}`}>{one.content}</div>
-                                    <div ref={scrollRef}></div>
+                                    {/* <div ref={scrollRef}></div> */}
                                 </div>
                             </div>}
 
