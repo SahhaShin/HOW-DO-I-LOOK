@@ -39,9 +39,7 @@ public class SoloChatRoomService {
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
-        //채팅방이 짝수면 -1을 해준다. ( 채팅방은 2개씩 생성되고, 채팅은 홀수 채팅방을 기준으로 사용한다. )
         long roomId = room.getId();
-        roomId = (roomId % 2 == 0) ? roomId-1 : roomId;
 
         SoloChat chat = SoloChat.builder()
                 .roomId(roomId)
@@ -56,8 +54,7 @@ public class SoloChatRoomService {
     //특정 유저가 진행했던 채팅방 리스트 반환
     @Transactional
     public List<ChatRoomDto> getUserChatRoom(Long userId){
-
-        List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUserA(userId);
+        List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUserId(userId);
         List<ChatRoomDto> chatRoomListNext = new ArrayList<>();
 
         //Entity To Dto
@@ -91,20 +88,13 @@ public class SoloChatRoomService {
         if(isExist == 0){
             //a-b, b-a 채팅방 2개 생성 ( 채팅방 검색을 위해 2개를 생성하지만 실제 pk값은 홀수 채팅방의 pk값만 사용한다. )
             String roomCode = UUID.randomUUID().toString();
-            SoloChatRoom chatRoom1 = SoloChatRoom.builder()
+            SoloChatRoom chatRoom = SoloChatRoom.builder()
                     .userA(userA)
                     .userB(userB)
                     .roomCode(roomCode)
                     .build();
 
-            SoloChatRoom chatRoom2 = SoloChatRoom.builder()
-                    .userA(userB)
-                    .userB(userA)
-                    .roomCode(roomCode)
-                    .build();
-
-            soloChatRoomRepository.save(chatRoom1);
-            soloChatRoomRepository.save(chatRoom2);
+            soloChatRoomRepository.save(chatRoom);
 
             ChatContextListResponseDto responseDto = ChatContextListResponseDto.builder()
                     .chatRoomCode(roomCode)
@@ -117,9 +107,7 @@ public class SoloChatRoomService {
             SoloChatRoom chatRoom = soloChatRoomRepository.findByUserAAndUserB(userA, userB)
                                         .orElseThrow(() -> new IllegalArgumentException("해당 채팅방은 존재하지 않습니다"));
 
-            //채팅방이 짝수면 -1을 해준다. ( 채팅방은 2개씩 생성되고, 채팅은 홀수 채팅방을 기준으로 사용한다. )
             Long roomId = chatRoom.getId();
-            roomId = (roomId % 2 == 0) ? roomId - 1 : roomId;
             List<SoloChat> chatContext = chatRepository.findAllByRoomIdOrderByTimeAsc(roomId);
             List<ChatDto> answer = new ArrayList<>();
 
