@@ -1,6 +1,8 @@
 package com.ssafy.howdoilook.domain.soloChatroom.service;
 
 import com.ssafy.howdoilook.domain.soloChatroom.dto.ChatDto;
+import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatClickRequestDto;
+import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatClickResponseDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatRoomDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatContextRequestDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecordRequestDto;
@@ -39,6 +41,16 @@ public class SoloChatRoomService {
 //    }
 
 
+    @Transactional
+    public ChatClickResponseDto clickEvent(ChatClickRequestDto requestDto){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        soloChatRoomRepository.UpdateChatDate(requestDto.getRoomId(),localDateTime);
+        return ChatClickResponseDto.builder()
+                .readtime(localDateTime.toString())
+                .userId(requestDto.getUserId())
+                .build();
+    }
+
     //채팅시 채팅 기록 MongoDB에 저장
     @Transactional
     public void recordChat(ChatRecordRequestDto requestDto, SoloChatRoom room){
@@ -71,13 +83,12 @@ public class SoloChatRoomService {
         //Entity To Dto
         for (SoloChatRoom chatRoom : chatRoomListPrev){
             SoloChat lastChat = chatRepository.findTopByRoomIdOrderByTimeDesc(chatRoom.getId());
-
             ChatRoomDto dto = ChatRoomDto.builder()
                     .id(chatRoom.getId())
-                    .userAId(chatRoom.getUserA().getId())
-                    .userBId(chatRoom.getUserB().getId())
+                    .userAId(userId)
+                    .userBId((chatRoom.getUserA().getId() == userId) ? chatRoom.getUserB().getId() : chatRoom.getUserA().getId())
                     .chatroomCode(chatRoom.getRoomCode())
-                    .anotherNickName(chatRoom.getUserB().getNickname())
+                    .anotherNickName((chatRoom.getUserA().getId() == userId) ? chatRoom.getUserB().getNickname() : chatRoom.getUserA().getNickname())
                     .lastChat((lastChat == null) ? "대화내용이 없습니다.":lastChat.getContent())
                     .lastChatTime((lastChat == null) ? "":lastChat.getTime().toString())
                     .build();
