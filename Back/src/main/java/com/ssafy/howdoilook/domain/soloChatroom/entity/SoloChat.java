@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.redis.core.index.Indexed;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Document
@@ -22,14 +23,14 @@ public class SoloChat {
     private long roomId;
     private long userId;
     private String content;
-    private String time;
+    private LocalDateTime time;
     private boolean read;
     @Builder
     public SoloChat(long roomId, long userId, String content) {
         this.roomId = roomId;
         this.userId = userId;
         this.content = content;
-        this.time = new Timestamp(System.currentTimeMillis()).toString();
+        this.time = LocalDateTime.now();
         this.read = false;
     }
 }
