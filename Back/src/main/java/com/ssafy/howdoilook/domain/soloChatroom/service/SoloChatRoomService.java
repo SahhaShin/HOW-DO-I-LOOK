@@ -83,13 +83,12 @@ public class SoloChatRoomService {
         //Entity To Dto
         for (SoloChatRoom chatRoom : chatRoomListPrev){
             SoloChat lastChat = chatRepository.findTopByRoomIdOrderByTimeDesc(chatRoom.getId());
-
             ChatRoomDto dto = ChatRoomDto.builder()
                     .id(chatRoom.getId())
-                    .userAId(chatRoom.getUserA().getId())
-                    .userBId(chatRoom.getUserB().getId())
+                    .userAId(userId)
+                    .userBId((chatRoom.getUserA().getId() == userId) ? chatRoom.getUserB().getId() : chatRoom.getUserA().getId())
                     .chatroomCode(chatRoom.getRoomCode())
-                    .anotherNickName(chatRoom.getUserB().getNickname())
+                    .anotherNickName((chatRoom.getUserA().getId() == userId) ? chatRoom.getUserB().getNickname() : chatRoom.getUserA().getNickname())
                     .lastChat((lastChat == null) ? "대화내용이 없습니다.":lastChat.getContent())
                     .lastChatTime((lastChat == null) ? "":lastChat.getTime().toString())
                     .build();
