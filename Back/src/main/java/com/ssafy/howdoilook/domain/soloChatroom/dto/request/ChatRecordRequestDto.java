@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ChatRecodRequestDto {
+public class ChatRecordRequestDto {
     private String chatContent;
     private long roomId;
     private long userId;
 
     @Builder
-    public ChatRecodRequestDto(String chatContent, long roomId, long userId) {
+    public ChatRecordRequestDto(String chatContent, long roomId, long userId) {
         this.chatContent = chatContent;
         this.roomId = roomId;
         this.userId = userId;

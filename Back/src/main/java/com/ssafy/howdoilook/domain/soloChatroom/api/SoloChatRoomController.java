@@ -20,9 +20,15 @@ public class SoloChatRoomController {
     private final SoloChatRoomService soloChatRoomService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getChatList(@PathVariable("id") Long userId){
+    public ResponseEntity<?> getChatRoomList(@PathVariable("id") long userId){
         List<ChatRoomDto> result = soloChatRoomService.getUserChatRoom(userId);
         return new ResponseEntity<List<ChatRoomDto>>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/chat/{id}")
+    public ResponseEntity<?> getMoreChat(@PathVariable("id") long roomId,@RequestParam(value="page") int page){
+        ChatContextListResponseDto result = soloChatRoomService.getChat(roomId, page);
+        return new ResponseEntity<ChatContextListResponseDto>(result, HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -33,7 +39,7 @@ public class SoloChatRoomController {
         else if(requestDto.getUserA() == requestDto.getUserB()){
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        ChatContextListResponseDto result = soloChatRoomService.enterUser(requestDto);
+        ChatContextListResponseDto result = soloChatRoomService.enterChatRoom(requestDto);
         return new ResponseEntity<ChatContextListResponseDto>(result, HttpStatus.OK);
     }
 
