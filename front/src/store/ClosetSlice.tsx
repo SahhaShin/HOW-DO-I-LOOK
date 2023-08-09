@@ -91,10 +91,11 @@ export const action = {
         }
     }),
 
-    //특정 옷 수정하기 X -> 이미지는 수정 안되는 걸로
+    //특정 옷 수정하기 O -> 이미지는 수정 안되는 걸로
     updateClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async({userId,type,name,brand,info,clothesId}, thunkAPI)=>{
 
         try{
+            console.log(userId);
             const token = await CheckToken();
             const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`,{userId,type,name,brand,info},{
                 headers: {

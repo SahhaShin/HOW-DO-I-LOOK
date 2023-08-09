@@ -29,6 +29,7 @@ const CLOSETSlot = (props) => {
     // 정보 보기/수정 버튼을 누르면 CLOSETRegist가 툴킷을 보고 참고한다.
     function sendInfo(){
         dispatch(action.getClothInfo(props.one.clothesId));
+        dispatch(changeClothesId(props.one.clothesId));
     }
 
     //옷 삭제

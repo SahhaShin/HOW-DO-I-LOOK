@@ -119,8 +119,8 @@ const CLOSETRegist = () => {
             type : selected,  
             name : clothesName, 
             brand : clothesBrand, 
-            info : specialContent
-            
+            info : specialContent,
+            clothesId : state.clothesId
         }
 
         dispatch(action.updateClothInfo(clothesUpdateDto));
