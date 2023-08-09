@@ -28,27 +28,19 @@ const ChatList = () => {
     let state = useSelector((state:any)=>state.chat);
     let dispatch = useDispatch();
 
-    // 유저가 참여하고 있는 1:1 채팅방 모든 리스트 띄우기
-    interface chatInfo{
-        chatRoomCode:string,
-    }
-    // 아직 챗룸 코드는 고정적임 방 선택에 따라 유동적으로 바꿔야함
-    let [chatRoomList, setChatRoomList] = useState<chatInfo[]>([{
-        chatRoomCode:"1305594a-7131-43a3-b5b9-8179d8dd67e4",
-    }]);
-
     // 페이지네이션
     const [len, setLen] = useState(0);
     const [limit, setLimit] = useState(10);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const offset = (page - 1) * limit;
 
 
+
     // 유저가 소통했던 채팅방 목록 보여주기
-    const userId = 1;
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
     useEffect(() => {
-        dispatch(action.getChatList(userId));
+        dispatch(action.getChatList({userId:loginUser.id, page:page}));
         setLen(state.chatList.length);
     },[])
 
@@ -84,10 +76,9 @@ const ChatList = () => {
                         </div>
                         
                         
-                        {/* 페이지네이션   20을 {clothes.length}로 바꿔야 함 */}
                         <div className={`${chatStyle.paginationContainer}`}>
                             <Pagination
-                                total={20}
+                                total={state.chatList?.length}
                                 limit={limit}
                                 page={page}
                                 setPage={setPage}
