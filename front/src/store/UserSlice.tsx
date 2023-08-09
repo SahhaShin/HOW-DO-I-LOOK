@@ -3,6 +3,8 @@ import axios from "axios";
 import { getCookie, setCookie, removeCookie } from "../hook/Cookie";
 import { getUserInfo } from "../hook/UserApi";
 
+import {CheckToken} from "../hook/UserApi"
+
 // axios
 export const action_user = {
   // 회원가입 api
@@ -54,7 +56,7 @@ export const action_user = {
           gender: gender,
           age: age,
         },
-        headers: { Authorization: token },
+        headers: { "Authorization": token },
       })
         .then((response) => {
           console.log(response.data);
@@ -159,12 +161,15 @@ export const action_user = {
 
   // 로그아웃  api
   Logout: createAsyncThunk(`UserSlice/Logout`, async (id: string, thunkAPI) => {
-    let Token = "Bearer " + getCookie("Authorization");
+    
+    
+    // let Token = "Bearer " + getCookie("Authorization");
+    const token = await CheckToken();
 
     return await axios({
       method: "get",
       url: `${process.env.REACT_APP_SERVER}/api/user/logout/${id}`,
-      headers: { Authorization: Token },
+      headers: { "Authorization": token },
     })
       .then((response) => {
         //토큰 지우기
@@ -194,7 +199,7 @@ export const action_user = {
       return await axios({
         method: "get",
         url: `${process.env.REACT_APP_SERVER}/api/user/getuserbyemail/${email}`,
-        headers: { Authorization: Token },
+        headers: { "Authorization": Token },
       })
         .then((response) => {
           // console.log("res.data from Action : ");

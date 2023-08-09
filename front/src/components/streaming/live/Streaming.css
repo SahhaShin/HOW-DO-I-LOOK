@@ -25,13 +25,13 @@ img{
 	height: 40px;
 	width: 130px;
 	border-radius: 10px;
-	margin: auto 0 ;
+	/* margin: auto 0 ; */
 	background-color: rgb(127, 243, 127);
 }
 .disableButton {
 	height: 40px;
 	width: 130px;
 	border-radius: 10px;
-	margin: auto 0 ;
+	/* margin: auto 0 ; */
 	background-color: rgb(232, 119, 104);
 }

@@ -31,7 +31,7 @@ const NavigationBar: React.FC = () => {
 
 
   const liveMenuItems = ["라이브", "피드", "채팅", "랭킹", "알림"];
-  const liveMenuLink = ["liveList", "feed", "chatList", "rank", "alarm"];
+  const liveMenuLink = ["liveList", "feed", "chatList", "ranking", "alarm"];
 
 
   return (

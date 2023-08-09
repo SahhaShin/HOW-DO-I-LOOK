@@ -7,7 +7,7 @@ export async function CheckToken() {
   //만약 리프레시 토큰이 만료 되었을 시
   let refreshToken = getCookie("Authorization-Refresh");
 
-  if (typeof refreshToken == "undefined" || typeof refreshToken === null) {
+  if ((typeof refreshToken == "undefined") || (typeof refreshToken === null)) {
     window.location.href = `${process.env.REACT_APP_FRONT}/user/log-in`;
     return null;
   }
@@ -15,7 +15,8 @@ export async function CheckToken() {
   let accessToken = getCookie("Authorization");
 
   //만약 엑세스 토큰만 만료 되었을 시
-  if (typeof accessToken == "undefined" || typeof accessToken === null) {
+  if ((typeof accessToken == "undefined") || (typeof accessToken === null)) {
+
     return await axios({
       method: "get",
       url: `${process.env.REACT_APP_SERVER}/api/user/jwt`,
@@ -76,7 +77,6 @@ export async function CheckNickName(nickname: String) {
   })
     .then((response) => {
       const result = response.data;
-
       return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
     })
     .catch((e) => {

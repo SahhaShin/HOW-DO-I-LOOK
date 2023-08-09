@@ -167,7 +167,7 @@ const initialState:Mypage = {
 
 export const action_mypage = {
     // 임시로 로그인 유저 
-    getLoginUser : createAsyncThunk(`MyPageSlice/getLoginUser`, async(userId) => {
+    getLoginUser : createAsyncThunk(`MypageSlice/getLoginUser`, async(userId) => {
         try {
             const token = await CheckToken();
 
@@ -184,7 +184,7 @@ export const action_mypage = {
     }),
 
     // 임시로 타겟 유저
-    getTargetUser : createAsyncThunk(`MyPageSlice/getTargetUser`, async(userId) => {
+    getTargetUser : createAsyncThunk(`MypageSlice/getTargetUser`, async(userId) => {
         try {
             const token = await CheckToken();
 
@@ -438,7 +438,6 @@ export const action_mypage = {
                     "Authorization" : token
                 }
             });
-
             return response.data;
         } catch(e) {
             throw e;
@@ -489,8 +488,6 @@ const MypageSlice = createSlice({
     },
 
     extraReducers: (builder) => {
-        
-        // 임시로 loginUser
         builder.addCase(action_mypage.getLoginUser.fulfilled, (state, action) => {
             state.loginUser = action.payload;
         })
@@ -545,6 +542,8 @@ const MypageSlice = createSlice({
 
         builder.addCase(action_mypage.getFeedList.fulfilled, (state, action) => {
             state.feedList = action.payload;
+            console.log(state.feedList);
+            console.log(action.payload);
         })
 
         builder.addCase(action_mypage.getLikeFeedList.fulfilled, (state, action) => {
@@ -570,6 +569,8 @@ const MypageSlice = createSlice({
         })
 
         builder.addCase(action_mypage.getBadgeList.fulfilled, (state, action) => {
+
+            console.log(action.payload)
             state.badgeList = action.payload;
         })
     }

@@ -1,39 +1,29 @@
 import { OpenVidu } from 'openvidu-browser';
-// import FaceDetectionComponent from './FaceDetectionComponent';
+
 import axios from 'axios';
 import React, { Component } from 'react';
-import './Streaming.css';
+// import './App.css';
 import UserVideoComponent from './UserVideoComponent';
 
-const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8081/';
+const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4443/';
 
-class Streaming extends Component {
+class App extends Component {
     constructor(props) {
         super(props);
 
-        //session에서 유저 정보를 가져온다. 
-        const user = window.sessionStorage.getItem("loginUser")
-        const sessionid = window.sessionStorage.getItem("sessionid")
-        console.log(user)
-        //가져온 user정보를 this.state에 입력 
-        //
         // These properties are in the state's component in order to re-render the HTML whenever their values change
         this.state = {
-            mySessionId: sessionid,
-            myUserName: user.id,
+            mySessionId: 'SessionA',
+            myUserName: 'Participant' + Math.floor(Math.random() * 100),
             session: undefined,
             mainStreamManager: undefined,  // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
             publisher: undefined,
             subscribers: [],
-            cameraOn : true,
-            audioOn : true
         };
 
         this.joinSession = this.joinSession.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
         this.switchCamera = this.switchCamera.bind(this);
-        this.toggleCamera = this.toggleCamera.bind(this);//카메라 토글호출함수 
-        this.toggleAudio = this.toggleAudio.bind(this);//오디오 토글호출함수 
         this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
         this.handleChangeUserName = this.handleChangeUserName.bind(this);
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
@@ -41,34 +31,29 @@ class Streaming extends Component {
     }
 
     componentDidMount() {
-        //beforeunload는 마운트가 해제되기 전에 실행되는 이벤트
-        //onbeforeunload메서드를 실행시키는데 이게 leavesession을 실행시킨다.
         window.addEventListener('beforeunload', this.onbeforeunload);
     }
 
     componentWillUnmount() {
-        //브라우저 창을 닫거나 페이지를 떠나려고 할때 실행된다.
-        //leavesession 버튼을 누르는것이랑 다르다.
         window.removeEventListener('beforeunload', this.onbeforeunload);
     }
-    //위에서 실행된다.
+
     onbeforeunload(event) {
         this.leaveSession();
     }
-    //sessionid바꾸기
+
     handleChangeSessionId(e) {
         this.setState({
             mySessionId: e.target.value,
         });
     }
-    //이름바꾸기
+
     handleChangeUserName(e) {
         this.setState({
             myUserName: e.target.value,
         });
     }
-    
-    //메인스트림 바꿀 때 실행되는 메서드
+
     handleMainVideoStream(stream) {
         if (this.state.mainStreamManager !== stream) {
             this.setState({
@@ -76,14 +61,11 @@ class Streaming extends Component {
             });
         }
     }
-    //스트림 제거하는 메서드 이건 다른 메서드에서 실행된다.
+
     deleteSubscriber(streamManager) {
         let subscribers = this.state.subscribers;
-        //제거할 스트림 위치 찾는다.
         let index = subscribers.indexOf(streamManager, 0);
-        //-1보다 크다면 찾았다는 의미이다.
         if (index > -1) {
-            //스트림 제거하는 부분
             subscribers.splice(index, 1);
             this.setState({
                 subscribers: subscribers,
@@ -92,91 +74,87 @@ class Streaming extends Component {
     }
 
     joinSession() {
-        //Openvidu 객체 생성 하는 코드
+        // --- 1) Get an OpenVidu object ---
+
         this.OV = new OpenVidu();
-        const isStreamer = (this.state.myUserName === this.state.mySessionId);
 
+        // --- 2) Init a session ---
 
-        //세션을 설정하는 부분
         this.setState(
             {
-                //세션 초기화 하는 메서드
                 session: this.OV.initSession(),
             },
             () => {
                 var mySession = this.state.session;
 
-                
-                //세션에서 생성되는 이벤트가 발생되면 메서드가 실행된다.
-                //새로운 스트림이 생성되었을 때 실행되는 메서드
-                //subscribers에 새로운 스트림을 추가한다.
-                //.on은 이벤트 리스너를 등록하는 것이다!!
+                // --- 3) Specify the actions when events take place in the session ---
+
+                // On every new Stream received...
                 mySession.on('streamCreated', (event) => {
+                    // Subscribe to the Stream to receive it. Second parameter is undefined
+                    // so OpenVidu doesn't create an HTML video by its own
                     var subscriber = mySession.subscribe(event.stream, undefined);
-                    var subscribers = [...this.state.subscribers]; 
+                    var subscribers = this.state.subscribers;
                     subscribers.push(subscriber);
 
-                    
+                    // Update the state with the new subscribers
                     this.setState({
                         subscribers: subscribers,
                     });
                 });
-                //세션에서 생성되는 이벤트가 발생되면 메서드가 실행된다.
-                //스트림이 제거되면 발생하는 메서드
+
+                // On every Stream destroyed...
                 mySession.on('streamDestroyed', (event) => {
 
+                    // Remove the stream from 'subscribers' array
                     this.deleteSubscriber(event.stream.streamManager);
                 });
 
-                //세션에서 생성되는 이벤트가 발생되면 메서드가 실행된다.
+                // On every asynchronous exception...
                 mySession.on('exception', (exception) => {
                     console.warn(exception);
                 });
 
-                
+                // --- 4) Connect to the session with a valid user token ---
 
-                
+                // Get a token from the OpenVidu deployment
                 this.getToken().then((token) => {
+                    // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
+                    // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
                     mySession.connect(token, { clientData: this.state.myUserName })
-                        //토큰을 잘 받아와서 세션에 연결하는 과정
                         .then(async () => {
-                            //비디오 스트림을 생성하는 메서드
+
+                            // --- 5) Get your own camera stream ---
+
+                            // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
+                            // element: we will manage it on our own) and with the desired properties
                             let publisher = await this.OV.initPublisherAsync(undefined, {
                                 audioSource: undefined, // The source of audio. If undefined default microphone
                                 videoSource: undefined, // The source of video. If undefined default webcam
-                                publishAudio: isStreamer, //(this.state.sessionId=this.session.user)?true:false, // Whether you want to start publishing with your audio unmuted or not
-                                publishVideo: isStreamer, //(this.state.sessionId=this.session.user)?true:false, // Whether you want to start publishing with your video enabled or not
+                                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                                publishVideo: true, // Whether you want to start publishing with your video enabled or not
                                 resolution: '640x480', // The resolution of your video
                                 frameRate: 30, // The frame rate of your video
                                 insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
                                 mirror: false, // Whether to mirror your local video or not
                             });
 
+                            // --- 6) Publish your stream ---
 
-                            //내 세션에 스트림을 등록하는 메서드
                             mySession.publish(publisher);
 
-                            //사용가능한 오디오 및 비디오 디바이스 목록 가져옵니다.
+                            // Obtain the current video device in use
                             var devices = await this.OV.getDevices();
-                            //비디오 입력 디바이스만 필터링
                             var videoDevices = devices.filter(device => device.kind === 'videoinput');
-                            //스트림의 현재 비디오 디바이스의 id를 가져온다.
                             var currentVideoDeviceId = publisher.stream.getMediaStream().getVideoTracks()[0].getSettings().deviceId;
-                            //스트림의 현재 비디오 디바이스를 가져온다.
                             var currentVideoDevice = videoDevices.find(device => device.deviceId === currentVideoDeviceId);
 
-                            //비디오 디바이스,메인스트림 매니저, 퍼블리셔 등록
+                            // Set the main video in the page to display our webcam and store our Publisher
                             this.setState({
                                 currentVideoDevice: currentVideoDevice,
-                                mainStreamManager: this.state.subscribers.length > 0 ? this.state.subscribers[0] : publisher,
+                                mainStreamManager: publisher,
                                 publisher: publisher,
                             });
-                            console.log("mainStreamManage")
-                            console.log(this.state.mainStreamManager);
-                            console.log("publisher")
-                            console.log(this.state.publisher);
-                            console.log("mainStreamManage")
-                            console.log(this.state.subscribers);
                         })
                         .catch((error) => {
                             console.log('There was an error connecting to the session:', error.code, error.message);
@@ -186,16 +164,17 @@ class Streaming extends Component {
         );
     }
 
-    leaveSession() { 
-        //지금 세션 가져온다.
+    leaveSession() {
+
+        // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+
         const mySession = this.state.session;
 
-        //연결 해제 메서드를 실행한다.
         if (mySession) {
             mySession.disconnect();
         }
 
-        //openvidu 객체를 제거함.
+        // Empty all properties...
         this.OV = null;
         this.setState({
             session: undefined,
@@ -221,7 +200,7 @@ class Streaming extends Component {
                     // In mobile devices the default and first camera is the front one
                     var newPublisher = this.OV.initPublisher(undefined, {
                         videoSource: newVideoDevice[0].deviceId,
-                        publishAudio: this.state.audioOn,
+                        publishAudio: true,
                         publishVideo: true,
                         mirror: true
                     });
@@ -242,35 +221,12 @@ class Streaming extends Component {
         }
     }
 
-    //카메라 끄기/켜기
-    async toggleCamera(e) {
-        console.log("Camera ON/Off")
-        
-        const cameraOn = this.state.cameraOn;
-        this.setState({
-            cameraOn: !cameraOn
-        });
-    }
-    //오디오(마이크) 끄기/켜기 
-    async toggleAudio(e) {
-        console.log("Audio ON/Off")
-        const audioOn = this.state.audioOn;
-        this.setState({
-            audioOn: !audioOn
-        });
-
-    }
-
     render() {
         const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
-        const cameraOn = this.state.cameraOn;
-        const audioOn = this.state.audioOn;
 
         return (
             <div className="container">
-                {/* 세션이 없다면!! */}
-                {/* 맨처음 화면이 랜더링된다 그 아이디랑 세션 아이디 입력하는 부분 toDo: //  test때는 둔다. */}
                 {this.state.session === undefined ? (
                     <div id="join">
                         <div id="img-div">
@@ -307,25 +263,50 @@ class Streaming extends Component {
                             </form>
                         </div>
                     </div>
-                    // 만약 session이 있다면 null이므로 위에 html이 생략된다.
                 ) : null}
-                {/* 만약 세션이 있다면 아래의 html 코드가 실행된다. */}
+
                 {this.state.session !== undefined ? (
                     <div id="session">
-                        <div id="session-header" className='buttons'>
-                            {/* <h1 id="session-title">{mySessionId}</h1> */}
-                            <button className={(cameraOn)?"activeButton":"disableButton"} onClick={this.toggleCamera}><img src={process.env.PUBLIC_URL + `/img/live/camera.png`} alt='카메라'/> 카메라 {(cameraOn)?"끄기":"켜기"}</button>   
-                            <button className={(audioOn)?"activeButton":"disableButton"} onClick={this.toggleAudio}><img src={process.env.PUBLIC_URL + `/img/live/audio.png`} alt='마이크'/>마이크 {(audioOn)?"끄기":"켜기"}</button>                          
+                        <div id="session-header">
+                            <h1 id="session-title">{mySessionId}</h1>
+                            <input
+                                className="btn btn-large btn-danger"
+                                type="button"
+                                id="buttonLeaveSession"
+                                onClick={this.leaveSession}
+                                value="Leave session"
+                            />
+                            <input
+                                className="btn btn-large btn-success"
+                                type="button"
+                                id="buttonSwitchCamera"
+                                onClick={this.switchCamera}
+                                value="Switch Camera"
+                            />
                         </div>
-                        {/* 메인스트림 매니저가 있을 때!! */}
+
                         {this.state.mainStreamManager !== undefined ? (
                             <div id="main-video" className="col-md-6">
                                 <UserVideoComponent streamManager={this.state.mainStreamManager} />
+
                             </div>
                         ) : null}
+                        <div id="video-container" className="col-md-6">
+                            {this.state.publisher !== undefined ? (
+                                <div className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
+                                    <UserVideoComponent
+                                        streamManager={this.state.publisher} />
+                                </div>
+                            ) : null}
+                            {this.state.subscribers.map((sub, i) => (
+                                <div key={sub.id} className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(sub)}>
+                                    <span>{sub.id}</span>
+                                    <UserVideoComponent streamManager={sub} />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 ) : null}
-                
             </div>
         );
     }
@@ -353,17 +334,23 @@ class Streaming extends Component {
 
     async createSession(sessionId) {
         const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions', { customSessionId: sessionId }, {
-            headers: { 'Content-Type': 'application/json', },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization' : 'Basic T1BFTlZJRFVBUFA6SE9XRE9JTE9PSw==', 
+             },
         });
         return response.data; // The sessionId
     }
 
     async createToken(sessionId) {
         const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', {}, {
-            headers: { 'Content-Type': 'application/json', },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization' : 'Basic T1BFTlZJRFVBUFA6SE9XRE9JTE9PSw==',
+             },
         });
         return response.data; // The token
     }
 }
 
-export default Streaming;
+export default App;
