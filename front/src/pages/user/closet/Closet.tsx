@@ -96,7 +96,7 @@ const Closet = () => {
             pageNum : 0,
         }));
     
-    },[])
+    },[state.clothRegistOk])
 
 
     // 메뉴 클릭 시 마다 새롭게 옷을 받아옴
