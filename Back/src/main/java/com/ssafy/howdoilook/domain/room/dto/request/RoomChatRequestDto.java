@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoomChatRequestDto {
     private String chatContent;
-    private String nickName;
+    private String token;
     private long roomId;
     @Builder
-    public RoomChatRequestDto(String chatContent, String nickName, long roomId) {
+    public RoomChatRequestDto(String chatContent, String token, long roomId) {
         this.chatContent = chatContent;
-        this.nickName = nickName;
+        this.token = token;
         this.roomId = roomId;
     }
 }

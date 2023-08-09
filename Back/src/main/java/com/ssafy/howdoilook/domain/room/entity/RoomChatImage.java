@@ -10,6 +10,8 @@ import org.springframework.data.redis.core.index.Indexed;
 
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Document
@@ -23,10 +25,10 @@ public class RoomChatImage {
     private String nickName;
     private String imageURL;
     private ImageType type;
-    private String time;
+    private LocalDateTime time;
 
     @Builder
-    public RoomChatImage(long roomId, String nickName, String imageURL, ImageType type, String time) {
+    public RoomChatImage(long roomId, String nickName, String imageURL, ImageType type, LocalDateTime time) {
         this.roomId = roomId;
         this.nickName = nickName;
         this.imageURL = imageURL;

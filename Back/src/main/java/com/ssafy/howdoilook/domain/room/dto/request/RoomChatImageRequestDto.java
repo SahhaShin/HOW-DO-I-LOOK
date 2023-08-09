@@ -12,13 +12,15 @@ import java.util.ArrayList;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoomChatImageRequestDto {
     private ArrayList<String>imageURL;
-    private String nickName;
+    private String token;
     private long roomId;
+    private String type;
 
     @Builder
-    public RoomChatImageRequestDto(ArrayList<String> imageURL, String nickName, long roomId) {
+    public RoomChatImageRequestDto(ArrayList<String> imageURL, String token, String type, long roomId) {
         this.imageURL = imageURL;
-        this.nickName = nickName;
+        this.token = token;
+        this.type = type;
         this.roomId = roomId;
     }
 }

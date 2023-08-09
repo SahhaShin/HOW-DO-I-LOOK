@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.index.Indexed;
 
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Document
@@ -21,12 +22,12 @@ public class RoomChat {
     @Indexed
     private long roomId;
     private String nickName;
-    private String time;
+    private LocalDateTime time;
     private String content;
 
 
     @Builder
-    public RoomChat(long roomId, String nickName, String content, String time) {
+    public RoomChat(long roomId, String nickName, String content, LocalDateTime time) {
         this.roomId = roomId;
         this.nickName = nickName;
         this.content = content;

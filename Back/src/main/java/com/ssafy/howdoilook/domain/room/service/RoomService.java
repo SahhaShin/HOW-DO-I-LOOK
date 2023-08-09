@@ -23,6 +23,7 @@ import com.ssafy.howdoilook.domain.roomUser.service.RoomUserService;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -50,48 +51,37 @@ public class RoomService {
     private final RoomChatRepository roomChatRepository;
     private final RoomChatImageRepository roomChatImageRepository;
 
+    private final JwtService jwtService;
     private final RoomUserService roomUserService;
 
     @Transactional
-    public RoomChatResponseDto chatString(RoomChatRequestDto requestDto){
-        //토큰으로 처리할 것들 : type, nickName, roomId
-        String time = new Timestamp(System.currentTimeMillis()).toString();
-        RoomChat chat = RoomChat.builder()
+    public RoomChatImageResponseDto imageIntegrity(RoomChatImageRequestDto requestDto){
+        LocalDateTime time = LocalDateTime.now();
+        //닉네임 무결성 검증
+        String nickName = jwtService.extractNickName(requestDto.getToken()).toString();
+        
+        //링크 무결성 검증
+        
+        
+        return RoomChatImageResponseDto.builder()
                 .roomId(requestDto.getRoomId())
-                .nickName(requestDto.getNickName())
-                .time(time)
-                .content(requestDto.getChatContent())
-                .build();
-
-        roomChatRepository.save(chat);
-
-        return RoomChatResponseDto.builder()
-                .chatContent(requestDto.getChatContent())
-                .nickName(requestDto.getNickName())
-                .time(time)
-                .type("nomal")
-                .roomId(requestDto.getRoomId())
+                .type(requestDto.getType())
+                .imageURL(requestDto.getImageURL())
+                .time(time.toString())
+                .nickName(nickName)
                 .build();
     }
+    @Transactional
+    public RoomChatResponseDto chatIntegrity(RoomChatRequestDto requestDto){
+        LocalDateTime time = LocalDateTime.now();
+        //닉네임 무결성 검증
+        String nickName = jwtService.extractNickName(requestDto.getToken()).toString();
 
-    public RoomChatImageResponseDto chatImage(RoomChatImageRequestDto requestDto){
-        String time = new Timestamp(System.currentTimeMillis()).toString();
-        for(String url : requestDto.getImageURL()) {
-            RoomChatImage image = RoomChatImage.builder()
-                    .imageURL(url)
-                    .time(time)
-                    .nickName(requestDto.getNickName())
-                    .roomId(requestDto.getRoomId())
-                    .build();
-
-            roomChatImageRepository.save(image);
-        }
-
-        return RoomChatImageResponseDto.builder()
-                .imageURL(requestDto.getImageURL())
-                .nickName(requestDto.getNickName())
-                .time(time)
-                .type("nomal")
+        return RoomChatResponseDto.builder()
+                .roomId(requestDto.getRoomId())
+                .time(time.toString())
+                .chatContent(requestDto.getChatContent())
+                .nickName(nickName)
                 .build();
     }
 

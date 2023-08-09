@@ -11,15 +11,13 @@ public class RoomChatResponseDto {
     private long roomId;
     private String chatContent;
     private String nickName;
-    private String type;
     private String time;
 
     @Builder
-    public RoomChatResponseDto(long roomId, String chatContent, String nickName, String type, String time) {
+    public RoomChatResponseDto(long roomId, String chatContent, String nickName, String time) {
         this.roomId = roomId;
         this.chatContent = chatContent;
         this.nickName = nickName;
-        this.type = type;
         this.time = time;
     }
 }
