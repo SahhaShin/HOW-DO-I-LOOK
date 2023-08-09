@@ -21,14 +21,16 @@ import org.springframework.web.bind.annotation.*;
 public class FollowController {
     private final FollowService followService;
 
-    @PostMapping("")
+    @PostMapping("/save")
     public ResponseEntity<Long> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails){
         Long id = followService.saveFollow(followSaveRequestDto,userDetails);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
     @DeleteMapping("")
     public ResponseEntity<?> deleteFollow(@RequestBody FollowDeleteRequestDto followDeleteRequestDto, @AuthenticationPrincipal UserDetails userDetails){
         followService.deleteFollow(followDeleteRequestDto,userDetails);
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
     //나를 팔로워 하는사람
@@ -60,5 +62,13 @@ public class FollowController {
 
         return ResponseEntity.ok()
                 .body(followService.getAllFollowerList(userId));
+    }
+
+    @ApiOperation(value = "맞팔 전체 리스트")
+    @GetMapping("/list/perfectfollow")
+    public ResponseEntity<?> getPerfectFollowList() {
+
+        return ResponseEntity.ok()
+                .body(followService.getPerfectFollowList());
     }
 }

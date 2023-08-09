@@ -17,6 +17,10 @@ import com.ssafy.howdoilook.domain.room.repository.RoomRepository.RoomRepository
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUserType;
 import com.ssafy.howdoilook.domain.roomUser.repository.RoomUserRepository;
+
+import com.ssafy.howdoilook.domain.roomUser.service.RoomUserService;
+import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecodRequestDto;
+
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
@@ -47,6 +51,8 @@ public class RoomService {
     private final RoomChatRepository roomChatRepository;
     private final RoomChatImageRepository roomChatImageRepository;
 
+    private final RoomUserService roomUserService;
+
     @Transactional
     public RoomChatResponseDto chatString(RoomChatRequestDto requestDto){
         //토큰으로 처리할 것들 : type, nickName, roomId
@@ -69,7 +75,6 @@ public class RoomService {
                 .build();
     }
 
-    @Transactional
     public RoomChatImageResponseDto chatImage(RoomChatImageRequestDto requestDto){
         String time = new Timestamp(System.currentTimeMillis()).toString();
         for(String url : requestDto.getImageURL()) {
@@ -90,9 +95,11 @@ public class RoomService {
                 .type("nomal")
                 .build();
     }
+
     @Transactional
     public Long addRoom(RoomAddRequestDto roomAddRequestDto, UserDetails userDetails) throws AccessException {
         String clientEmail = userDetails.getUsername();
+
         User user = userRepository.findById(roomAddRequestDto.getHostId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
@@ -111,7 +118,9 @@ public class RoomService {
                 .chatCode(UUID.randomUUID().toString())
                 .build();
 
-        roomRepository.save(room);
+        Room saveRoom = roomRepository.save(room);
+
+        roomUserService.addRoomUser(saveRoom.getHost().getId(), saveRoom.getId(), userDetails);
 
         return room.getId();
     }

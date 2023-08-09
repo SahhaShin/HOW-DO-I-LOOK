@@ -26,6 +26,22 @@ public class RedisRankingController {
         return ResponseEntity.ok()
                 .body(redisRankingService.getRanking(likeType));
     }
+
+    @ApiOperation(value = "좋아요 종류 별 Top 3 랭킹 조회")
+    @GetMapping("/list/top/{likeType}")
+    public ResponseEntity<?> getTop3RankingList(@PathVariable String likeType) {
+
+        return ResponseEntity.ok()
+                .body(redisRankingService.getTop3Ranking(likeType));
+    }
+
+    @ApiOperation(value = "좋아요 종류 별 페이지네이션 랭킹 조회")
+    @GetMapping("/list/pagination/{likeType}/{pageNum}/{size}")
+    public ResponseEntity<?> getRankingListPagination(@PathVariable String likeType, @PathVariable int pageNum, @PathVariable int size) {
+
+        return ResponseEntity.ok()
+                .body(redisRankingService.getRankingPagination(likeType, pageNum, size));
+    }
     
     @ApiOperation(value = "특정 유저의 좋아요 종류 별 랭킹 조회")
     @GetMapping("/{userId}/{likeType}")

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -36,6 +37,17 @@ public class RedisRankingService {
         zSetOperations.incrementScore(likeType, String.valueOf(userId), score);
     }
 
+    @Transactional
+    public void deleteScore(Long userId) {
+        ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
+
+        String[] likeTypes = {"SEXY", "MODERN", "NATURAL", "LOVELY"};
+
+        for (String likeType : likeTypes) {
+            zSetOperations.remove(likeType, String.valueOf(userId));
+        }
+    }
+
     public List<RankingResponseDto> getRanking(String likeType) {
         ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
 
@@ -47,19 +59,103 @@ public class RedisRankingService {
         for (ZSetOperations.TypedTuple<String> tuple : rankingWithScores)
             valueList.add(tuple.getScore().longValue());
 
+        System.out.println("valueList = " + valueList);
         List<String> rankingList = new ArrayList<>(ranking);
+        System.out.println("rankingList = " + rankingList);
 
         List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
 
         for(int i=0; i<rankingList.size(); i++) {
+            System.out.println(rankingList.get(i));
             User user = userRepository.findById(Long.parseLong(rankingList.get(i))).get();
 
             RankingResponseDto rankingResponseDto = RankingResponseDto.builder()
                     .userId(Long.parseLong(rankingList.get(i)))
                     .email(user.getEmail())
-                    .rank(zSetOperations.reverseRank(likeType, rankingList.get(i)))
+                    .rank(zSetOperations.reverseRank(likeType, rankingList.get(i)) + 1)
                     .likeType(likeType)
                     .score(valueList.get(i))
+                    .nickname(user.getNickname())
+                    .profileImg(user.getProfileImg())
+                    .build();
+
+            rankingResponseDtoList.add(rankingResponseDto);
+        }
+
+        return rankingResponseDtoList;
+    }
+
+    public List<RankingResponseDto> getTop3Ranking(String likeType) {
+        ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
+
+        Set<String> ranking = zSetOperations.reverseRange(likeType, 0, 2);
+
+        Set<ZSetOperations.TypedTuple<String>> rankingWithScores = zSetOperations.reverseRangeWithScores(likeType, 0, 2);
+
+        List<Long> valueList = new ArrayList<>();
+
+        for (ZSetOperations.TypedTuple<String> tuple : rankingWithScores)
+            valueList.add(tuple.getScore().longValue());
+
+        System.out.println("valueList = " + valueList);
+        List<String> rankingList = new ArrayList<>(ranking);
+        System.out.println("rankingList = " + rankingList);
+
+        List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
+
+        for(int i=0; i<rankingList.size(); i++) {
+            System.out.println(rankingList.get(i));
+            User user = userRepository.findById(Long.parseLong(rankingList.get(i))).get();
+
+            RankingResponseDto rankingResponseDto = RankingResponseDto.builder()
+                    .userId(Long.parseLong(rankingList.get(i)))
+                    .email(user.getEmail())
+                    .rank(zSetOperations.reverseRank(likeType, rankingList.get(i)) + 1)
+                    .likeType(likeType)
+                    .score(valueList.get(i))
+                    .nickname(user.getNickname())
+                    .profileImg(user.getProfileImg())
+                    .build();
+
+            rankingResponseDtoList.add(rankingResponseDto);
+        }
+
+        return rankingResponseDtoList;
+    }
+
+    public List<RankingResponseDto> getRankingPagination(String likeType, int pageNum, int size) {
+        ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
+
+        int startIdx = (pageNum - 1) * size;
+        int endIdx = startIdx + size - 1;
+
+        Set<String> ranking = zSetOperations.reverseRange(likeType, startIdx, endIdx);
+
+        Set<ZSetOperations.TypedTuple<String>> rankingWithScores = zSetOperations.reverseRangeWithScores(likeType, startIdx, endIdx);
+
+        List<Long> valueList = new ArrayList<>();
+
+        for (ZSetOperations.TypedTuple<String> tuple : rankingWithScores)
+            valueList.add(tuple.getScore().longValue());
+
+        System.out.println("valueList = " + valueList);
+        List<String> rankingList = new ArrayList<>(ranking);
+        System.out.println("rankingList = " + rankingList);
+
+        List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
+
+        for(int i=0; i<rankingList.size(); i++) {
+            System.out.println(rankingList.get(i));
+            User user = userRepository.findById(Long.parseLong(rankingList.get(i))).get();
+
+            RankingResponseDto rankingResponseDto = RankingResponseDto.builder()
+                    .userId(Long.parseLong(rankingList.get(i)))
+                    .email(user.getEmail())
+                    .rank(zSetOperations.reverseRank(likeType, rankingList.get(i)) + 1)
+                    .likeType(likeType)
+                    .score(valueList.get(i))
+                    .nickname(user.getNickname())
+                    .profileImg(user.getProfileImg())
                     .build();
 
             rankingResponseDtoList.add(rankingResponseDto);
@@ -71,31 +167,51 @@ public class RedisRankingService {
     public List<RankingResponseDto> getBadgeOwnerList(String likeType) {
         List<User> userList = userRepository.findAll();
 
-        Long badgeCnt = (long) (userList.size() / 2);
+        Long badgeCnt = (long) (userList.size() / 10);
+
+        if(badgeCnt == 0)
+            badgeCnt = 1L;
 
         ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
 
         Set<String> badgeSet = zSetOperations.range(likeType, 0, badgeCnt - 1);
         Set<ZSetOperations.TypedTuple<String>> rankingWithScores = zSetOperations.reverseRangeWithScores(likeType, 0, -1);
 
+        System.out.println("rankingWithScores = " + rankingWithScores);
+        
         List<Long> valueList = new ArrayList<>();
 
         for (ZSetOperations.TypedTuple<String> tuple : rankingWithScores)
             valueList.add(tuple.getScore().longValue());
 
+        
+        
         List<String> badgeList = new ArrayList<>(badgeSet);
-
+        System.out.println("badgeList = " + badgeList);
+        
         List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
 
         for(int i=0; i<badgeList.size(); i++) {
-            User user = userRepository.findById(Long.parseLong(badgeList.get(i))).get();
+            System.out.println("badgeList.get(i) = " + badgeList.get(i));
+//            User user = userRepository.findById(Long.parseLong(badgeList.get(i))).get();
+
+            Optional<User> optionalUser = userRepository.findById(Long.parseLong(badgeList.get(i)));
+
+            User user = null;
+
+            if(optionalUser.isEmpty())
+                return rankingResponseDtoList;
+            else
+                user = optionalUser.get();
 
             RankingResponseDto rankingResponseDto = RankingResponseDto.builder()
                     .userId(Long.parseLong(badgeList.get(i)))
                     .email(user.getEmail())
-                    .rank(zSetOperations.reverseRank(likeType, badgeList.get(i)))
+                    .rank(zSetOperations.reverseRank(likeType, badgeList.get(i)) + 1)
                     .likeType(likeType)
                     .score(valueList.get(i))
+                    .nickname(user.getNickname())
+                    .profileImg(user.getProfileImg())
                     .build();
 
             rankingResponseDtoList.add(rankingResponseDto);
@@ -107,14 +223,27 @@ public class RedisRankingService {
     public RankingResponseDto getRank(String likeType, Long userId) {
         ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
 
+        Set<ZSetOperations.TypedTuple<String>> scoreAndUsers = zSetOperations.reverseRangeWithScores(likeType, 0, -1);
+
+        double score = 0;
+
+        for (ZSetOperations.TypedTuple<String> scoreAndUser : scoreAndUsers) {
+            if(scoreAndUser.getValue().equals(String.valueOf(userId))) {
+                score = scoreAndUser.getScore();
+                break;
+            }
+        }
+
         User user = userRepository.findById(userId).get();
 
         RankingResponseDto rankingResponseDto = RankingResponseDto.builder()
                 .userId(userId)
                 .email(user.getEmail())
-                .rank(zSetOperations.reverseRank(likeType, String.valueOf(userId)))
+                .rank(zSetOperations.reverseRank(likeType, String.valueOf(userId)) + 1)
                 .likeType(likeType)
-                .score(zSetOperations.score(likeType, userId).longValue())
+                .score((long) score)
+                .nickname(user.getNickname())
+                .profileImg(user.getProfileImg())
                 .build();
 
         return rankingResponseDto;

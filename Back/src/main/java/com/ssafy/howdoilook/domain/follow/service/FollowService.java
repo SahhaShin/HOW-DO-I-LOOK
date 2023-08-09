@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.follow.dto.request.FollowDeleteRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.request.FollowSaveRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FolloweeResponseDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FollowerResponseDto;
+import com.ssafy.howdoilook.domain.follow.dto.response.PerfectFollowResponseDto;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.follow.repository.FollowReposiroty;
 import com.ssafy.howdoilook.domain.user.entity.User;
@@ -57,8 +58,6 @@ public class FollowService {
         } else {
             throw new IllegalArgumentException("이미 존재하는 Follow입니다.");
         }
-
-
     }
 
 
@@ -171,5 +170,10 @@ public class FollowService {
         }
 
         return followerResponseDtoList;
+    }
+
+    public List<PerfectFollowResponseDto> getPerfectFollowList() {
+
+        return followRepository.findPerfectFollowers();
     }
 }

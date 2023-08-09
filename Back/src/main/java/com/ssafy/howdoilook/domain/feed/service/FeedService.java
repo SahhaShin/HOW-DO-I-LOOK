@@ -93,6 +93,7 @@ public class FeedService {
 
     @Transactional
     public Long saveFeed(FeedSaveRequestDto feedSaveRequestDto, UserDetails userDetails, List<MultipartFile> multipartFileList) {
+
         authorizationService.auth(feedSaveRequestDto.getUserId(), userDetails);
 
         for (int i = 0; i < multipartFileList.size(); i++) {
@@ -181,6 +182,7 @@ public class FeedService {
         List<FeedResponseDto> feedResponseDtoList = new ArrayList<>();
         for (Feed feed : feedList) {
             FeedResponseDto feedResponseDto = new FeedResponseDto();
+
             feedResponseDto.setUserId(feed.getUser().getId());
             feedResponseDto.setUserNickname(feed.getUser().getNickname());
             feedResponseDto.setFeedId(feed.getId());
@@ -190,16 +192,22 @@ public class FeedService {
             feedResponseDto.setFeedUpdateDate(feed.getModifiedDate());
             feedResponseDto.setFeedLikeCountResponseDto(feedLikeService.countFeedLike(feed.getId()));
             feedResponseDto.setPhotoResponseDtoList(new ArrayList<>());
+
             List<FeedPhoto> feedPhotoList = feed.getFeedPhotoList();
+
             for (FeedPhoto feedPhoto : feedPhotoList) {
                 PhotoResponseDto photoResponseDto = new PhotoResponseDto();
+
                 photoResponseDto.setId(feedPhoto.getId());
                 photoResponseDto.setLink(feedPhoto.getLink());
                 photoResponseDto.setHashtagList(new ArrayList<>());
+
                 List<FeedPhotoHashtag> feedPhotoHashtagList = feedPhoto.getFeedPhotoHashtagList();
+
                 for (FeedPhotoHashtag feedPhotoHashtag : feedPhotoHashtagList) {
                     photoResponseDto.getHashtagList().add(feedPhotoHashtag.getHashtag().getContent());
                 }
+
                 feedResponseDto.getPhotoResponseDtoList().add(photoResponseDto);
             }
             feedResponseDtoList.add(feedResponseDto);

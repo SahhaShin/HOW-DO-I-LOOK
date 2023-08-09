@@ -71,6 +71,7 @@ public class SoloChatRoomService {
         //Entity To Dto
         for (SoloChatRoom chatRoom : chatRoomListPrev){
             SoloChat lastChat = chatRepository.findTopByRoomIdOrderByTimeDesc(chatRoom.getId());
+
             ChatRoomDto dto = ChatRoomDto.builder()
                     .id(chatRoom.getId())
                     .userAId(chatRoom.getUserA().getId())
