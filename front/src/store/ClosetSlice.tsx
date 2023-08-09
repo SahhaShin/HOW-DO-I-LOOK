@@ -4,41 +4,59 @@ import axios from "axios";
 // alert창
 import Swal from "sweetalert2";
 
+import {CheckToken} from "../hook/UserApi"
+
 // axios
 export const action = {
     // 옷 분야별 리스트 O
     getClothesListByType : createAsyncThunk("ClosetSlice/getClothesListByType", async({clothesType, userId, pageNum}:ClothesListByTypeReq, thunkAPI)=>{
         try{
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`);
-            console.log(`${response.data} 익다!!`);
-            return response.data; // 액션의 payload로 값을 반환해야 합니다.
+            console.log(`${clothesType} ${userId} ${pageNum}`);
+            const token = await CheckToken();
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,{
+                headers: {
+                  "Authorization" : token
+                }
+                
+              });
+
+              let data = {
+                type : clothesType,
+                response : response.data
+              }
+
+
+            return data; // 액션의 payload로 값을 반환해야 합니다.
         } catch (e) {
             console.log(e);
             throw e;
         }
     }),
     //OOTD X
-    OOTDSave: createAsyncThunk("ClosetSlice/OOTDSave",async ({userId, order, slotIds}:saveOOTD,thunkAPI) => {
-        return await axios({
-            method: "post",
-            url:`${process.env.REACT_APP_SERVER}/api/ootd`,
-            data:{
-                userId: userId,
-                order: order,
-                slotIds,
-            }
-        }).then(response=>{
-            // console.log(response.data);
-            
-        }).catch((e)=>{
+    OOTDSave: createAsyncThunk("ClosetSlice/OOTDSave",async ({userId, order, slotIds}:saveOOTD,thunkAPI) =>{
+        try{
+            const token = await CheckToken();
+            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/ootd`,{userId,order,slotIds},{
+                headers: {
+                  "Authorization" : token
+                }
+                
+            });
+
+            return response.data; // 액션의 payload로 값을 반환해야 합니다.
+        } catch (e) {
             console.log(e);
-        })
+            throw e;
+        }
     }),
+ 
     // 새로운 옷 등록 O
     saveClothes : createAsyncThunk("ClosetSlice/saveClothes", async(formdata, thunkAPI)=>{
 
+        const token = await CheckToken();
         await axios.post(`${process.env.REACT_APP_SERVER}/api/clothes`, formdata, {
         headers: {
+          "Authorization" : token,
           "Content-Type": "multipart/form-data",
         }
       }).then((res)=>{
@@ -57,8 +75,15 @@ export const action = {
     getClothInfo : createAsyncThunk("ClosetSlice/getClothInfo", async(clothesId, thunkAPI)=>{
 
         try{
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/detail/${clothesId}`);
-            // console.log(response.data);
+            console.log(clothesId);
+            const token = await CheckToken();
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/detail/${clothesId}`,{
+                headers: {
+                  "Authorization" : token,
+                }
+            });
+            
+            console.log(response.data);
             return response.data; // 액션의 payload로 값을 반환해야 합니다.
         } catch (e) {
             console.log(e);
@@ -67,23 +92,33 @@ export const action = {
     }),
 
     //특정 옷 수정하기 X -> 이미지는 수정 안되는 걸로
-    updateClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async(clothesId, thunkAPI)=>{
+    updateClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async({userId,type,name,brand,info,clothesId}, thunkAPI)=>{
 
-        // try{
-        //     const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`);
-        //     console.log(response.data);
-        //     return response.data; // 액션의 payload로 값을 반환해야 합니다.
-        // } catch (e) {
-        //     console.log(e);
-        //     throw e;
-        // }
+        try{
+            const token = await CheckToken();
+            const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`,{userId,type,name,brand,info},{
+                headers: {
+                  "Authorization" : token,
+                }
+            });
+            console.log(response.data);
+            return response.data; // 액션의 payload로 값을 반환해야 합니다.
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
     }), 
 
     //특정 옷 삭제하기 O
     deleteClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async(clothesId, thunkAPI)=>{
         try{
-            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`);
-            // console.log("삭제완료");
+            const token = await CheckToken();
+            const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`,{
+                headers: {
+                  "Authorization" : token,
+                }
+            });
+    
         } catch (e) {
             console.log(e);
             throw e;
@@ -175,7 +210,7 @@ interface closet{
 //mode는 c(1) r(2) u(3) 중 어떤 모드인지를 뜻한다.
 const initialState:closet = {
     modalOpen : false,
-    mode : 0,
+    mode : 1,
     clothesTypeKo : "상의",
     clothesTypeEn : "TOP",
     clothesListByType : [],
@@ -189,7 +224,7 @@ const initialState:closet = {
     clothesLink : "",
 
     clothInfo : null,
-    page:1,
+    page:0,
 }
 
 
@@ -231,21 +266,23 @@ const ClosetSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
-            console.log(`!!!${action.payload}`);
-            if(action.payload.type==="TOP"){
-                state.clothesTop=action.payload.content;
-            }else if(action.payload.type==="BOTTOM"){
-                state.clothesBottom=action.payload.content;
-            }else if(action.payload.type==="SHOE"){
-                state.clothesShoe=action.payload.content;
-            }else if(action.payload.type==="ACCESSORY"){
-                state.clothesAccessory=action.payload.content;
+            console.log(`!!!${action.payload.type}`);
+            if(action.payload?.type==="TOP"){
+                state.clothesTop = [...action.payload.response];
+            }else if(action.payload?.type==="BOTTOM"){
+                state.clothesBottom = [...action.payload.response];
+            }else if(action.payload?.type==="SHOE"){
+                state.clothesShoe = [...action.payload.response];
+            }else if(action.payload?.type==="ACCESSORY"){
+                state.clothesAccessory = [...action.payload.response];
             }else{
                 // all
-                state.clothesAll=action.payload.content;
+                state.clothesAll = [...action.payload.response];
             }
 
-            state.clothesListByType=action.payload.content;
+            state.clothesListByType = [...action.payload.response];
+
+            console.log(state.clothesTop.length);
         })
         builder.addCase(action.getClothInfo.fulfilled, (state, action) => {
             //옷 특정 정보 결과

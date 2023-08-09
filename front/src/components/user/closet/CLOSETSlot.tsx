@@ -13,6 +13,8 @@ import Swal from "sweetalert2";
 //closet 옷장 슬롯 1개 -> closet page에서 map돌려서 여러 개 뜨는 구조임
 const CLOSETSlot = (props) => {
 
+    console.log(props.one);
+
     //부모(Closet)에서 준 props에는 one으로 clothesId와 photoLink가 있음
 
     
@@ -26,8 +28,7 @@ const CLOSETSlot = (props) => {
 
     // 정보 보기/수정 버튼을 누르면 CLOSETRegist가 툴킷을 보고 참고한다.
     function sendInfo(){
-        dispatch(changeClothesId(props.one.clothesId));
-        dispatch(changeClothesLink(props.one.photoLink));
+        dispatch(action.getClothInfo(props.one.clothesId));
     }
 
     //옷 삭제
