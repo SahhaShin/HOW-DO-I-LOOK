@@ -1,6 +1,8 @@
 package com.ssafy.howdoilook.domain.soloChatroom.service;
 
 import com.ssafy.howdoilook.domain.soloChatroom.dto.ChatDto;
+import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatClickRequestDto;
+import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatClickResponseDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatRoomDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatContextRequestDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecordRequestDto;
@@ -38,6 +40,16 @@ public class SoloChatRoomService {
 //
 //    }
 
+
+    @Transactional
+    public ChatClickResponseDto clickEvent(ChatClickRequestDto requestDto){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        soloChatRoomRepository.UpdateChatDate(requestDto.getRoomId(),localDateTime);
+        return ChatClickResponseDto.builder()
+                .readtime(localDateTime.toString())
+                .userId(requestDto.getUserId())
+                .build();
+    }
 
     //채팅시 채팅 기록 MongoDB에 저장
     @Transactional

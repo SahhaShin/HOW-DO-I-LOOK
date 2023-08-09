@@ -1,6 +1,8 @@
 package com.ssafy.howdoilook.domain.soloChatroom.api;
 
+import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatClickRequestDto;
 import com.ssafy.howdoilook.domain.soloChatroom.dto.request.ChatRecordRequestDto;
+import com.ssafy.howdoilook.domain.soloChatroom.dto.response.ChatClickResponseDto;
 import com.ssafy.howdoilook.domain.soloChatroom.service.SoloChatMQService;
 import com.ssafy.howdoilook.domain.soloChatroom.service.SoloChatRoomService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,12 @@ public class SoloWebSocketController {
     private final SoloChatRoomService soloChatRoomService;
     private final SoloChatMQService soloChatMQService;
 
+
+    @MessageMapping("/soloChat/click/{roomCode}")
+    @SendTo("/sub/soloChat/click/{roomCode}")
+    public ChatClickResponseDto clickEvent(ChatClickRequestDto requestDto){
+        return soloChatRoomService.clickEvent(requestDto);
+    }
 
     @MessageMapping("/soloChat/{roomCode}")
     @SendTo("/sub/soloChat/{roomCode}")
