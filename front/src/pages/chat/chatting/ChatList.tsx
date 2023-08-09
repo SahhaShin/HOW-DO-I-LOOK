@@ -40,15 +40,16 @@ const ChatList = () => {
     // 페이지네이션
     const [len, setLen] = useState(0);
     const [limit, setLimit] = useState(10);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const offset = (page - 1) * limit;
+
 
 
     // 유저가 소통했던 채팅방 목록 보여주기
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
     useEffect(() => {
-        dispatch(action.getChatList(loginUser.id));
+        dispatch(action.getChatList({userId:loginUser.id, page:page}));
         setLen(state.chatList.length);
     },[])
 
@@ -84,10 +85,9 @@ const ChatList = () => {
                         </div>
                         
                         
-                        {/* 페이지네이션   20을 {clothes.length}로 바꿔야 함 */}
                         <div className={`${chatStyle.paginationContainer}`}>
                             <Pagination
-                                total={20}
+                                total={state.chatList?.length}
                                 limit={limit}
                                 page={page}
                                 setPage={setPage}

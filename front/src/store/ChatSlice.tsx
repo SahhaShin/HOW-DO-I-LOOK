@@ -10,10 +10,10 @@ import {CheckToken} from "../hook/UserApi"
 export const action = {
 
     //채팅 리스트 불러오기 O
-    getChatList : createAsyncThunk("ChatSlice/getChatList", async(userId, thunkAPI)=>{
+    getChatList : createAsyncThunk("ChatSlice/getChatList", async({userId, page}, thunkAPI)=>{
         try{
             const token = await CheckToken();
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/soloChatRoom/${userId}`,{
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/soloChatRoom/${userId}?page=${page}`,{
                 headers: {
                   "Authorization" : token
                 }
@@ -97,9 +97,8 @@ interface chatRoomParticipant{
 interface chat{
     chatList : getChatRoomList[],
     chatHistory : enterRoom|null,
-    chatHistoryTime : string|null,
-    chatHistoryDate : string|null,
     otherNickname: string,
+    page:number,
 }
 
 
@@ -108,6 +107,7 @@ const initialState:chat = {
     chatList : [],
     chatHistory : null,
     otherNickname: "",
+    page:0,
 }
 
 
@@ -118,7 +118,12 @@ const ChatSlice = createSlice({
 
         addChatHistory(state, action){
             state.chatHistory?.push(action.payload);
-        }
+        },
+        
+        changePage(state, action) {
+            state.page = action.payload;
+        },
+
 
     },
     extraReducers:(builder) => {
@@ -140,5 +145,5 @@ const ChatSlice = createSlice({
     
 });
 
-export let {addChatHistory} = ChatSlice.actions;
+export let {changePage,addChatHistory} = ChatSlice.actions;
 export default ChatSlice.reducer;
