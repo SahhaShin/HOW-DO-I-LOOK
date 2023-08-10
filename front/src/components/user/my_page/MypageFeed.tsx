@@ -61,7 +61,7 @@ const MypageFeed = () => {
 
                         );
                     }):
-                    state.likeFeedList?.content.map((oneFeed)=>{
+                    state.likeFeedList?.content&&state.likeFeedList?.content.map((oneFeed)=>{
                         return(
                             <div>
                                 <MyFeedSlot feedInfo={oneFeed}/>

@@ -45,12 +45,21 @@
     padding-left: 5%;
     padding-right: 5%;
 }
+.LovelyBadge, .SexyBadge, .ModernBadge, .NaturalBadge{
+    margin-right: 5px;
+    height: 110px;
+}
+.LovelyBadge:hover, .SexyBadge:hover, .ModernBadge:hover, .NaturalBadge :hover{
+    background-color: pink;
+}
 .LovelyBadge > img, .SexyBadge > img, .ModernBadge > img, .NaturalBadge > img{
-    width: 120px;
+    width: 100px;
+    height: 100%;
     border: 1px solid black;
 }
 
 .badgeName{
+    font-size: 13px;
     font-weight: 900;
 }
 

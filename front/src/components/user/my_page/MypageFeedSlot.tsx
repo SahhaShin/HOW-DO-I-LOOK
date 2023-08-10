@@ -40,11 +40,9 @@ const MypageSlot = (props) => {
     // 2) 특정 피드 번호로 셋팅해야 한다.
     function detailFeed(){
         // 내 좋아요 기록
-        dispatch(changeDetailFeedId(props.feedInfo.feedId));
         dispatch(action.getFeedLikeOnMe({userId:props.feedInfo.userId, feedId:props.feedId}));
         dispatch(action.getFeedTotalList({size:10, page:0}));
         dispatch(action.getComment(props.feedInfo.feedId));
-
     }
 
     return(
@@ -52,7 +50,7 @@ const MypageSlot = (props) => {
             <StyledSlider {...settings} className={`${mypageFeedSlotStyle.onefeed}`}>
                 {   props.feedInfo.photoResponseDtoList.map((onePicture)=>{
                     return(
-                        <div onClick={()=>{dispatch(changeDetailModalOpen(true));detailFeed()}} className={`${mypageFeedSlotStyle.slide}`}>
+                        <div onClick={()=>{dispatch(changeDetailModalOpen(true));dispatch(changeDetailFeedId(props.feedInfo.feedId));detailFeed()}} className={`${mypageFeedSlotStyle.slide}`}>
                             <img src={onePicture.link}/>
                         </div>
                     );

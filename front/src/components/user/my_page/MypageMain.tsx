@@ -161,7 +161,7 @@ const MypageMain = () => {
 
         <div
           onClick={() => {
-            dispatch(changeMenuMode(2));
+            dispatch(changeMenuMode(2));dispatch(action_mypage.getFeedList(loginUser.id)); dispatch(action_mypage.getLikeFeedList(loginUser.id))
           }}
           className={`${mypageMainStyle.feed}`}
         >

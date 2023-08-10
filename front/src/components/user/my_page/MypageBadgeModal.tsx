@@ -27,7 +27,7 @@ const MypageBadgeModal = ()=>{
           if (badge.badgeType === "LOVELY") {
             return (
               <div key={index} className={`${mypageBadgeModalStyle.LovelyBadge}`} onClick={()=>setPick("LOVELY")}
-                style={pick==="LOVELY"?{border:"1px solid #4570F5"}:null}
+                style={pick==="LOVELY"?{border:"3px solid pink", height:"110px"}:null}
               >
                 <img src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} />
                 <div className={`${mypageBadgeModalStyle.badgeName}`}>Lovely Master</div>
@@ -35,23 +35,27 @@ const MypageBadgeModal = ()=>{
             );
           } else if (badge.badgeType === "SEXY") {
             return (
-              <div key={index} className={`${mypageBadgeModalStyle.SexyBadge}`} onClick={()=>setPick("SEXY")}>
-                <img src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`} 
-                    style={pick==="SEXY"?{border:"3px solid #4570F5"}:null}
-                />
+              <div key={index} className={`${mypageBadgeModalStyle.SexyBadge}`} onClick={()=>setPick("SEXY")}
+                style={pick==="SEXY"?{border:"3px solid pink", height:"110px"}:null}
+              >
+                <img src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`} />
                 <div className={`${mypageBadgeModalStyle.badgeName}`}>Sexy Master</div>
               </div>
             );
           } else if (badge.badgeType === "MODERN") {
             return (
-              <div key={index} className={`${mypageBadgeModalStyle.ModernBadge}`} onClick={()=>setPick("MODERN")}>
+              <div key={index} className={`${mypageBadgeModalStyle.ModernBadge}`} onClick={()=>setPick("MODERN")}
+                style={pick==="MODERN"?{border:"3px solid pink", height:"110px"}:null}
+              >
                 <img src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`} />
                 <div className={`${mypageBadgeModalStyle.badgeName}`}>Modern Master</div>
               </div>
             );
           } else if (badge.badgeType === "NATURAL") {
             return (
-              <div key={index} className={`${mypageBadgeModalStyle.NaturalBadge}`} onClick={()=>setPick("NATURAL")}>
+              <div key={index} className={`${mypageBadgeModalStyle.NaturalBadge}`} onClick={()=>setPick("NATURAL")}
+                style={pick==="NATURAL"?{border:"3px solid pink", height:"110px"}:null}
+              >
                 <img src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} />
                 <div className={`${mypageBadgeModalStyle.badgeName}`}>Natural Master</div>
               </div>

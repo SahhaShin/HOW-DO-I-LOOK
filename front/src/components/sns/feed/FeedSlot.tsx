@@ -167,12 +167,12 @@ const StyledSlider = styled(Slider)`
   .slick-prev {
     z-index: 1;
     left: 30px;
-    top: 35%;
+    top: 50%;
   }
 
   .slick-next {
     right: 40px;
-    top: 35%;
+    top: 50%;
   }
 
   .slick-prev:before,
@@ -185,7 +185,7 @@ const StyledSlider = styled(Slider)`
   .slick-dots {
     display: flex;
     justify-content: center;
-    bottom: 200px;
+    bottom: 70px;
     color: black;
 
     li button:before {
