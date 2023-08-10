@@ -8,4 +8,6 @@ public interface FeedPhotoRepository extends JpaRepository<FeedPhoto,Long> ,Feed
     @EntityGraph
     @Override
     <S extends FeedPhoto> S save(S entity);
+
+    boolean existsByLink(String link);
 }

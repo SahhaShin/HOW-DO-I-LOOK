@@ -10,23 +10,24 @@ import org.springframework.data.redis.core.index.Indexed;
 
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Document
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@CompoundIndex(def = "{'roomId' : 1, 'time' : 1}")
 public class RoomChatImage {
     @Id
     private String id;
-    @Indexed
     private long roomId;
-    private String nickName;
+    @Indexed
+    private String nickName; // 스트리밍 채팅방에서 데이터 조회는 고소관련이기 때문에 nickName에 index 설정
     private String imageURL;
     private ImageType type;
-    private String time;
+    private LocalDateTime time;
 
     @Builder
-    public RoomChatImage(long roomId, String nickName, String imageURL, ImageType type, String time) {
+    public RoomChatImage(long roomId, String nickName, String imageURL, ImageType type, LocalDateTime time) {
         this.roomId = roomId;
         this.nickName = nickName;
         this.imageURL = imageURL;

@@ -10,23 +10,23 @@ import org.springframework.data.redis.core.index.Indexed;
 
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Document
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@CompoundIndex(def = "{'roomId' : 1, 'time' : 1}")
 public class RoomChat {
     @Id
     private String id;
-    @Indexed
     private long roomId;
-    private String nickName;
-    private String time;
+    @Indexed
+    private String nickName; //스트리밍 채팅방의 데이터 조회는 고소 관련 협조에서만 발생
+    private LocalDateTime time;
     private String content;
 
 
     @Builder
-    public RoomChat(long roomId, String nickName, String content, String time) {
+    public RoomChat(long roomId, String nickName, String content, LocalDateTime time) {
         this.roomId = roomId;
         this.nickName = nickName;
         this.content = content;

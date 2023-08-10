@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.Option;
 import java.security.InvalidKeyException;
 import java.util.Date;
 import java.util.Optional;
@@ -119,6 +120,23 @@ public class JwtService {
         return Optional.ofNullable(httpServletRequest.getHeader(accessHeader))
                 .filter(accessToken -> accessToken.startsWith(BEARER))
                 .map(accessToken -> accessToken.replace(BEARER, ""));
+    }
+
+    /*
+    * AccessToken에서 nickName 추출
+     */
+    public Optional<String> extractNickName(String accessToken){
+        try {
+            return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey)) // Token 유효성 검증기
+                    .build() // JWT verifier 생성
+                    .verify(accessToken) // accessToken 검증 -> 비유효 : 예외 발생
+                    .getClaim("nickname") // claim에서 nickname 추출
+                    .asString());
+        } catch(Exception e) {
+            e.printStackTrace();
+
+            return Optional.empty();
+        }
     }
 
     /*
