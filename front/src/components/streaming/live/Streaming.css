@@ -1,37 +1,57 @@
-
 .stream-container {
-	padding: 0;
+  padding: 0;
 }
+
+.StreamingComponent {
+  height: 580px;
+  width: 750px;
+  position: relative;
+}
+
 /* 버튼을 둘러싼 div */
 .buttons {
-	width: 50%;
-	position: absolute;
-	top: 100%;
-    left: 100%;
-    transform: translate(-100%, -100%);
-	justify-content : space-evenly;
-	display: flex;
-	/* flex: auto; */
-	text-align: center ;
+  /* width: 50%; */
+  position: relative;
+  top: 100%;
+  left: 100%;
+  transform: translate(-100%, -100%);
+  justify-content: flex-end;
+  display: flex;
+  /* flex: auto; */
+  text-align: center;
 }
 
-img{
-	height: 30px;
-	/* width: 60px; */
-	border: none;
+.leaveButton {
+  position: absolute;
+  top: 420px;
+  left: 0px;
+  height: 70px;
+  width: 150px;
+  /* z-index: 1000; */
+}
+
+img {
+  height: 20px;
+  /* width: 60px; */
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 .activeButton {
-	
-	height: 40px;
-	width: 130px;
-	border-radius: 10px;
-	/* margin: auto 0 ; */
-	background-color: rgb(127, 243, 127);
+  height: 40px;
+  width: 130px;
+  border-radius: 10px;
+  /* margin: auto 0 ; */
+  background-color: rgb(69, 112, 245);
+  color: white;
+  font-size: 17px;
 }
 .disableButton {
-	height: 40px;
-	width: 130px;
-	border-radius: 10px;
-	/* margin: auto 0 ; */
-	background-color: rgb(232, 119, 104);
+  height: 40px;
+  width: 130px;
+  border-radius: 10px;
+  /* margin: auto 0 ; */
+  background-color: rgb(240, 240, 240);
+  color: black;
+  font-size: 17px;
 }

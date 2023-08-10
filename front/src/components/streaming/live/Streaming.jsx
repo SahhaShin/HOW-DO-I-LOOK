@@ -5,11 +5,12 @@ import React, { Component } from "react";
 import "./Streaming.css";
 import UserVideoComponent from "./UserVideoComponent";
 
-import {CheckToken} from "../../../hook/UserApi"
-
+import { CheckToken } from "../../../hook/UserApi";
 
 const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production" ? "" : `${process.env.REACT_APP_OPENVIDU}`;
+  process.env.NODE_ENV === "production"
+    ? ""
+    : `${process.env.REACT_APP_OPENVIDU}`;
 
 class Streaming extends Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class Streaming extends Component {
       subscribers: [],
       cameraOn: true,
       audioOn: true,
-      forUpdate : true
+      forUpdate: true,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -119,8 +120,8 @@ class Streaming extends Component {
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = [...this.state.subscribers];
           subscribers.push(subscriber);
-          console.log("test-subscribers")
-          console.log(subscribers)
+          console.log("test-subscribers");
+          console.log(subscribers);
 
           this.setState({
             subscribers: subscribers,
@@ -131,17 +132,16 @@ class Streaming extends Component {
         mySession.on("streamDestroyed", (event) => {
           this.deleteSubscriber(event.stream.streamManager);
         });
-        
+
         //세션에서 생성되는 카메라 on/off 이벤트가 발생되면 메서드가 실행된다.
         mySession.on("streamPropertyChanged", (event) => {
           if (event.stream && event.changedProperty === "videoActive") {
-            const newValue = !this.state.forUpdate
+            const newValue = !this.state.forUpdate;
             this.setState({
-              forUpdate : newValue
-            })
+              forUpdate: newValue,
+            });
           }
         });
-        
 
         //세션에서 생성되는 이벤트가 발생되면 메서드가 실행된다.
         mySession.on("exception", (exception) => {
@@ -153,7 +153,6 @@ class Streaming extends Component {
             .connect(token, { clientData: this.state.myUserName })
             //토큰을 잘 받아와서 세션에 연결하는 과정
             .then(async () => {
-
               //비디오 스트림을 생성하는 메서드
               let publisher = await this.OV.initPublisherAsync(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
@@ -187,12 +186,9 @@ class Streaming extends Component {
                 var currentVideoDevice = videoDevices.find(
                   (device) => device.deviceId === currentVideoDeviceId
                 );
-
+              } else {
+                var currentVideoDevice = undefined;
               }
-              else { 
-                var currentVideoDevice = undefined
-              }
-              
 
               //비디오 디바이스,메인스트림 매니저, 퍼블리셔 등록
               this.setState({
@@ -227,24 +223,23 @@ class Streaming extends Component {
   }
 
   leaveSession() {
-
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     const mySession = this.state.session;
 
     if (mySession) {
-        mySession.disconnect();
+      mySession.disconnect();
     }
 
     // Empty all properties...
     this.OV = null;
     this.setState({
-         mySessionId: 'SessionA',
-        myUserName: 'Participant' + Math.floor(Math.random() * 100),
-        session: undefined,
-        mainStreamManager: undefined,
-        publisher: undefined,
-        subscribers: [],
+      mySessionId: "SessionA",
+      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      session: undefined,
+      mainStreamManager: undefined,
+      publisher: undefined,
+      subscribers: [],
     });
   }
 
@@ -290,16 +285,15 @@ class Streaming extends Component {
   async toggleCamera(e) {
     console.log("Camera ON/Off");
 
-    console.log(this.subscribers)
+    console.log(this.subscribers);
 
     const newCameraOn = !this.state.cameraOn; // 카메라 토글
     const newPublisher = this.state.publisher;
 
     if (newPublisher) {
-      newPublisher.publishVideo(newCameraOn); 
+      newPublisher.publishVideo(newCameraOn);
     }
     this.setState({
-
       cameraOn: newCameraOn,
     });
   }
@@ -312,10 +306,9 @@ class Streaming extends Component {
     const newPublisher = this.state.publisher;
 
     if (newPublisher) {
-      newPublisher.publishAudio(newAudioOn); // 
+      newPublisher.publishAudio(newAudioOn); //
     }
     this.setState({
-      
       audioOn: newAudioOn,
     });
   }
@@ -380,37 +373,41 @@ class Streaming extends Component {
         {/* 만약 세션이 있다면 아래의 html 코드가 실행된다. */}
         {this.state.session !== undefined ? (
           <div id="session" className="StreamingComponent">
+            {/* <input
+              className="leaveButton"
+              type="button"
+              id="buttonLeaveSession"
+              onClick={this.leaveSession}
+              value="Leave session"
+            /> */}
             <div id="session-header" className="buttons">
               {/* <h1 id="session-title">{mySessionId}</h1> */}
               {isStreamer ? (
                 <div>
-              <button
-                className={cameraOn ? "activeButton" : "disableButton"}
-                onClick={this.toggleCamera}
-              >
-                <img
-                  src={process.env.PUBLIC_URL + `/img/live/camera.png`}
-                  alt="카메라"
-                />{" "}
-                카메라 {cameraOn ? "끄기" : "켜기"}
-              </button>
+                  <button
+                    className={cameraOn ? "activeButton" : "disableButton"}
+                    onClick={this.toggleCamera}
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        `/img/live/camera${cameraOn ? "-white" : ""}.png`
+                      }
+                      alt="카메라"
+                    />{" "}
+                    카메라 {cameraOn ? "끄기" : "켜기"}
+                  </button>
                 </div>
               ) : null}
-<input
-                  className="btn btn-large btn-danger"
-                  type="button"
-                  id="buttonLeaveSession"
-                  onClick={this.leaveSession}
-                  value="Leave session"
-                />
-
-
               <button
                 className={audioOn ? "activeButton" : "disableButton"}
                 onClick={this.toggleAudio}
               >
                 <img
-                  src={process.env.PUBLIC_URL + `/img/live/audio.png`}
+                  src={
+                    process.env.PUBLIC_URL +
+                    `/img/live/audio${audioOn ? "-white" : ""}.png`
+                  }
                   alt="마이크"
                 />
                 마이크 {audioOn ? "끄기" : "켜기"}
@@ -423,13 +420,14 @@ class Streaming extends Component {
                 className="stream-container col-md-6 col-xs-6"
                 onClick={() => this.handleMainVideoStream(this.state.publisher)}
               >
-                { cameraOn &&<UserVideoComponent streamManager={this.state.publisher} />}
+                {cameraOn && (
+                  <UserVideoComponent streamManager={this.state.publisher} />
+                )}
               </div>
             ) : null}
             {/* subscribers를 돌면서 뿌린다. */}
             {/* 클릭하면 handleMainVideoStream  */}
             {this.state.subscribers.map((sub, i) => (
-                            
               // handleMainVideoStream은 mainstream 바꾸는 메서드
               <div key={sub.id} className="stream-container">
                 <span>{sub.id}</span>
@@ -439,9 +437,9 @@ class Streaming extends Component {
                 {console.log("Logging something:", sub)}
 
                 {/* UserVideoComponent 렌더링 */}
-                {sub.stream.videoActive && <UserVideoComponent streamManager={sub} />}
-
-                
+                {sub.stream.videoActive && (
+                  <UserVideoComponent streamManager={sub} />
+                )}
               </div>
             ))}
           </div>
@@ -476,10 +474,10 @@ class Streaming extends Component {
       APPLICATION_SERVER_URL + "api/sessions",
       { customSessionId: sessionId },
       {
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-        "Authorization": token 
-       },
+          Authorization: token,
+        },
       }
     );
     console.log(response.data);
@@ -492,15 +490,14 @@ class Streaming extends Component {
       APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
       {},
       {
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-        "Authorization": token 
-       },
+          Authorization: token,
+        },
       }
     );
     return response.data; // The token
   }
 }
-
 
 export default Streaming;
