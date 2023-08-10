@@ -24,7 +24,6 @@ const ChatSlot = (props) => {
     const timeSplit = props.oneRoom.lastChatTime.split("T")[0];
     const minutesSplit = props.oneRoom.lastChatTime.split(".")[0].split("T")[1];
     function chatStart(){
-        dispatch(action.searchUser(props.oneRoom.userBId));
         //id는 roomId임
         navigate("/chatroom/" + props.oneRoom.userBId + "/" +props.oneRoom.id+"/"+ props.oneRoom.chatroomCode);
     }
