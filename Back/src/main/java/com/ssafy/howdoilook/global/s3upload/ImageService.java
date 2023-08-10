@@ -17,9 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.exec.CommandLine;
 
@@ -70,8 +67,12 @@ public class ImageService {
             throw new IllegalArgumentException("이미지 경로를 가져오지 못하였습니다.");
         }
 
-        processImageAndReturnPath(imagePath);
-        return imagePath;
+        // 배경제거를 완료하면
+        String processedImagePath = processImageAndReturnPath(imagePath);
+        // 배경되기전 url은 삭제한다.
+        deleteImage(imagePath);
+
+        return processedImagePath;
     }
 
     public String updateImage(String imageUrl, MultipartFile multipartFile) throws IOException {
@@ -93,21 +94,34 @@ public class ImageService {
         amazonS3Client.deleteObject(S3Bucket, existFile);
     }
 
-    public String processImageAndReturnPath(String imageFilePath) throws IOException {
+    public String processImageAndReturnPath(String imagePath) throws IOException {
 
         System.out.println("Python Call");
         String[] command = new String[4];
         command[0] = "python";
         command[1] = pythonPath;
-        command[2] = imageFilePath;
+        command[2] = imagePath;
 
         String result = execPython(command);
 
-        System.out.println("==============여기에 알려줘라라ㅏㅏ============");
-        System.out.println(result);
+        // 이미지 파일 이름 추출
+        String imageName = extractFileNameFromUrl(imagePath);
 
-        return result;
+        // 이미지의 로컬 경로와 이름을 만듭니다.
+        String localImagePath = result.trim(); // 결과에서 불필요한 공백 제거
+        File imageFile = new File(localImagePath);
 
+        if (!imageFile.exists()) {
+            throw new FileNotFoundException("이미지 파일이 존재하지 않습니다.");
+        }
+
+        // S3에 업로드할 파일 이름
+        String s3FileName = "processed_" + imageName;
+
+        // 이미지 파일 업로드
+        String processedImagePath = saveProcessedImageToS3(imageFile, s3FileName);
+
+        return processedImagePath;
     }
 
     public String execPython(String[] command) throws IOException {
@@ -120,9 +134,35 @@ public class ImageService {
         PumpStreamHandler pumpStreamHandler = new PumpStreamHandler(outputStream);
         DefaultExecutor executor = new DefaultExecutor();
         executor.setStreamHandler(pumpStreamHandler);
-        int result = executor.execute(commandLine);
+        executor.execute(commandLine);
 
         return outputStream.toString();
     }
 
+    public String saveProcessedImageToS3(File imageFile, String s3FileName) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(imageFile);
+        byte[] imageData = fileInputStream.readAllBytes();
+        fileInputStream.close();
+
+        ObjectMetadata objectMetaData = new ObjectMetadata();
+        objectMetaData.setContentType("image/png"); // 이미지 타입에 맞게 변경
+        objectMetaData.setContentLength(imageData.length);
+
+        try {
+            // S3에 이미지 업로드
+            amazonS3Client.putObject(
+                    new PutObjectRequest(S3Bucket, s3FileName, new ByteArrayInputStream(imageData), objectMetaData)
+                            .withCannedAcl(CannedAccessControlList.PublicRead)
+            );
+        } catch (AmazonClientException e) {
+            throw new RuntimeException("S3에 이미지를 업로드하는데 실패했습니다.", e);
+        }
+
+        String processedImagePath = amazonS3Client.getUrl(S3Bucket, s3FileName).toString();
+        if (processedImagePath == null) {
+            throw new IllegalArgumentException("이미지 경로를 가져오지 못하였습니다.");
+        }
+
+        return processedImagePath;
+    }
 }
