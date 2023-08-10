@@ -115,6 +115,8 @@ class Streaming extends Component {
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = [...this.state.subscribers];
           subscribers.push(subscriber);
+          console.log("test-subscribers")
+          console.log(subscribers)
 
           this.setState({
             subscribers: subscribers,
@@ -136,10 +138,6 @@ class Streaming extends Component {
             .connect(token, { clientData: this.state.myUserName })
             //토큰을 잘 받아와서 세션에 연결하는 과정
             .then(async () => {
-              if (!isStreamer) {
-                console.log("not Streamer! ");
-                return null;
-              }
 
               //비디오 스트림을 생성하는 메서드
               let publisher = await this.OV.initPublisherAsync(undefined, {
@@ -156,21 +154,30 @@ class Streaming extends Component {
               //내 세션에 스트림을 등록하는 메서드
               mySession.publish(publisher);
 
-              //사용가능한 오디오 및 비디오 디바이스 목록 가져옵니다.
-              var devices = await this.OV.getDevices();
-              //비디오 입력 디바이스만 필터링
-              var videoDevices = devices.filter(
-                (device) => device.kind === "videoinput"
-              );
-              //스트림의 현재 비디오 디바이스의 id를 가져온다.
-              var currentVideoDeviceId = publisher.stream
-                .getMediaStream()
-                .getVideoTracks()[0]
-                .getSettings().deviceId;
-              //스트림의 현재 비디오 디바이스를 가져온다.
-              var currentVideoDevice = videoDevices.find(
-                (device) => device.deviceId === currentVideoDeviceId
-              );
+              if (isStreamer) {
+                console.log("Is Streamer! ");
+
+                //사용가능한 오디오 및 비디오 디바이스 목록 가져옵니다.
+                var devices = await this.OV.getDevices();
+                //비디오 입력 디바이스만 필터링
+                var videoDevices = devices.filter(
+                  (device) => device.kind === "videoinput"
+                );
+                //스트림의 현재 비디오 디바이스의 id를 가져온다.
+                var currentVideoDeviceId = publisher.stream
+                  .getMediaStream()
+                  .getVideoTracks()[0]
+                  .getSettings().deviceId;
+                //스트림의 현재 비디오 디바이스를 가져온다.
+                var currentVideoDevice = videoDevices.find(
+                  (device) => device.deviceId === currentVideoDeviceId
+                );
+
+              }
+              else { 
+                var currentVideoDevice = undefined
+              }
+              
 
               //비디오 디바이스,메인스트림 매니저, 퍼블리셔 등록
               this.setState({
@@ -276,6 +283,8 @@ class Streaming extends Component {
   async toggleCamera(e) {
     console.log("Camera ON/Off");
 
+    console.log(this.subscribers)
+
     const cameraOn = this.state.cameraOn;
     this.setState({
       cameraOn: !cameraOn,
@@ -356,6 +365,9 @@ class Streaming extends Component {
             <div id="session-header" className="buttons">
               {/* <h1 id="session-title">{mySessionId}</h1> */}
               {isStreamer ? (
+                <div>
+
+
                 <input
                   className="btn btn-large btn-danger"
                   type="button"
@@ -363,7 +375,6 @@ class Streaming extends Component {
                   onClick={this.leaveSession}
                   value="Leave session"
                 />
-              ) : null}
               <button
                 className={cameraOn ? "activeButton" : "disableButton"}
                 onClick={this.toggleCamera}
@@ -374,6 +385,8 @@ class Streaming extends Component {
                 />{" "}
                 카메라 {cameraOn ? "끄기" : "켜기"}
               </button>
+                </div>
+              ) : null}
               <button
                 className={audioOn ? "activeButton" : "disableButton"}
                 onClick={this.toggleAudio}
@@ -398,12 +411,19 @@ class Streaming extends Component {
             {/* subscribers를 돌면서 뿌린다. */}
             {/* 클릭하면 handleMainVideoStream  */}
             {this.state.subscribers.map((sub, i) => (
+                            
               // handleMainVideoStream은 mainstream 바꾸는 메서드
-              <div key={sub.id} className="stream-container col-md-6 col-xs-6">
+              <div key={sub.id} className="stream-container">
                 <span>{sub.id}</span>
                 {/* 결국에는 화면이 띄워지는 것은 UserVideoComponent 이다. */}
 
-                <UserVideoComponent streamManager={sub} />
+                {/* 로그 출력 */}
+                {console.log("Logging something:", sub)}
+
+                {/* UserVideoComponent 렌더링 */}
+                {sub.stream.videoActive && <UserVideoComponent streamManager={sub} />}
+
+                
               </div>
             ))}
           </div>
