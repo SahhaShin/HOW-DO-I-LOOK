@@ -5,6 +5,10 @@ import React, { Component } from "react";
 import "./Streaming.css";
 import UserVideoComponent from "./UserVideoComponent";
 
+import {CheckToken} from "../../../hook/UserApi"
+
+const OpenvidoToken = "Basic T1BFTlZJRFVBUFA6SE9XRE9JTE9PSw=="
+
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "http://localhost:8081/";
 
@@ -468,11 +472,15 @@ class Streaming extends Component {
   }
 
   async createSession(sessionId) {
+    const token = await CheckToken();
     const response = await axios.post(
       APPLICATION_SERVER_URL + "api/sessions",
       { customSessionId: sessionId },
       {
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+        "Authorization": token 
+       },
       }
     );
     console.log(response.data);
@@ -480,11 +488,15 @@ class Streaming extends Component {
   }
 
   async createToken(sessionId) {
+    const token = await CheckToken();
     const response = await axios.post(
       APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
       {},
       {
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+        "Authorization": token 
+       },
       }
     );
     return response.data; // The token
