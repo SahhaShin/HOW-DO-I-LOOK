@@ -23,8 +23,6 @@ const MypageSlot = (props) => {
     let state_feed = useSelector((state:any)=>state.mypage);
     let dispatch = useDispatch();
 
-    // hover 시 상세보기 오픈
-    let [openMenu, setOpenMenu] = useState<boolean>(false);
 
     //내 로그인 정보
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
@@ -42,17 +40,19 @@ const MypageSlot = (props) => {
     // 2) 특정 피드 번호로 셋팅해야 한다.
     function detailFeed(){
         // 내 좋아요 기록
+        dispatch(changeDetailFeedId(props.feedInfo.feedId));
         dispatch(action.getFeedLikeOnMe({userId:props.feedInfo.userId, feedId:props.feedId}));
         dispatch(action.getFeedTotalList({size:10, page:0}));
+        dispatch(action.getComment(props.feedInfo.feedId));
+
     }
 
     return(
-        <div className={`${mypageFeedSlotStyle.feedSlot}`} onMouseOver={()=>setOpenMenu(true)} onMouseOut={()=>setOpenMenu(false)}>
+        <div className={`${mypageFeedSlotStyle.feedSlot}`}>
             <StyledSlider {...settings} className={`${mypageFeedSlotStyle.onefeed}`}>
                 {   props.feedInfo.photoResponseDtoList.map((onePicture)=>{
-                  console.log(`하 하 하 ${props.feedInfo.photoResponseDtoList[0].link}`)
                     return(
-                        <div onClick={()=>{dispatch(changeDetailModalOpen(true));}} className={`${mypageFeedSlotStyle.slide}`}>
+                        <div onClick={()=>{dispatch(changeDetailModalOpen(true));detailFeed()}} className={`${mypageFeedSlotStyle.slide}`}>
                             <img src={onePicture.link}/>
                         </div>
                     );
@@ -60,12 +60,6 @@ const MypageSlot = (props) => {
 
                 }
             </StyledSlider>
-
-            {openMenu?
-            <div>
-                {/* <div className={`${mypageFeedSlotStyle.bgColor}`}></div> */}
-                {/* <button className={`${mypageFeedSlotStyle.btn}`} onClick={()=>{dispatch(changeDetailModalOpen(true));detailFeed()}}>상세보기</button> */}
-            </div>:null}
         </div>
     );
 }

@@ -116,7 +116,7 @@ const initialState: Mypage = {
   menuMode: 1,
   mypageMode: 1,
   followMode: 2,
-  feedReadMode:1,
+  feedReadMode:0,
   manageType: 1,
   followModalOpen: false,
 
@@ -789,16 +789,14 @@ const MypageSlice = createSlice({
     });
 
     builder.addCase(
-      action_mypage.getLikeFeedList.fulfilled,
-      (state, action) => {
+      action_mypage.getLikeFeedList.fulfilled,(state, action) => {
         state.likeFeedList = action.payload;
         console.log(state.likeFeedList);
       }
-
     );
 
     builder.addCase(action_mypage.getLikeScore.fulfilled, (state, action) => {
-      state.likeScore = action.payload.content;
+      state.likeScore = action.payload;
     });
 
     builder.addCase(

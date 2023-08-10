@@ -27,8 +27,6 @@ const MypageFeed = () => {
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
 
-    //피드 리스트
-    let [feedList, setFeedList] = useState<number[]|null>([1,2,3,4,5,6]); 
 
     //로그인 유저
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
@@ -54,7 +52,16 @@ const MypageFeed = () => {
             {/* 피드 리스트 */}
             <div className={`${mypageFeedStyle.feeds}`}>
                 {
+                    state.feedReadMode===0?
                     state.feedList?.content.map((oneFeed)=>{
+                        return(
+                            <div>
+                                <MyFeedSlot feedInfo={oneFeed}/>
+                            </div>
+
+                        );
+                    }):
+                    state.likeFeedList?.content.map((oneFeed)=>{
                         return(
                             <div>
                                 <MyFeedSlot feedInfo={oneFeed}/>

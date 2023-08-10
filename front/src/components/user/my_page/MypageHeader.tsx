@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 //css
 import mypageHeaderStyle from "./MypageHeader.module.css";
@@ -91,6 +91,26 @@ const MypageHeader = () => {
     });
   };
 
+  // 프로필 이미지 수정 로직
+  const [Image, setImage] = useState(loginUser.profileImg)
+  const [File, setFile] = useState(loginUser.profileImg)
+  const fileInput = useRef(null)
+
+  //프로필 이미지 수정
+  const onChange = (e) => {
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setImage(state.targetUser.profileImg);
+    }
+  };
+
+
   // 팔로우
   useEffect(
     () => {
@@ -168,6 +188,8 @@ const MypageHeader = () => {
     [state.blackListUsers, state.myFollowingUsers]
   );
 
+  
+
   // if (state.blackListUsers.length === 0) {
   //   return <div>Loading...</div>;
   // }
@@ -178,10 +200,13 @@ const MypageHeader = () => {
       <div className={`${mypageHeaderStyle.title}`}>MYPAGE</div>
 
       {/* 프로필 사진 & 뱃지 사진 & 닉네임 */}
+  
       <div className={`${mypageHeaderStyle.userInfo}`}>
         <div>
           <div className={`${mypageHeaderStyle.profile}`}>
-            <img src={state.targetUser.profileImg} />
+            <img src={Image} onClick={()=>{fileInput.current.click()}} />
+            <input type='file' style={{display:'none'}} accept='image/jpg,image/png,image/jpeg' name='profile_img'
+              onChange={(e)=>onChange(e)} ref={fileInput}/>
           </div>
           <div className={`${mypageHeaderStyle.profile_badge}`}>
             <img src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} />
