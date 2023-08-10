@@ -297,11 +297,11 @@ class Streaming extends Component {
 
     console.log(this.subscribers)
 
-    const newCameraOn = !this.state.cameraOn;
+    const newCameraOn = !this.state.cameraOn; // 카메라 토글
     const newPublisher = this.state.publisher;
 
     if (newPublisher) {
-      newPublisher.publishVideo(newCameraOn); // 카메라 토글
+      newPublisher.publishVideo(newCameraOn); 
     }
     this.setState({
 
@@ -312,21 +312,16 @@ class Streaming extends Component {
   //오디오(마이크) 끄기/켜기
   async toggleAudio(e) {
     console.log("Audio ON/Off");
-    const audioOn = this.state.audioOn;
+    const newAudioOn = !this.state.audioOn; //마이크토글
 
-     console.log("Camera ON/Off");
-
-    console.log(this.subscribers)
-
-    const newCameraOn = !this.state.cameraOn;
     const newPublisher = this.state.publisher;
 
     if (newPublisher) {
-      newPublisher.publishVideo(newCameraOn); // 카메라 토글
+      newPublisher.publishAudio(newAudioOn); // 
     }
     this.setState({
       
-      cameraOn: newCameraOn,
+      audioOn: newAudioOn,
     });
   }
 
