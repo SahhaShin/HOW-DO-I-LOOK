@@ -47,8 +47,6 @@ export const action_ranking = {
     async type => {
       const token = await CheckToken();
 
-      console.log(type);
-
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER}/api/ranking/list/${type}`,
         {
@@ -58,8 +56,6 @@ export const action_ranking = {
         }
       );
 
-      console.log(response.data);
-
       return response.data;
     }
   ),
@@ -68,8 +64,6 @@ export const action_ranking = {
     `RankingSlice/getPartRankingList`,
     async ({ type, page, limit }) => {
       try {
-        console.log(page);
-        console.log(limit);
         const token = await CheckToken();
 
         const response = await axios.get(
@@ -128,7 +122,6 @@ const RankingSlice = createSlice({
   reducers: {
     changeRankMode(state, action) {
       state.rankMode = action.payload;
-      console.log(state.rankMode);
     }
   },
 
@@ -137,9 +130,6 @@ const RankingSlice = createSlice({
       action_ranking.getRankingList.fulfilled,
       (state, action) => {
         state.rankingList = action.payload;
-
-        console.log(action.payload);
-        console.log(state.rankingList);
       }
     );
 

@@ -5,8 +5,8 @@ import followSlotStyle from './FollowSlot.module.css';
 import { useSelector, useDispatch } from "react-redux"; 
 import {action_follow} from "../../store/FollowSlice";
 
-const FollwSlot = () => {
-    
+const FollowSlot = (props) => {
+
     const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
 
     return(
@@ -15,7 +15,7 @@ const FollwSlot = () => {
                 {/* 왼쪽 : 프로필 사진 */}
                 <div className={`${followSlotStyle.profile}`}>
                     <div className={`${followSlotStyle.profileCircle_G}`}>
-                        <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
+                        <img src={props.one.profileImg}></img>
                     </div>
                     
                 </div>
@@ -23,7 +23,7 @@ const FollwSlot = () => {
                 <div className={`${followSlotStyle.content}`}>
                     {/* 닉네임*/}
                     <div>
-                        <p>User3</p>
+                        <p>{props.one.nickname}</p>
                     </div>
                 </div>
 
@@ -38,4 +38,4 @@ const FollwSlot = () => {
     );
 }
 
-export default FollwSlot;
+export default FollowSlot;
