@@ -46,7 +46,7 @@ const Login: React.FC = () => {
     // socialLogin(brand);
 
     const ApiUrl = "http://localhost:8081/oauth2/authorization/";
-    // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"
+    // window.location.href = "http://localhost:8081/login/oauth2/authorization/kakao"
     window.location.href = ApiUrl + brand;
   };
 

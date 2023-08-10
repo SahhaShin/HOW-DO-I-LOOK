@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //css
 import mypageFeedStyle from "./MypageFeed.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changeFollowModalOpen, changeFollowMode, changeMypageMode} from "../../../store/MypageSlice";
+import {action_mypage,changeFollowModalOpen, changeFollowMode, changeMypageMode} from "../../../store/MypageSlice";
 
 //컴포넌트
 import MypageFeedMenu from "./MypageFeedMenu";
@@ -28,6 +28,12 @@ const MypageFeed = () => {
     //피드 리스트
     let [feedList, setFeedList] = useState<number[]|null>([1,2,3,4,5,6]); 
 
+    //로그인 유저
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+
+    useEffect(()=>{
+        dispatch(action_mypage.getFeedList(loginUser.id));
+    },[])
 
     return(
         <div className={`${mypageFeedStyle.total}`}>
@@ -42,10 +48,10 @@ const MypageFeed = () => {
             {/* 피드 리스트 */}
             <div className={`${mypageFeedStyle.feeds}`}>
                 {
-                    feedList?.map((one)=>{
+                    state.feedList?.content.map((oneFeed)=>{
                         return(
                             <div>
-                                <MyFeedSlot/>
+                                <MyFeedSlot feedInfo={oneFeed}/>
                             </div>
 
                         );

@@ -4,13 +4,21 @@ import axios from "axios";
 // alert창
 import Swal from "sweetalert2";
 
+import {CheckToken} from "../hook/UserApi"
+
 // axios
 export const action = {
 
     //채팅 리스트 불러오기 O
-    getChatList : createAsyncThunk("ChatSlice/getChatList", async(userId, thunkAPI)=>{
+    getChatList : createAsyncThunk("ChatSlice/getChatList", async({userId, page}, thunkAPI)=>{
         try{
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/soloChatRoom/${userId}`);
+            const token = await CheckToken();
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/soloChatRoom/${userId}?page=${page}`,{
+                headers: {
+                  "Authorization" : token
+                }
+                
+              });
             return response.data;
         } catch (e) {
             console.log(e);
@@ -22,8 +30,13 @@ export const action = {
     //파라미터 명은 dispatch 보내는 이름과 똑같아야 한다.
     enterChatRoom : createAsyncThunk("ChatSlice/enterChatRoom", async({myId, otherId}:chatRoomParticipant, thunkAPI)=>{
         try{
-            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/soloChatRoom`,
-                {userA:myId, userB:otherId}
+            const token = await CheckToken();
+            const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/soloChatRoom`,{userA:myId, userB:otherId},{
+                headers: {
+                  "Authorization" : token
+                }
+                
+              }
             );
 
             return response.data;
@@ -32,6 +45,27 @@ export const action = {
             throw e;
         }
     }), 
+
+    // id로 유저 닉네임 알아내기
+
+    searchUser : createAsyncThunk("ChatSlice/searchUser", async(id, thunkAPI)=>{
+        try{
+            const token = await CheckToken();
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/${id}`,{
+                headers: {
+                  "Authorization" : token
+                }
+                
+              }
+            );
+
+            return response.data;
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }), 
+
 
 }
 
@@ -46,17 +80,11 @@ interface getChatRoomList{
 
 //방에 들어가면 그 방에 있던 채팅 정보와 상대방 정보가 보임
 interface enterRoom{
-    chatContext: [
-        {
-            chatRoomId: number,
-            chatId: number|null,
-            userNickName: string,
-            userProfile: string|null,
-            createTime: string,
-            content: string
-        }
-    ],
-    chatRoomCode: string
+    "chatRoomId": number,
+    "userNickName": string,
+    "userProfile": string|null,
+    "time": string,
+    "content": string
 }
 
 interface chatRoomParticipant{
@@ -69,8 +97,8 @@ interface chatRoomParticipant{
 interface chat{
     chatList : getChatRoomList[],
     chatHistory : enterRoom|null,
-    chatHistoryTime : string|null,
-    chatHistoryDate : string|null,
+    otherNickname: string,
+    page:number,
 }
 
 
@@ -78,6 +106,8 @@ interface chat{
 const initialState:chat = {
     chatList : [],
     chatHistory : null,
+    otherNickname: "",
+    page:0,
 }
 
 
@@ -87,21 +117,33 @@ const ChatSlice = createSlice({
     reducers:{
 
         addChatHistory(state, action){
-            state.chatHistory?.chatContext.push(action.payload);
-        }
+            state.chatHistory?.push(action.payload);
+        },
+        
+        changePage(state, action) {
+            state.page = action.payload;
+        },
+
 
     },
     extraReducers:(builder) => {
         builder.addCase(action.getChatList.fulfilled, (state, action) => {
             state.chatList = action.payload;
+            console.log(state.chatList);
         })
 
         builder.addCase(action.enterChatRoom.fulfilled, (state, action) => {
-            state.chatHistory = action.payload;
+            state.chatHistory = action.payload.chatContext;
         })
 
-    }
+        builder.addCase(action.searchUser.fulfilled, (state, action) => {
+            state.otherNickname = action.payload.nickname;
+            console.log(state.otherNickname);
+        })
+
+    },
+    
 });
 
-export let {addChatHistory} = ChatSlice.actions;
+export let {changePage,addChatHistory} = ChatSlice.actions;
 export default ChatSlice.reducer;

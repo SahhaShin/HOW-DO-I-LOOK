@@ -84,7 +84,7 @@ const Login: React.FC = () => {
             <input
               type="name"
               id="name"
-              placeholder="이름을을 입력해주세요"
+              placeholder="이름을 입력해주세요"
               className={`${loginStyle.input}`}
               onChange={(e) => setname(e.target.value)}
             />
