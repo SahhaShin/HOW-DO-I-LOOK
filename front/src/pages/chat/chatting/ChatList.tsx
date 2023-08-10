@@ -17,7 +17,7 @@ import FollowSlot from "../../../components/util/FollowSlot";
 import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
-
+import ChatFollow from "../../../components/chat/chatting/ChatFollow"
 
 const ChatList = () => {
 
@@ -87,17 +87,7 @@ const ChatList = () => {
                         
                     </div>
 
-                    <div className={`${chatStyle.menuArea}`}>
-                        {/* floating menu start */}
-                        <div className={`${chatStyle.followArea}`}>
-                            <div className={`${chatStyle.followAreaTitle}`}>Following</div>
-                            <FollowSlot/>
-                            <FollowSlot/>
-                            <FollowSlot/>
-                            <FollowSlot/>
-                            <FollowSlot/>
-                        </div>
-                    </div>
+                    <ChatFollow/>
                 </div>
 
                 <div className={`${chatStyle.footer}`}><Footer/></div>

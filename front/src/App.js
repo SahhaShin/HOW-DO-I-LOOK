@@ -15,7 +15,7 @@ import ChatRoom from "./pages/chat/chatting/ChatRoom";
 import Feed from "./pages/sns/feed/Feed";
 import Mypage from "./pages/user/my_page/Mypage";
 import Live from "./pages/streaming/live/Live";
-import Streaming from "./components/streaming/live/App";
+import Streaming from "./components/streaming/live/Streaming";
 
 
 import Login from "./pages/user/login/Login";

@@ -100,9 +100,9 @@ const FeedSlot = () => {
                             <div className={`${feedSlotStyle.image}`}>
                                 <StyledSlider {...settings}>
                                     {
-                                        oneFeed.photoResponseDtoList?.map((onePhoto)=>{
+                                        oneFeed.photoResponseDtoList?.map((onePhoto, idx)=>{
                                             return(
-                                                <div className={`${feedSlotStyle.slide}`}>
+                                                <div key={idx} className={`${feedSlotStyle.slide}`}>
                                                     <img src={onePhoto.link}/>
                                                 </div>
                                             );
@@ -119,11 +119,11 @@ const FeedSlot = () => {
                             {/* hashtag */}
                             <div className={`${feedSlotStyle.hashtag}`}>
                                 {
-                                    oneFeed.photoResponseDtoList?.map((dtoList) => {
+                                    oneFeed.photoResponseDtoList?.map((dtoList, idx) => {
                                         return (
-                                            <div className={`${feedSlotStyle.onehash}`}>
-                                                {dtoList.hashtagList?.map((oneHash) => (
-                                                    <button>#{oneHash}</button>
+                                            <div key={idx} className={`${feedSlotStyle.onehash}`}>
+                                                {dtoList.hashtagList?.map((oneHash, idx2) => (
+                                                    <button key={idx2}>#{oneHash}</button>
                                                 ))}
                                             </div>
                                         );

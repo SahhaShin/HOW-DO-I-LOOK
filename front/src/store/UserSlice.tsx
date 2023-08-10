@@ -163,7 +163,6 @@ export const action_user = {
   Logout: createAsyncThunk(`UserSlice/Logout`, async (id: string, thunkAPI) => {
     
     
-    
     // let Token = "Bearer " + getCookie("Authorization");
     const token = await CheckToken();
 

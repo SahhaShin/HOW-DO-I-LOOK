@@ -122,7 +122,6 @@ const MypageHeader = () => {
     () => {
       if (followingData.id === 0 || followingData.targetId === 0) return;
 
-      // dispatch(action_mypage.getUserById(followingData.followeeId));
       dispatch(action_mypage.follow(followingData));
     },
     [followingData]
