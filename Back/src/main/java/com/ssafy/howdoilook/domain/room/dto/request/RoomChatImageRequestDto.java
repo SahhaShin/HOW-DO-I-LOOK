@@ -6,19 +6,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoomChatImageRequestDto {
-    private ArrayList<String>imageURL;
-    private String nickName;
+    ArrayList<ImageChatDto> image;
+    private String token;
     private long roomId;
 
     @Builder
-    public RoomChatImageRequestDto(ArrayList<String> imageURL, String nickName, long roomId) {
-        this.imageURL = imageURL;
-        this.nickName = nickName;
+    public RoomChatImageRequestDto(ArrayList imageURL, String token, long roomId) {
+        this.image = imageURL;
+        this.token = token;
         this.roomId = roomId;
     }
 }
