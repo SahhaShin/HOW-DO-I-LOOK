@@ -28,11 +28,9 @@ const FeedFollow = () => {
             <div className={`${feedStyle.followArea}`}>
                 <div className={`${feedStyle.followAreaTitle}`}>Following</div>
                 
-                    {state_follow.myFollowingList?.map((one, idx) => {
-                        <div key={idx}>
-                            <FollowSlot/>
-                        </div>                                
-                    })}
+                    {state_follow.myFollowingUsers?.map((one, idx) => (
+                        <FollowSlot one={one} key={idx}/>  
+                    ))}
             </div>
         </div>
     );

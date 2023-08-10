@@ -9,7 +9,6 @@ import { action_follow } from '../../../store/FollowSlice';
 
 // 컴포넌트
 import FeedSlot from '../../../components/sns/feed/FeedSlot';
-import FollowSlot from "../../../components/util/FollowSlot";
 import IntroArea from '../../../components/sns/feed/IntroArea';
 import FeedDetail from '../../../components/sns/feed/FeedDetail';
 import FeedCreate from '../../../components/sns/feed/FeedCreate';
