@@ -13,6 +13,7 @@ public class RoomChatResponseDto {
     private String nickName;
     private String time;
 
+
     @Builder
     public RoomChatResponseDto(long roomId, String chatContent, String nickName, String time) {
         this.roomId = roomId;

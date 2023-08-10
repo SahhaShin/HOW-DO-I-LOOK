@@ -2,8 +2,7 @@ package com.ssafy.howdoilook.domain.room.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.howdoilook.domain.room.dto.request.RoomChatImageRequestDto;
-import com.ssafy.howdoilook.domain.room.dto.request.RoomChatRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.ImageChatDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomChatImageResponseDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomChatResponseDto;
 import com.ssafy.howdoilook.domain.room.entity.ImageType;
@@ -23,7 +22,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class RoomChatMQService {
     private final RedisTemplate<String,String> redisTemplate;
-    private final RoomService roomService;
     private final RoomChatRepository roomChatRepository;
     private final RoomChatImageRepository roomChatImageRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -40,6 +38,7 @@ public class RoomChatMQService {
     }
 
     public void imageEnqueue(RoomChatImageResponseDto responseDto){
+        System.out.println("33333333333333333333");
         try{
             String chatContent = objectMapper.writeValueAsString(responseDto);
             redisTemplate.opsForList().leftPush(IMAGE_QUEUE_KEY, chatContent);
@@ -74,9 +73,11 @@ public class RoomChatMQService {
 
     @Scheduled(fixedRate = 100)
     public void processRoomChatMessageQueue(){
+
         RoomChatResponseDto chatMessage = chatDequeue();
 
         if(chatMessage != null){
+
             //몽고db에 저장
             roomChatRepository.save(
                     RoomChat.builder()
@@ -89,19 +90,20 @@ public class RoomChatMQService {
         }
     }
 
+    @Scheduled(fixedRate = 100)
     public void processRoomImageMessageQueue(){
         RoomChatImageResponseDto chatMessage = imageDequeue();
 
         if(chatMessage != null){
             //몽고db에 저장
-            for(String url : chatMessage.getImageURL()) {
+            for(ImageChatDto image : chatMessage.getImage()) {
                 roomChatImageRepository.save(
                         RoomChatImage.builder()
-                        .imageURL(url)
+                        .imageURL(image.getPhotoLink())
                         .time(LocalDateTime.parse(chatMessage.getTime()))
                         .nickName(chatMessage.getNickName())
                         .roomId(chatMessage.getRoomId())
-                        .type(ImageType.valueOf(chatMessage.getType()))
+                        .type(ImageType.valueOf(image.getType()))
                         .build()
                 );
             }

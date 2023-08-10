@@ -1,5 +1,8 @@
 package com.ssafy.howdoilook.domain.room.service;
 
+import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
+import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
+import com.ssafy.howdoilook.domain.feedPhoto.repository.FeedPhotoRepository;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.room.dto.ImageChatDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomAddRequestDto;
@@ -23,6 +26,7 @@ import com.ssafy.howdoilook.domain.roomUser.service.RoomUserService;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.handler.ImageException;
 import com.ssafy.howdoilook.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -38,6 +42,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,6 +55,8 @@ public class RoomService {
     private final RoomUserRepository roomUserRepository;
     private final RoomChatRepository roomChatRepository;
     private final RoomChatImageRepository roomChatImageRepository;
+    private final FeedPhotoRepository feedPhotoRepository;
+    private final ClothesRepository clothesRepository;
 
     private final JwtService jwtService;
     private final RoomUserService roomUserService;
@@ -57,25 +64,35 @@ public class RoomService {
     @Transactional
     public RoomChatImageResponseDto imageIntegrity(RoomChatImageRequestDto requestDto){
         LocalDateTime time = LocalDateTime.now();
+
         //닉네임 무결성 검증
-        String nickName = jwtService.extractNickName(requestDto.getToken()).toString();
-        
-        //링크 무결성 검증
-        
-        
+        String nickName = jwtService.extractNickName(requestDto.getToken()).get();
+        //이미지 링크 무결성 검증
+        for(ImageChatDto image : requestDto.getImage()) {
+            //링크 무결성 검증
+            if (image.getType() == "FEED") {
+                if (!feedPhotoRepository.existsByLink(image.getPhotoLink())) {
+                    throw new ImageException("스트리밍 채팅 잘못된 이미지 링크 제공");
+                }
+            } else if(image.getType() == "CLOTHES") {
+                if (!clothesRepository.existsByPhotoLink(image.getPhotoLink())){
+                    throw new ImageException("스트리밍 채팅 잘못된 이미지 링크 제공");
+                }
+            }
+        }
+
         return RoomChatImageResponseDto.builder()
                 .roomId(requestDto.getRoomId())
-                .type(requestDto.getType())
-                .imageURL(requestDto.getImageURL())
                 .time(time.toString())
                 .nickName(nickName)
+                .image(requestDto.getImage())
                 .build();
     }
     @Transactional
     public RoomChatResponseDto chatIntegrity(RoomChatRequestDto requestDto){
         LocalDateTime time = LocalDateTime.now();
         //닉네임 무결성 검증
-        String nickName = jwtService.extractNickName(requestDto.getToken()).toString();
+        String nickName = jwtService.extractNickName(requestDto.getToken()).get();
 
         return RoomChatResponseDto.builder()
                 .roomId(requestDto.getRoomId())

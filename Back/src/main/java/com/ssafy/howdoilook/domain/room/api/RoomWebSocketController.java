@@ -11,6 +11,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
+
 @Controller
 @RequiredArgsConstructor
 public class RoomWebSocketController {
@@ -21,7 +23,7 @@ public class RoomWebSocketController {
     @SendTo("/sub/roomChat/{roomCode}")
     public RoomChatResponseDto broadCastingChat(RoomChatRequestDto requestDto){
         RoomChatResponseDto responseDto = roomService.chatIntegrity(requestDto); // 데이터 무결성 검증
-
+        roomChatMQService.chatEnqueue(responseDto);
         return responseDto;
     }
 
@@ -29,7 +31,7 @@ public class RoomWebSocketController {
     @SendTo("/sub/roomChat/image/{roomCode}")
     public RoomChatImageResponseDto broadCastingImage(RoomChatImageRequestDto requestDto){
         RoomChatImageResponseDto responseDto = roomService.imageIntegrity(requestDto); // 데이터 무결성 검증
-
+        roomChatMQService.imageEnqueue(responseDto);
         return responseDto;
     }
 }
