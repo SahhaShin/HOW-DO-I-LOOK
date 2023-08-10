@@ -25,6 +25,9 @@ const Closet = () => {
     let state = useSelector((state:any)=>state.closet);
     let dispatch = useDispatch();
 
+    //로그인 유저 정보
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+
     // 페이지네이션, 옷 관리
     let clothesListLen = state.clothesTop?.length;
     const [limit, setLimit] = useState(10);
@@ -47,7 +50,7 @@ const Closet = () => {
     let selectType = {
         clothesType: state.clothesTypeEn,
         pageNum : 0,
-        userId:1,
+        userId:loginUser.id,
     }
 
 
@@ -56,7 +59,7 @@ const Closet = () => {
         
         dispatch(action.getClothesListByType({
             clothesType: "TOP",
-            userId:1,
+            userId:loginUser.id,
             pageNum : 0,
         }));
         
@@ -65,7 +68,7 @@ const Closet = () => {
        
         dispatch(action.getClothesListByType({
             clothesType: "BOTTOM",
-            userId:1,
+            userId:loginUser.id,
             pageNum : 0,
         }));
         
@@ -73,7 +76,7 @@ const Closet = () => {
         
         dispatch(action.getClothesListByType({
             clothesType: "SHOE",
-            userId:1,
+            userId:loginUser.id,
             pageNum : 0,
         }));
         
@@ -81,7 +84,7 @@ const Closet = () => {
  
         dispatch(action.getClothesListByType({
             clothesType: "ACCESSORY",
-            userId:1,
+            userId:loginUser.id,
             pageNum : 0,
         }));
         
@@ -89,11 +92,11 @@ const Closet = () => {
        
         dispatch(action.getClothesListByType({
             clothesType: "ALL",
-            userId:1,
+            userId:loginUser.id,
             pageNum : 0,
         }));
     
-    },[])
+    },[state.clothRegistOk])
 
 
     // 메뉴 클릭 시 마다 새롭게 옷을 받아옴
@@ -102,7 +105,7 @@ const Closet = () => {
             dispatch(action.getClothesListByType({
                 clothesType: "TOP",
                 pageNum : 0,
-                userId:1,
+                userId:loginUser.id,
             }));
         }
 
@@ -111,7 +114,7 @@ const Closet = () => {
             dispatch(action.getClothesListByType({
                 clothesType: "BOTTOM",
                 pageNum : 0,
-                userId:1,
+                userId:loginUser.id,
             }));
         }
 
@@ -119,7 +122,7 @@ const Closet = () => {
             dispatch(action.getClothesListByType({
                 clothesType: "SHOE",
                 pageNum : 0,
-                userId:1,
+                userId:loginUser.id,
             }));
         }
 
@@ -127,7 +130,7 @@ const Closet = () => {
             dispatch(action.getClothesListByType({
                 clothesType: "ACCESSORY",
                 pageNum : 0,
-                userId:1,
+                userId:loginUser.id,
             }));
         }
 
@@ -135,10 +138,12 @@ const Closet = () => {
             dispatch(action.getClothesListByType({
                 clothesType: "ALL",
                 pageNum : 0,
-                userId:1,
+                userId:loginUser.id,
             }));
         }
     },[state.clothesTypeEn])
+
+    
   
     return(
         <>
@@ -171,16 +176,16 @@ const Closet = () => {
                         {/* 옷장 */}
                         <div className={`${closetStyle.closetList}`}>
                             {
-                                state.clothesTypeKo==="상의" && state.clothesTop?.length!==0?state.clothesTop?.map((one, idx)=>
+                                state.clothesTypeKo==="상의" && state.clothesTop && state.clothesTop?.length!==0?state.clothesTop?.map((one, idx)=>
                                     <CLOSETSlot key={idx} one={one}/>
                                 ):
-                                (state.clothesTypeKo==="하의" && state.clothesBottom?.length!==0?state.clothesBottom?.map((one, idx)=>
+                                (state.clothesTypeKo==="하의" && state.clothesBottom && state.clothesBottom?.length!==0?state.clothesBottom?.map((one, idx)=>
                                     <CLOSETSlot key={idx} one={one}/>
-                                ):(state.clothesTypeKo==="신발" && state.clothesShoe?.length!==0?state.clothesShoe?.map((one, idx)=>
+                                ):(state.clothesTypeKo==="신발" && state.clothesShoe && state.clothesShoe?.length!==0?state.clothesShoe?.map((one, idx)=>
                                     <CLOSETSlot key={idx} one={one}/>
-                                ):(state.clothesTypeKo==="악세서리" && state.clothesShoe?.length!==0?state.clothesAccessory?.map((one, idx)=>
+                                ):(state.clothesTypeKo==="악세서리" && state.clothesAccessory && state.clothesAccessory?.length!==0?state.clothesAccessory?.map((one, idx)=>
                                     <CLOSETSlot key={idx} one={one}/>
-                                ):(state.clothesTypeKo==="전체" && state.clothesAll.length!==0?state.clothesAll?.map((one,idx)=>
+                                ):(state.clothesTypeKo==="전체" && state.clothesAll && state.clothesAll?.length!==0?state.clothesAll?.map((one,idx)=>
                                     <CLOSETSlot key={idx} one={one}/>
                                 ):<div className={`${closetStyle.noItem}`}>추가된 {state.clothesTypeKo} 이미지가 없습니다.</div>))))
 

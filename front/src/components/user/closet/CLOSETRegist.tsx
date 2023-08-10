@@ -14,7 +14,6 @@ const CLOSETRegist = () => {
     //redux 관리
     let state = useSelector((state:any)=>state.closet);
     let dispatch = useDispatch();
-
     
     ///////파일등록 관련 저장소///////
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -25,7 +24,6 @@ const CLOSETRegist = () => {
     const onUploadImage = useCallback((file: any) => {
 
         setImageFile(file);
-        console.log(file);
 
         if (!file) {
           return;
@@ -68,6 +66,7 @@ const CLOSETRegist = () => {
 
 
     //////유저 입력 정보///////
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
     //select 값이 변하면 선택된 값을 변경
     const handleSelect = (e: any) => {
@@ -95,7 +94,7 @@ const CLOSETRegist = () => {
     // 유저가 옷을 등록하려고 입력한 정보들
     const saveClothes = async() => {
         let clothesSaveRequestDto = {
-            userId:1,
+            userId:loginUser.id,
             type:selected,
             name:clothesName,
             brand:clothesBrand,
@@ -114,35 +113,34 @@ const CLOSETRegist = () => {
         
     }
 
+    const updateClothes = async() => {
+        let clothesUpdateDto = {
+            userId : loginUser.id,
+            type : selected,  
+            name : clothesName, 
+            brand : clothesBrand, 
+            info : specialContent,
+            clothesId : state.clothesId
+        }
+
+        dispatch(action.updateClothInfo(clothesUpdateDto));
+        
+    }
+
 
     // 등록, 수정, 읽기 모달창 //mode는 c(1) r(2) u(3)
     // 수정이나 읽기일 경우 정보와 이미지를 미리 띄워주는 것이 필요하다.
-    useEffect(()=>{
-        if(state.mode===2||state.mode===3){
-            dispatch(action.getClothInfo(state.clothesId));
-            
-            // 옷구분 초기 값 셋팅
-            if(state.clothInfo?.type==="TOP"){
-                setSelected("상의");
-            }else if(state.clothInfo?.type==="BOTTOM"){
-                setSelected("하의");
-            }else if(state.clothInfo?.type==="SHOE"){
-                setSelected("신발");
-            }else if(state.clothInfo?.type==="ACCESSORY"){
-                setSelected("악세서리");
-            }else if(state.clothInfo?.type==="ALL"){
-                setSelected("전체");
-            }
-            
-
-            //옷 이름 초기 값 셋팅
+    useEffect(() => {
+        if (state.mode === 2||state.mode === 3) {
             setClothesName(state.clothInfo?.name);
-            //브랜드명 초기 값 셋팅
             setClothesBrand(state.clothInfo?.brand);
-            //특이사항 초기 값 셋팅
             setSpecialContent(state.clothInfo?.info);
+
+            console.log(state.clothInfo?.name);
+            console.log(state.clothInfo?.brand);
+            console.log(state.clothInfo?.info);
         }
-    },[state.clothInfo, state.clothesId])
+    }, [state.mode, state.clothInfo]);
 
 
     return(
@@ -194,7 +192,8 @@ const CLOSETRegist = () => {
                         // 이 부분 value는 데이터 오는 거에 따라 달라지는 걸로 변경해야함
                         <div className={closetRegistStyle.line} style={{marginTop:"5%"}}>
                             <p>옷 구분 </p>
-                            <input style={{marginLeft:"2%"}} className={closetRegistStyle.input} value={selected} readOnly></input>
+                            {state.mode===1 || state.mode===3?<input style={{marginLeft:"2%"}} className={closetRegistStyle.input} value={selected}/>
+                            :<input style={{marginLeft:"2%"}} className={closetRegistStyle.input} value={selected} readOnly/>}
                         </div>}
 
 
@@ -234,7 +233,7 @@ const CLOSETRegist = () => {
 
                     {/* 옷 등록할 때 로딩바 필요 */}
                     {state.mode===1?<button onClick={()=>{saveClothes();dispatch(changeModalOpen(false))}}>업로드</button>: 
-                    (state.mode===2?null:<button onClick={()=>{dispatch(changeModalOpen(false))}}>수정</button>)
+                    (state.mode===2?null:<button onClick={()=>{updateClothes();dispatch(changeModalOpen(false))}}>수정</button>)
                     }
                 </div>
 
