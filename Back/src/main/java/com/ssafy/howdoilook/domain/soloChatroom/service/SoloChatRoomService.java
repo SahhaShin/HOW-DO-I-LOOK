@@ -76,6 +76,9 @@ public class SoloChatRoomService {
     //특정 유저가 진행했던 채팅방 리스트 반환
     @Transactional
     public List<ChatRoomDto> getUserChatRoom(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+
 
         List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUser(userId);
         List<ChatRoomDto> chatRoomListNext = new ArrayList<>();
@@ -85,7 +88,7 @@ public class SoloChatRoomService {
             SoloChat lastChat = chatRepository.findTopByRoomIdOrderByTimeDesc(chatRoom.getId());
             ChatRoomDto dto = ChatRoomDto.builder()
                     .id(chatRoom.getId())
-                    .userAId(userId)
+                    .userAId(user.getId())
                     .userBId((chatRoom.getUserA().getId() == userId) ? chatRoom.getUserB().getId() : chatRoom.getUserA().getId())
                     .chatroomCode(chatRoom.getRoomCode())
                     .anotherNickName((chatRoom.getUserA().getId() == userId) ? chatRoom.getUserB().getNickname() : chatRoom.getUserA().getNickname())
