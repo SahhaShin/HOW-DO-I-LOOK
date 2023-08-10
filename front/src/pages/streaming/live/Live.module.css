@@ -1,3 +1,5 @@
+
+
 .total{
     /* 크기 */
     width: 100%;
@@ -10,7 +12,8 @@
 
 .main{
     /* 크기 */
-    height: 580px;
+    min-height: 580px;
+    max-height: 580px;
     background-color: antiquewhite;
 
     /* 위치 */
@@ -26,8 +29,11 @@
 
 .video{
     /* 크기 */
-    width: 1080px;
-    height: 600px;
+    min-width: 750px;
+    max-width: 750px;
+    height:auto;
+    background-image: url("https://i.pinimg.com/originals/02/36/a0/0236a024603d7e39aadeb66e3f1a9421.png");
+    background-size: 780px 600px;
 
 }
 

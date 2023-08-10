@@ -7,7 +7,6 @@ import UserVideoComponent from "./UserVideoComponent";
 
 import {CheckToken} from "../../../hook/UserApi"
 
-const OpenvidoToken = "Basic T1BFTlZJRFVBUFA6SE9XRE9JTE9PSw=="
 
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : `${process.env.REACT_APP_OPENVIDU}`;
