@@ -558,8 +558,9 @@ export const action_mypage = {
         {
           headers: {
             Authorization: token
-          }
-        );
+          },
+        }
+      );
 
       console.log(response.data);
 
@@ -567,7 +568,7 @@ export const action_mypage = {
     } catch (e) {
       throw e;
     }
-  ),
+  }),
 
   // 보고있는 사람의 좋아요 점수 표시
   getLikeScore: createAsyncThunk(
@@ -611,8 +612,7 @@ export const action_mypage = {
       } catch (e) {
         throw e;
       }
-    }
-  }),
+    }),
 
   updateBadge : createAsyncThunk(`MypageSlice/updateBadge`, async ({id, badge}:BadgeReq) => {
     try {

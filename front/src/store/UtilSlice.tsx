@@ -6,7 +6,7 @@ import { createSlice } from "@reduxjs/toolkit";
 //loginYN : 로그인 여부에 따라 헤더가 로그인 혹은 내옷장 마이페이지 버튼이 뜬다.
 const initialState = {
   pageName: "Home",
-  menuItemNum : 1,
+  menuItemNum : -1,
   loginYN : true,
 };
 
