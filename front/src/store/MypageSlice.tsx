@@ -79,11 +79,19 @@ interface Badges {
   userId: number;
 }
 
+interface BadgeReq {
+  id: number;
+  badge: string;
+}
+
 interface Mypage {
   menuMode: number;
   mypageMode: number;
   followMode: number;
+  feedReadMode: number;
   followModalOpen: boolean;
+  badgeUpdateModalOpen : boolean;
+  
   followModalMode: number;
   myFollowerUsers: Followers[]; // 내 팔로워
   myFollowingUsers: Followers[]; // 내 팔로잉
@@ -110,12 +118,15 @@ interface Mypage {
 // mypageMode : 1(나 자신), 2(타인)
 // manageType : 1(비번 인증), 2(read), 3(update)
 // followModalMode : 1(팔로워), 2(팔로잉), 3(블랙리스트)
+// feedReadMode : 1(전체) 2(좋아요)
 const initialState: Mypage = {
   menuMode: 1,
   mypageMode: 1,
   followMode: 2,
+  feedReadMode:0,
   manageType: 1,
   followModalOpen: false,
+  badgeUpdateModalOpen : false,
 
   myFollowerUsers: [], // 내 팔로워
   myFollowingUsers: [], // 내 팔로잉
@@ -529,32 +540,32 @@ export const action_mypage = {
         }
       );
 
+      console.log(response.data);
+
       return response.data;
     } catch (e) {
       throw e;
     }
   }),
 
-  // 내가 좋아요 누른 피드 리스트
-  getLikeFeedList: createAsyncThunk(
-    `MypageSlice/getLikeFeedList`,
-    async (id) => {
-      try {
-        const token = await CheckToken();
+  // 내가 좋아요 누른 피드 리스트1
+  getLikeFeedList: createAsyncThunk(`MypageSlice/getLikeFeedList`, async id => {
+    try {
+      const token = await CheckToken();
 
-        const response = await axios.get(
-          `${process.env.REACT_APP_SERVER}/api/feed/liked/${id}`,
-          {
-            headers: {
-              Authorization: token,
-            },
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER}/api/feed/liked/${id}?page=0&size=10000`,
+        {
+          headers: {
+            Authorization: token
           }
         );
 
-        return response.data;
-      } catch (e) {
-        throw e;
-      }
+      console.log(response.data);
+
+      return response.data;
+    } catch (e) {
+      throw e;
     }
   ),
 
@@ -601,7 +612,28 @@ export const action_mypage = {
         throw e;
       }
     }
-  ),
+  }),
+
+  updateBadge : createAsyncThunk(`MypageSlice/updateBadge`, async ({id, badge}:BadgeReq) => {
+    try {
+
+      console.log(`id = ${id}, badge = ${badge}`);
+      const token = await CheckToken();
+
+      const response = await axios.put(
+        `${process.env.REACT_APP_SERVER}/api/user/update/${id}/${badge}`,
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      );
+
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  })
 };
 
 const MypageSlice = createSlice({
@@ -610,6 +642,9 @@ const MypageSlice = createSlice({
   reducers: {
     changeFollowModalOpen(state, action) {
       state.followModalOpen = action.payload;
+    },
+    changeBadgeUpdateModalOpen(state, action){
+      state.badgeUpdateModalOpen = action.payload;
     },
     // addFollowUsers(state, action){
     //     // 내가 아닌 다른 유저가 마이페이지에 들어왔을 때 follow 가능
@@ -643,6 +678,9 @@ const MypageSlice = createSlice({
     changeFollowModalMode(state, action) {
       state.followModalMode = action.payload;
     },
+    changeFeedReadMode(state, action){
+      state.feedReadMode = action.payload;
+    }
   },
 
   extraReducers: (builder) => {
@@ -784,12 +822,13 @@ const MypageSlice = createSlice({
 
     builder.addCase(action_mypage.getFeedList.fulfilled, (state, action) => {
       state.feedList = action.payload;
+      console.log(state.feedList);
     });
 
     builder.addCase(
-      action_mypage.getLikeFeedList.fulfilled,
-      (state, action) => {
+      action_mypage.getLikeFeedList.fulfilled,(state, action) => {
         state.likeFeedList = action.payload;
+        console.log(state.likeFeedList);
       }
     );
 
@@ -807,7 +846,18 @@ const MypageSlice = createSlice({
     builder.addCase(action_mypage.getBadgeList.fulfilled, (state, action) => {
       state.badgeList = action.payload;
     });
-  },
+
+    builder.addCase(action_mypage.updateBadge.fulfilled, (state, action) => {
+      //저절로 session에 등록되나? 
+
+      Swal.fire({
+        icon: 'success',
+        title: '교체 완료',
+        text: '뱃지가 교체되었습니다',
+        confirmButtonColor: '#4570F5',
+    })
+    });
+  }
 });
 
 export let {
@@ -819,6 +869,8 @@ export let {
   changeManageType,
   changeMenuMode,
   changeFollowModalMode,
+  changeFeedReadMode,
+  changeBadgeUpdateModalOpen
 } = MypageSlice.actions;
 
 export default MypageSlice.reducer;

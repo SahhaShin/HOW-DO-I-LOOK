@@ -138,9 +138,21 @@
   margin-right: 30px;
 }
 
-.first > img,
-.notFirst > img,
+.profileImg{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .profileImg > img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.first > img,
+.notFirst > img{
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -292,6 +304,10 @@
 
 .MyModernRank {
   color: #29323c;
+}
+.MyModernRank >div:nth-child(1){
+  background-color: lightgrey;
+  font-weight: 900;
 }
 
 .blackRank {

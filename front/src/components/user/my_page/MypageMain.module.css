@@ -102,18 +102,28 @@
 
 .badges{
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
 
+}
+
+
+.LovelyBadge,
+.NaturalBadge,
+.ModernBadge,
+.SexyBadge{
+    width: 300px;
+    height: 50%;
 }
 
 .LovelyBadge>img,
 .NaturalBadge>img,
 .ModernBadge>img,
 .SexyBadge>img{
-    width: 50%;
-    height: 50%;
+    width: 30%;
+    height: 30%;
 }
+
 
 .LovelyBadge>div,
 .NaturalBadge>div,

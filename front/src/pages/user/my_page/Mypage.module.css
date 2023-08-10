@@ -71,3 +71,11 @@
     margin-left: 20%;
     z-index: 10;
 }
+
+/* 뱃지 모달 */
+.BadgeModal{
+    position: fixed;
+    margin-top: 5%;
+    margin-left: 20%;
+    z-index: 10;
+}

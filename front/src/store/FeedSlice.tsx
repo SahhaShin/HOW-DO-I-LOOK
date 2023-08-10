@@ -207,9 +207,9 @@ export const action = {
     searchHash : createAsyncThunk("FeedSlice/searchHash", async({hashtag, size, page}:search, thunkAPI)=>{
         try{
             const token = await CheckToken();
-            console.log(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}&size=${size}&page=${page}`);
+            console.log(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}`);
 
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}&size=${size}&page=${page}`,{
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}`,{
                 headers:{"Authorization":token}
             });
 
