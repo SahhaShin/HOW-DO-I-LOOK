@@ -46,27 +46,6 @@ export const action = {
         }
     }), 
 
-    // id로 유저 닉네임 알아내기
-
-    searchUser : createAsyncThunk("ChatSlice/searchUser", async(id, thunkAPI)=>{
-        try{
-            const token = await CheckToken();
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/${id}`,{
-                headers: {
-                  "Authorization" : token
-                }
-                
-              }
-            );
-
-            return response.data;
-        } catch (e) {
-            console.log(e);
-            throw e;
-        }
-    }), 
-
-
 }
 
 
@@ -134,11 +113,6 @@ const ChatSlice = createSlice({
 
         builder.addCase(action.enterChatRoom.fulfilled, (state, action) => {
             state.chatHistory = action.payload.chatContext;
-        })
-
-        builder.addCase(action.searchUser.fulfilled, (state, action) => {
-            state.otherNickname = action.payload.nickname;
-            console.log(state.otherNickname);
         })
 
     },

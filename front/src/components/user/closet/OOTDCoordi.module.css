@@ -20,7 +20,7 @@
 .ootd{
   /* 위치 */
   margin-top: 15%;
-  margin-left: 1%;
+  margin-left: 10%;
 
   /* 크기 */
   width: 120px;
@@ -45,11 +45,33 @@
   height:30%;
 }
 
-.slide > img{
+.slideT > img, .slideB > img, .slideS > img, .slideA > img{
   width: 90%;
   height: 100%;
   margin: auto;
+  object-fit: cover;
 }
+
+.slideT > img{
+  width: 100%;
+  
+}
+.slideB > img{
+  width: 100%;
+}
+.slideS > img{
+  width: 70%;
+}
+.slideA1 > img{
+  width: 80px;
+}
+.slideA2 > img{
+  width: 110px;
+}
+.slideA3 > img{
+  width: 80px;
+}
+
 
 /* 이미지가 없을 때 */
 .slide > .noImgTop{
