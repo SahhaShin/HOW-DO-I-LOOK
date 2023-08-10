@@ -5,7 +5,7 @@ import mypageStyle from "./Mypage.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action_mypage, changeFollowModalOpen} from "../../../store/MypageSlice";
+import {action_mypage, changeBadgeUpdateModalOpen, changeFollowModalOpen} from "../../../store/MypageSlice";
 import {changeDetailModalOpen} from "../../../store/FeedSlice";
 
 import {useParams} from 'react-router-dom'
@@ -20,6 +20,7 @@ import FeedDetail from '../../../components/sns/feed/FeedDetail';
 import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
+import MypageBadgeModal from '../../../components/user/my_page/MypageBadgeModal';
 
 
 const Mypage = () => {
@@ -42,6 +43,11 @@ const Mypage = () => {
             {
                 // 피드 상세보기 모달
                 state_feed.detailModalOpen?<div className={`${mypageStyle.detailModal}`}><FeedDetail/></div>:null
+            }
+
+            {
+                // 뱃지 교체 모달
+                state.badgeUpdateModalOpen===true?<div className={`${mypageStyle.BadgeModal}`}><MypageBadgeModal/></div>:null
             }
 
             <div className={`${mypageStyle.total}`}>
@@ -77,7 +83,7 @@ const Mypage = () => {
             </div>
 
             {/* 피드블러 */}
-            <div onClick={async()=>{dispatch(changeDetailModalOpen(false))}} style={state_feed.detailModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
+            <div onClick={async()=>{dispatch(changeDetailModalOpen(false)); dispatch(changeBadgeUpdateModalOpen(false))}} style={state_feed.detailModalOpen||state.badgeUpdateModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
         </>
     );
 }

@@ -79,12 +79,19 @@ interface Badges {
   userId: number;
 }
 
+interface BadgeReq {
+  id: number;
+  badge: string;
+}
+
 interface Mypage {
   menuMode: number;
   mypageMode: number;
   followMode: number;
   feedReadMode: number;
   followModalOpen: boolean;
+  badgeUpdateModalOpen : boolean;
+  
   followModalMode: number;
   myFollowerUsers: Followers[]; // 내 팔로워
   myFollowingUsers: Followers[]; // 내 팔로잉
@@ -119,6 +126,7 @@ const initialState: Mypage = {
   feedReadMode:0,
   manageType: 1,
   followModalOpen: false,
+  badgeUpdateModalOpen : false,
 
   myFollowerUsers: [], // 내 팔로워
   myFollowingUsers: [], // 내 팔로잉
@@ -599,6 +607,27 @@ export const action_mypage = {
     } catch (e) {
       throw e;
     }
+  }),
+
+  updateBadge : createAsyncThunk(`MypageSlice/updateBadge`, async ({id, badge}:BadgeReq) => {
+    try {
+
+      console.log(`id = ${id}, badge = ${badge}`);
+      const token = await CheckToken();
+
+      const response = await axios.put(
+        `${process.env.REACT_APP_SERVER}/api/user/update/${id}/${badge}`,
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      );
+
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
   })
 };
 
@@ -608,6 +637,9 @@ const MypageSlice = createSlice({
   reducers: {
     changeFollowModalOpen(state, action) {
       state.followModalOpen = action.payload;
+    },
+    changeBadgeUpdateModalOpen(state, action){
+      state.badgeUpdateModalOpen = action.payload;
     },
     // addFollowUsers(state, action){
     //     // 내가 아닌 다른 유저가 마이페이지에 들어왔을 때 follow 가능
@@ -809,6 +841,17 @@ const MypageSlice = createSlice({
     builder.addCase(action_mypage.getBadgeList.fulfilled, (state, action) => {
       state.badgeList = action.payload;
     });
+
+    builder.addCase(action_mypage.updateBadge.fulfilled, (state, action) => {
+      //저절로 session에 등록되나? 
+
+      Swal.fire({
+        icon: 'success',
+        title: '교체 완료',
+        text: '뱃지가 교체되었습니다',
+        confirmButtonColor: '#4570F5',
+    })
+    });
   }
 });
 
@@ -821,7 +864,8 @@ export let {
   changeManageType,
   changeMenuMode,
   changeFollowModalMode,
-  changeFeedReadMode
+  changeFeedReadMode,
+  changeBadgeUpdateModalOpen
 } = MypageSlice.actions;
 
 export default MypageSlice.reducer;
