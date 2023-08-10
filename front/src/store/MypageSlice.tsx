@@ -104,10 +104,6 @@ interface Mypage {
   badgeList: Badges[];
 }
 
-interface FollowerListInterface {
-  loginUserId: number;
-}
-
 // 초기화
 // menuMode : 1(main), 2(feed), 3(내정보)
 // followMode : 1(팔로워), 2(팔로잉), 3(블랙리스트)

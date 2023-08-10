@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import followSlotStyle from './FollowSlot.module.css';
 
-const FollwSlot = () => {
+//redux
+import { useSelector, useDispatch } from "react-redux"; 
+import {action_follow} from "../../store/FollowSlice";
 
+const FollwSlot = () => {
+    
+    const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
 
     return(
         <div>

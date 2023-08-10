@@ -5,6 +5,8 @@ import feedStyle from "./Feed.module.css";
 import { useSelector, useDispatch } from "react-redux"; 
 import {action, calTotalFeedLikes, changeModifyModalOpen,changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
+import { action_follow } from '../../../store/FollowSlice';
+
 // 컴포넌트
 import FeedSlot from '../../../components/sns/feed/FeedSlot';
 import FollowSlot from "../../../components/util/FollowSlot";
@@ -16,11 +18,13 @@ import Header from '../../../components/util/Header';
 import Footer from '../../../components/util/Footer';
 import Menu from '../../../components/util/Menu';
 import FeedModify from "../../../components/sns/feed/FeedModify";
+import FeedFollow from '../../../components/sns/feed/FeedFollow';
 
 const Feed = () => {
 
     //redux 관리
     let state = useSelector((state:any)=>state.feed);
+    let state_follow = useSelector((state:any)=>state.follow);
     let dispatch = useDispatch();
 
     // 등록된 피드 전체 불러오기
@@ -100,17 +104,7 @@ const Feed = () => {
 
                     </div>
 
-                    <div className={`${feedStyle.menuArea}`}>
-                        {/* floating menu start */}
-                        <div className={`${feedStyle.followArea}`}>
-                            <div className={`${feedStyle.followAreaTitle}`}>Following</div>
-                            <FollowSlot/>
-                            <FollowSlot/>
-                            <FollowSlot/>
-                            <FollowSlot/>
-                            <FollowSlot/>
-                        </div>
-                    </div>
+                    <FeedFollow/>
                 </div>
 
                 <div className={`${feedStyle.footer}`}><Footer/></div>
