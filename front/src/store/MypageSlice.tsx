@@ -83,6 +83,7 @@ interface Mypage {
   menuMode: number;
   mypageMode: number;
   followMode: number;
+  feedReadMode: number;
   followModalOpen: boolean;
   followModalMode: number;
   myFollowerUsers: Followers[]; // 내 팔로워
@@ -110,10 +111,12 @@ interface Mypage {
 // mypageMode : 1(나 자신), 2(타인)
 // manageType : 1(비번 인증), 2(read), 3(update)
 // followModalMode : 1(팔로워), 2(팔로잉), 3(블랙리스트)
+// feedReadMode : 1(전체) 2(좋아요)
 const initialState: Mypage = {
   menuMode: 1,
   mypageMode: 1,
   followMode: 2,
+  feedReadMode:1,
   manageType: 1,
   followModalOpen: false,
 
@@ -529,25 +532,29 @@ export const action_mypage = {
         }
       );
 
+      console.log(response.data);
+
       return response.data;
     } catch (e) {
       throw e;
     }
   }),
 
-  // 내가 좋아요 누른 피드 리스트
+  // 내가 좋아요 누른 피드 리스트1
   getLikeFeedList: createAsyncThunk(`MypageSlice/getLikeFeedList`, async id => {
     try {
       const token = await CheckToken();
 
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER}/api/feed/liked/${id}`,
+        `${process.env.REACT_APP_SERVER}/api/feed/liked/${id}?page=0&size=10000`,
         {
           headers: {
             Authorization: token
           }
         }
       );
+
+      console.log(response.data);
 
       return response.data;
     } catch (e) {
@@ -633,6 +640,9 @@ const MypageSlice = createSlice({
     },
     changeFollowModalMode(state, action) {
       state.followModalMode = action.payload;
+    },
+    changeFeedReadMode(state, action){
+      state.feedReadMode = action.payload;
     }
   },
 
@@ -775,17 +785,20 @@ const MypageSlice = createSlice({
 
     builder.addCase(action_mypage.getFeedList.fulfilled, (state, action) => {
       state.feedList = action.payload;
+      console.log(state.feedList);
     });
 
     builder.addCase(
       action_mypage.getLikeFeedList.fulfilled,
       (state, action) => {
         state.likeFeedList = action.payload;
+        console.log(state.likeFeedList);
       }
+
     );
 
     builder.addCase(action_mypage.getLikeScore.fulfilled, (state, action) => {
-      state.likeScore = action.payload;
+      state.likeScore = action.payload.content;
     });
 
     builder.addCase(
@@ -809,7 +822,8 @@ export let {
   changeMypageMode,
   changeManageType,
   changeMenuMode,
-  changeFollowModalMode
+  changeFollowModalMode,
+  changeFeedReadMode
 } = MypageSlice.actions;
 
 export default MypageSlice.reducer;

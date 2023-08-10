@@ -180,12 +180,11 @@ const MypageHeader = () => {
       {/* 프로필 사진 & 뱃지 사진 & 닉네임 */}
       <div className={`${mypageHeaderStyle.userInfo}`}>
         <div>
-          <div className={`${mypageHeaderStyle.profile}`} />
-          <img src={state.targetUser.profileImg} />
+          <div className={`${mypageHeaderStyle.profile}`}>
+            <img src={state.targetUser.profileImg} />
+          </div>
           <div className={`${mypageHeaderStyle.profile_badge}`}>
-            <img
-              src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`}
-            />
+            <img src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} />
           </div>
         </div>
 
@@ -220,7 +219,7 @@ const MypageHeader = () => {
             {loginUser.id === Number(watchingUserId)
               ? <button
                   onClick={() => {
-                    dispatch(changeManageType(1));
+                    dispatch(changeManageType(2));
                     dispatch(changeMenuMode(3));
                   }}
                   style={

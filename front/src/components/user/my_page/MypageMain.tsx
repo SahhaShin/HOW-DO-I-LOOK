@@ -176,22 +176,22 @@ const MypageMain = () => {
       <div className={`${mypageMainStyle.likes}`}>
         <div className={`${mypageMainStyle.Lovely}`}>
           <div>Lovely</div>
-          <div>{state.likeScore.lovelyScore}</div>
+          <div>{state.likeScore?.lovelyScore}</div>
         </div>
 
         <div className={`${mypageMainStyle.Natural}`}>
           <div>Natural</div>
-          <div>{state.likeScore.naturalScore}</div>
+          <div>{state.likeScore?.naturalScore}</div>
         </div>
 
         <div className={`${mypageMainStyle.Modern}`}>
           <div>Modern</div>
-          <div>{state.likeScore.modernScore}</div>
+          <div>{state.likeScore?.modernScore}</div>
         </div>
 
         <div className={`${mypageMainStyle.Sexy}`}>
           <div>Sexy</div>
-          <div>{state.likeScore.sexyScore}</div>
+          <div>{state.likeScore?.sexyScore}</div>
         </div>
       </div>
 

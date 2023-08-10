@@ -5,7 +5,8 @@ import mypageFeedStyle from "./MypageFeed.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action_mypage,changeFollowModalOpen, changeFollowMode, changeMypageMode} from "../../../store/MypageSlice";
+import {action_mypage} from "../../../store/MypageSlice";
+import {action, changeDetailModalOpen} from "../../../store/FeedSlice";
 
 //컴포넌트
 import MypageFeedMenu from "./MypageFeedMenu";
@@ -17,6 +18,7 @@ const MypageFeed = () => {
 
     //redux 관리
     let state = useSelector((state:any)=>state.mypage);
+    let state_feed = useSelector((state:any)=>state.mypage);
     let dispatch = useDispatch();
 
     // 페이지네이션, 옷 관리
@@ -33,6 +35,7 @@ const MypageFeed = () => {
 
     useEffect(()=>{
         dispatch(action_mypage.getFeedList(loginUser.id));
+        dispatch(action_mypage.getLikeFeedList(loginUser.id));
     },[])
 
     return(
@@ -45,6 +48,9 @@ const MypageFeed = () => {
                 <MypageFeedMenu/>
             </div>:null}
 
+
+
+            {/* 피드 리스트 - 내가 올린거/내반응 */}
             {/* 피드 리스트 */}
             <div className={`${mypageFeedStyle.feeds}`}>
                 {
@@ -58,6 +64,7 @@ const MypageFeed = () => {
                     })
                 }
             </div>
+
 
             {/* 페이지네이션 */}
             <div className={`${mypageFeedStyle.pagenation}`}>
