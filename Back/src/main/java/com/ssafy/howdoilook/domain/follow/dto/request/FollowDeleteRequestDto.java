@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FollowDeleteRequestDto {
-    private Long followerId;
-    private Long followeeId;
+    private Long id;
+    private Long targetId;
 }

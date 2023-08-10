@@ -1,12 +1,18 @@
-.total{
-    width: 100%;
-    height: 100%;
+:root {
+    --primary-light: #8abdff;
+    --primary: #6d5dfc;
+    --primary-dark: #5b0eeb;
+    --white: #ffffff;
+    --greyLight-1: #e4ebf5;
+    --greyLight-2: #c8d0e7;
+    --greyLight-3: #bec8e4;
+    --greyDark: #9baacf;
+    --signiture: #4570F5;
 }
 
 /* 헤더 */
 .header{
     /* 크기 */
-    width: 100%;
     height: 70px;
 
     /* 컬러 */
@@ -19,12 +25,11 @@
 
 /* 메인 컨텐츠 */
 .main{
-    width: 100%;
     display: flex;
 }
 
 .menuArea{
-    width: 500px;
+    width: 300px;
     background-color: bisque;
 }
 
@@ -75,7 +80,7 @@
     height: 100%;
 
     /* 컬러 */
-    background-color: var(--border);
+    background-color: #f0f0f0;
 
     /* 커서 */
     cursor: pointer;

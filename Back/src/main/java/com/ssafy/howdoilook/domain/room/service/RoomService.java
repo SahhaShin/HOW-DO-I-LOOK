@@ -1,25 +1,49 @@
 package com.ssafy.howdoilook.domain.room.service;
 
+import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
+import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
+import com.ssafy.howdoilook.domain.feedPhoto.repository.FeedPhotoRepository;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
+import com.ssafy.howdoilook.domain.room.dto.ImageChatDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomAddRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.request.RoomChatImageRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.request.RoomChatRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomUpdateRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.response.RoomChatImageResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.RoomChatResponseDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomDetailResponseDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
-import com.ssafy.howdoilook.domain.room.entity.Room;
-import com.ssafy.howdoilook.domain.room.entity.RoomType;
-import com.ssafy.howdoilook.domain.room.repository.RoomRepository;
+import com.ssafy.howdoilook.domain.room.entity.*;
+import com.ssafy.howdoilook.domain.room.repository.ChatRepository.RoomChatImageRepository;
+import com.ssafy.howdoilook.domain.room.repository.ChatRepository.RoomChatRepository;
+import com.ssafy.howdoilook.domain.room.repository.RoomRepository.RoomRepository;
+import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
+import com.ssafy.howdoilook.domain.roomUser.entity.RoomUserType;
+import com.ssafy.howdoilook.domain.roomUser.repository.RoomUserRepository;
+
+import com.ssafy.howdoilook.domain.roomUser.service.RoomUserService;
+
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.handler.ImageException;
+import com.ssafy.howdoilook.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.expression.AccessException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,11 +52,66 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
+    private final RoomUserRepository roomUserRepository;
+    private final RoomChatRepository roomChatRepository;
+    private final RoomChatImageRepository roomChatImageRepository;
+    private final FeedPhotoRepository feedPhotoRepository;
+    private final ClothesRepository clothesRepository;
+
+    private final JwtService jwtService;
+    private final RoomUserService roomUserService;
 
     @Transactional
-    public Long addRoom(RoomAddRequestDto roomAddRequestDto) {
+    public RoomChatImageResponseDto imageIntegrity(RoomChatImageRequestDto requestDto){
+        LocalDateTime time = LocalDateTime.now();
+
+        //닉네임 무결성 검증
+        String nickName = jwtService.extractNickName(requestDto.getToken()).get();
+        //이미지 링크 무결성 검증
+        for(ImageChatDto image : requestDto.getImage()) {
+            //링크 무결성 검증
+            if (image.getType() == "FEED") {
+                if (!feedPhotoRepository.existsByLink(image.getPhotoLink())) {
+                    throw new ImageException("스트리밍 채팅 잘못된 이미지 링크 제공");
+                }
+            } else if(image.getType() == "CLOTHES") {
+                if (!clothesRepository.existsByPhotoLink(image.getPhotoLink())){
+                    throw new ImageException("스트리밍 채팅 잘못된 이미지 링크 제공");
+                }
+            }
+        }
+
+        return RoomChatImageResponseDto.builder()
+                .roomId(requestDto.getRoomId())
+                .time(time.toString())
+                .nickName(nickName)
+                .image(requestDto.getImage())
+                .build();
+    }
+    @Transactional
+    public RoomChatResponseDto chatIntegrity(RoomChatRequestDto requestDto){
+        LocalDateTime time = LocalDateTime.now();
+        //닉네임 무결성 검증
+        String nickName = jwtService.extractNickName(requestDto.getToken()).get();
+
+        return RoomChatResponseDto.builder()
+                .roomId(requestDto.getRoomId())
+                .time(time.toString())
+                .chatContent(requestDto.getChatContent())
+                .nickName(nickName)
+                .build();
+    }
+
+    @Transactional
+    public Long addRoom(RoomAddRequestDto roomAddRequestDto, UserDetails userDetails) throws AccessException {
+        String clientEmail = userDetails.getUsername();
+
         User user = userRepository.findById(roomAddRequestDto.getHostId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         Room room = Room.builder()
                 .code(roomAddRequestDto.getCode())
@@ -42,19 +121,29 @@ public class RoomService {
                 .minAge(roomAddRequestDto.getMinAge())
                 .maxAge(roomAddRequestDto.getMaxAge())
                 .gender(Gender.valueOf(roomAddRequestDto.getGender()))
-                .chatCode(roomAddRequestDto.getChatCode())
+                .chatCode(UUID.randomUUID().toString())
                 .build();
 
-        roomRepository.save(room);
+        Room saveRoom = roomRepository.save(room);
+
+        roomUserService.addRoomUser(saveRoom.getHost().getId(), saveRoom.getId(), userDetails);
 
         return room.getId();
     }
 
     @Transactional
-    public Long updateRoom(Long roomId, RoomUpdateRequestDto roomUpdateRequestDto) {
+    public Long updateRoom(Long roomId, RoomUpdateRequestDto roomUpdateRequestDto, UserDetails userDetails) throws AccessException {
 
         Room findRoom = roomRepository.findById(roomId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 방이 존재하지 않습니다.", 1));
+
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(findRoom.getHost().getId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
 
         return findRoom.update(roomUpdateRequestDto);
     }
@@ -122,13 +211,20 @@ public class RoomService {
 
     }
 
-    public List<RoomListResponseDto> getFollowingRoomList(String type, int page, Long userId, String search) {
+    public List<RoomListResponseDto> getFollowingRoomList(String type, int page, Long userId, String search, UserDetails userDetails) throws AccessException {
 
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         PageRequest pageRequest = PageRequest.of(page, 5, sort);
 
         User user = userRepository.findById(userId).orElseThrow(
-                ()->new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+                ()->new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다.", 1));
+
+        String clientEmail = userDetails.getUsername();
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         // 유저가 팔로잉 하고있는 팔로잉 유저 리스트
         List<Follow> followingList = user.getFollowerList();
 
@@ -154,5 +250,26 @@ public class RoomService {
                 .build();
 
         return roomDetailResponseDto;
+    }
+
+    @Transactional
+    public void endRoom(Long roomId, UserDetails userDetails) throws AccessException {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(room.getHost().getId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+        room.setEndedDate(LocalDateTime.now());
+        List<RoomUser> roomUsers = roomUserRepository.findByRoom_Id(roomId);
+
+        for(RoomUser roomUser : roomUsers) {
+            roomUser.updateStatus(RoomUserType.valueOf("EXIT"));
+        }
     }
 }

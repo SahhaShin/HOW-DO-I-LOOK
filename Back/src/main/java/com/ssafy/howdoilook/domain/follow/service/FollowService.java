@@ -4,14 +4,19 @@ import com.ssafy.howdoilook.domain.follow.dto.request.FollowDeleteRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.request.FollowSaveRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FolloweeResponseDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FollowerResponseDto;
+import com.ssafy.howdoilook.domain.follow.dto.response.PerfectFollowResponseDto;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.follow.repository.FollowReposiroty;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.handler.AccessException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,47 +27,67 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FollowService {
-    private final FollowReposiroty followReposiroty;
+    private final FollowReposiroty followRepository;
     private final UserRepository userRepository;
 
     //데이터가 중복으로 삽입되는거 ifelse로 처리했는데 예외로 처리하면 더 좋을거 같다.
     @Transactional
-    public Long saveFollow(FollowSaveRequestDto followSaveRequestDto){
-        User follower = userRepository.findById(followSaveRequestDto.getFollowerId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 follower입니다."));
-        User followee = userRepository.findById(followSaveRequestDto.getFolloweeId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 followee입니다."));
-        //넘어온 팔로우,팔로워 값으로 이미 데이터가 있는지 확인하는 작업
+    public Long saveFollow(FollowSaveRequestDto followSaveRequestDto, UserDetails userDetails){
+        String clientEmail = userDetails.getUsername();
+
+        User follower = userRepository.findById(followSaveRequestDto.getId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
+
+        if (!clientEmail.equals(follower.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+        User followee = userRepository.findById(followSaveRequestDto.getTargetId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 followee입니다.",1));
+
         //null값이 아니면 이미 데이터가 있는 것이다.
-        Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(follower.getId(), followee.getId());
+        Follow findFollow = followRepository.findFollowIdByFollowerAndFollowee(follower.getId(), followee.getId());
         //데이터가 없을때(정상일때)
         if (findFollow == null) {
             Follow follow = Follow.builder()
                     .follower(follower)
                     .followee(followee)
                     .build();
-            followReposiroty.save(follow);
+            followRepository.save(follow);
+
             return follow.getId();
         } else {
-            return findFollow.getId();
+            throw new IllegalArgumentException("이미 존재하는 Follow입니다.");
+        }
+    }
+
+
+    @Transactional
+    public void deleteFollow(FollowDeleteRequestDto followDeleteRequestDto, UserDetails userDetails){
+        String clientEmail = userDetails.getUsername();
+
+        User follower = userRepository.findById(followDeleteRequestDto.getId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
+
+        if (!clientEmail.equals(follower.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
         }
 
-
-    }
-    //데이터가 없는데 삭제하려는 것 구현 안함
-    //구현하면 좋을 것 같다.
-    @Transactional
-    public void deleteFollow(FollowDeleteRequestDto followDeleteRequestDto){
-        Follow findFollow = followReposiroty.findFollowIdByFollowerAndFollowee(
-                followDeleteRequestDto.getFollowerId(), followDeleteRequestDto.getFolloweeId());
-        followReposiroty.deleteById(findFollow.getId());
+        Follow findFollow = followRepository.findFollowIdByFollowerAndFollowee(
+                followDeleteRequestDto.getId(), followDeleteRequestDto.getTargetId());
+        //팔로우 관계가 있을 때
+        if (findFollow != null) {
+            followRepository.deleteById(findFollow.getId());
+        }else{
+            throw new IllegalArgumentException("존재하지 않는 Follow입니다.");
+        }
     }
     //내가 팔로우 하는 사람 리스트 반환
-    public Page<FolloweeResponseDto> selectFolloweeList(Long userId,Pageable page){
+    public Page<FolloweeResponseDto> selectFolloweeList(Long userId, Pageable page){
         User findUser = userRepository.findById(userId).orElseThrow(
-                ()->new IllegalArgumentException("존재하지 않는 User 입니다."));
+                ()->new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
 
-        Page<Follow> followeeByUserId = followReposiroty.findFolloweeByUserId(userId, page);
+        Page<Follow> followeeByUserId = followRepository.findFolloweeByUserId(userId, page);
         List<Follow> content = followeeByUserId.getContent();
 
         List<FolloweeResponseDto> list = new ArrayList<>();
@@ -73,21 +98,21 @@ public class FollowService {
             User followee = follow.getFollowee();
             list.add(FolloweeResponseDto.builder()
                     .id(followee.getId())
-                    .email(followee.getEmail())
-                    .name(followee.getName())
-                    .nickname((followee.getNickname()))
+                    .nickname(followee.getNickname())
+                    .profileImg(followee.getProfileImg())
                     .build()
             );
         }
         return new PageImpl<>(list, followeeByUserId.getPageable(), followeeByUserId.getTotalElements());
     }
+    
     //나를 팔로워 하는사람
-    public Page<FollowerResponseDto> selectFollowerList(Long userId, Pageable page){
+    public Page<FollowerResponseDto> selectFollowerList(Long userId,Pageable page){
 
         User findUser = userRepository.findById(userId).orElseThrow(
-                ()->new IllegalArgumentException("존재하지 않는 User 입니다."));
+                ()->new EmptyResultDataAccessException("존재하지 않는 User 입니다.",1));
 
-        Page<Follow> followerByUserId = followReposiroty.findFollowerByUserId(userId, page);
+        Page<Follow> followerByUserId = followRepository.findFollowerByUserId(userId, page);
         List<Follow> content = followerByUserId.getContent();
 
         //반환할 dto리스트 선언
@@ -98,12 +123,59 @@ public class FollowService {
             User follower = follow.getFollower();
             FollowerResponseDto followerResponseDto = FollowerResponseDto.builder()
                     .id(follower.getId())
-                    .email(follower.getEmail())
-                    .name(follower.getName())
                     .nickname(follower.getNickname())
+                    .profileImg(follower.getProfileImg())
                     .build();
             list.add(followerResponseDto);
         }
         return new PageImpl<>(list, followerByUserId.getPageable(), followerByUserId.getTotalElements());
+    }
+    
+    /*
+    * 내 팔로잉 리스트
+    * */
+    public List<FolloweeResponseDto> getAllFolloweeList(Long userId) {
+        // userId : 나
+        List<Follow> allFolloweeList = followRepository.findAllFolloweeByUserId(userId);
+
+        List<FolloweeResponseDto> followeeResponseDtoList = new ArrayList<>();
+
+        for (Follow follow : allFolloweeList) {
+            FolloweeResponseDto followeeResponseDto = FolloweeResponseDto.builder()
+                    .id(follow.getFollowee().getId())
+                    .nickname(follow.getFollowee().getNickname())
+                    .profileImg(follow.getFollowee().getProfileImg())
+                    .build();
+
+            followeeResponseDtoList.add(followeeResponseDto);
+        }
+
+        return followeeResponseDtoList;
+    }
+    
+    /*
+    * 내 팔로워 리스트
+    * */
+    public List<FollowerResponseDto> getAllFollowerList(Long userId) {
+        List<Follow> allFollowerList = followRepository.findAllFollowerByUserId(userId);
+
+        List<FollowerResponseDto> followerResponseDtoList = new ArrayList<>();
+
+        for (Follow follow : allFollowerList) {
+            FollowerResponseDto followerResponseDto = FollowerResponseDto.builder()
+                    .id(follow.getFollower().getId())
+                    .nickname(follow.getFollower().getNickname())
+                    .profileImg(follow.getFollower().getProfileImg())
+                    .build();
+
+            followerResponseDtoList.add(followerResponseDto);
+        }
+
+        return followerResponseDtoList;
+    }
+
+    public List<PerfectFollowResponseDto> getPerfectFollowList() {
+
+        return followRepository.findPerfectFollowers();
     }
 }

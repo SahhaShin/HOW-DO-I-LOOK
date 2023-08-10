@@ -42,4 +42,13 @@ public class CommentCustomRepositoryImpl implements CommentCustomRepository{
                 .fetchResults();
         return new PageImpl<>(results.getResults(), page, results.getTotal());
     }
+
+    @Override
+    public Long selectCommentCountByFeedId(Long feedId) {
+        Long count = jpaQueryFactory.select(comment.count())
+                .from(comment)
+                .where(comment.feed.id.eq(feedId))
+                .fetchOne();
+        return count;
+    }
 }

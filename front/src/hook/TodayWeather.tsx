@@ -36,7 +36,7 @@ const TodayWether = ()=>{
     const url = `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&numOfRows=10&pageNo=1
     &base_date=${ymd}&base_time=0500&nx=${nx}&ny=${ny}&dataType=JSON`;
     const wetherApi = async () => {await axios.get(url).then((res)=>{
-        if(geoloaction?.loaded){
+        if(geoloaction.loaded){
             setTodayWeather(res.data.response.body.items.item);
         }
     })}

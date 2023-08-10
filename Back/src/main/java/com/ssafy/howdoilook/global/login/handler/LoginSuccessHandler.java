@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
@@ -37,8 +38,17 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String accessToken = jwtService.createAccessToken(email);
         String refreshToken = jwtService.createRefreshToken();
 
+        httpServletResponse.addHeader(jwtService.getAccessHeader(), accessToken);
+        httpServletResponse.addHeader(jwtService.getRefreshHeader(), refreshToken);
+        httpServletResponse.addHeader("new_basic_user_email", email);
+
+        Cookie emailCookie = new Cookie("new_basic_user_email", email);
+        emailCookie.setMaxAge(600);
+        emailCookie.setPath("/");
+        httpServletResponse.addCookie(emailCookie);
+
         // response header에 AccessToken, RefreshToken 실어서 보내기
-        jwtService.sendAccessAndRefreshToken(httpServletResponse, accessToken, refreshToken);
+//        jwtService.sendAccessAndRefreshToken(httpServletResponse, accessToken, refreshToken);
 
         Optional<User> user = userRepository.findByEmail(email);
 

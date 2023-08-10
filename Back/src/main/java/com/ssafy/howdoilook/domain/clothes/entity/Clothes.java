@@ -63,7 +63,7 @@ public class Clothes extends BaseTimeEntity {
         this.name = clothesUpdateDto.getName();
         this.brand = clothesUpdateDto.getBrand();
         this.info = clothesUpdateDto.getInfo();
-        this.photoLink = clothesUpdateDto.getPhotoLink();
+//        this.photoLink = clothesUpdateDto.getPhotoLink();
 
         return this.id;
     }
