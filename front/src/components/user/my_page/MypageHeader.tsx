@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 //css
 import mypageHeaderStyle from "./MypageHeader.module.css";
@@ -11,18 +11,22 @@ import {
   changeFollowMode,
   changeManageType,
   changeMenuMode,
-  changeFollowModalMode
+  changeFollowModalMode,
+  changeBadgeUpdateModalOpen
 } from "../../../store/MypageSlice";
+
 import { useParams } from "react-router-dom";
 
+
 const MypageHeader = () => {
+
   //redux 관리
   let state = useSelector((state: any) => state.mypage);
   let dispatch = useDispatch();
-
+  
   const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
   const { watchingUserId } = useParams();
-
+  
   let getBlackList = (watchingUserId: number) => {
     dispatch(action_mypage.getBlackList(watchingUserId));
   };
@@ -90,6 +94,28 @@ const MypageHeader = () => {
       profileImg: state.targetUser.profileImg
     });
   };
+
+  // 프로필 이미지 수정 로직
+  const [Image, setImage] = useState(loginUser.profileImg)
+  const [File, setFile] = useState(loginUser.profileImg)
+  const fileInput = useRef(null)
+
+  //프로필 이미지 수정
+  const onChange = (e) => {
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setImage(state.targetUser.profileImg);
+    }
+  };
+
+  //뱃지
+  let currentBadge = JSON.parse(sessionStorage.getItem("loginUser")).showBadgeType;
 
   // 팔로우
   useEffect(
@@ -167,24 +193,46 @@ const MypageHeader = () => {
     [state.blackListUsers, state.myFollowingUsers]
   );
 
+  
+
   // if (state.blackListUsers.length === 0) {
   //   return <div>Loading...</div>;
   // }
 
   return (
     <div className={`${mypageHeaderStyle.total}`}>
+
       {/* 타이틀 */}
       <div className={`${mypageHeaderStyle.title}`}>MYPAGE</div>
 
       {/* 프로필 사진 & 뱃지 사진 & 닉네임 */}
+  
       <div className={`${mypageHeaderStyle.userInfo}`}>
         <div>
-          <div className={`${mypageHeaderStyle.profile}`} />
-          <img src={state.targetUser.profileImg} />
+          {loginUser.id===Number(watchingUserId)?
+          <div className={`${mypageHeaderStyle.profile}`}>
+            <img src={Image} onClick={()=>{fileInput.current.click()}} />
+            <input type='file' style={{display:'none'}} accept='image/jpg,image/png,image/jpeg' name='profile_img'
+              onChange={(e)=>onChange(e)} ref={fileInput}/>
+          </div>:
+          <div className={`${mypageHeaderStyle.profile}`}>
+            <img src={Image} />
+          </div>}
+
+          {/* 뱃지 */}
           <div className={`${mypageHeaderStyle.profile_badge}`}>
-            <img
-              src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`}
-            />
+
+            {loginUser.id===Number(watchingUserId)&&currentBadge==="X"?<div onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} className={`${mypageHeaderStyle.noBadge}`}></div>:null}
+            {loginUser.id===Number(watchingUserId)&&currentBadge==="LOVELY"?<img onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} />:null}
+            {loginUser.id===Number(watchingUserId)&&currentBadge==="NATURAL"?<img onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} />:null}
+            {loginUser.id===Number(watchingUserId)&&currentBadge==="MODERN"?<img onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`}/>:null}
+            {loginUser.id===Number(watchingUserId)&&currentBadge==="SEXY"?<img onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`}/>:null}
+
+            {loginUser.id!==Number(watchingUserId)&&currentBadge==="X"?<div className={`${mypageHeaderStyle.noBadge}`}></div>:null}
+            {loginUser.id===Number(watchingUserId)&&currentBadge==="LOVELY"?<img src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} />:null}
+            {loginUser.id===Number(watchingUserId)&&currentBadge==="NATURAL"?<img src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} />:null}
+            {loginUser.id===Number(watchingUserId)&&currentBadge==="MODERN"?<img src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`}/>:null}
+            {loginUser.id===Number(watchingUserId)&&currentBadge==="SEXY"?<img src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`}/>:null}
           </div>
         </div>
 
@@ -219,7 +267,7 @@ const MypageHeader = () => {
             {loginUser.id === Number(watchingUserId)
               ? <button
                   onClick={() => {
-                    dispatch(changeManageType(1));
+                    dispatch(changeManageType(2));
                     dispatch(changeMenuMode(3));
                   }}
                   style={
