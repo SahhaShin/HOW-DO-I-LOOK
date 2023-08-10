@@ -28,6 +28,7 @@ class Streaming extends Component {
       subscribers: [],
       cameraOn: true,
       audioOn: true,
+      forUpdate : true
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -127,6 +128,17 @@ class Streaming extends Component {
         mySession.on("streamDestroyed", (event) => {
           this.deleteSubscriber(event.stream.streamManager);
         });
+        
+        //세션에서 생성되는 카메라 on/off 이벤트가 발생되면 메서드가 실행된다.
+        mySession.on("streamPropertyChanged", (event) => {
+          if (event.stream && event.changedProperty === "videoActive") {
+            const newValue = !this.state.forUpdate
+            this.setState({
+              forUpdate : newValue
+            })
+          }
+        });
+        
 
         //세션에서 생성되는 이벤트가 발생되면 메서드가 실행된다.
         mySession.on("exception", (exception) => {
@@ -292,6 +304,7 @@ class Streaming extends Component {
       newPublisher.publishVideo(newCameraOn); // 카메라 토글
     }
     this.setState({
+
       cameraOn: newCameraOn,
     });
   }
@@ -301,10 +314,19 @@ class Streaming extends Component {
     console.log("Audio ON/Off");
     const audioOn = this.state.audioOn;
 
-    console.log("publisher");
-    console.log(this.publisher);
+     console.log("Camera ON/Off");
+
+    console.log(this.subscribers)
+
+    const newCameraOn = !this.state.cameraOn;
+    const newPublisher = this.state.publisher;
+
+    if (newPublisher) {
+      newPublisher.publishVideo(newCameraOn); // 카메라 토글
+    }
     this.setState({
-      audioOn: !audioOn,
+      
+      cameraOn: newCameraOn,
     });
   }
 
