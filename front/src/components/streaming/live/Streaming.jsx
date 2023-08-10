@@ -285,11 +285,17 @@ class Streaming extends Component {
 
     console.log(this.subscribers)
 
-    const cameraOn = this.state.cameraOn;
+    const newCameraOn = !this.state.cameraOn;
+    const newPublisher = this.state.publisher;
+
+    if (newPublisher) {
+      newPublisher.publishVideo(newCameraOn); // 카메라 토글
+    }
     this.setState({
-      cameraOn: !cameraOn,
+      cameraOn: newCameraOn,
     });
   }
+
   //오디오(마이크) 끄기/켜기
   async toggleAudio(e) {
     console.log("Audio ON/Off");
@@ -361,7 +367,7 @@ class Streaming extends Component {
         null}
         {/* 만약 세션이 있다면 아래의 html 코드가 실행된다. */}
         {this.state.session !== undefined ? (
-          <div id="session">
+          <div id="session" className="StreamingComponent">
             <div id="session-header" className="buttons">
               {/* <h1 id="session-title">{mySessionId}</h1> */}
               {isStreamer ? (
