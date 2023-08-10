@@ -4,7 +4,6 @@ import { getCookie, setCookie, removeCookie } from "./Cookie";
 // 토큰 만료 되었는가 확인하기
 //Bearer를 붙어서 반환해준다
 export async function CheckToken() {
-
   //만약 리프레시 토큰이 만료 되었을 시
   let refreshToken = getCookie("Authorization-Refresh");
 
@@ -17,6 +16,7 @@ export async function CheckToken() {
 
   //만약 엑세스 토큰만 만료 되었을 시
   if ((typeof accessToken == "undefined") || (typeof accessToken === null)) {
+
     return await axios({
       method: "get",
       url: `${process.env.REACT_APP_SERVER}/api/user/jwt`,
@@ -44,8 +44,7 @@ export async function CheckToken() {
       .catch((e) => {
         throw e;
       });
-  } 
-  else {
+  } else {
     return "Bearer " + accessToken;
   }
 }
@@ -78,7 +77,6 @@ export async function CheckNickName(nickname: String) {
   })
     .then((response) => {
       const result = response.data;
-      
       return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
     })
     .catch((e) => {
