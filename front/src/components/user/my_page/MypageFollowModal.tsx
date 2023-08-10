@@ -52,7 +52,6 @@ const MypageFollowModal = () => {
         });
       };
     
-    
       const [deleteBlackListData, setDeleteBlackListData] = useState({
         id: 0,
         targetId: 0,
@@ -68,6 +67,30 @@ const MypageFollowModal = () => {
           profileImg: one.profileImg
         });
       };
+
+    // Follow
+    useEffect(() => {
+        if(followingData.id === 0)
+            return;
+
+        dispatch(action_mypage.follow(followingData));
+    }, [followingData])
+
+    // UnFollow
+    useEffect(() => {
+        if(deleteFollowingData.id === 0)
+            return;
+
+        dispatch(action_mypage.unfollow(deleteFollowingData))
+    }, [deleteFollowingData])
+
+    // 블랙리스트 제거
+    useEffect(() => {
+        if(deleteBlackListData.id === 0)
+            return;
+
+        dispatch(action_mypage.deleteBlackList(deleteBlackListData))
+    }, [deleteBlackListData])
 
     // followMode에 따라 map에 사용하는 state 다르게
     useEffect(() => {
