@@ -224,32 +224,24 @@ class Streaming extends Component {
   }
 
   leaveSession() {
-    //지금 세션 가져온다.
+
+    // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+
     const mySession = this.state.session;
-    const isStreamer = this.state.myUserName === this.state.mySessionId;
-    console.log("leaveSession 실행");
-    console.log(mySession);
-    //연결 해제 메서드를 실행한다.
+
     if (mySession) {
-      mySession.disconnect();
-      if (isStreamer) {
-        this.closeSession(mySession.sessionId); // 서버에 세션 닫기 요청 보내기
-      }
+        mySession.disconnect();
     }
 
-    //session에서 유저 정보를 가져온다.
-    const user = window.sessionStorage.getItem("loginUser");
-    const sessionid = "session1"; //window.sessionStorage.getItem("sessionid")
-
-    //openvidu 객체를 제거함.
+    // Empty all properties...
     this.OV = null;
     this.setState({
-      session: undefined,
-      subscribers: [],
-      mySessionId: sessionid,
-      myUserName: user.id,
-      mainStreamManager: undefined,
-      publisher: undefined,
+         mySessionId: 'SessionA',
+        myUserName: 'Participant' + Math.floor(Math.random() * 100),
+        session: undefined,
+        mainStreamManager: undefined,
+        publisher: undefined,
+        subscribers: [],
     });
   }
 
@@ -389,15 +381,6 @@ class Streaming extends Component {
               {/* <h1 id="session-title">{mySessionId}</h1> */}
               {isStreamer ? (
                 <div>
-
-
-                <input
-                  className="btn btn-large btn-danger"
-                  type="button"
-                  id="buttonLeaveSession"
-                  onClick={this.leaveSession}
-                  value="Leave session"
-                />
               <button
                 className={cameraOn ? "activeButton" : "disableButton"}
                 onClick={this.toggleCamera}
@@ -410,6 +393,15 @@ class Streaming extends Component {
               </button>
                 </div>
               ) : null}
+<input
+                  className="btn btn-large btn-danger"
+                  type="button"
+                  id="buttonLeaveSession"
+                  onClick={this.leaveSession}
+                  value="Leave session"
+                />
+
+
               <button
                 className={audioOn ? "activeButton" : "disableButton"}
                 onClick={this.toggleAudio}
@@ -428,7 +420,7 @@ class Streaming extends Component {
                 className="stream-container col-md-6 col-xs-6"
                 onClick={() => this.handleMainVideoStream(this.state.publisher)}
               >
-                <UserVideoComponent streamManager={this.state.publisher} />
+                { cameraOn &&<UserVideoComponent streamManager={this.state.publisher} />}
               </div>
             ) : null}
             {/* subscribers를 돌면서 뿌린다. */}
@@ -497,59 +489,7 @@ class Streaming extends Component {
     );
     return response.data; // The token
   }
-
-  async closeSession(sessionId) {
-    try {
-      // 세션 정보 가져오기
-      const sessionResponse = await axios.get(
-        APPLICATION_SERVER_URL + `api/sessions/${sessionId}`,
-        {},
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      const session = sessionResponse.data;
-
-      // 연결 정보 가져오기
-      const connections = session.connections;
-
-      // 연결을 하나씩 끊음
-      for (const connection of connections) {
-        await this.disconnectConnection(sessionId, connection.connectionId);
-      }
-
-      // 모든 연결이 끊어진 후 세션을 닫음
-      await this.endSession(sessionId);
-    } catch (error) {
-      console.error("Error closing session:", error);
-    }
-  }
-
-  async disconnectConnection(sessionId, connectionId) {
-    try {
-      await axios.delete(
-        APPLICATION_SERVER_URL +
-          `api/sessions/${sessionId}/connections/${connectionId}`,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      console.log(`Connection ${connectionId} disconnected successfully.`);
-    } catch (error) {
-      console.error(`Error disconnecting connection ${connectionId}:`, error);
-    }
-  }
-
-  async endSession(sessionId) {
-    try {
-      await axios.delete(APPLICATION_SERVER_URL + `api/sessions/${sessionId}`, {
-        headers: { "Content-Type": "application/json" },
-      });
-      console.log(`Session ${sessionId} closed successfully.`);
-    } catch (error) {
-      console.error(`Error closing session ${sessionId}:`, error);
-    }
-  }
 }
+
 
 export default Streaming;
