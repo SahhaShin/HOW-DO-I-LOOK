@@ -54,22 +54,28 @@
 
 .slideT > img{
   width: 100%;
+  height: 100%;
   
 }
 .slideB > img{
   width: 100%;
+  height: 100%;
 }
 .slideS > img{
   width: 70%;
+  height: 100%;
 }
 .slideA1 > img{
-  width: 80px;
+  width: 60px;
+  height: 100%;
 }
 .slideA2 > img{
   width: 110px;
+  height: 100%;
 }
 .slideA3 > img{
   width: 80px;
+  height: 100%;
 }
 
 
@@ -145,6 +151,10 @@
 
 
 .ootd_etc{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
   margin-top: 15%;
   width: 120px;
   height: 100px;
