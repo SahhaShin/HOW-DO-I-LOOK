@@ -21,11 +21,10 @@ import Streaming from "./components/streaming/live/App";
 import Login from "./pages/user/login/Login";
 import Signin from "./pages/user/login/Signin";
 
-import AuthSignin from "./pages/user/login/AuthSignin"
-import Home from "./pages/home/Home"
+import AuthSignin from "./pages/user/login/AuthSignin";
+import Home from "./pages/home/Home";
 import Header from "./components/util/Header";
 import Ranking from "./pages/sns/rank/Ranking";
-
 
 function App() {
   return (
@@ -40,17 +39,17 @@ function App() {
               element={<ChatRoom />}
             />
             <Route path="/feed" element={<Feed />} />
-            <Route path="/mypage/:targetUserId" element={<Mypage />} />
+            <Route path="/mypage/:watchingUserId" element={<Mypage />} />
             <Route path="/live" element={<Live />} />
             <Route path="/streaming" element={<Streaming />} />
 
             {/* <Route path="/" element={<LogHin/>}/> */}
 
-            <Route path="/" element={<Home/>}/>
-            <Route path="/user/log-in" element={<Login/>}/>
-            <Route path="/user/sign-up" element={<Signin/>}/>
-            <Route path="/auth2/sign-up"  element={<AuthSignin/>}/>
-            <Route path="/Ranking" element={<Ranking/>} />
+            <Route path="/" element={<Home />} />
+            <Route path="/user/log-in" element={<Login />} />
+            <Route path="/user/sign-up" element={<Signin />} />
+            <Route path="/auth2/sign-up" element={<AuthSignin />} />
+            <Route path="/Ranking" element={<Ranking />} />
 
             {/* <Route path="/"  element={<Header/>}/> */}
           </Routes>

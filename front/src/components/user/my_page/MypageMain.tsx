@@ -22,74 +22,76 @@ const MypageMain = () => {
   // 일단 로그인한 유저의 아이디
   const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
   // 내가 보고있는 유저의 아이디
-  const { targetUserId } = useParams();
+  const { watchingUserId } = useParams();
 
-  let getFollowMeList = (targetUserId: number) => {
-    dispatch(action_mypage.getFollowMeList(targetUserId));
-  };
-  let getFollowingList = (targetUserId: number) => {
-    dispatch(action_mypage.getFollowingList(targetUserId));
-  };
-  let getBlackList = (targetUserId: number) => {
-    dispatch(action_mypage.getBlackList(targetUserId));
+  let getFeedList = (watchingUserId: number) => {
+    dispatch(action_mypage.getFeedList(watchingUserId));
   };
 
-  let getFeedList = (targetUserId: number) => {
-    dispatch(action_mypage.getFeedList(targetUserId));
+  let getLikeFeedList = (watchingUserId: number) => {
+    dispatch(action_mypage.getLikeFeedList(watchingUserId));
   };
 
-  let getLikeFeedList = (targetUserId: number) => {
-    dispatch(action_mypage.getLikeFeedList(targetUserId));
-  };
-
-  let getLikeScore = (targetUserId: number) => {
-    dispatch(action_mypage.getLikeScore(targetUserId));
+  let getLikeScore = (watchingUserId: number) => {
+    dispatch(action_mypage.getLikeScore(watchingUserId));
   }
 
   // 최초 1회 실행
   useEffect(
     () => {
-      getFollowMeList(Number(targetUserId));
-    },
-    []
-  );
+      // if(loginUser.id !== Number(watchingUserId))
+      //   return;
+
+      dispatch(action_mypage.getMyFollowerList(loginUser.id));
+    },[])
 
   useEffect(() => {
-      getFollowingList(Number(targetUserId));
+    // if(loginUser.id !== Number(watchingUserId))
+    //     return;
+
+    dispatch(action_mypage.getMyFollowingList(loginUser.id));
   }, [])
 
   useEffect(() => {
-      getBlackList(Number(targetUserId));
+    // if(loginUser.id === Number(watchingUserId))
+    //     return;
+
+    dispatch(action_mypage.getYourFollowerList(Number(watchingUserId)));
   }, [])
 
   useEffect(() => {
-      getFeedList(Number(targetUserId));
+    // if(loginUser.id === Number(watchingUserId))
+    //     return;
+
+    dispatch(action_mypage.getYourFollowingList(Number(watchingUserId)));
   }, [])
 
   useEffect(() => {
-      getLikeFeedList(Number(targetUserId));
+    dispatch(action_mypage.getBlackList(loginUser.id));
   }, [])
 
   useEffect(() => {
-    getLikeScore(Number(targetUserId));
+      getFeedList(Number(watchingUserId));
+  }, [])
+
+  useEffect(() => {
+      getLikeFeedList(Number(watchingUserId));
+  }, [])
+
+  useEffect(() => {
+    getLikeScore(Number(watchingUserId));
   }, [])
 
   useEffect(() => {
     dispatch(action_mypage.getPerfectFollowList());
-  }, [state.followMeUsers, state.followingUsers])
+  }, [state.myFollwerUsers, state.myFollowingUsers])
 
   useEffect(() => {
-    if(Number(targetUserId) === 0)
+    if(Number(watchingUserId) === 0)
         return;
 
-    dispatch(action_mypage.getBadgeList(Number(targetUserId)));
+    dispatch(action_mypage.getBadgeList(Number(watchingUserId)));
   }, [])
-
-  interface Followers {
-    id: number;
-    nickname: string;
-    profileImg: string | null;
-  }
 
   const showBadgeList = () => {
     return state.badgeList.map((badge, index) => {
@@ -141,9 +143,7 @@ const MypageMain = () => {
           className={`${mypageMainStyle.follower}`}
         >
           <div>팔로워</div>
-          <div>
-            {state.followMeUsers.length}
-          </div>
+            {Number(watchingUserId) === loginUser.id ? <div>{state.myFollowerUsers.length}</div> : <div>{state.yourFollowerUsers.length}</div>}
         </div>
 
         <div
@@ -155,7 +155,7 @@ const MypageMain = () => {
         >
           <div>팔로잉</div>
           <div>
-            {state.followingUsers.length}
+            {Number(watchingUserId) === loginUser.id ? <div>{state.myFollowingUsers.length}</div> : <div>{state.yourFollowingUsers.length}</div>}
           </div>
         </div>
 

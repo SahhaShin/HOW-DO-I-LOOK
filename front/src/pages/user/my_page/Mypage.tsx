@@ -31,11 +31,11 @@ const Mypage = () => {
 
     const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
 
-    const { targetUserId } = useParams();
+    const { watchingUserId } = useParams();
 
     useEffect(() => {
-        dispatch(action_mypage.getUserById(targetUserId));
-    }, [])
+        dispatch(action_mypage.getUserById(Number(watchingUserId)));
+      }, [])
 
     return(
         <>
