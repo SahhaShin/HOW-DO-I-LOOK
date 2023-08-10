@@ -112,14 +112,14 @@ const MypageMain = () => {
       } else if (badge.badgeType === "MODERN") {
         return (
           <div key={index} className={`${mypageMainStyle.ModernBadge}`}>
-            <img src={process.env.PUBLIC_URL + `/img/badge/Modern_Uncolored.png`} />
+            <img src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`} />
             <div>Modern Master</div>
           </div>
         );
       } else if (badge.badgeType === "NATURAL") {
         return (
           <div key={index} className={`${mypageMainStyle.NaturalBadge}`}>
-            <img src={process.env.PUBLIC_URL + `/img/badge/Natural_Uncolored.png`} />
+            <img src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} />
             <div>Natural Master</div>
           </div>
         );
