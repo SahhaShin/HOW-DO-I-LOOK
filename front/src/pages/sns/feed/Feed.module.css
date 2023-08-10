@@ -1,0 +1,214 @@
+.total{
+    /* 크기 */
+    width: 100%;
+    height: 100%;
+}
+
+/* 헤더 */
+.header{
+    /* 크기 */
+    width: 100%;
+    /* height: 70px; */
+
+    /* 컬러 */
+    /* background-color: antiquewhite; */
+
+    /* 위치 */
+    margin-bottom: 5%;
+}
+
+
+/* 메인 컨텐츠 */
+.main{
+    /* 크기 */
+    width: 100%;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: row;
+}
+
+.menuArea{
+    /* 크기 */
+    width: 500px;
+    flex-shrink: 1;
+
+    display: flex;
+    justify-content: center;
+}
+
+.menuArea > div{
+    position: sticky;
+    top: 0;
+}
+
+.contentArea{
+    /* 가운데에 있는 리스트 */
+    width: 700px;
+    
+    /* 크기 */
+    flex-shrink: 3;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+}
+
+.uploadBtn{
+    /* 크기 */
+    width: 100%;
+    height: 40px;
+
+    /* 위치 */
+    display: flex;
+    justify-content: right;
+    margin-bottom: 5%;
+
+}
+
+.uploadBtn button{
+    /* 크기 */
+    width: 150px;
+    height: 50px;
+    border-radius: 5%;
+    border: 1px solid var(--border);
+    background-color: var(--signiture);
+    color: white;
+}
+
+
+
+.title{
+    /* 위치 */
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+
+.title > div:nth-child(1){
+    /* feed 찐 타이틀 */
+    /* 사이즈 */
+    width: 120px;
+    height: 30px;
+    border-radius: 2rem;
+    
+    /* 위치 조정 */
+    line-height: 30px;
+    margin-bottom: 3%;
+    margin-left: 50px;
+    
+    /* 폰트 */
+    font-size: 15px;
+    font-weight: 900;
+    font-family: 'Pretendard-Regular';
+
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+}
+
+
+.sortBtn{
+    /* 위치 */
+    display: flex;
+    flex-direction: row;
+
+    /* 크기 */
+    height: 30px;
+}
+
+.sortBtn button{
+    /* 크기 */
+    width: 100px;
+    height: 40px;
+    border-radius: 3%;
+
+    /* 위치 */
+    margin-left: 3%;
+}
+
+.sortBtn button:hover{
+
+    /* 컬러 */
+    background-color: var(--signiture);
+    color: white;
+}
+
+
+.list{
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* 피드 전체 크기 -> 피드 실제 크기는 500px임 */
+    width: 700px;
+}
+
+
+/* 우측 팔로잉 영역 */
+.followArea{
+    /* 고정 */
+    position: sticky;
+    overflow: auto;
+    text-align: -webkit-center;
+    margin-left: 5%;
+    margin-top: 180px;
+    
+    /* 크기 */
+    width: 250px;
+    height: 430px;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+
+}
+
+.followAreaTitle{
+    /* 위치 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* 크기 */
+    width: 100%;
+    height: 50px;
+
+    /* 폰트 */
+    font-weight: 900;
+}
+
+/* 상세보기 모달 */
+.detailModal{
+    position: fixed;
+    margin-top: 5%;
+    margin-left: 15%;
+    z-index: 10;
+}
+
+/* 업로드 모달 */
+.createModal{
+    position: fixed;
+    margin-top: 5%;
+    margin-left: 25%;
+    z-index: 10;
+}
+
+/* 신고 모달 */
+.declarationModal{
+    position: fixed;
+    margin-top: 5%;
+    margin-left: 32%;
+    z-index: 10;
+}
+
+
+/* 푸터 */
+.footer{
+    /* 크기 */
+    height: 200px;
+
+    /* 위치 */
+    margin-top: 10%;
+}
