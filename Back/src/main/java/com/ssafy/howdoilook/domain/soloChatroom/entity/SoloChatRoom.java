@@ -1,13 +1,18 @@
 package com.ssafy.howdoilook.domain.soloChatroom.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.howdoilook.domain.common.entity.BaseTimeEntity;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Getter
@@ -15,7 +20,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SoloChatRoom extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "solo_chatroom_id")
     private Long id;
 
@@ -30,11 +35,13 @@ public class SoloChatRoom extends BaseTimeEntity {
     @Column(name = "solo_chatroom_code")
     private String roomCode;
 
+    @Column(name = "chat_update_date")
+    private LocalDateTime chatUpdateDate;
     @Builder
-    public SoloChatRoom(Long id, User userA, User userB, String roomCode) {
-        this.id = id;
+    public SoloChatRoom(User userA, User userB, String roomCode) {
         this.userA = userA;
         this.userB = userB;
         this.roomCode = roomCode;
+        chatUpdateDate = LocalDateTime.now();
     }
 }

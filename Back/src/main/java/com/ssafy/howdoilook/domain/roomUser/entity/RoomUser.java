@@ -39,4 +39,8 @@ public class RoomUser extends BaseTimeEntity {
         this.room = room;
         this.status = status;
     }
+
+    public void updateStatus(RoomUserType status) {
+        this.status = status;
+    }
 }

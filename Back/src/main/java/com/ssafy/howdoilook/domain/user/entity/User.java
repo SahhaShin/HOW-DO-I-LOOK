@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.user.entity;
 
 import com.ssafy.howdoilook.domain.alarm.entity.Alarm;
+import com.ssafy.howdoilook.domain.badge.entity.Badge;
 import com.ssafy.howdoilook.domain.blacklist.entity.BlackList;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.comment.entity.Comment;
@@ -11,6 +12,7 @@ import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
 import com.ssafy.howdoilook.domain.soloChatroom.entity.SoloChatRoom;
 import com.ssafy.howdoilook.domain.user.dto.request.UserBySocialUpdateRequestDto;
+import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateIncludeImageRequestDto;
 import com.ssafy.howdoilook.domain.user.dto.request.UserUpdateRequestDto;
 import com.ssafy.howdoilook.domain.userLike.entity.UserLike;
 import lombok.AccessLevel;
@@ -66,8 +68,19 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_social_id")
     private String socialId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_show_badge")
+    private BadgeType showBadgeType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_closet_access")
+    private ClosetAccess closetAccess;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Alarm> alarmList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "senderUser", cascade = CascadeType.ALL)
+    List<Alarm> senderAlarmList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<BlackList> blackList = new ArrayList<>();
@@ -102,11 +115,14 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "userB", cascade = CascadeType.ALL)
     List<SoloChatRoom> soloBChatRoomList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "targetUser", cascade = CascadeType.ALL)
     List<UserLike> userLikeList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Badge> badgeList = new ArrayList<>();
+
     @Builder
-    public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId) {
+    public User(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId, BadgeType showBadgeType, ClosetAccess closetAccess) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -118,6 +134,8 @@ public class User extends BaseTimeEntity {
         this.role = role;
         this.socialType = socialType;
         this.socialId = socialId;
+        this.showBadgeType = showBadgeType;
+        this.closetAccess = closetAccess;
     }
 
     /*
@@ -147,14 +165,57 @@ public class User extends BaseTimeEntity {
     }
 
     /*
-    * 유저 정보 수정
+    * 유저 정보 수정 (정보)
     * */
     public Long updateUserInfo(UserUpdateRequestDto userUpdateRequestDto) {
         this.age = userUpdateRequestDto.getAge();
         this.gender = userUpdateRequestDto.getGender();
         this.nickname = userUpdateRequestDto.getNickname();
         this.name = userUpdateRequestDto.getName();
+        this.closetAccess = userUpdateRequestDto.getClosetAccess();
 
         return this.id;
+    }
+
+    public Long updateProfileImage(String profileImg) {
+        this.profileImg = profileImg;
+
+        return this.id;
+    }
+
+    /*
+    * 유저 정보 수정 (정보 + 이미지)
+    * */
+    public Long updateUserInfoAndImage(UserUpdateIncludeImageRequestDto userUpdateIncludeImageRequestDto, String profileImg) {
+        this.age = userUpdateIncludeImageRequestDto.getAge();
+        this.gender = userUpdateIncludeImageRequestDto.getGender();
+        this.nickname = userUpdateIncludeImageRequestDto.getNickname();
+        this.name = userUpdateIncludeImageRequestDto.getName();
+        this.profileImg = profileImg;
+        this.closetAccess = userUpdateIncludeImageRequestDto.getClosetAccess();
+
+        return this.id;
+    }
+
+    /*
+    * 유저 대표 뱃지 설정
+    * */
+    public Long updateShowBadge(BadgeType likeType) {
+        this.showBadgeType = likeType;
+
+        return this.id;
+    }
+
+    /*
+    * 유저 옷장 접근 권한 설정
+    * */
+    public Long updateClosetAccess(ClosetAccess closetAccess) {
+        this.closetAccess = closetAccess;
+
+        return this.id;
+    }
+
+    public void updateProfileImg(String profileImg) {
+        this.profileImg = profileImg;
     }
 }
