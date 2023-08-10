@@ -108,10 +108,6 @@ const Ranking = () => {
                     <div>{year}/{month}/{day} {hours}:{minutes}:{seconds}</div> 
                 </div>
 
-                {/* 내 순위 */}
-                <div>
-                    <div><MyRank></MyRank></div>
-                </div>
 
                     {state.rankMode==="lovely"?<RankingLovely/>:(
                         state.rankMode==="natural"?<RankingNatural/>:(
@@ -120,6 +116,7 @@ const Ranking = () => {
                             )
                         )
                     )}
+
                    
                     {/* 페이지네이션   20을 {clothes.length}로 바꿔야 함 */}
                     {/* <div className={`${rankingStyle.paginationContainer}`}>

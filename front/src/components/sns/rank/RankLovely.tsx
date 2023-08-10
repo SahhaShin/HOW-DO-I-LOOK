@@ -6,6 +6,7 @@ import rankingStyle from "./RankingLovely.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action_ranking} from "../../../store/RankingSlice";
+import MyRank from "./MyRank";
 
 const RankingLovely = () => {
 
@@ -53,8 +54,7 @@ const RankingLovely = () => {
                             <img src={state.top3RankingList[1].profileImg}/>
                         </div>
 
-                        <div className={`${rankingStyle.score} ${
-                                state.top3RankingList[1].userId === loginUser.id ? rankingStyle.MyLovelyRank : null}`}>{state.top3RankingList[1].nickname}</div>
+                        <div className={`${rankingStyle.score}`}>{state.top3RankingList[1].nickname}</div>
                         <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[1].score}</div>
                     </div>
                     
@@ -64,8 +64,7 @@ const RankingLovely = () => {
                             <img src={state.top3RankingList[0].profileImg}/>
                 
                         </div>
-                        <div className={`${rankingStyle.score} ${
-                                state.top3RankingList[0].userId === loginUser.id ? rankingStyle.MyLovelyRank : null}`}>{state.top3RankingList[0].nickname}</div>
+                        <div className={`${rankingStyle.score}`}>{state.top3RankingList[0].nickname}</div>
                         <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[0].score}</div>
                     </div>
                     
@@ -75,13 +74,17 @@ const RankingLovely = () => {
                             <img src={state.top3RankingList[2].profileImg}/>
                         </div>
 
-                        <div className={`${rankingStyle.score} ${
-                                state.top3RankingList[2].userId === loginUser.id ? rankingStyle.MyLovelyRank : null}`}>{state.top3RankingList[2].nickname}</div>
+                        <div className={`${rankingStyle.score}`}>{state.top3RankingList[2].nickname}</div>
                         <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[2].score}</div>
                     </div>
                     
 
                 </div>
+
+                 {/* 내 순위 */}
+                 {/* <div>
+                    <div><MyRank></MyRank></div>
+                </div> */}
 
 
                 {/* 그 이하 순위 */}
