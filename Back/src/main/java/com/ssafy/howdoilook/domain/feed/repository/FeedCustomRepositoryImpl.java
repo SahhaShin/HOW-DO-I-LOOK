@@ -101,9 +101,11 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
     public Page<Feed> selectLikedFeed(Long userId, Pageable pageable) {
         JPAQuery<Feed> query = jpaQueryFactory
                 .select(feed)
+                .distinct()
                 .from(feedLike)
                 .leftJoin(feedLike.feed, feed)
                 .on(feedLike.user.id.eq(userId));
+
 
         QueryResults<Feed> results = query
                 .offset(pageable.getOffset())
