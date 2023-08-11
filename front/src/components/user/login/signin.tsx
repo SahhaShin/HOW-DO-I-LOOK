@@ -4,6 +4,10 @@ import loginStyle from "./login.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { action_user } from "../../../store/UserSlice";
+
+//hook
+import { CheckEmail, CheckNickName } from "../../../hook/UserApi";
+
 // import { isVisible } from "@testing-library/user-event/dist/types/utils";
 
 const Login: React.FC = () => {
@@ -24,8 +28,48 @@ const Login: React.FC = () => {
   const [nicknameNotice, setNicknameNotice] = useState(false);
 
 
-  const changeEmail = (e) => {
-    setEmail(e.target.value)
+  const changeEmail = (value: string) => {
+    setEmail(value)
+    console.log("email : "+ email + " "+ value)
+    if(value != ""){
+      CheckEmail(value).then((res) => setEmailNotice(res))
+
+    }
+    console.log("check : " + emailNotice)
+  }
+
+  const changeNickname = (value: string) => {
+    setNickname(value)
+    console.log("nickname : "+ nickname + " "+ value)
+    if(value != ""){
+      CheckNickName(value).then((res) => setNicknameNotice(res))
+
+    }
+    console.log("check : " + nicknameNotice)
+  }
+
+  const changePassword = (value: string) => {
+    setPassword(value)
+    console.log("password : "+ password + " "+ value)
+    if(value != passworda){
+      setPwNotice(true)
+    }
+    else{
+      setPwNotice(false)
+    }
+    console.log("check : " + pwNotice)
+  }
+
+  const changePassworda = (value: string) => {
+    setPassworda(value)
+    console.log("passworda : "+ passworda + " "+ value)
+    if(value != password){
+      setPwNotice(true)
+    }
+    else{
+      setPwNotice(false)
+    }
+    console.log("check : " + pwNotice)
   }
 
   const signinClick = () => {
@@ -39,6 +83,10 @@ const Login: React.FC = () => {
     console.log("age : " + age);
     console.log("agree : " + agree);
 
+    console.log()
+    console.log("emailNotice : " + emailNotice)
+    console.log("pwNotice : " + pwNotice)
+    console.log("nicknameNotice : " + nicknameNotice)
     //이메일 확인
     // const ntf = dispatch(action.CheckNickName({nickname}))
     // .then((res) =>{
@@ -52,8 +100,8 @@ const Login: React.FC = () => {
     if(!agree){
       alert("이용약관 동의를 해 주십시오")
     }
-    else if(password != passworda ){
-      alert("비밀번호와 비밀번호 확인이 서로 일치하지 않습니다.")
+    else if((emailNotice||pwNotice||nicknameNotice) ){
+      alert("입력한 정보를 다시 확인해 주시기 바랍니다.")
       return
     }
     else { 
@@ -98,9 +146,9 @@ const Login: React.FC = () => {
               id="email"
               placeholder="이메일을 입력해주세요"
               className={`${loginStyle.input}`}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => changeEmail(e.target.value)}
             />
-            {pwNotice && <div>사용하실 수 있는 이메일입니다.</div>}
+            {emailNotice && <div>사용하실 수 없는 이메일입니다.</div>}
           </div>
           <div>
             <label htmlFor="nickname" className={`${loginStyle.lable}`}>
@@ -110,11 +158,11 @@ const Login: React.FC = () => {
               type="text"
               id="nickname"
               value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+              onChange={(e) => changeNickname(e.target.value)}
               placeholder="사용하실 닉네임을 입력해주세요"
               className={`${loginStyle.input}`}
             />
-            {pwNotice && <div>사용하실 수 있는 닉네임입니다.</div>}
+            {nicknameNotice && <div>사용하실 수 없는 닉네임입니다.</div>}
           </div>
           <div>
             <label htmlFor="userPW" className={`${loginStyle.lable}`}>
@@ -125,7 +173,7 @@ const Login: React.FC = () => {
               id="userPW"
               placeholder="비밀번호를 입력해주세요"
               className={`${loginStyle.input}`}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => changePassword(e.target.value)}
             />
           </div>
           <div>
@@ -137,7 +185,7 @@ const Login: React.FC = () => {
               id="userPWa"
               placeholder="비밀번호를 다시 입력해주세요"
               className={`${loginStyle.input}`}
-              onChange={(e) => setPassworda(e.target.value)}
+              onChange={(e) => changePassworda(e.target.value)}
             />
             {pwNotice && <div>비밀번호가 서로 다릅니다.</div>}
           </div>
