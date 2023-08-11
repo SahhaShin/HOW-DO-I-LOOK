@@ -102,11 +102,11 @@ const Login: React.FC = () => {
     }
     else if((emailNotice||pwNotice||nicknameNotice) ){
       alert("입력한 정보를 다시 확인해 주시기 바랍니다.")
-      return
+      return //유효성 검사
     }
     else if(!((name != "")&&(gender != "")&&(age != "")) ){
       alert("입력한 정보를 다시 확인해 주시기 바랍니다.")
-      return
+      return //정보 공백 검사
     }
     else { 
       //회원가입 요청
