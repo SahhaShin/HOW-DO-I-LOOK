@@ -167,12 +167,12 @@ const StyledSlider = styled(Slider)`
   .slick-prev {
     z-index: 1;
     left: 30px;
-    top: 50%;
+    top: 200px;
   }
 
   .slick-next {
     right: 40px;
-    top: 50%;
+    top: 200px;
   }
 
   .slick-prev:before,
