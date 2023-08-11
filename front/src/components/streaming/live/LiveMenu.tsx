@@ -17,21 +17,6 @@ const LiveMenu = () => {
 
         return (
             <div className={`${liveMenuStyle.navbarContainer}`}>
-                {/* <div className={`${liveMenuStyle.navbar}`}>
-                    {menuItems.map((menuItem, index) => (
-                    <button key={index} onClick={() => handleMenuClick(index)}>
-                        {menuItem}
-                    </button>
-                    ))}
-
-
-                    
-                    <div
-                    className={`${liveMenuStyle.activeMenuBlock} ${activeMenu !== null ? 'active' : ''}`}
-                    style={{ top: activeMenu !== null ? `${activeMenu * 17}%` : '0' }}
-                    > {activeMenu !== null && <h2>{menuItems[activeMenu]}</h2>} </div>
-                    </div> */}
-
 
                     {/* 새로운 메뉴 */}
                     <div>
