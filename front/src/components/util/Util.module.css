@@ -141,7 +141,7 @@ button{
     flex-direction: column;
     
 
-    height: 170px;
+    height: 150px;
 
     /* border */
     border-top: 1px solid var(--border);
@@ -157,6 +157,7 @@ button{
 }
 .butterfly{
     width: 5%;
+    height: 100%;
     margin-left: 30px;
 }
 .logo{
