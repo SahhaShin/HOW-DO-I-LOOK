@@ -80,7 +80,7 @@ public class ImageService {
 
         // 파일명 중복을 피하기위해 날짜 추가
         String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("-yyyyMMdd-HHmmss"));
-        String fileName = originalName + formatDate + "-none";
+        String fileName = originalName + formatDate;
 
         long size = multipartFile.getSize(); // 파일 크기
 
