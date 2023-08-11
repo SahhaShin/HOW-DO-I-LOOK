@@ -114,7 +114,7 @@ public class RoomService {
         }
 
         Room room = Room.builder()
-                .code(roomAddRequestDto.getCode())
+                .code(UUID.randomUUID().toString())
                 .title(roomAddRequestDto.getTitle())
                 .type(RoomType.valueOf(roomAddRequestDto.getType()))
                 .host(user)
@@ -126,7 +126,7 @@ public class RoomService {
 
         Room saveRoom = roomRepository.save(room);
 
-        roomUserService.addRoomUser(saveRoom.getHost().getId(), saveRoom.getId(), userDetails);
+//        roomUserService.addRoomUser(saveRoom.getHost().getId(), saveRoom.getId(), userDetails);
 
         return room.getId();
     }
