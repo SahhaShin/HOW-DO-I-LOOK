@@ -3,18 +3,23 @@ package com.ssafy.howdoilook.domain.roomUser.service;
 import com.ssafy.howdoilook.domain.room.entity.Room;
 import com.ssafy.howdoilook.domain.roomUser.dto.response.RoomUserAddResponseDto;
 import com.ssafy.howdoilook.domain.room.repository.RoomRepository.RoomRepository;
+import com.ssafy.howdoilook.domain.roomUser.dto.response.RoomUserGetListDto;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUserType;
 import com.ssafy.howdoilook.domain.roomUser.repository.RoomUserRepository;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.authorization.AuthorizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.expression.AccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -26,18 +31,12 @@ public class RoomUserService {
     private final RoomUserRepository roomUserRepository;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
+    private final AuthorizationService authorizationService;
 
     @Transactional
     public RoomUserAddResponseDto addRoomUser(Long userId, Long roomId, UserDetails userDetails) throws AccessException {
 
-        String clientEmail = userDetails.getUsername();
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
-
-        if (!clientEmail.equals(user.getEmail())){
-            throw new AccessException("접근 권한이 없습니다.");
-        }
+        User user = authorizationService.auth(userId, userDetails);
 
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 방이 존재하지 않습니다.", 1));
@@ -85,13 +84,7 @@ public class RoomUserService {
     @Transactional
     public void updateRoomUser(Long userId, Long roomId, UserDetails userDetails) throws AccessException {
 
-        String clientEmail = userDetails.getUsername();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
-
-        if (!clientEmail.equals(user.getEmail())){
-            throw new AccessException("접근 권한이 없습니다.");
-        }
+        authorizationService.auth(userId, userDetails);
 
         RoomUser findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(roomId, userId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 방의 참여자가 존재하지 않습니다.", 1));
@@ -106,5 +99,35 @@ public class RoomUserService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 방의 참여자가 존재하지 않습니다."));
 
         findRoomUser.updateStatus(RoomUserType.KICK);
+    }
+
+    public List<RoomUserGetListDto> getRoomUserList(Long roomId, Long userId, UserDetails userDetails) throws AccessException {
+
+        authorizationService.auth(userId, userDetails);
+
+        Room findRoom = roomRepository.findById(roomId).orElseThrow(()->new EmptyResultDataAccessException("해당 방은 존재하지 않습니다.", 1));
+
+        if(findRoom.getHost().getId() != userId) {
+            RoomUser findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(roomId, userId)
+                    .orElseThrow(() -> new EmptyResultDataAccessException("해당 방의 참여자가 아닙니다.", 1));
+        }
+
+        List<RoomUser> findRoomUsers = roomUserRepository.findByRoom_IdAndStatus(roomId, RoomUserType.JOIN);
+
+        List<RoomUserGetListDto> roomUserGetListDtos = new ArrayList<>();
+
+        for(RoomUser roomUser : findRoomUsers) {
+            Optional<User> user = userRepository.findById(roomUser.getUser().getId());
+
+            RoomUserGetListDto roomUserGetListDto = RoomUserGetListDto.builder()
+                    .userId(user.get().getId())
+                    .userNickname(user.get().getNickname())
+                    .userProfileImg(user.get().getProfileImg())
+                    .build();
+
+            roomUserGetListDtos.add(roomUserGetListDto);
+        }
+
+        return roomUserGetListDtos;
     }
 }
