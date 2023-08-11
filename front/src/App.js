@@ -39,7 +39,7 @@ function App() {
             />
             <Route path="/feed" element={<Feed />} />
             <Route path="/mypage/:watchingUserId" element={<Mypage />} />
-            <Route path="/live" element={<Live />} />
+            <Route path="/live/:roomId" element={<Live />} />
             
 
             {/* <Route path="/" element={<LogHin/>}/> */}
