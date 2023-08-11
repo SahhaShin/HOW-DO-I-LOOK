@@ -299,7 +299,11 @@ const FeedDetail = (props) => {
                                                         {/* <button onClick={()=>{updateComment(one.content)}}>수정</button> */}
                                                         <button onClick={()=>dispatch(action.deleteComment(one.commentId))}>삭제</button>
                                                     </div>
-                                                    <div className={`${FeedDetailStyle.btnDate}`}>수정 시간 필요</div>
+                                                    <div className={`${FeedDetailStyle.btnDate}`}>
+                                                        {Number(one.modifiedDate?.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}
+                                                        {one.modifiedDate?.split("T")[1].split(":")[0]}:
+                                                        {one.modifiedDate?.split("T")[1].split(":")[1]}    
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

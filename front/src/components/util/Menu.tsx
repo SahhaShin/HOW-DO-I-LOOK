@@ -30,8 +30,8 @@ const NavigationBar: React.FC = () => {
   },[])
 
 
-  const liveMenuItems = ["라이브", "피드", "채팅", "랭킹", "알림"];
-  const liveMenuLink = ["liveList", "feed", "chatList", "ranking", "alarm"];
+  const liveMenuItems = ["라이브", "피드", "채팅", "랭킹"];
+  const liveMenuLink = ["liveList", "feed", "chatList", "ranking"];
 
 
   return (
@@ -47,7 +47,7 @@ const NavigationBar: React.FC = () => {
             {/* 이미 체크된 메뉴가 아닐 경우 클릭한 버튼 위치로 이동 */}
             {state.menuItemNum!==-1?<div
               className={`${UtilStyle.activeMenuBlock} ${activeMenu !== null ? 'active' : ''}`}
-              style={{ top: activeMenu !== null ? `${activeMenu * 20}%` : '0' }}
+              style={{ top: activeMenu !== null ? `${activeMenu * 25}%` : '0' }}
               > {activeMenu !== null && <h2>{liveMenuItems[activeMenu]}</h2>} 
             </div>:null}
           </div>
