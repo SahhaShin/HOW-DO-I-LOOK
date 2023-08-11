@@ -42,6 +42,7 @@ function App() {
             <Route path="/liveList" element={<List />} />
             <Route path="/live/:roomId" element={<Live />} />
 
+
             {/* <Route path="/" element={<LogHin/>}/> */}
 
             <Route path="/" element={<Home />} />

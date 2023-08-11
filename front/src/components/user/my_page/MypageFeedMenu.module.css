@@ -19,6 +19,10 @@
 }
     
 .activeMenuBlock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
     /* 폰트 */
     font-family: 'Pretendard-Regular';
 
@@ -70,7 +74,7 @@
     font-size: 15px;
 
     /* 위치 */
-    padding: 9%;
+    padding: 20%;
 }
     
   

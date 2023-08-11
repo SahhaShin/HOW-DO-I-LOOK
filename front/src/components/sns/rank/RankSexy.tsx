@@ -53,31 +53,31 @@ const RankingSexy = () => {
                     {/* 2위 */}
                     <div className={`${rankingStyle.rankSet}`}>
                         <div className={`${rankingStyle.notFirst}`}>
-                            <img src={state.top3RankingList[1].profileImg}/>
+                            <img src={state.top3RankingList[1]?.profileImg}/>
                         </div>
 
-                        <div className={`${rankingStyle.score}`}>{state.top3RankingList[1].nickname}</div>
-                        <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[1].score}</div>
+                        <div className={`${rankingStyle.score}`}>{state.top3RankingList[1]?.nickname}</div>
+                        <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[1]?.score}</div>
                     </div>
                     
                     {/* 1위 */}
                     <div className={`${rankingStyle.rankSet }`}>
                         <div className={`${rankingStyle.first}`}>
-                            <img src={state.top3RankingList[0].profileImg}/>
+                            <img src={state.top3RankingList[0]?.profileImg}/>
                 
                         </div>
-                        <div className={`${rankingStyle.score}`}>{state.top3RankingList[0].nickname}</div>
-                        <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[0].score}</div>
+                        <div className={`${rankingStyle.score}`}>{state.top3RankingList[0]?.nickname}</div>
+                        <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[0]?.score}</div>
                     </div>
                     
                     {/* 3위 */}
                     <div className={`${rankingStyle.rankSet}`}>
                         <div className={`${rankingStyle.notFirst}`}>
-                            <img src={state.top3RankingList[2].profileImg}/>
+                            <img src={state.top3RankingList[2]?.profileImg}/>
                         </div>
 
-                        <div className={`${rankingStyle.score} `}>{state.top3RankingList[2].nickname}</div>
-                        <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[2].score}</div>
+                        <div className={`${rankingStyle.score} `}>{state.top3RankingList[2]?.nickname}</div>
+                        <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[2]?.score}</div>
                     </div>
                     
 

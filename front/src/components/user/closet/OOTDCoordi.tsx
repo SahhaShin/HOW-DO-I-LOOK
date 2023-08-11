@@ -140,7 +140,18 @@ const OOTDCoordi = (props) => {
                             }}
                         >
 
-                            {
+{
+                            state.clothesTop.map((oneT)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideT}`}>
+                                            <img src={oneT.photoLink}/>
+                                        </div>
+                                    );
+                                })
+                            }
+
+
+                            {/* {
                                 props.idx===1?
                                 state.clothesOOTDTop_1.map((oneT)=>{
                                     return(
@@ -157,7 +168,7 @@ const OOTDCoordi = (props) => {
                                     );
                                 })
 
-                            }
+                            } */}
 
                         </StyledSlider>
 

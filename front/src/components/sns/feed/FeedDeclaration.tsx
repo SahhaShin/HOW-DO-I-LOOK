@@ -13,12 +13,13 @@ const FeedDeclaration = () => {
     //redux 관리
     let state = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
     return(
         <div className={`${feedDeclarationStyle.modal}`}>
             {/* 안내문구 */}
             <div className={`${feedDeclarationStyle.statement}`}>
-                <p>안녕하세요 미팅만 50번님, 불편을 끼쳐드려 죄송합니다.</p>
+                <p>안녕하세요 {loginUser.nickname}님, 불편을 끼쳐드려 죄송합니다.</p>
                 <p>왜 이 게시물을 신고하고 싶으신가요?</p>
             </div>
 

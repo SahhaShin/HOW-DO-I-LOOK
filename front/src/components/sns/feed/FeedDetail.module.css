@@ -130,7 +130,7 @@
     border-radius: 10px;
     margin-right: 10px;
     margin-bottom: 5px;
-    font-size: 15px;
+    font-size: 12px;
     background-color: var(--signiture);
     color: white;
 }
@@ -249,6 +249,8 @@
     justify-content:space-between;
     padding: 1%;
     align-items: center;
+    margin-top: 20px;
+    margin-bottom: 9px;
 }
 
 .rightHeader p{
