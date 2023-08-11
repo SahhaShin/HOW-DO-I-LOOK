@@ -104,6 +104,10 @@ const Login: React.FC = () => {
       alert("입력한 정보를 다시 확인해 주시기 바랍니다.")
       return
     }
+    else if(!((name != "")&&(gender != "")&&(age != "")) ){
+      alert("입력한 정보를 다시 확인해 주시기 바랍니다.")
+      return
+    }
     else { 
       //회원가입 요청
       dispatch(
