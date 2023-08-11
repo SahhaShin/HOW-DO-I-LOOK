@@ -527,7 +527,6 @@ const FeedSlice = createSlice({
 
         builder.addCase(action.getFeedLikeOnMe.fulfilled,(state,action)=>{
             state.detailObjLikes = action.payload; //내가 누른 좋아요 정보
-            console.log(`네기 젛이힌디거!! 2 ${action.payload.sexyType}`);
         })
 
         builder.addCase(action.feedLike.fulfilled,(state,action)=>{
