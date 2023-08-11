@@ -38,7 +38,7 @@ public class OotdCustomRepositoryImpl implements OotdCustomRepository {
     }
 
     @Override
-    public List<ClothesTypeListDto> findClothesList(Long clothesId, Long userId, String type, Long ootdId) {
+    public List<ClothesTypeListDto> findClothesList(Long clothesId, Long userId, String type) {
 
          List<ClothesTypeListDto> ootdList = jpaQueryFactory.select(new QClothesTypeListDto(
                  c.clothes.id, c.photoLink))
