@@ -108,7 +108,9 @@ export const action_user = {
           return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
-          console.log(e);
+          console.log("error")
+          console.log(e.response.data);
+          alert(e.response.data)
         });
     }
   ),

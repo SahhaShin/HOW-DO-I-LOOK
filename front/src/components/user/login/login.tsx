@@ -63,8 +63,6 @@ const Login: React.FC = () => {
       })
     );
 
-    alert("이메일과 비밀번호를 확인하십시오.")
-
 
 
     // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"
