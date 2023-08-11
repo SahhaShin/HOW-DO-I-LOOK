@@ -27,6 +27,7 @@ const Closet = () => {
 
     //로그인 유저 정보
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+    console.log(loginUser.id);
 
     // 페이지네이션, 옷 관리
     let clothesListLen = state.clothesTop?.length;
@@ -95,6 +96,8 @@ const Closet = () => {
             userId:loginUser.id,
             pageNum : 0,
         }));
+
+        dispatch(action.OOTDList(loginUser.id));
     
     },[state.clothRegistOk])
 
