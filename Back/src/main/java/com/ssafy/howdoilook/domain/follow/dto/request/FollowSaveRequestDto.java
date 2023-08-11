@@ -1,15 +1,18 @@
 package com.ssafy.howdoilook.domain.follow.dto.request;
 
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FollowSaveRequestDto {
-    private Long followerId;
-    private Long followeeId;
+    private Long id;
+    private Long targetId;
+
+    @Builder
+    public FollowSaveRequestDto(Long id, Long targetId) {
+        this.id = id;
+        this.targetId = targetId;
+    }
 }

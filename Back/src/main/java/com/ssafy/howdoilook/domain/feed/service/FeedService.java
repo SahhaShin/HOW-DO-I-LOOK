@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.feed.service;
 
+import com.ssafy.howdoilook.domain.comment.repository.CommentRepository;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedSaveRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedUpdateRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.PhotoSaveRequestDto;
@@ -19,6 +20,7 @@ import com.ssafy.howdoilook.domain.follow.service.FollowService;
 import com.ssafy.howdoilook.domain.hashtag.service.HashTagService;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.authorization.AuthorizationService;
 import com.ssafy.howdoilook.global.handler.AccessException;
 import com.ssafy.howdoilook.global.s3upload.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,8 @@ public class FeedService {
     private final FeedLikeService feedLikeService;
     private final FollowService followService;
     private final ImageService imageService;
+    private final AuthorizationService authorizationService;
+    private final CommentRepository commentRepository;
     private final FeedRepository feedRepository;
     private final FeedPhotoRepository feedPhotoRepository;
     private final UserRepository userRepository;
@@ -89,15 +93,8 @@ public class FeedService {
 
     @Transactional
     public Long saveFeed(FeedSaveRequestDto feedSaveRequestDto, UserDetails userDetails, List<MultipartFile> multipartFileList) {
-        String clientEmail = userDetails.getUsername();
 
-        //넘어온 회원찾기
-        User findUser = userRepository.findById(feedSaveRequestDto.getUserId()).orElseThrow(
-                ()->new EmptyResultDataAccessException("존재하지 않는 User 입니다.",1));
-        if (!findUser.getEmail().equals(clientEmail)){
-            throw new AccessException("접근 권한이 없습니다.");
-        }
-
+        authorizationService.auth(feedSaveRequestDto.getUserId(), userDetails);
 
         for (int i = 0; i < multipartFileList.size(); i++) {
             try {
@@ -107,6 +104,9 @@ public class FeedService {
                 throw new RuntimeException(e);
             }
         }
+
+        User findUser = userRepository.findById(feedSaveRequestDto.getUserId()).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 User 입니다.", 1));
 
         //Feed Entity 만들기
         Feed feedEntity = Feed.builder()
@@ -182,23 +182,32 @@ public class FeedService {
         List<FeedResponseDto> feedResponseDtoList = new ArrayList<>();
         for (Feed feed : feedList) {
             FeedResponseDto feedResponseDto = new FeedResponseDto();
+
             feedResponseDto.setUserId(feed.getUser().getId());
+            feedResponseDto.setUserNickname(feed.getUser().getNickname());
             feedResponseDto.setFeedId(feed.getId());
             feedResponseDto.setFeedContent(feed.getContent());
+            feedResponseDto.setCommentCount(commentRepository.selectCommentCountByFeedId(feed.getId()));
             feedResponseDto.setFeedCreatedDate(feed.getCreatedDate());
             feedResponseDto.setFeedUpdateDate(feed.getModifiedDate());
             feedResponseDto.setFeedLikeCountResponseDto(feedLikeService.countFeedLike(feed.getId()));
             feedResponseDto.setPhotoResponseDtoList(new ArrayList<>());
+
             List<FeedPhoto> feedPhotoList = feed.getFeedPhotoList();
+
             for (FeedPhoto feedPhoto : feedPhotoList) {
                 PhotoResponseDto photoResponseDto = new PhotoResponseDto();
+
                 photoResponseDto.setId(feedPhoto.getId());
                 photoResponseDto.setLink(feedPhoto.getLink());
                 photoResponseDto.setHashtagList(new ArrayList<>());
+
                 List<FeedPhotoHashtag> feedPhotoHashtagList = feedPhoto.getFeedPhotoHashtagList();
+
                 for (FeedPhotoHashtag feedPhotoHashtag : feedPhotoHashtagList) {
                     photoResponseDto.getHashtagList().add(feedPhotoHashtag.getHashtag().getContent());
                 }
+
                 feedResponseDto.getPhotoResponseDtoList().add(photoResponseDto);
             }
             feedResponseDtoList.add(feedResponseDto);

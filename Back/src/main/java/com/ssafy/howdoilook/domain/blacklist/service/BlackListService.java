@@ -45,6 +45,7 @@ public class BlackListService {
         for (BlackList blackList : content) {
             User targetUser = blackList.getTargetUser();
             BlackListSelectResponseDto blacklistdto = BlackListSelectResponseDto.builder()
+                    .id(userId)
                     .targetUserId(targetUser.getId())
                     .nickname(targetUser.getNickname())
                     .profileImg(targetUser.getProfileImg())
@@ -99,16 +100,26 @@ public class BlackListService {
         blackListRepository.deleteById(blackList.getId());
     }
 
-    public List<BlackListSelectResponseDto> getAllBlackList(Long userId) {
+    public List<BlackListSelectResponseDto> getAllBlackList(Long userId, UserDetails userDetails) {
+        String clientEmail = userDetails.getUsername();
+
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
+
+        if (!clientEmail.equals(user.getEmail())) {
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
         List<BlackListSelectResponseDto> blackListSelectResponseDtoList = new ArrayList<>();
 
         List<BlackList> blackList = blackListRepository.getAllBlackList(userId);
 
         for (BlackList black : blackList) {
             BlackListSelectResponseDto blackListSelectResponseDto = BlackListSelectResponseDto.builder()
-                    .targetUserId(black.getTargetUser().getId())
+                    .id(black.getUser().getId())
                     .nickname(black.getTargetUser().getNickname())
                     .profileImg(black.getTargetUser().getProfileImg())
+                    .targetUserId(black.getTargetUser().getId())
                     .build();
 
             blackListSelectResponseDtoList.add(blackListSelectResponseDto);

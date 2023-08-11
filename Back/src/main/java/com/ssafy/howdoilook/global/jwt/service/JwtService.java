@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.Option;
 import java.security.InvalidKeyException;
 import java.util.Date;
 import java.util.Optional;
@@ -59,11 +60,15 @@ public class JwtService {
     public String createAccessToken(String email) {
         Date now = new Date();
 
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
         // JWT 토큰 생성
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 만료시간 설정
                 .withClaim(EMAIL_CLAIM, email)
+                .withClaim("nickname", user.getNickname())
                 .sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, SecretKey로 암호화
     }
 
@@ -115,6 +120,23 @@ public class JwtService {
         return Optional.ofNullable(httpServletRequest.getHeader(accessHeader))
                 .filter(accessToken -> accessToken.startsWith(BEARER))
                 .map(accessToken -> accessToken.replace(BEARER, ""));
+    }
+
+    /*
+    * AccessToken에서 nickName 추출
+     */
+    public Optional<String> extractNickName(String accessToken){
+        try {
+            return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey)) // Token 유효성 검증기
+                    .build() // JWT verifier 생성
+                    .verify(accessToken) // accessToken 검증 -> 비유효 : 예외 발생
+                    .getClaim("nickname") // claim에서 nickname 추출
+                    .asString());
+        } catch(Exception e) {
+            e.printStackTrace();
+
+            return Optional.empty();
+        }
     }
 
     /*

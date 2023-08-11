@@ -43,6 +43,8 @@ public class UserLikeService {
         Room room = roomRepository.findById(scoreSaveRequestDto.getRoomId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 방이 존재하지 않습니다", 1));
 
+        System.out.println(room.getId());
+        System.out.println(user.getId());
         roomUserRepository.findByRoom_IdAndUser_Id(room.getId(), user.getId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 방에 해당 유저가 존재하지 않습니다.", 1));
 

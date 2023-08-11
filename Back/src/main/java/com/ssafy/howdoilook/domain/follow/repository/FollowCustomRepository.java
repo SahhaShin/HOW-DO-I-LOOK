@@ -1,6 +1,8 @@
 package com.ssafy.howdoilook.domain.follow.repository;
 
+import com.ssafy.howdoilook.domain.follow.dto.response.PerfectFollowResponseDto;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
+import com.ssafy.howdoilook.domain.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,4 +18,6 @@ public interface FollowCustomRepository {
     public List<Follow> findAllFolloweeByUserId(Long userId);
 
     public List<Follow> findAllFollowerByUserId(Long userId);
+
+    public List<PerfectFollowResponseDto> findPerfectFollowers();
 }

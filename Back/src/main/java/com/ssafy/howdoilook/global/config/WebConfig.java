@@ -12,8 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("*")
                 .allowedHeaders("*")
-                .exposedHeaders("Authorization", "Authorization-Refresh")
+                .exposedHeaders("Authorization", "Authorization-Refresh", "new_basic_user_email")
                 .maxAge(3000);
-
     }
 }

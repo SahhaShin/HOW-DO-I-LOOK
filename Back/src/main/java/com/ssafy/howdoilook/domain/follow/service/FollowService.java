@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.follow.dto.request.FollowDeleteRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.request.FollowSaveRequestDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FolloweeResponseDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FollowerResponseDto;
+import com.ssafy.howdoilook.domain.follow.dto.response.PerfectFollowResponseDto;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.follow.repository.FollowReposiroty;
 import com.ssafy.howdoilook.domain.user.entity.User;
@@ -34,14 +35,14 @@ public class FollowService {
     public Long saveFollow(FollowSaveRequestDto followSaveRequestDto, UserDetails userDetails){
         String clientEmail = userDetails.getUsername();
 
-        User follower = userRepository.findById(followSaveRequestDto.getFollowerId())
+        User follower = userRepository.findById(followSaveRequestDto.getId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
 
         if (!clientEmail.equals(follower.getEmail())){
             throw new AccessException("접근 권한이 없습니다.");
         }
 
-        User followee = userRepository.findById(followSaveRequestDto.getFolloweeId())
+        User followee = userRepository.findById(followSaveRequestDto.getTargetId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 followee입니다.",1));
 
         //null값이 아니면 이미 데이터가 있는 것이다.
@@ -53,12 +54,11 @@ public class FollowService {
                     .followee(followee)
                     .build();
             followRepository.save(follow);
+
             return follow.getId();
         } else {
             throw new IllegalArgumentException("이미 존재하는 Follow입니다.");
         }
-
-
     }
 
 
@@ -66,7 +66,7 @@ public class FollowService {
     public void deleteFollow(FollowDeleteRequestDto followDeleteRequestDto, UserDetails userDetails){
         String clientEmail = userDetails.getUsername();
 
-        User follower = userRepository.findById(followDeleteRequestDto.getFollowerId())
+        User follower = userRepository.findById(followDeleteRequestDto.getId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 follower입니다.",1));
 
         if (!clientEmail.equals(follower.getEmail())){
@@ -74,7 +74,7 @@ public class FollowService {
         }
 
         Follow findFollow = followRepository.findFollowIdByFollowerAndFollowee(
-                followDeleteRequestDto.getFollowerId(), followDeleteRequestDto.getFolloweeId());
+                followDeleteRequestDto.getId(), followDeleteRequestDto.getTargetId());
         //팔로우 관계가 있을 때
         if (findFollow != null) {
             followRepository.deleteById(findFollow.getId());
@@ -132,9 +132,10 @@ public class FollowService {
     }
     
     /*
-    * 나를 팔로우하는 사람 전체 리스트 반환(Non-Paging) 
+    * 내 팔로잉 리스트
     * */
     public List<FolloweeResponseDto> getAllFolloweeList(Long userId) {
+        // userId : 나
         List<Follow> allFolloweeList = followRepository.findAllFolloweeByUserId(userId);
 
         List<FolloweeResponseDto> followeeResponseDtoList = new ArrayList<>();
@@ -153,7 +154,7 @@ public class FollowService {
     }
     
     /*
-    * 내가 팔로우하는 사람 전체 리스트 반환(Non-Paging)
+    * 내 팔로워 리스트
     * */
     public List<FollowerResponseDto> getAllFollowerList(Long userId) {
         List<Follow> allFollowerList = followRepository.findAllFollowerByUserId(userId);
@@ -171,5 +172,10 @@ public class FollowService {
         }
 
         return followerResponseDtoList;
+    }
+
+    public List<PerfectFollowResponseDto> getPerfectFollowList() {
+
+        return followRepository.findPerfectFollowers();
     }
 }

@@ -15,4 +15,6 @@ public interface ClothesRepository extends JpaRepository<Clothes, Long> {
     List<Clothes> findByUser_Id(Long userId);
 
     Page<Clothes> findByTypeAndUser_Id(ClothesType type, Long userId, Pageable pageable);
+
+    boolean existsByPhotoLink(String link);
 }

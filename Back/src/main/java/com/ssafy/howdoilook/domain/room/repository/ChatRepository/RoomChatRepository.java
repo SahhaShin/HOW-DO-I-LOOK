@@ -7,6 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface RoomChatRepository extends MongoRepository<RoomChat, String> {
-    List<SoloChat> findAllByRoomIdOrderByTimeAsc(String roomId);
 
 }

@@ -24,11 +24,13 @@ public class FollowController {
     @PostMapping("")
     public ResponseEntity<Long> saveFollow(@RequestBody FollowSaveRequestDto followSaveRequestDto, @AuthenticationPrincipal UserDetails userDetails){
         Long id = followService.saveFollow(followSaveRequestDto,userDetails);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
     @DeleteMapping("")
     public ResponseEntity<?> deleteFollow(@RequestBody FollowDeleteRequestDto followDeleteRequestDto, @AuthenticationPrincipal UserDetails userDetails){
         followService.deleteFollow(followDeleteRequestDto,userDetails);
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
     //나를 팔로워 하는사람
@@ -46,19 +48,42 @@ public class FollowController {
         return ResponseEntity.status(HttpStatus.OK).body(followeeResponseDtos);
     }
 
-    @ApiOperation(value = "내가 팔로우하는 사람 전체 리스트")
-    @GetMapping("/list/follower/{userId}")
-    public ResponseEntity<?> getAllFolloweeList(@PathVariable Long userId) {
+    @ApiOperation(value = "내 팔로잉 전체 리스트")
+    @GetMapping("/list/my/followee/{myId}")
+    public ResponseEntity<?> getMyAllFolloweeList(@PathVariable Long myId) {
 
         return ResponseEntity.ok()
-                .body(followService.getAllFolloweeList(userId));
+                .body(followService.getAllFolloweeList(myId));
     }
 
-    @ApiOperation(value = "나를 팔로우하는 사람 전체 리스트")
-    @GetMapping("/list/followee/{userId}")
-    public ResponseEntity<?> getAllFollowerList(@PathVariable Long userId) {
+    @ApiOperation(value = "내 팔로워 전체 리스트")
+    @GetMapping("/list/my/follower/{myId}")
+    public ResponseEntity<?> getMyAllFollowerList(@PathVariable Long myId) {
 
         return ResponseEntity.ok()
-                .body(followService.getAllFollowerList(userId));
+                .body(followService.getAllFollowerList(myId));
+    }
+
+    @ApiOperation(value = "타인의 팔로잉 전체 리스트")
+    @GetMapping("/list/your/followee/{yourId}")
+    public ResponseEntity<?> getYourFolloweeList(@PathVariable Long yourId) {
+        return ResponseEntity.ok()
+                .body(followService.getAllFolloweeList(yourId));
+    }
+
+    @ApiOperation(value = "타인의 팔로워 전체 리스트")
+    @GetMapping("/list/your/follower/{yourId}")
+    public ResponseEntity<?> getYourFollowerList(@PathVariable Long yourId) {
+
+        return ResponseEntity.ok()
+                .body(followService.getAllFollowerList(yourId));
+    }
+
+    @ApiOperation(value = "맞팔 전체 리스트")
+    @GetMapping("/list/perfectfollow")
+    public ResponseEntity<?> getPerfectFollowList() {
+
+        return ResponseEntity.ok()
+                .body(followService.getPerfectFollowList());
     }
 }

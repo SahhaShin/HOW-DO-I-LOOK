@@ -101,6 +101,8 @@ public class CommentService {
             CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                     .commentId(comment.getId())
                     .userId(comment.getUser().getId())
+                    .userNickname(comment.getUser().getNickname())
+                    .modifiedDate(comment.getModifiedDate())
                     .feedId(comment.getFeed().getId())
                     .content(comment.getContent())
                     .build();
@@ -119,6 +121,8 @@ public class CommentService {
             CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                     .commentId(comment.getId())
                     .userId(comment.getUser().getId())
+                    .userNickname(comment.getUser().getNickname())
+                    .modifiedDate(comment.getModifiedDate())
                     .feedId(comment.getFeed().getId())
                     .parentCommentId(comment.getParent().getId())
                     .content(comment.getContent())

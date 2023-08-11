@@ -13,18 +13,24 @@ public class RankingResponseDto {
 
     String email;
 
+    String nickname;
+
     Long rank;
 
     String likeType;
 
     Long score;
 
+    String profileImg;
+
     @Builder
-    public RankingResponseDto(Long userId, String email, Long rank, String likeType, Long score) {
+    public RankingResponseDto(Long userId, String email, String nickname, Long rank, String likeType, Long score, String profileImg) {
         this.userId = userId;
         this.email = email;
+        this.nickname = nickname;
         this.rank = rank;
         this.likeType = likeType;
         this.score = score;
+        this.profileImg = profileImg;
     }
 }

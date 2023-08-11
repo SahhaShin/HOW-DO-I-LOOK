@@ -31,6 +31,7 @@ public class RoomUserService {
     public RoomUserAddResponseDto addRoomUser(Long userId, Long roomId, UserDetails userDetails) throws AccessException {
 
         String clientEmail = userDetails.getUsername();
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
