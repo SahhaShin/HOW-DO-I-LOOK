@@ -18,16 +18,43 @@ const Login: React.FC = () => {
 
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberID, setRememberID] = useState("false");
+  const [rememberID, setRememberID] = useState(false);
 
+  useEffect(() => {
+    console.log("로그인 페이지 로드");
+
+    //회원정보 가져오기
+    const rememberedID = getCookie("rememberID");
+    if (!((typeof rememberedID == "undefined") || (typeof rememberedID === null))) {
+      console.log("remember ID : " + rememberedID);
+      setemail(rememberedID)
+      setRememberID(true)
+    }
+  }, []);
   const loginClick = () => {
+
+
     console.log("회원 로그인");
     console.log("email : " + email);
     console.log("password : " + password);
 
+    //email또는 비밀번호를 전부 입력하지 않았을 경우 사용자에게 알림
+    if(email == ""){
+      alert("사용자이메일을 입력하십시오.")
+      return
+    }
+    //id저장
+    if(rememberID){
+      setCookie("rememberID", email, {path: "/", maxAge: 3600*2*7,})
+    }
+    else{
+      setCookie("rememberID", email, {path: "/", maxAge: 0,})
 
-
-
+    }
+    if(password == ""){
+      alert("사용자비밀번호를 입력하십시오.")
+      return 
+    }
 
     dispatch(
       action_user.Login({
@@ -35,6 +62,10 @@ const Login: React.FC = () => {
         password: password,
       })
     );
+
+    alert("이메일과 비밀번호를 확인하십시오.")
+
+
 
     // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"
     //window.location.href = "http://localhost:8081/oauth2/authorization/kakao"
@@ -63,6 +94,7 @@ const Login: React.FC = () => {
               type="email"
               id="email"
               placeholder="이메일을 입력해주세요"
+              value={email}
               className={`${loginStyle.input}`}
               onChange={(e) => setemail(e.target.value)}
             />
@@ -83,10 +115,10 @@ const Login: React.FC = () => {
 
         <div>
           <div className={`${loginStyle.rememberID}`}>
-            {/* <input type="checkbox" id="rememberID" onChange={(e) => setRememberID(e.target.value)}/>
+            <input type="checkbox" id="rememberID" checked={rememberID} onClick={(e) => {setRememberID(!rememberID)}}/>
             <label htmlFor="rememberID">
-              <p>아이디 저장</p>
-            </label> */}
+              <p>이메일 저장</p>
+            </label>
           </div>
           <input
             type="button"
