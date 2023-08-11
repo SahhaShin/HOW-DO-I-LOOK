@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 //css
-import mypageStyle from "./Mypage.module.css";
+import mypageStyle from "./LoginPage.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
@@ -22,25 +22,17 @@ import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
 import MypageBadgeModal from '../../../components/user/my_page/MypageBadgeModal';
 
+import Login from '../../../components/user/login/login';
 
-const Mypage = () => {
 
-    //redux 관리
-    let state = useSelector((state:any)=>state.mypage);
-    let state_feed = useSelector((state:any)=>state.feed);
-    let dispatch = useDispatch();
+const LoginPage = () => {
 
-    const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
 
-    const { watchingUserId } = useParams();
 
-    useEffect(() => {
-        dispatch(action_mypage.getUserById(Number(watchingUserId)));
-      }, [])
+
 
     return(
-        <>
-
+        <div>
 
             <div className={`${mypageStyle.total}`}>
                 
@@ -54,30 +46,22 @@ const Mypage = () => {
 
                     {/* 우측 마이페이지 컴포넌트 */}
                     <div className={`${mypageStyle.mid}`}>
-                        {/* 모달 */}
-                        {state.followModalOpen?<div className={`${mypageStyle.followModal}`}><MypageFollowModal/></div>:null}
-                        
-                        <MypageHeader/>
                         
                         
-                        {
-                            // 3개 메뉴 메인/피드/내정보
-                            state.menuMode===1?<MypageMain/>:(state.menuMode===2?<MypageFeed/>:<MypageManagement/>)
-                        }
+                        <Login/>
+                        
+                        
+
                     </div>
                 </div>
 
                 {/* 푸터 */}
                 <div className={`${mypageStyle.footer}`}><Footer/></div>
 
-                {/* 모달 까만창 */}
-                <div onClick={async()=>{dispatch(changeFollowModalOpen(false))}} style={state.followModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"3000px", backgroundColor:"black", opacity:"0.6", marginTop:"-3000px"}:null}></div>
             </div>
 
-            {/* 피드블러 */}
-            <div onClick={async()=>{dispatch(changeDetailModalOpen(false)); dispatch(changeBadgeUpdateModalOpen(false))}} style={state_feed.detailModalOpen||state.badgeUpdateModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
-        </>
+        </div>
     );
 }
 
-export default Mypage;
+export default LoginPage;
