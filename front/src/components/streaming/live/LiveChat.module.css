@@ -12,7 +12,7 @@
 /* 채팅 */
 .chatHeader{
     /* 크기 */
-    width: 100%;
+    width: 400px;
     height: 50px;
     background-color: var(--signiture);
 
@@ -31,6 +31,7 @@
 
 .chatArea{
     /* 높이 */
+    width: 400px;
     height: 530px;
 }
 
@@ -43,7 +44,7 @@
 
 .chatContent>input{
     /* 크기 */
-    width: 350px;
+    width: 400px;
     height: 50px;
     padding-left: 3%;
 

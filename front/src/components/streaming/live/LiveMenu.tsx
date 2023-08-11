@@ -13,11 +13,11 @@ const LiveMenu = () => {
             setActiveMenu(index === activeMenu ? null : index);
         };
 
-        const menuItems = ['방장 옷장', '피드 검색', '세트 전송', '알림', '라이브 정보', '나가기'];
+        const menuItems = ['방장 옷장', '피드 검색', '세트 전송', '라이브 정보', '나가기'];
 
         return (
             <div className={`${liveMenuStyle.navbarContainer}`}>
-                <div className={`${liveMenuStyle.navbar}`}>
+                {/* <div className={`${liveMenuStyle.navbar}`}>
                     {menuItems.map((menuItem, index) => (
                     <button key={index} onClick={() => handleMenuClick(index)}>
                         {menuItem}
@@ -25,11 +25,21 @@ const LiveMenu = () => {
                     ))}
 
 
-                    {/* 이미 체크된 메뉴가 아닐 경우 클릭한 버튼 위치로 이동 */}
+                    
                     <div
                     className={`${liveMenuStyle.activeMenuBlock} ${activeMenu !== null ? 'active' : ''}`}
                     style={{ top: activeMenu !== null ? `${activeMenu * 17}%` : '0' }}
                     > {activeMenu !== null && <h2>{menuItems[activeMenu]}</h2>} </div>
+                    </div> */}
+
+
+                    {/* 새로운 메뉴 */}
+                    <div>
+                        <div>방장 옷장</div>
+                        <div>피드 검색</div>
+                        <div>세트 전송</div>
+                        <div>라이브 정보</div>
+                        <div>나가기</div>
                     </div>
 
                 
