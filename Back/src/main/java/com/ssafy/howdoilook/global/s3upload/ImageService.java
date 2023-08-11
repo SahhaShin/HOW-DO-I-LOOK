@@ -43,6 +43,43 @@ public class ImageService {
 
         // 파일명 중복을 피하기위해 날짜 추가
         String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("-yyyyMMdd-HHmmss"));
+        String fileName = originalName + formatDate;
+
+        long size = multipartFile.getSize(); // 파일 크기
+
+        ObjectMetadata objectMetaData = new ObjectMetadata();
+        objectMetaData.setContentType(multipartFile.getContentType());
+        objectMetaData.setContentLength(size);
+
+        try {
+            // S3에 업로드
+            amazonS3Client.putObject(
+                    new PutObjectRequest(S3Bucket, fileName, multipartFile.getInputStream(), objectMetaData)
+                            .withCannedAcl(CannedAccessControlList.PublicRead)
+            );
+        } catch (AmazonClientException e) {
+            throw new RuntimeException("S3에 이미지를 업로드하는데 실패했습니다.", e);
+        }
+
+        String imagePath = amazonS3Client.getUrl(S3Bucket, fileName).toString(); // 접근가능한 URL 가져오기
+
+        if(imagePath == null) {
+            throw new IllegalArgumentException("이미지 경로를 가져오지 못하였습니다.");
+        }
+
+        return imagePath;
+    }
+
+    public String saveImageAndRemoveBg(MultipartFile multipartFile) throws IOException {
+
+        if(multipartFile.isEmpty()) {
+            throw new IllegalArgumentException("사진이 없으면 사진을 저장할 수 없습니다.");
+        }
+
+        String originalName = multipartFile.getOriginalFilename(); // 파일 이름
+
+        // 파일명 중복을 피하기위해 날짜 추가
+        String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("-yyyyMMdd-HHmmss"));
         String fileName = originalName + formatDate + "-none";
 
         long size = multipartFile.getSize(); // 파일 크기

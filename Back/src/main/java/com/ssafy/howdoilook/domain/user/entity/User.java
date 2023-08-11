@@ -215,7 +215,9 @@ public class User extends BaseTimeEntity {
         return this.id;
     }
 
-    public void updateProfileImg(String profileImg) {
+    public Long updateProfileImg(String profileImg) {
         this.profileImg = profileImg;
+
+        return this.id;
     }
 }
