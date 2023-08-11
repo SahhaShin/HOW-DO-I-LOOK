@@ -58,6 +58,26 @@ export const action = {
             throw e;
         }
     }),
+
+    //OOTD 리스트 불러오기 -> 진행중
+    OOTDList: createAsyncThunk("ClosetSlice/OOTDList",async (userId,thunkAPI) =>{
+        console.log(userId);
+        try{
+            const token = await CheckToken();
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/ootd/list/${userId}`,{
+                headers: {
+                  "Authorization" : token
+                }
+                
+            });
+
+            return response.data;
+
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }),
  
     // 새로운 옷 등록 O
     saveClothes : createAsyncThunk("ClosetSlice/saveClothes", async(formdata, thunkAPI)=>{
@@ -153,6 +173,12 @@ interface ClothesListByTypeRes{ //response
     photoLink : string
 }
 
+interface ClothesOOTDList{
+    clothesId:number,
+    clothesPhotoLink:string,
+    clothesOotdId:number
+}
+
 // 유저가 옷을 등록하려고 입력한 정보들
 interface saveClothes{ //request
     clothesSaveRequestDto:{
@@ -198,12 +224,27 @@ interface closet{
     // 옷 타입과 리스트
     clothesTypeKo:string,
     clothesTypeEn:string,
+
     clothesListByType:ClothesListByTypeRes[],
     clothesTop:ClothesListByTypeRes[],
     clothesBottom:ClothesListByTypeRes[],
     clothesShoe:ClothesListByTypeRes[],
     clothesAccessory:ClothesListByTypeRes[],
     clothesAll:ClothesListByTypeRes[],
+
+    clothesOOTDTop_1:ClothesOOTDList[],
+    clothesOOTDBottom_1:ClothesOOTDList[],
+    clothesOOTDShoe_1:ClothesOOTDList[],
+    clothesOOTDAccessory1_1:ClothesOOTDList[],
+    clothesOOTDAccessory2_1:ClothesOOTDList[],
+    clothesOOTDAccessory3_1:ClothesOOTDList[],
+
+    clothesOOTDTop_2:ClothesOOTDList[],
+    clothesOOTDBottom_2:ClothesOOTDList[],
+    clothesOOTDShoe_2:ClothesOOTDList[],
+    clothesOOTDAccessory1_2:ClothesOOTDList[],
+    clothesOOTDAccessory2_2:ClothesOOTDList[],
+    clothesOOTDAccessory3_2:ClothesOOTDList[],
 
     // 옷 id, link
     clothesId : number,
@@ -229,11 +270,27 @@ const initialState:closet = {
     clothesTypeKo : "상의",
     clothesTypeEn : "TOP",
     clothesListByType : [],
+
     clothesTop:[],
     clothesBottom:[],
     clothesShoe:[],
     clothesAccessory:[],
     clothesAll:[],
+
+    clothesOOTDTop_1:[],
+    clothesOOTDBottom_1:[],
+    clothesOOTDShoe_1:[],
+    clothesOOTDAccessory1_1:[],
+    clothesOOTDAccessory2_1:[],
+    clothesOOTDAccessory3_1:[],
+
+    clothesOOTDTop_2:[],
+    clothesOOTDBottom_2:[],
+    clothesOOTDShoe_2:[],
+    clothesOOTDAccessory1_2:[],
+    clothesOOTDAccessory2_2:[],
+    clothesOOTDAccessory3_2:[],
+
 
     clothesId : 0,
     clothesLink : "",
@@ -346,6 +403,38 @@ const ClosetSlice = createSlice({
                 text: 'OOTD를 성공적으로 등록하였습니다.',
                 confirmButtonColor: '#4570F5',
             })
+
+        })
+
+        builder.addCase(action.OOTDList.fulfilled, (state, action) => {
+
+            //옷장 1개씩 돔
+            console.log(action.payload);
+            for(let i=0;i<action.payload.length;i++){
+                
+                if(action.payload.ootdId===1){
+                    state.clothesOOTDTop_1 = action.payload.tops;
+                    state.clothesOOTDBottom_1 = action.payload.bottoms;
+                    state.clothesOOTDShoe_1 = action.payload.shoes;
+                    state.clothesOOTDAccessory1_1 = action.payload.accessories1;
+                    state.clothesOOTDAccessory2_1 = action.payload.accessories2;
+                    state.clothesOOTDAccessory3_1 = action.payload.accessories3;
+                }
+
+                else if(action.payload.ootdId===1){
+                    state.clothesOOTDTop_2 = action.payload.tops;
+                    state.clothesOOTDBottom_2 = action.payload.bottoms;
+                    state.clothesOOTDShoe_2 = action.payload.shoes;
+                    state.clothesOOTDAccessory1_2 = action.payload.accessories1;
+                    state.clothesOOTDAccessory2_2 = action.payload.accessories2;
+                    state.clothesOOTDAccessory3_2 = action.payload.accessories3;
+                }
+            }
+
+            console.log(state.clothesOOTDTop_1);
+            console.log(state.clothesOOTDTop_2);
+          
+            
 
         })
 

@@ -22,7 +22,7 @@
 
     /* 크기 */
     width: 500px;
-    height: 750px;
+    height: 700px;
     border-radius: 1rem;
 
     /* 컬러 */
@@ -92,6 +92,7 @@
     width: 300px;
     height: 25px;
     /* border-radius: 1rem; */
+    margin-top: 3%;
 }
 .input:focus{
     border-color: var(--signiture);
@@ -123,8 +124,8 @@
     /* 위치 */
     display: flex;
     justify-content:flex-end;
-    margin-top: 5%;
-    margin-right: 8%;
+    margin-top: 7%;
+    margin-right: 12%;
 }
 
 .buttons > button{
