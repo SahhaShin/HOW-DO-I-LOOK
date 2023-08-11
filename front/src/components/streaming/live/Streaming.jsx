@@ -380,6 +380,35 @@ class Streaming extends Component {
               onClick={this.leaveSession}
               value="Leave session"
             /> */}
+            {/* 비디오 출력 */}
+            {isStreamer ? (
+              // 자기가 publisher라면 자기 화면 송출
+              <div
+                className="stream-container col-md-6 col-xs-6"
+                onClick={() => this.handleMainVideoStream(this.state.publisher)}
+              >
+                {cameraOn && (
+                  <UserVideoComponent streamManager={this.state.publisher} />
+                )}
+              </div>
+            ) : null}
+            {/* subscribers를 돌면서 뿌린다. */}
+            {/* 클릭하면 handleMainVideoStream  */}
+            {this.state.subscribers.map((sub, i) => (
+              // handleMainVideoStream은 mainstream 바꾸는 메서드
+              <div key={sub.id} className="stream-container">
+                <span>{sub.id}</span>
+                {/* 결국에는 화면이 띄워지는 것은 UserVideoComponent 이다. */}
+
+                {/* 로그 출력 */}
+                {console.log("Logging something:", sub)}
+
+                {/* UserVideoComponent 렌더링 */}
+                {sub.stream.videoActive && (
+                  <UserVideoComponent streamManager={sub} />
+                )}
+              </div>
+            ))}
             <div id="session-header" className="buttons">
               {/* <h1 id="session-title">{mySessionId}</h1> */}
               {isStreamer ? (
@@ -413,35 +442,6 @@ class Streaming extends Component {
                 마이크 {audioOn ? "끄기" : "켜기"}
               </button>
             </div>
-            {/* 비디오 출력 */}
-            {isStreamer ? (
-              // 자기가 publisher라면 자기 화면 송출
-              <div
-                className="stream-container col-md-6 col-xs-6"
-                onClick={() => this.handleMainVideoStream(this.state.publisher)}
-              >
-                {cameraOn && (
-                  <UserVideoComponent streamManager={this.state.publisher} />
-                )}
-              </div>
-            ) : null}
-            {/* subscribers를 돌면서 뿌린다. */}
-            {/* 클릭하면 handleMainVideoStream  */}
-            {this.state.subscribers.map((sub, i) => (
-              // handleMainVideoStream은 mainstream 바꾸는 메서드
-              <div key={sub.id} className="stream-container">
-                <span>{sub.id}</span>
-                {/* 결국에는 화면이 띄워지는 것은 UserVideoComponent 이다. */}
-
-                {/* 로그 출력 */}
-                {console.log("Logging something:", sub)}
-
-                {/* UserVideoComponent 렌더링 */}
-                {sub.stream.videoActive && (
-                  <UserVideoComponent streamManager={sub} />
-                )}
-              </div>
-            ))}
           </div>
         ) : null}
       </div>
