@@ -159,7 +159,23 @@ public class ImageService {
         // 이미지 파일 업로드
         String processedImagePath = saveProcessedImageToS3(imageFile, s3FileName);
 
+        // 업로드가 완료되었다면 임시 파일을 삭제
+        deleteTemporaryFile(localImagePath);
+
         return processedImagePath;
+    }
+
+    private void deleteTemporaryFile(String filePath) {
+        File tempFile = new File(filePath);
+        if (tempFile.exists()) {
+            if (tempFile.delete()) {
+                System.out.println("임시 파일 삭제 성공: " + filePath);
+            } else {
+                System.out.println("임시 파일 삭제 실패: " + filePath);
+            }
+        } else {
+            System.out.println("임시 파일이 이미 삭제되었거나 존재하지 않음: " + filePath);
+        }
     }
 
     public String execPython(String[] command) throws IOException {
