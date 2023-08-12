@@ -262,6 +262,7 @@ const LiveMenu = () => {
                     </DragDropContext>
                 </div>
                 {state_live.pickList.length===0?<div className={`${liveMenuStyle.noset}`}><img src={process.env.PUBLIC_URL + '/img/live/question.png'}/>Pick한 코디가 없습니다!</div>:null}
+                <div className={`${liveMenuStyle.submit}`}><button>전송</button></div>
             </div>
         )}
         {selectedMenu === "Menu 4" && <div className={`${liveMenuStyle.menuContent}`}>
