@@ -104,12 +104,13 @@ public class ImageService {
             throw new IllegalArgumentException("이미지 경로를 가져오지 못하였습니다.");
         }
 
-        // 배경제거를 완료하면
-        String processedImagePath = processImageAndReturnPath(imagePath);
-        // 배경되기전 url은 삭제한다.
-        deleteImage(imagePath);
+//        // 배경제거를 완료하면
+//        String processedImagePath = processImageAndReturnPath(imagePath);
+//        // 배경되기전 url은 삭제한다.
+//        deleteImage(imagePathzo);
 
-        return processedImagePath;
+//        return processedImagePath;
+        return imagePath;
     }
 
     public String updateImage(String imageUrl, MultipartFile multipartFile) throws IOException {
