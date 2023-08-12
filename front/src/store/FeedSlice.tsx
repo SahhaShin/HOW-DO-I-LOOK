@@ -392,6 +392,7 @@ interface myPageFeedSearch{
     id:number,
     link:string,
     hashtagList:string[],
+    pick:boolean|null,
 }
 
 
@@ -503,6 +504,17 @@ const FeedSlice = createSlice({
         calTotalFeedLikes(state){
             state.totalDetailObjLikes = state.detailObj?.feedLikeCountResponseDto;
             console.log(state.totalDetailObjLikes);
+        },
+
+        changePick_feed(state, action){
+            //action.payload에서 clothes id가 오는데
+            //id랑 맞는 것을 골라 pick true or false로 바꿔줌
+            for(let i=0;i<state.mypageFeedPic?.length;i++){
+                if(state.mypageFeedPic[i]?.id===action.payload){
+                    if(state.mypageFeedPic[i].pick===true)state.mypageFeedPic[i].pick=false;
+                    else state.mypageFeedPic[i].pick=true;
+                }
+            } 
         }
     },
     extraReducers:(builder) => {
@@ -603,5 +615,5 @@ const FeedSlice = createSlice({
     }
 });
 
-export let {calTotalFeedLikes, changeModifyModalOpen,changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
+export let {changePick_feed, calTotalFeedLikes, changeModifyModalOpen,changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
 export default FeedSlice.reducer;

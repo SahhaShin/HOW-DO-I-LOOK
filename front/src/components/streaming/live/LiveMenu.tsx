@@ -6,7 +6,7 @@ import liveMenuStyle from "./LiveMenu.module.css";
 //redux
 import { useSelector, useDispatch} from "react-redux"; 
 import {action, changePick} from "../../../store/ClosetSlice";
-import {action_feed} from "../../../store/FeedSlice";
+import {action_feed, changePick_feed} from "../../../store/FeedSlice";
 
 
 
@@ -109,7 +109,7 @@ const LiveMenu = () => {
                 <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/menuIcon/closeBtn.png'}/>
             </div> 
             <div className={`${liveMenuStyle.search}`}>
-                <input type='text' placeholder='#흰반팔 #청바지'/>
+                <input type='text' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} placeholder='#흰반팔 #청바지'/>
                 <button onClick={()=>{searchHashtag()}}>검색</button>
             </div>
             
@@ -118,9 +118,9 @@ const LiveMenu = () => {
                 {
                     state_feed.mypageFeedPic?.map((item)=>{
                         return(
-                            <div className={`${liveMenuStyle.clothItem}`}>
-                                <img style={item.pick===true?{border: "1px solid #4570F5"}:null} onClick={()=>dispatch(changePick(item.clothesId))} src={item.link}/>
-                                {item.pick?<div>PICK!</div>:null}
+                            <div className={`${liveMenuStyle.clothItem2}`}>
+                                <img style={item.pick===true?{border: "1px solid #4570F5"}:null} onClick={()=>dispatch(changePick_feed(item.id))} src={item.link}/>
+                                {item.pick?<div className={`${liveMenuStyle.pickLabel}`}>PICK!</div>:null}
                             </div>
                         );
                     })
@@ -132,6 +132,8 @@ const LiveMenu = () => {
                 <div><p>SET</p></div>
                 <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/menuIcon/closeBtn.png'}/>
             </div> 
+
+            
         </div>}
         {selectedMenu === "Menu 4" && <div className={`${liveMenuStyle.menuContent}`}>
             <div className={`${liveMenuStyle.contentHeader}`}>

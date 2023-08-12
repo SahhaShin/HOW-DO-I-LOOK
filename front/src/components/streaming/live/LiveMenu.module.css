@@ -178,6 +178,7 @@ button{
 .closetList{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 
     margin-top: 30px;
     width: 100%;
@@ -195,9 +196,18 @@ button{
 
 }
 
+.clothItem2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin-bottom: 10px;
+}
+
 .clothItem>div{
     /* PICK */
-    position: absolute;
+    position: relative;
     margin-top: -120px;
     margin-left: 5px;
     width: 50px;
@@ -206,6 +216,20 @@ button{
     color: white;
 }
 
+.clothItem2>div{
+   /* PICK */
+   position: relative;
+   top:-90%;
+   left: -110px;
+   width: 50px;
+   background-color: var(--signiture);
+   border-radius: 1rem;
+   color: white;
+}
+
+/* 새로 추가한 스타일 */
+
+
 .clothItem>img{
     width: 100%;
     height: 100%;
@@ -213,7 +237,15 @@ button{
     border: 1px solid black;
 }
 
-.clothItem>img:hover{
+.clothItem2>img{
+    width: 100%;
+    height: 100%;
+    object-fit:cover;
+    border: 1px solid black;
+    margin-bottom: 3%;
+}
+
+.clothItem>img:hover, .clothItem2>img:hover{
     border: 1px solid var(--signiture);
     
     transform: scale(1.1); /* 이미지를 1.1배 확대 */
