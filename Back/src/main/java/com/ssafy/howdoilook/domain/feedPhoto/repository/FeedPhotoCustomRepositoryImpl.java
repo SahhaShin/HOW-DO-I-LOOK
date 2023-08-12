@@ -50,4 +50,15 @@ public class FeedPhotoCustomRepositoryImpl implements FeedPhotoCustomRepository{
                 .fetchResults();
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
+
+    @Override
+    public Page<FeedPhoto> selectPhoto(Pageable pageable) {
+        QueryResults<FeedPhoto> results = jpaQueryFactory.select(feedPhoto)
+                .from(feedPhoto)
+                .orderBy(feedPhoto.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
 }
