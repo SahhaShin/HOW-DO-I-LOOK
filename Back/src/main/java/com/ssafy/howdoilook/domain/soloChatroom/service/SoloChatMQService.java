@@ -52,7 +52,6 @@ public class SoloChatMQService {
 
         if(chatMessage != null){
             //채팅에 대한 알림 추가
-            System.out.println(chatMessage.getRoomId());
             SoloChatRoom room = soloChatRoomRepository.findById(chatMessage.getRoomId())
                     .orElseThrow(() -> new IllegalArgumentException("해당 채팅방은 존재하지 않습니다"));
 
