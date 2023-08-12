@@ -1,6 +1,5 @@
     package com.ssafy.howdoilook.global.config;
 
-    import com.ssafy.howdoilook.global.WebSocket.ChatHandler;
     import org.springframework.context.annotation.Configuration;
     import org.springframework.messaging.simp.config.ChannelRegistration;
     import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -16,7 +15,7 @@
         public void registerStompEndpoints(StompEndpointRegistry registry) {
             registry.addEndpoint("/ws")
                     .setAllowedOriginPatterns("*")
-//                    .withSockJS()
+                    .withSockJS()
                     ;
             //setAllowedOrigin은 spring4.2버전에, SetAllowedOriginPatterns는 5.2버전에서 등장한 메서드
             // Patterns가 더 강력한 메서드
@@ -31,8 +30,4 @@
             registry.setApplicationDestinationPrefixes("/pub");
         }
 
-/*        @Override
-        public void configureClientInboundChannel(ChannelRegistration registration) {
-            registration.interceptors(new ChatHandler());
-        }*/
     }

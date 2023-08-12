@@ -66,7 +66,10 @@ public class RoomService {
         LocalDateTime time = LocalDateTime.now();
 
         //닉네임 무결성 검증
-        String nickName = jwtService.extractNickName(requestDto.getToken()).get();
+        String email = jwtService.extractEmail(requestDto.getToken()).get();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
         //이미지 링크 무결성 검증
         for(ImageChatDto image : requestDto.getImage()) {
             //링크 무결성 검증
@@ -84,7 +87,8 @@ public class RoomService {
         return RoomChatImageResponseDto.builder()
                 .roomId(requestDto.getRoomId())
                 .time(time.toString())
-                .nickName(nickName)
+                .nickName(user.getNickname())
+                .badge(user.getShowBadgeType().toString())
                 .image(requestDto.getImage())
                 .build();
     }
@@ -92,13 +96,16 @@ public class RoomService {
     public RoomChatResponseDto chatIntegrity(RoomChatRequestDto requestDto){
         LocalDateTime time = LocalDateTime.now();
         //닉네임 무결성 검증
-        String nickName = jwtService.extractNickName(requestDto.getToken()).get();
+        String email = jwtService.extractEmail(requestDto.getToken()).get();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
         return RoomChatResponseDto.builder()
                 .roomId(requestDto.getRoomId())
                 .time(time.toString())
                 .chatContent(requestDto.getChatContent())
-                .nickName(nickName)
+                .nickName(user.getNickname())
+                .badge(user.getShowBadgeType().toString())
                 .build();
     }
 
