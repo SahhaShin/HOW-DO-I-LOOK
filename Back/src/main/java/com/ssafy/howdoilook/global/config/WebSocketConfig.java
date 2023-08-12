@@ -15,7 +15,7 @@
         public void registerStompEndpoints(StompEndpointRegistry registry) {
             registry.addEndpoint("/ws")
                     .setAllowedOriginPatterns("*")
-                    .withSockJS()
+//                    .withSockJS()
                     ;
             //setAllowedOrigin은 spring4.2버전에, SetAllowedOriginPatterns는 5.2버전에서 등장한 메서드
             // Patterns가 더 강력한 메서드
