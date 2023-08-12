@@ -174,7 +174,7 @@ public class RedisRankingService {
 
         ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
 
-        Set<String> badgeSet = zSetOperations.range(likeType, 0, badgeCnt - 1);
+        Set<String> badgeSet = zSetOperations.reverseRange(likeType, 0, badgeCnt - 1);
         Set<ZSetOperations.TypedTuple<String>> rankingWithScores = zSetOperations.reverseRangeWithScores(likeType, 0, -1);
 
         System.out.println("rankingWithScores = " + rankingWithScores);

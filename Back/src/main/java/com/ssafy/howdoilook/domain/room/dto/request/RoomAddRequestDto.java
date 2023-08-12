@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoomAddRequestDto {
 
-    private String code;
+//    private String code;
     private String title;
     private String type;
     private Long hostId;

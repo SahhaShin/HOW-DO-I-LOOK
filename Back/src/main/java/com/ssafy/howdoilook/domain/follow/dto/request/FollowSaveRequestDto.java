@@ -7,12 +7,12 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FollowSaveRequestDto {
-    private Long followerId;
-    private Long followeeId;
+    private Long id;
+    private Long targetId;
 
     @Builder
-    public FollowSaveRequestDto(Long followerId, Long followeeId) {
-        this.followerId = followerId;
-        this.followeeId = followeeId;
+    public FollowSaveRequestDto(Long id, Long targetId) {
+        this.id = id;
+        this.targetId = targetId;
     }
 }

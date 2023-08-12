@@ -166,8 +166,17 @@ public class UserController {
                 .body(userService.updateUserInfoAndImage(id, userUpdateIncludeImageRequestDto, multipartFile, userDetails));
     }
 
+    @PutMapping("/update/profileImg/{userId}")
+    public ResponseEntity<Long> updateProfileImg(@PathVariable Long userId,
+                                              @RequestPart UserUpdateProfileImgDto userUpdateProfileImgDto,
+                                              @RequestPart("s3upload") MultipartFile multipartFile,
+                                              @AuthenticationPrincipal UserDetails userDetails) throws AccessException, IOException {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(userService.updateProfileImg(userId, userUpdateProfileImgDto, multipartFile, userDetails));
+    }
+
     @Transactional
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/delete/profileImg/{userId}")
     public ResponseEntity<?> deleteProfileImg(@PathVariable Long userId,
                                               @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
 
