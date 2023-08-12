@@ -2,6 +2,13 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
+import {CheckToken} from "../hook/UserApi"
+
+// axios
+export const action_live = {
+  
+}
+
 
 //새로운 정보 가공 이미지와 채팅 모두 필요하기 때문
 interface anyChatList{

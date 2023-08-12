@@ -3,18 +3,31 @@ import React, { useState, useRef, useCallback } from 'react';
 //css
 import liveMenuStyle from "./LiveMenu.module.css";
 
+//redux
+import { useSelector, useDispatch} from "react-redux"; 
+import {action, changePick} from "../../../store/ClosetSlice";
+
+
+
 const LiveMenu = () => {
+
+    //redux 관리
+    let state = useSelector((state:any)=>state.closet);
+    let dispatch = useDispatch();
 
     const [selectedMenu, setSelectedMenu] = useState(null);
 
     const handleMenuClick = (menu) => {
       setSelectedMenu(menu);
     };
+
+    // 로그인 유저
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
   
     return (
       <div className={`${liveMenuStyle.sidebar}`}>
         <div>
-            <button onClick={() => handleMenuClick("Menu 1")}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu1_closet.png'}/></button>
+            <button onClick={() => {dispatch(action.getClothesListByType({clothesType:"ALL", userId:loginUser.id, pageNum:10})); handleMenuClick("Menu 1")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu1_closet.png'}/></button>
             <button onClick={() => handleMenuClick("Menu 2")}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu2_search.png'}/></button>
             <button onClick={() => handleMenuClick("Menu 3")}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu3_set.png'}/></button>
             <button onClick={() => handleMenuClick("Menu 4")}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu4_info.png'}/></button>
@@ -29,10 +42,11 @@ const LiveMenu = () => {
             {/* 전체 옷 리스트 */}
             <div className={`${liveMenuStyle.closetList}`}>
                 {
-                    [1,2,3,4,5,6,7].map((item)=>{
+                    state?.clothesAll.map((item)=>{
                         return(
                             <div className={`${liveMenuStyle.clothItem}`}>
-                                item
+                                <img style={item.pick===true?{border: "1px solid #4570F5"}:null} onClick={()=>dispatch(changePick(item.clothesId))} src={item.photoLink}/>
+                                {item.pick?<div>PICK!</div>:null}
                             </div>
                         );
                     })
