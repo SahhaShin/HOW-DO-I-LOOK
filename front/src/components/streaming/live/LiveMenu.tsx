@@ -88,14 +88,14 @@ const LiveMenu = () => {
             {/* 전체 옷 리스트 */}
             <div className={`${liveMenuStyle.closetList}`}>
                 {
-                    state_closet?.clothesAll.map((item)=>{
+                    state_closet?.clothesAll.length>0?state_closet?.clothesAll.map((item)=>{
                         return(
                             <div className={`${liveMenuStyle.clothItem}`}>
                                 <img style={item.pick===true?{border: "1px solid #4570F5"}:null} onClick={()=>dispatch(changePick(item.clothesId))} src={item.photoLink}/>
                                 {item.pick?<div>PICK!</div>:null}
                             </div>
                         );
-                    })
+                    }):<div className={`${liveMenuStyle.noItem}`}>등록된 옷이 없습니다.</div>
                 }    
             </div>  
         </div>}
@@ -116,14 +116,14 @@ const LiveMenu = () => {
             {/* 해시태그 검색 옷 리스트 */}
             <div className={`${liveMenuStyle.closetList}`}>
                 {
-                    state_feed.mypageFeedPic?.map((item)=>{
+                    state_feed.mypageFeedPic.length>0?state_feed.mypageFeedPic?.map((item)=>{
                         return(
                             <div className={`${liveMenuStyle.clothItem2}`}>
                                 <img style={item.pick===true?{border: "1px solid #4570F5"}:null} onClick={()=>dispatch(changePick_feed(item.id))} src={item.link}/>
                                 {item.pick?<div className={`${liveMenuStyle.pickLabel}`}>PICK!</div>:null}
                             </div>
                         );
-                    })
+                    }):<div className={`${liveMenuStyle.noItem}`}>등록된 피드가 없습니다.</div>
                 }    
             </div>
         </div>}
