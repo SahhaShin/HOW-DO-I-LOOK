@@ -3,11 +3,11 @@ import introStyle from "./IntroArea.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { action } from "../../../store/FeedSlice";
+import { action } from "../../../store/LiveSlice";
 
 const IntroArea = () => {
   //redux 관리
-  let state = useSelector((state: any) => state.feed);
+  let state = useSelector((state: any) => state.live);
   let dispatch = useDispatch();
 
   let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
@@ -62,7 +62,7 @@ const IntroArea = () => {
       <div className={`${introStyle.firstArea}`}>
         <div className={`${introStyle.intro}`}>
           <div>
-            지금 {loginUser.nickname}님이 참여할 수 있는 라이브는?
+            {loginUser.nickname}님이 궁금한 오늘의 방송은 무엇인가요?
             <div className={`${introStyle.light}`}></div>
           </div>
         </div>
@@ -74,7 +74,7 @@ const IntroArea = () => {
           onChange={(e) => {
             setSearchInput(e.target.value);
           }}
-          placeholder="#대학생 #여름 #원피스"
+          placeholder="#DATE #DAILY #TRAVEL"
           type="text"
         />
         <button
@@ -89,38 +89,38 @@ const IntroArea = () => {
       <div className={`${introStyle.tag}`}>
         <button
           onClick={(e) => {
-            setSearchInput(searchInput + ` #대학생`);
+            setSearchInput(searchInput + ` #DATE`);
           }}
         >
-          #대학생
+          #DATE
         </button>
         <button
           onClick={(e) => {
-            setSearchInput(searchInput + ` #여름`);
+            setSearchInput(searchInput + ` #DAILY`);
           }}
         >
-          #여름
+          #DAILY
         </button>
         <button
           onClick={(e) => {
-            setSearchInput(searchInput + ` #원피스`);
+            setSearchInput(searchInput + ` #TRAVEL`);
           }}
         >
-          #원피스
+          #TRAVEL
         </button>
         <button
           onClick={(e) => {
-            setSearchInput(searchInput + ` #데이트`);
+            setSearchInput(searchInput + ` #EXERCISE`);
           }}
         >
-          #데이트
+          #EXERCISE
         </button>
         <button
           onClick={(e) => {
-            setSearchInput(searchInput + ` #운동`);
+            setSearchInput(searchInput + ` #INTERVIEW`);
           }}
         >
-          #운동
+          #INTERVIEW
         </button>
       </div>
 
