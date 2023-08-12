@@ -13,14 +13,15 @@ public class RoomChatImageResponseDto {
     private ArrayList<ImageChatDto>image;
     private String nickName;
     private String time;
+    private String badge;
     private long roomId;
 
     @Builder
-
-    public RoomChatImageResponseDto(ArrayList<ImageChatDto> image, String nickName, String time, long roomId) {
+    public RoomChatImageResponseDto(ArrayList<ImageChatDto> image, String nickName, String time, long roomId, String badge) {
         this.image = image;
         this.nickName = nickName;
         this.time = time;
         this.roomId = roomId;
+        this.badge = badge;
     }
 }
