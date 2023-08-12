@@ -7,7 +7,7 @@ import styled from "styled-components";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {changeDetailModalOpen} from "../../../store/FeedSlice";
-import {action, changeDetailFeedId} from "../../../store/FeedSlice";
+import {action_feed, changeDetailFeedId} from "../../../store/FeedSlice";
 
 
 //slick import
@@ -40,9 +40,9 @@ const MypageSlot = (props) => {
     // 2) 특정 피드 번호로 셋팅해야 한다.
     function detailFeed(){
         // 내 좋아요 기록
-        dispatch(action.getFeedLikeOnMe({userId:props.feedInfo.userId, feedId:props.feedId}));
-        dispatch(action.getFeedTotalList({size:10, page:0}));
-        dispatch(action.getComment(props.feedInfo.feedId));
+        dispatch(action_feed.getFeedLikeOnMe({userId:props.feedInfo.userId, feedId:props.feedId}));
+        dispatch(action_feed.getFeedTotalList({size:10, page:0}));
+        dispatch(action_feed.getComment(props.feedInfo.feedId));
     }
 
     return(

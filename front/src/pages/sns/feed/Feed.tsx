@@ -3,7 +3,7 @@ import feedStyle from "./Feed.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, calTotalFeedLikes, changeModifyModalOpen,changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action_feed, calTotalFeedLikes, changeModifyModalOpen,changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 import { action_follow } from '../../../store/FollowSlice';
 
@@ -33,7 +33,7 @@ const Feed = () => {
 
     useEffect(()=>{
         let data = {size:0, page:0};
-        dispatch(action.getFeedTotalList(data));
+        dispatch(action_feed.getFeedTotalList(data));
     },[state.feedAddOk, state.likeOk, state.addCommentOk, state.commentList])
 
     useEffect(()=>{

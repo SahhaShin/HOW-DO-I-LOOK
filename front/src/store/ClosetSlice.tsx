@@ -170,7 +170,8 @@ interface ClothesListByTypeReq{ //response
 
 interface ClothesListByTypeRes{ //response
     clothesId : number,
-    photoLink : string
+    photoLink : string,
+    pick:boolean|null,
 }
 
 interface ClothesOOTDList{
@@ -340,6 +341,16 @@ const ClosetSlice = createSlice({
         },
         changeClothesLink(state, action){
             state.clothesLink = action.payload;
+        },
+        changePick(state, action){
+            //action.payload에서 clothes id가 오는데
+            //id랑 맞는 것을 골라 pick true or false로 바꿔줌
+            for(let i=0;i<state.clothesAll?.length;i++){
+                if(state.clothesAll[i]?.clothesId===action.payload){
+                    if(state.clothesAll[i].pick===true)state.clothesAll[i].pick=false;
+                    else state.clothesAll[i].pick=true;
+                }
+            } 
         }
     },
     extraReducers:(builder) => {
@@ -442,5 +453,5 @@ const ClosetSlice = createSlice({
     }
 });
 
-export let {changeModalOpen, changeMode,changeClothesType,changePage, changeClothesId, changeClothesLink} = ClosetSlice.actions;
+export let {changePick,changeModalOpen, changeMode,changeClothesType,changePage, changeClothesId, changeClothesLink} = ClosetSlice.actions;
 export default ClosetSlice.reducer;

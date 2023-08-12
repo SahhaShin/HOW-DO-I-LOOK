@@ -3,7 +3,7 @@ import introStyle from "./IntroArea.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action} from "../../../store/FeedSlice";
+import {action_feed} from "../../../store/FeedSlice";
 
 
 

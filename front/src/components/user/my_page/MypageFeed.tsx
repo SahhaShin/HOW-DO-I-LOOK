@@ -6,7 +6,7 @@ import mypageFeedStyle from "./MypageFeed.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action_mypage} from "../../../store/MypageSlice";
-import {action, changeDetailModalOpen} from "../../../store/FeedSlice";
+import {action_feed, changeDetailModalOpen} from "../../../store/FeedSlice";
 
 //컴포넌트
 import MypageFeedMenu from "./MypageFeedMenu";

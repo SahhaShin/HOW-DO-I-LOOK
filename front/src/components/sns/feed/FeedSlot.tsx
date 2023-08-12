@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, calTotalFeedLikes, changeModifyModalOpen, changeDetailFeedId, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action_feed, changeModifyModalOpen, changeDetailFeedId, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -49,7 +49,7 @@ const FeedSlot = () => {
               }
         }).then((res) => {
             if (res.isConfirmed) {
-                dispatch(action.deleteFeed(feedId));
+                dispatch(action_feed.deleteFeed(feedId));
             }
             else{
                 
