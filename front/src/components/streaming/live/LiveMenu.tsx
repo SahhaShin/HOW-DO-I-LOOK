@@ -147,11 +147,14 @@ const LiveMenu = () => {
             <button onClick={() => {handleMenuClick("Menu 4")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu4_info.png'}/></button>
             <button onClick={() => {handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_exit.png'}/></button>
         </div>
-        {selectedMenu === "Menu 1" && <div className={`${liveMenuStyle.menuContent}`}>
+        {selectedMenu === "Menu 1" && <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>
             <div className={`${liveMenuStyle.contentHeader}`}>
-                <div><p>HOST CLOSET</p></div>
-                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/flyclose.png'}/>
+                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/flyclose.png'} className={`${liveMenuStyle.closeBtn}`}/>
             </div>  
+
+            <div className={`${liveMenuStyle.statement_CLOSET}`}>
+                <p>HOST CLOSET</p>
+            </div>
 
             {/* 전체 옷 리스트 */}
             <div className={`${liveMenuStyle.closetList1}`}>
@@ -159,7 +162,7 @@ const LiveMenu = () => {
                     state_closet?.clothesAll.length>0?state_closet?.clothesAll.map((item)=>{
                         return(
                             <div className={`${liveMenuStyle.clothItem}`}>
-                                <img style={item.pick===true?{border: "1px solid #4570F5"}:null} onClick={()=>{dispatch(changePick(item.clothesId)); sendPickList(item.photoLink, "CLOTHES")}} src={item.photoLink}/>
+                                <img onClick={()=>{dispatch(changePick(item.clothesId)); sendPickList(item.photoLink, "CLOTHES")}} src={item.photoLink}/>
                                 {item.pick?<div>PICK!</div>:null}
                             </div>
                         );
@@ -170,12 +173,14 @@ const LiveMenu = () => {
 
 
         {/* 옷 검색 */}
-        {selectedMenu === "Menu 2" && <div className={`${liveMenuStyle.menuContent}`}>
+        {selectedMenu === "Menu 2" && <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>
             <div className={`${liveMenuStyle.contentHeader}`}>
-                
-                <div><p>SEARCH</p></div>
-                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/flyclose.png'}/>
+                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/flyclose.png'} className={`${liveMenuStyle.closeBtn}`}/>
             </div> 
+
+            <div className={`${liveMenuStyle.statement_CLOSET}`}>
+                <p>FEED SEARCH</p>
+            </div>
             <div className={`${liveMenuStyle.search}`}>
                 <input type='text' value={searchInput} onChange={(e)=>{setSearchInput(e.target.value)}} placeholder='#흰반팔 #청바지'/>
                 <button onClick={()=>{searchHashtag()}}>검색</button>
@@ -265,10 +270,21 @@ const LiveMenu = () => {
                 <div className={`${liveMenuStyle.submit}`}><button>전송</button></div>
             </div>
         )}
-        {selectedMenu === "Menu 4" && <div className={`${liveMenuStyle.menuContent}`}>
+        {selectedMenu === "Menu 4" && <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>
             <div className={`${liveMenuStyle.contentHeader}`}>
-                <div><p>INFO</p></div>
-                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/flyclose.png'}/>
+                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/flyclose.png'} className={`${liveMenuStyle.closeBtn}`}/>
+            </div> 
+
+            <div className={`${liveMenuStyle.statement_CLOSET}`}>
+                <p>ROOM INFOMATION</p>
+            </div>
+            <div className={`${liveMenuStyle.closetList4}`}>
+                <div><p>제목</p> <p>내일 소개팅 가는데 옷 추천해줄 사람</p></div>
+                <div><p>호스트 나이</p><p>20대</p></div>
+                <div><p>호스트 성별</p><p>여</p></div>
+                <div><p>입장제한 최소 나이</p><p>20세</p></div>
+                <div><p>입장제한 최소 나이</p><p>30세</p></div>
+                <div><p>입장 제한 성별</p><p>없음</p></div>
             </div>    
         </div>}
       </div>
