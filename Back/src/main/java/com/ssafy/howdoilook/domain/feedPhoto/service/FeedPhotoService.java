@@ -38,21 +38,15 @@ public class FeedPhotoService {
         Page<FeedPhoto> feedPhotos = feedPhotoRepository.selectPhotoByHashtag(hashtagList, pageable);
         List<FeedPhoto> feedPhotoList = feedPhotos.getContent();
 
-        List<PhotoResponseDto> photoResponseDtoList = new ArrayList<>();
-        for (FeedPhoto feedPhoto : feedPhotoList) {
-            PhotoResponseDto photoResponseDto = new PhotoResponseDto();
 
-            photoResponseDto.setId(feedPhoto.getId());
-            photoResponseDto.setLink(feedPhoto.getLink());
-            photoResponseDto.setHashtagList(new ArrayList<>());
+        List<PhotoResponseDto> photoResponseDtoList = builder(feedPhotoList);
+        return new PageImpl<>(photoResponseDtoList, feedPhotos.getPageable(), feedPhotos.getTotalElements());
+    }
+    public Page<PhotoResponseDto> selectPhoto(Pageable pageable){
+        Page<FeedPhoto> feedPhotos = feedPhotoRepository.selectPhoto(pageable);
+        List<FeedPhoto> feedPhotoList = feedPhotos.getContent();
 
-            List<FeedPhotoHashtag> feedPhotoHashtagList = feedPhoto.getFeedPhotoHashtagList();
-
-            for (FeedPhotoHashtag feedPhotoHashtag : feedPhotoHashtagList) {
-                photoResponseDto.getHashtagList().add(feedPhotoHashtag.getHashtag().getContent());
-            }
-            photoResponseDtoList.add(photoResponseDto);
-        }
+        List<PhotoResponseDto> photoResponseDtoList = builder(feedPhotoList);
         return new PageImpl<>(photoResponseDtoList, feedPhotos.getPageable(), feedPhotos.getTotalElements());
     }
 
@@ -110,5 +104,22 @@ public class FeedPhotoService {
         return feedPhoto.getId();
     }
 
+    private List<PhotoResponseDto> builder(List<FeedPhoto> list){
+        List<PhotoResponseDto> photoResponseDtoList = new ArrayList<>();
+        for (FeedPhoto feedPhoto : list) {
+            PhotoResponseDto photoResponseDto = new PhotoResponseDto();
 
+            photoResponseDto.setId(feedPhoto.getId());
+            photoResponseDto.setLink(feedPhoto.getLink());
+            photoResponseDto.setHashtagList(new ArrayList<>());
+
+            List<FeedPhotoHashtag> feedPhotoHashtagList = feedPhoto.getFeedPhotoHashtagList();
+
+            for (FeedPhotoHashtag feedPhotoHashtag : feedPhotoHashtagList) {
+                photoResponseDto.getHashtagList().add(feedPhotoHashtag.getHashtag().getContent());
+            }
+            photoResponseDtoList.add(photoResponseDto);
+        }
+        return photoResponseDtoList;
+    }
 }

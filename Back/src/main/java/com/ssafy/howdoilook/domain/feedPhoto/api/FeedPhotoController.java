@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 
@@ -23,6 +22,11 @@ import java.util.List;
 public class FeedPhotoController {
     private final FeedPhotoService feedPhotoService;
 
+    @GetMapping("")
+    public ResponseEntity<Page<PhotoResponseDto>> selectPhoto(Pageable pageable){
+        Page<PhotoResponseDto> photoResponseDtos = feedPhotoService.selectPhoto(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(photoResponseDtos);
+    }
     @GetMapping("/hashtag")
     public ResponseEntity<Page<PhotoResponseDto>> selectPhotoByHashtag(@RequestParam(name = "hashtag") List<String> hashtagList, Pageable pageable){
         Page<PhotoResponseDto> photoResponseDtos = feedPhotoService.selectPhotoByHashtag(hashtagList, pageable);
