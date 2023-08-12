@@ -4,32 +4,61 @@ import React, { useState, useRef, useCallback } from 'react';
 import liveMenuStyle from "./LiveMenu.module.css";
 
 const LiveMenu = () => {
-   
-        const [activeMenu, setActiveMenu] = useState<number | null>(0);
 
-        //이미 체크된 메뉴냐? 그러면 움직이지 말 것
-        //체크된 메뉴가 아니면 index 위치로 움직일 것
-        const handleMenuClick = (index: number) => {
-            setActiveMenu(index === activeMenu ? null : index);
-        };
+    const [selectedMenu, setSelectedMenu] = useState(null);
 
-        const menuItems = ['방장 옷장', '피드 검색', '세트 전송', '라이브 정보', '나가기'];
+    const handleMenuClick = (menu) => {
+      setSelectedMenu(menu);
+    };
+  
+    return (
+      <div className={`${liveMenuStyle.sidebar}`}>
+        <div>
+            <button onClick={() => handleMenuClick("Menu 1")}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu1_closet.png'}/></button>
+            <button onClick={() => handleMenuClick("Menu 2")}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu2_search.png'}/></button>
+            <button onClick={() => handleMenuClick("Menu 3")}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu3_set.png'}/></button>
+            <button onClick={() => handleMenuClick("Menu 4")}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu4_info.png'}/></button>
+            <button onClick={() => handleMenuClick("Menu 5")}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_exit.png'}/></button>
+        </div>
+        {selectedMenu === "Menu 1" && <div className={`${liveMenuStyle.menuContent}`}>
+            <div className={`${liveMenuStyle.contentHeader}`}>
+                <div><p>HOST CLOSET</p></div>
+                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/menuIcon/closeBtn.png'}/>
+            </div>  
 
-        return (
-            <div className={`${liveMenuStyle.navbarContainer}`}>
-
-                    {/* 새로운 메뉴 */}
-                    <div>
-                        <div>방장 옷장</div>
-                        <div>피드 검색</div>
-                        <div>세트 전송</div>
-                        <div>라이브 정보</div>
-                        <div>나가기</div>
-                    </div>
-
-                
-                </div>
-            );
+            {/* 전체 옷 리스트 */}
+            <div className={`${liveMenuStyle.closetList}`}>
+                {
+                    [1,2,3,4,5,6,7].map((item)=>{
+                        return(
+                            <div className={`${liveMenuStyle.clothItem}`}>
+                                item
+                            </div>
+                        );
+                    })
+                }    
+            </div>  
+        </div>}
+        {selectedMenu === "Menu 2" && <div className={`${liveMenuStyle.menuContent}`}>
+            <div className={`${liveMenuStyle.contentHeader}`}>
+                <p>SEARCH</p>
+                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/menuIcon/closeBtn.png'}/>
+            </div> 
+        </div>}
+        {selectedMenu === "Menu 3" && <div className={`${liveMenuStyle.menuContent}`}>
+            <div className={`${liveMenuStyle.contentHeader}`}>
+                <p>SET</p>
+                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/menuIcon/closeBtn.png'}/>
+            </div> 
+        </div>}
+        {selectedMenu === "Menu 4" && <div className={`${liveMenuStyle.menuContent}`}>
+            <div className={`${liveMenuStyle.contentHeader}`}>
+                <p>INFO</p>
+                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/menuIcon/closeBtn.png'}/>
+            </div>    
+        </div>}
+      </div>
+    );
     
 }
 

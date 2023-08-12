@@ -5,7 +5,7 @@
 
 .StreamingComponent {
   height: 580px;
-  width: 750px;
+  width: 77px;
   position: relative;
 }
 
@@ -20,7 +20,7 @@
   display: flex;
   /* flex: auto; */
   text-align: center;
-  z-index: 10000000;
+  z-index: 1;
   height: 40px;
   width: 750px;
   top: 540px;

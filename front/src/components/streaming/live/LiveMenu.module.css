@@ -99,3 +99,95 @@ button{
 
     background-color: white;
 }
+
+
+/* 사이드 바 */
+
+
+/* 사이드바 구현 */
+.sidebar{
+    display: flex;
+    width: 70px;
+    height: 580px;
+    background-color: var(--signiture);
+}
+
+.sidebar > div:nth-child(1){
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: var(--signiture);
+}
+
+.sidebar > div > button{
+    width: 70px;
+
+    background-color: var(--signiture);
+}
+
+.sidebar > div > button > img{
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.menuContent{
+    position: absolute;
+    width: 350px;
+    height: 580px;
+    background-color: white;
+    z-index: 100;
+}
+
+.contentHeader{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+
+    margin-top: 30px;
+}
+
+.contentHeader > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 250px;
+    height: 30px;
+}
+
+.contentHeader > div > p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 120px;
+    height: 50px;
+
+    font-weight: 900;
+
+    background-color: var(--signiture);
+    border-radius: 1rem;
+    color: white;
+}
+
+.closetList{
+    display: flex;
+    flex-wrap: wrap;
+
+    margin-top: 30px;
+    width: 100%;
+    height: 470px;
+    background-color: black;
+
+    overflow: auto;
+}
+
+.clothItem{
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 100px;
+    height: 120px;
+    background-color: white;
+
+}
