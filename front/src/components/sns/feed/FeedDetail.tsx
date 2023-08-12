@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeFollow, changeDetailModalOpen, calTotalFeedLikes} from "../../../store/FeedSlice";
+import {action_feed, changeFollow, changeDetailModalOpen, calTotalFeedLikes} from "../../../store/FeedSlice";
 
 const FeedDetail = (props) => {
 
@@ -77,15 +77,15 @@ const FeedDetail = (props) => {
         //state.detailObjLikes.lovely
 
         if(status===0){
-            dispatch(action.feedLike({feedId:props.feedId, userId:loginUser.id, type:type}));
+            dispatch(action_feed.feedLike({feedId:props.feedId, userId:loginUser.id, type:type}));
         }else{
-            dispatch(action.deleteLike({feedId:props.feedId, userId:loginUser.id, type:type}));
+            dispatch(action_feed.deleteLike({feedId:props.feedId, userId:loginUser.id, type:type}));
         }
     }
 
     //댓글 등록 
     function addComment(){
-        dispatch(action.addComment({
+        dispatch(action_feed.addComment({
             userId:loginUser.id,
             feedId:state.detailObj.feedId,
             parentId:null,
@@ -119,7 +119,7 @@ const FeedDetail = (props) => {
               }
         }).then((res) => {
             if (res.isConfirmed) {
-                dispatch(action.deleteFeed(feedId));
+                dispatch(action_feed.deleteFeed(feedId));
             }
             else{
                 
@@ -129,11 +129,11 @@ const FeedDetail = (props) => {
 
     useEffect(()=>{
         // 내 좋아요 기록
-        dispatch(action.getFeedLikeOnMe({userId:loginUser.id, feedId:props.feedId}));
+        dispatch(action_feed.getFeedLikeOnMe({userId:loginUser.id, feedId:props.feedId}));
 
         // 전체 피드 가져옴 (갯수가 있어서)
         let data = {size:0, page:0};
-        dispatch(action.getFeedTotalList(data));
+        dispatch(action_feed.getFeedTotalList(data));
         
     },[state.likeOk])
 
@@ -144,7 +144,7 @@ const FeedDetail = (props) => {
 
     useEffect(()=>{
         // 댓글 가져오기
-        dispatch(action.getComment(props.feedId));
+        dispatch(action_feed.getComment(props.feedId));
     },[state.addCommentOk])
 
     console.log(`state.detailObjLikes ${state.detailObjLikes?.lovelyType}`);
@@ -297,7 +297,7 @@ const FeedDetail = (props) => {
                                                 <div className={`${FeedDetailStyle.btnAndDate}`}>
                                                     <div className={`${FeedDetailStyle.rightBtns}`}>
                                                         {/* <button onClick={()=>{updateComment(one.content)}}>수정</button> */}
-                                                        <button onClick={()=>dispatch(action.deleteComment(one.commentId))}>삭제</button>
+                                                        <button onClick={()=>dispatch(action_feed.deleteComment(one.commentId))}>삭제</button>
                                                     </div>
                                                     <div className={`${FeedDetailStyle.btnDate}`}>
                                                         {Number(one.modifiedDate?.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}

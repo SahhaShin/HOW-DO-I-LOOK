@@ -133,7 +133,7 @@ button{
 
 .menuContent{
     position: absolute;
-    width: 350px;
+    width: 360px;
     height: 580px;
     background-color: white;
     z-index: 100;
@@ -181,7 +181,7 @@ button{
 
     margin-top: 30px;
     width: 100%;
-    height: 470px;
+    height: 400px;
 
     overflow: auto;
 }
@@ -218,4 +218,30 @@ button{
     
     transform: scale(1.1); /* 이미지를 1.1배 확대 */
     z-index: 1; /* 이미지를 다른 내용 위로 올림 */
+}
+
+
+/* 옷 검색 */
+.search{
+    display: flex;
+    justify-content: center;
+     
+    margin-top: 30px; 
+}
+
+.search>input{
+    width: 200px;
+    height: 30px;
+    border-radius: 1rem;
+    outline: none;
+    margin-right: 3%;
+    padding-left: 3%;
+}
+
+.search > button{
+    width: 50px;
+    height: 30px;
+    background-color: var(--signiture);
+    color: white;
+    border-radius: 5px;
 }

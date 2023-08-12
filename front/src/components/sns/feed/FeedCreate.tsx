@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeFollow, changeCreateModalOpen} from "../../../store/FeedSlice";
+import {action_feed, changeFollow, changeCreateModalOpen} from "../../../store/FeedSlice";
 
 //slick import
 import Slider from 'react-slick';

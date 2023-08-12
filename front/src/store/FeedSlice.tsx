@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import {CheckToken} from "../hook/UserApi"
 
 // axios
-export const action = {
+export const action_feed = {
 
     // 새로운 피드 등록
     addFeed : createAsyncThunk("FeedSlice/addFeed", async(newFeed, thunkAPI)=>{
@@ -220,6 +220,40 @@ export const action = {
         }
     }),
 
+    // (마이페이지용) 피드 해시태그 검색 시 이미지 리스트만 나오게 하기
+    hashSearchImgList : createAsyncThunk("FeedSlice/hashSearchImgList", async({hashtag, size, page}:search, thunkAPI)=>{
+        try{
+            const token = await CheckToken();
+            console.log(`${process.env.REACT_APP_SERVER}/api/feedphoto/hashtag?${hashtag}`);
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedphoto/hashtag?${hashtag}`,{
+                headers:{"Authorization":token}
+            });
+
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
+    // (마이페이지용) 피드 해시태그 검색 전 전체 리스트 나오게 하기
+    hashSearchTotalList : createAsyncThunk("FeedSlice/hashSearchTotalList", async()=>{
+        try{
+            const token = await CheckToken();
+            console.log(`${process.env.REACT_APP_SERVER}/api/feedphoto`);
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedphoto`,{
+                headers:{"Authorization":token}
+            });
+
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
 }
 
 
@@ -354,6 +388,12 @@ interface comment{
     "content": string
 }
 
+interface myPageFeedSearch{
+    id:number,
+    link:string,
+    hashtagList:string[],
+}
+
 
 interface Feed{
     isFollow:boolean,
@@ -374,7 +414,8 @@ interface Feed{
     commentList: comment[],
     feedAddOk:boolean,
     likeOk:boolean,
-    addCommentOk:boolean
+    addCommentOk:boolean,
+    mypageFeedPic:myPageFeedSearch[],
 }
 
 // 초기화
@@ -404,6 +445,7 @@ const initialState:Feed = {
     feedAddOk:false, //피드 등록 시 ok라는 신호를 보내는 용도
     likeOk:false,
     addCommentOk:false,
+    mypageFeedPic:[],
 }
 
 
@@ -464,16 +506,16 @@ const FeedSlice = createSlice({
         }
     },
     extraReducers:(builder) => {
-        builder.addCase(action.addFeed.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.addFeed.fulfilled,(state,action)=>{
             state.createModalOpen=false;
             state.feedAddOk = true;
         })
 
-        builder.addCase(action.getFeedTotalList.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.getFeedTotalList.fulfilled,(state,action)=>{
             state.feedTotalObj = action.payload;
         })
 
-        builder.addCase(action.deleteFeed.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.deleteFeed.fulfilled,(state,action)=>{
             Swal.fire({
                 icon: 'success',
                 title: '삭제 완료',
@@ -492,11 +534,11 @@ const FeedSlice = createSlice({
             }
         })
 
-        builder.addCase(action.getComment.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.getComment.fulfilled,(state,action)=>{
             state.commentList=action.payload.content;
         })
 
-        builder.addCase(action.deleteComment.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.deleteComment.fulfilled,(state,action)=>{
 
             //리스트에서 해당 댓글 삭제
             console.log(action.payload);
@@ -517,7 +559,7 @@ const FeedSlice = createSlice({
         })
 
         //댓글달기
-        builder.addCase(action.addComment.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.addComment.fulfilled,(state,action)=>{
             //commentPK값 준다.
             console.log(action.payload);
             if(state.addCommentOk===true) state.addCommentOk=false;
@@ -525,24 +567,36 @@ const FeedSlice = createSlice({
         })
 
 
-        builder.addCase(action.getFeedLikeOnMe.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.getFeedLikeOnMe.fulfilled,(state,action)=>{
             state.detailObjLikes = action.payload; //내가 누른 좋아요 정보
         })
 
-        builder.addCase(action.feedLike.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.feedLike.fulfilled,(state,action)=>{
             if(state.likeOk===true) state.likeOk = false;
             else state.likeOk = true;
         })
 
-        builder.addCase(action.deleteLike.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.deleteLike.fulfilled,(state,action)=>{
             if(state.likeOk===true) state.likeOk = false;
             else state.likeOk = true;
         })
 
         // 해시태그 검색 
-        builder.addCase(action.searchHash.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.searchHash.fulfilled,(state,action)=>{
             state.feedTotalObj = action.payload;
             console.log(state.feedTotalObj);
+        })
+
+        // 라이브 해시태그 검색 
+        builder.addCase(action_feed.hashSearchImgList.fulfilled,(state,action)=>{
+            console.log(action.payload);
+            state.mypageFeedPic = action.payload.content;
+        })
+
+        // 라이브 전체 검색 
+        builder.addCase(action_feed.hashSearchTotalList.fulfilled,(state,action)=>{
+            console.log(action.payload);
+            state.mypageFeedPic = action.payload.content;
         })
 
        
