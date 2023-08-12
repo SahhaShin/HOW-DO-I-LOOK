@@ -10,4 +10,5 @@ public interface FeedPhotoCustomRepository {
     public List<String> selectLinkListByFeedId(Long id);
 
     public Page<FeedPhoto> selectPhotoByHashtag(List<String> hashtagList, Pageable pageable);
+    public Page<FeedPhoto> selectPhoto(Pageable pageable);
 }
