@@ -54,6 +54,7 @@ const initialState = {
   publisher: "",
   anyChatList:[],
   roomInfo:null,
+  pickList:[],
 };
 
 const StreamingSlice = createSlice({
@@ -65,6 +66,12 @@ const StreamingSlice = createSlice({
     },
     pushAnyChatList(state,action){
       state.anyChatList.push(action.payload);
+    },
+    addPickList(state, action){
+      state.pickList.push(action.payload);
+    },
+    rearrangePickList(state, action){
+      state.pickList=action.payload;
     }
   },
 
@@ -75,5 +82,5 @@ const StreamingSlice = createSlice({
   }
 });
 
-export let { changepublisher, pushAnyChatList } = StreamingSlice.actions;
+export let { addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
 export default StreamingSlice.reducer;

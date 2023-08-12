@@ -10,8 +10,8 @@
 
 .main {
   /* 크기 */
-  min-height: 580px;
-  max-height: 580px;
+  min-height: 510px;
+  max-height: 510px;
   background-color: antiquewhite;
 
   /* 위치 */
@@ -20,7 +20,7 @@
 
 .advisor {
   /* 크기 */
-  height: 130px;
+  height: 140px;
   background-color: var(--border);
 }
 
