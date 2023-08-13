@@ -61,3 +61,6 @@ img {
   color: black;
   font-size: 17px;
 }
+.displayNone {
+  display: none;
+}

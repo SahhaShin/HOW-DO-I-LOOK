@@ -42,6 +42,7 @@ export const action = {
   changeLiveInfo: createAsyncThunk(
     "LiveSlice/changeLiveInfo",
     async (formdata: LiveRoom, thunkAPI) => {
+      console.log(formdata.gender);
       try {
         const token = await CheckToken();
         const response = await axios.put(
