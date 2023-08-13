@@ -148,10 +148,13 @@ const LiveMenu = () => {
             <button onClick={() => {handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_exit.png'}/></button>
         </div>
         {selectedMenu === "Menu 1" && <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>
-            <div className={`${liveMenuStyle.contentHeader}`}>
-                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/flyclose.png'} className={`${liveMenuStyle.closeBtn}`}/>
-            </div>  
-
+            
+            {/* 닫기 버튼 */}
+            <div onClick={()=>{setSelectedMenu(null)}} className={`${liveMenuStyle.outer}`}>
+                <div className={`${liveMenuStyle.inner}`}>
+                    <label>Back</label>
+                </div>
+            </div>
             <div className={`${liveMenuStyle.statement_CLOSET}`}>
                 <p>HOST CLOSET</p>
             </div>
@@ -174,9 +177,12 @@ const LiveMenu = () => {
 
         {/* 옷 검색 */}
         {selectedMenu === "Menu 2" && <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>
-            <div className={`${liveMenuStyle.contentHeader}`}>
-                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/flyclose.png'} className={`${liveMenuStyle.closeBtn}`}/>
-            </div> 
+            {/* 닫기 버튼 */}
+            <div onClick={()=>{setSelectedMenu(null)}} className={`${liveMenuStyle.outer}`}>
+                <div className={`${liveMenuStyle.inner}`}>
+                    <label>Back</label>
+                </div>
+            </div>
 
             <div className={`${liveMenuStyle.statement_CLOSET}`}>
                 <p>FEED SEARCH</p>
@@ -202,7 +208,12 @@ const LiveMenu = () => {
         </div>}
         {selectedMenu === "Menu 3" && (
             <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>
-                <img className={`${liveMenuStyle.closeBtn}`} onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/flyclose.png'}/>
+                {/* 닫기 버튼 */}
+                <div onClick={()=>{setSelectedMenu(null)}} className={`${liveMenuStyle.outer}`}>
+                    <div className={`${liveMenuStyle.inner}`}>
+                        <label>Back</label>
+                    </div>
+                </div>
                 <div className={`${liveMenuStyle.statement}`}>
                     <p>Today</p> <p>Codi</p> <p>Set</p>
                 </div>
@@ -271,9 +282,12 @@ const LiveMenu = () => {
             </div>
         )}
         {selectedMenu === "Menu 4" && <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>
-            <div className={`${liveMenuStyle.contentHeader}`}>
-                <img onClick={()=>{setSelectedMenu(null)}} src={process.env.PUBLIC_URL + '/img/flyclose.png'} className={`${liveMenuStyle.closeBtn}`}/>
-            </div> 
+            {/* 닫기 버튼 */}
+            <div onClick={()=>{setSelectedMenu(null)}} className={`${liveMenuStyle.outer}`}>
+                <div className={`${liveMenuStyle.inner}`}>
+                    <label>Back</label>
+                </div>
+            </div>
 
             <div className={`${liveMenuStyle.statement_CLOSET}`}>
                 <p>ROOM INFOMATION</p>
