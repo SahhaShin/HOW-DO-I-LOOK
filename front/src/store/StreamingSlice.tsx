@@ -55,6 +55,7 @@ const initialState = {
   anyChatList:[],
   roomInfo:null,
   pickList:[],
+  sendImg:false,
 };
 
 const StreamingSlice = createSlice({
@@ -72,6 +73,9 @@ const StreamingSlice = createSlice({
     },
     rearrangePickList(state, action){
       state.pickList=action.payload;
+    },
+    sendPickListChat(state, action){
+      state.sendImg=action.payload;
     }
   },
 
@@ -82,5 +86,5 @@ const StreamingSlice = createSlice({
   }
 });
 
-export let { addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
+export let { sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
 export default StreamingSlice.reducer;

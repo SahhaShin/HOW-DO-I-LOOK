@@ -510,3 +510,68 @@ button{
     background-color: rgb(210, 179, 161);
     color: white;
 }
+
+
+/* 전체 닫기 버튼 */
+.outer {
+    position: relative;
+    margin: auto;
+    width: 20px;
+    /* height: 20px; */
+    margin-top: 20px;
+    margin-left: 320px;
+    cursor: pointer;
+  }
+  
+  .inner {
+    width: inherit;
+    text-align: center;
+  }
+  
+  label {
+    font-size: .4em;
+    line-height: 5em;
+    text-transform: uppercase;
+    color: #fff;
+    transition: all .3s ease-in;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .inner:before,
+  .inner:after {
+    position: absolute;
+    content: '';
+    height: 1px;
+    width: inherit;
+    background: rgb(210, 179, 161);
+    left: 0;
+    transition: all .3s ease-in;
+  }
+  
+  .inner:before {
+    top: 50%;
+    transform: rotate(45deg);
+  }
+  
+  .inner:after {
+    bottom: 50%;
+    transform: rotate(-45deg);
+  }
+  
+  .outer:hover label {
+    opacity: 1;
+  }
+  
+  .outer:hover .inner:before,
+  .outer:hover .inner:after {
+    transform: rotate(0);
+  }
+  
+  .outer:hover .inner:before {
+    top: 0;
+  }
+  
+  .outer:hover .inner:after {
+    bottom: 0;
+  }
