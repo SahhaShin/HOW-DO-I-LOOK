@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 
 //css
@@ -8,7 +8,7 @@ import liveMenuStyle from "./LiveMenu.module.css";
 import { useSelector, useDispatch} from "react-redux"; 
 import {action, changePick} from "../../../store/ClosetSlice";
 import {action_feed, changePick_feed} from "../../../store/FeedSlice";
-import {action_live, sendPickListChat, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
+import {action_live, changeOtherClosetOpen, sendPickListChat, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -167,6 +167,13 @@ const LiveMenu = () => {
     function sendImgToChat(){
         dispatch(sendPickListChat(true));
     }
+
+    useEffect(()=>{
+        if(state_live.otherClosetOpen===true){
+            setSelectedMenu("Menu 1");
+        }
+        dispatch(changeOtherClosetOpen(false));
+    },[state_live.otherClosetOpen])
   
     return (
       <div className={`${liveMenuStyle.sidebar}`}>

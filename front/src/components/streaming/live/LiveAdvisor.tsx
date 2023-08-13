@@ -6,7 +6,7 @@ import liveAdvisorStyle from "./LiveAdvisor.module.css";
 
 //redux
 import { useSelector, useDispatch} from "react-redux"; 
-import {action_live, changeMenuModalOpen} from "../../../store/StreamingSlice";
+import {action_live, changeMenuModalOpen, changeSelectAdvisor} from "../../../store/StreamingSlice";
 
 
 
@@ -88,7 +88,7 @@ const LiveAdvisor = () => {
             {
                 state_live.roomPeopleList?.map((user)=>{
                     return(
-                        <div onClick={()=>{dispatch(changeMenuModalOpen(true))}} className={`${liveAdvisorStyle.onePeople}`}>
+                        <div onClick={()=>{dispatch(changeSelectAdvisor(user.userId));dispatch(changeMenuModalOpen(true))}} className={`${liveAdvisorStyle.onePeople}`}>
                             <div className={`${genderColor(user.userGender)}`}>
                                 <img src={user.userProfileImg}/>
                             </div>
