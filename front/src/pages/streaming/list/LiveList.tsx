@@ -14,7 +14,7 @@ import { action_follow } from "../../../store/FollowSlice";
 
 // 컴포넌트
 import FeedSlot from "../../../components/sns/feed/FeedSlot";
-import IntroArea from "../../../components/sns/feed/IntroArea";
+import IntroArea from "../../../components/streaming/list/IntroArea";
 import FeedDetail from "../../../components/sns/feed/FeedDetail";
 import FeedCreate from "../../../components/sns/feed/FeedCreate";
 import FeedDeclaration from "../../../components/sns/feed/FeedDeclaration";
