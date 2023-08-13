@@ -123,6 +123,8 @@ public class RoomUserService {
                     .userId(user.get().getId())
                     .userNickname(user.get().getNickname())
                     .userProfileImg(user.get().getProfileImg())
+                    .userGender(String.valueOf(user.get().getGender()))
+                    .userBadgeType(String.valueOf(user.get().getShowBadgeType()))
                     .build();
 
             roomUserGetListDtos.add(roomUserGetListDto);
