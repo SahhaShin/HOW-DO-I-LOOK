@@ -144,6 +144,10 @@ export const action = {
         const chatCode = response.data.chatCode;
         window.sessionStorage.setItem("roomCode", JSON.stringify(roomCode));
         window.sessionStorage.setItem("chatCode", JSON.stringify(chatCode));
+        window.sessionStorage.setItem(
+          "hostId",
+          JSON.stringify(formdata.hostId)
+        );
 
         window.location.href = `${process.env.REACT_APP_FRONT}/live/${formdata.roomId}/${formdata.hostId}`;
         return response.data;

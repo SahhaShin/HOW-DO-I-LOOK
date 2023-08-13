@@ -17,14 +17,17 @@ class Streaming extends Component {
     super(props);
 
     //session에서 유저 정보를 가져온다.
-    const user = window.sessionStorage.getItem("loginUser");
-    const sessionid = "session2"; //window.sessionStorage.getItem("sessionid")
+    const user = JSON.parse(sessionStorage.getItem("loginUser"));
+    const hostId = window.sessionStorage.getItem("hostId");
+    // const sessionid = "session2"; //window.sessionStorage.getItem("sessionid")
     console.log(user);
+    console.log("userId : " + user.id);
+    console.log("hostID : " + hostId);
     //가져온 user정보를 this.state에 입력
     //
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
-      mySessionId: sessionid,
+      mySessionId: hostId,
       myUserName: user.id,
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
@@ -51,6 +54,7 @@ class Streaming extends Component {
     //beforeunload는 마운트가 해제되기 전에 실행되는 이벤트
     //onbeforeunload메서드를 실행시키는데 이게 leavesession을 실행시킨다.
     window.addEventListener("beforeunload", this.onbeforeunload);
+    this.joinSession();
   }
 
   componentWillUnmount() {
@@ -101,7 +105,10 @@ class Streaming extends Component {
   async joinSession() {
     //Openvidu 객체 생성 하는 코드
     this.OV = new OpenVidu();
-    const isStreamer = this.state.myUserName === this.state.mySessionId;
+    const isStreamer = this.state.myUserName == this.state.mySessionId;
+    console.log("isStreamer : " + isStreamer);
+    console.log(this.state.myUserName);
+    console.log(this.state.mySessionId);
 
     //세션을 설정하는 부분
     this.setState(
@@ -224,8 +231,8 @@ class Streaming extends Component {
     // Empty all properties...
     this.OV = null;
     this.setState({
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      mySessionId: "",
+      myUserName: "",
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined,
@@ -308,58 +315,10 @@ class Streaming extends Component {
     const myUserName = this.state.myUserName;
     const cameraOn = this.state.cameraOn;
     const audioOn = this.state.audioOn;
-    const isStreamer = this.state.myUserName === this.state.mySessionId;
+    const isStreamer = this.state.myUserName == this.state.mySessionId;
 
     return (
       <div className="container">
-        {/* 세션이 없다면!! */}
-        {/* 맨처음 화면이 랜더링된다 그 아이디랑 세션 아이디 입력하는 부분 toDo: //  test때는 둔다. */}
-        {this.state.session === undefined ? (
-          <div id="join">
-            <div id="img-div">
-              <img
-                src="resources/images/openvidu_grey_bg_transp_cropped.png"
-                alt="OpenVidu logo"
-              />
-            </div>
-            <div id="join-dialog" className="jumbotron vertical-center">
-              <h1> Join a video session </h1>
-              <form className="form-group" onSubmit={this.joinSession}>
-                <p>
-                  <label>Participant: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="userName"
-                    value={myUserName}
-                    onChange={this.handleChangeUserName}
-                    required
-                  />
-                </p>
-                <p>
-                  <label> Session: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="sessionId"
-                    value={mySessionId}
-                    onChange={this.handleChangeSessionId}
-                    required
-                  />
-                </p>
-                <p className="text-center">
-                  <input
-                    className="btn btn-lg btn-success"
-                    name="commit"
-                    type="submit"
-                    value="JOIN"
-                  />
-                </p>
-              </form>
-            </div>
-          </div>
-        ) : // 만약 session이 있다면 null이므로 위에 html이 생략된다.
-        null}
         {/* 만약 세션이 있다면 아래의 html 코드가 실행된다. */}
         {this.state.session !== undefined ? (
           <div id="session" className="StreamingComponent">
