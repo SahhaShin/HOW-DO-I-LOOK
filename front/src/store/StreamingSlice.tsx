@@ -73,6 +73,7 @@ const initialState = {
   pickList:[],
   sendImg:false,
   roomPeopleList:[],
+  menuModalOpen:false,
 };
 
 const StreamingSlice = createSlice({
@@ -93,6 +94,10 @@ const StreamingSlice = createSlice({
     },
     sendPickListChat(state, action){
       state.sendImg=action.payload;
+    },
+    changeMenuModalOpen(state, action){
+      state.menuModalOpen = action.payload;
+      console.log(`in!`);
     }
   },
 
@@ -109,5 +114,5 @@ const StreamingSlice = createSlice({
   
 });
 
-export let { sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
+export let {changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
 export default StreamingSlice.reducer;
