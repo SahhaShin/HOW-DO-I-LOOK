@@ -15,10 +15,16 @@ public class RoomUserGetListDto {
 
     private String userProfileImg;
 
+    private String userGender;
+
+    private String userBadgeType;
+
     @Builder
-    public RoomUserGetListDto(Long userId, String userNickname, String userProfileImg) {
+    public RoomUserGetListDto(Long userId, String userNickname, String userProfileImg, String userGender, String userBadgeType) {
         this.userId = userId;
         this.userNickname = userNickname;
         this.userProfileImg = userProfileImg;
+        this.userGender = userGender;
+        this.userBadgeType = userBadgeType;
     }
 }
