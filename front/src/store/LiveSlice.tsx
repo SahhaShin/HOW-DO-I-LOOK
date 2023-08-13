@@ -16,7 +16,14 @@ export const action = {
         const token = await CheckToken();
         const response = await axios.post(
           `${process.env.REACT_APP_SERVER}/api/room`,
-          { formdata },
+          {
+            title: formdata.title,
+            type: formdata.type,
+            hostId: formdata.hostId,
+            minAge: formdata.minAge,
+            maxAge: formdata.maxAge,
+            gender: formdata.gender,
+          },
           {
             headers: {
               Authorization: token,
@@ -39,7 +46,14 @@ export const action = {
         const token = await CheckToken();
         const response = await axios.put(
           `${process.env.REACT_APP_SERVER}/api/room`,
-          { formdata },
+          {
+            title: formdata.title,
+            type: formdata.type,
+            hostId: formdata.hostId,
+            minAge: formdata.minAge,
+            maxAge: formdata.maxAge,
+            gender: formdata.gender,
+          },
           {
             headers: {
               Authorization: token,
@@ -93,6 +107,7 @@ export const action = {
       if (data.search != "") {
         url = url + `&search=${data.search}`;
       }
+      console.log(url);
       try {
         //리스트 호출 요청문 보내기
         const token = await CheckToken();
@@ -112,19 +127,24 @@ export const action = {
   // 스트리밍 참여
   enterLiveRoom: createAsyncThunk(
     "LiveSlice/enterLiveRoom",
-    async ({ myId, otherId }: chatRoomParticipant, thunkAPI) => {
+    async (formdata: joinRoom, thunkAPI) => {
       try {
         const token = await CheckToken();
         const response = await axios.post(
-          `${process.env.REACT_APP_SERVER}/api/soloChatRoom`,
-          { userA: myId, userB: otherId },
+          `${process.env.REACT_APP_SERVER}/api/roomuser?userId=${formdata.userId}&roomId=${formdata.roomId}`,
+          {},
           {
             headers: {
               Authorization: token,
             },
           }
         );
+        const roomCode = response.data.roomCode;
+        const chatCode = response.data.chatCode;
+        window.sessionStorage.setItem("roomCode", JSON.stringify(roomCode));
+        window.sessionStorage.setItem("chatCode", JSON.stringify(chatCode));
 
+        window.location.href = `${process.env.REACT_APP_FRONT}/live`;
         return response.data;
       } catch (e) {
         console.log(e);
@@ -150,6 +170,11 @@ interface getChatRoomList {
   search: string;
   pageNum: number;
 }
+//채팅방 입장용
+interface joinRoom {
+  userId: string;
+  roomId: string;
+}
 
 // 초기화
 const initialState = {
@@ -157,17 +182,35 @@ const initialState = {
   chatHistory: null,
   otherNickname: "",
   page: 0,
+  ModalOpen: false,
+  create: false,
+
+  userId: "",
+  type: "",
+  search: "",
 };
 
 const LiveSlice = createSlice({
   name: "LiveSlice",
   initialState,
   reducers: {
+    setUserId(state, action) {
+      state.userId = action.payload;
+    },
+    setListType(state, action) {
+      state.type = action.payload;
+    },
+    setSearch(state, action) {
+      state.search = action.payload;
+    },
     changePage(state, action) {
       state.page = action.payload;
     },
-    changeCreateModalOpen(state, action) {
-      state.page = action.payload;
+    changeModalOpen(state, action) {
+      state.ModalOpen = action.payload;
+    },
+    isCreate(state, action) {
+      state.create = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -175,8 +218,25 @@ const LiveSlice = createSlice({
       state.liveList = action.payload;
       console.log(state.liveList);
     });
+
+    builder.addCase(action.createLiveList.fulfilled, (state, action) => {
+      state.ModalOpen = false;
+      console.log(state.liveList);
+    });
+
+    builder.addCase(action.changeLiveInfo.fulfilled, (state, action) => {
+      state.ModalOpen = false;
+      console.log(state.liveList);
+    });
   },
 });
 
-export let { changePage, changeCreateModalOpen } = LiveSlice.actions;
+export let {
+  changePage,
+  changeModalOpen,
+  isCreate,
+  setUserId,
+  setListType,
+  setSearch,
+} = LiveSlice.actions;
 export default LiveSlice.reducer;

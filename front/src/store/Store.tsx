@@ -6,9 +6,9 @@ import FeedSlice from "./FeedSlice";
 import MypageSlice from "./MypageSlice";
 import UtilSlice from "./UtilSlice";
 import ChatSlice from "./ChatSlice";
-import LiveSlice from "./LiveSlice";
 import UserSlice from "./UserSlice";
 import RankingSlice from "./RankingSlice";
+import LiveSlice from "./LiveSlice";
 
 import StreamingSlice from "./StreamingSlice";
 import FollowSlice from "./FollowSlice";
@@ -21,10 +21,10 @@ export const store = configureStore({
     mypage: MypageSlice,
     util: UtilSlice,
     chat: ChatSlice,
-    live: LiveSlice,
     user: UserSlice,
     rank: RankingSlice,
     streaming: StreamingSlice,
     follow: FollowSlice,
+    live: LiveSlice,
   },
 });

@@ -12,12 +12,12 @@
 /* 채팅 */
 .chatHeader{
     /* 크기 */
-    width: 400px;
-    height: 50px;
+    width: 300px;
+    height: 40px;
     background-color: var(--signiture);
 
     /* 폰트 */
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 900;
     color: white;
 
@@ -25,14 +25,24 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-left: 10px;
 
 
 }
 
 .chatArea{
     /* 높이 */
-    width: 400px;
-    height: 530px;
+    width: 300px;
+    height: 410px;
+    overflow: auto;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.mainChatArea{
+    /* background-color: salmon; */
+    width: 100%;
+    display: flex;
 }
 
 .chatContent{
@@ -42,11 +52,11 @@
     /* height: 50px; */
 }
 
-.chatContent>input{
+.chatContent>form>input{
     /* 크기 */
-    width: 400px;
+    width: 248px;
     height: 50px;
-    padding-left: 3%;
+    padding-left: 10px;
 
     /* border */
     border: none;
@@ -54,7 +64,7 @@
     border: 1px solid var(--border);
 }
 
-.chatContent>button{
+.chatContent>form>button{
     /* 크기 */
     width: 50px;
     height: 50px;
@@ -64,7 +74,8 @@
     color: white;
 }
 
-.chatArea > div:nth-child(1){
+.chatArea > div{
     /* 본문 */
-    height: 480px;
+    /* height: 50px; */
+    margin-bottom: 10px;
 }

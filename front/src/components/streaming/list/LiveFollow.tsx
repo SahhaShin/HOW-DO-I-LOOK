@@ -8,6 +8,7 @@ import { action_follow } from "../../../store/FollowSlice";
 import FollowSlot from "../../util/FollowSlot";
 
 const LiveFollow = () => {
+  //redux 관리
   let state_follow = useSelector((state: any) => state.follow);
   let dispatch = useDispatch();
 

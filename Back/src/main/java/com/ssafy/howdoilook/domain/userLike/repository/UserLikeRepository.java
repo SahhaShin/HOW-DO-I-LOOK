@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface UserLikeRepository extends JpaRepository<UserLike, Long> {
 
-    List<UserLike> findByUser_IdAndRoom_Id(Long userId, Long roomId);
+    List<UserLike> findByTargetUser_IdAndRoom_Id(Long userId, Long roomId);
 }

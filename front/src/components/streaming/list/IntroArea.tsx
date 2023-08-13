@@ -3,7 +3,12 @@ import introStyle from "./IntroArea.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { action } from "../../../store/LiveSlice";
+import {
+  action,
+  setListType,
+  setSearch,
+  changePage,
+} from "../../../store/LiveSlice";
 
 const IntroArea = () => {
   //redux 관리
@@ -12,49 +17,21 @@ const IntroArea = () => {
 
   let loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
   const [searchInput, setSearchInput] = useState<string>("");
+  const [type, setType] = useState("");
 
-  function sendHash() {
-    // {hashtag, size, page}
-    console.log(`1 ${searchInput}`);
+  function getList() {
+    dispatch(setListType(type));
+    dispatch(setSearch(searchInput));
+    dispatch(changePage(0));
 
-    // let hashremove = searchInput.replace("#","");
-    const hashList = searchInput.split(" ");
-
-    //해시태그 리스트 빈칸 없애고, 앞에 hashtag=??? 이런 줄줄이 글 만들기
-    //?hashtag=신발&hashtag=조던
-    let count = 0;
-    let hashquery = "";
-    for (let i = hashList.length; i >= 0; i--) {
-      if (
-        hashList[i] === " " ||
-        hashList[i] === "" ||
-        hashList[i] === undefined
-      ) {
-        continue;
-      } else {
-        let target = hashList[i].replace("#", "hashtag=");
-
-        if (count === 0) {
-          hashquery = target;
-          count++;
-          console.log(`3 ${hashquery}`);
-        } else {
-          hashquery = hashquery + "&" + target;
-          count++;
-          console.log(`4 ${hashquery}`);
-        }
-      }
-    }
-
-    console.log(hashquery);
-
-    let info = {
-      hashtag: hashquery,
-      size: 10,
-      page: 1,
-    };
-
-    dispatch(action.searchHash(info));
+    dispatch(
+      action.getLiveList({
+        userId: state.userId,
+        type: state.type,
+        search: state.search,
+        pageNum: state.page,
+      })
+    );
   }
 
   return (
@@ -74,12 +51,12 @@ const IntroArea = () => {
           onChange={(e) => {
             setSearchInput(e.target.value);
           }}
-          placeholder="#DATE #DAILY #TRAVEL"
+          placeholder="키워드를 입력하세요 "
           type="text"
         />
         <button
           onClick={() => {
-            sendHash();
+            getList();
           }}
         >
           검색
@@ -89,38 +66,58 @@ const IntroArea = () => {
       <div className={`${introStyle.tag}`}>
         <button
           onClick={(e) => {
-            setSearchInput(searchInput + ` #DATE`);
+            setType(`DATE`);
           }}
         >
-          #DATE
+          {type == "DATE" ? (
+            <div style={{ color: "black" }}>#DATE</div>
+          ) : (
+            `#DATE`
+          )}
         </button>
         <button
           onClick={(e) => {
-            setSearchInput(searchInput + ` #DAILY`);
+            setType(`DAILY`);
           }}
         >
-          #DAILY
+          {type == "DAILY" ? (
+            <div style={{ color: "black" }}>#DAILY</div>
+          ) : (
+            `#DAILY`
+          )}
         </button>
         <button
           onClick={(e) => {
-            setSearchInput(searchInput + ` #TRAVEL`);
+            setType(`TRAVEL`);
           }}
         >
-          #TRAVEL
+          {type == "TRAVEL" ? (
+            <div style={{ color: "black" }}>#TRAVEL</div>
+          ) : (
+            `#TRAVEL`
+          )}
         </button>
         <button
           onClick={(e) => {
-            setSearchInput(searchInput + ` #EXERCISE`);
+            setType(`EXERCISE`);
           }}
         >
-          #EXERCISE
+          {type == "EXERCISE" ? (
+            <div style={{ color: "black" }}>#EXERCISE</div>
+          ) : (
+            `#EXERCISE`
+          )}
         </button>
         <button
           onClick={(e) => {
-            setSearchInput(searchInput + ` #INTERVIEW`);
+            setType(`INTERVIEW`);
           }}
         >
-          #INTERVIEW
+          {type == "INTERVIEW" ? (
+            <div style={{ color: "black" }}>#INTERVIEW</div>
+          ) : (
+            `#INTERVIEW`
+          )}
         </button>
       </div>
 

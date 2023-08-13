@@ -8,7 +8,14 @@ import liveStyle from "./LiveList.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { action } from "../../../store/LiveSlice"; // todo
+import {
+  action,
+  changeModalOpen,
+  isCreate,
+  setUserId,
+  setType,
+  setSearch,
+} from "../../../store/LiveSlice"; // todo
 
 //컴포넌트
 import LiveSlot from "../../../components/streaming/list/LiveSlot";
@@ -20,6 +27,7 @@ import Footer from "../../../components/util/Footer";
 import LiveFollow from "../../../components/streaming/list/LiveFollow";
 import IntroArea from "../../../components/streaming/list/IntroArea";
 import LiveCreate from "../../../components/streaming/list/LiveCreate";
+import { login } from "../../../store/UserSlice";
 
 const LiveList = () => {
   const navigate = useNavigate();
@@ -41,9 +49,9 @@ const LiveList = () => {
     //리스트 가져오기
     dispatch(
       action.getLiveList({
-        userId: "",
-        type: "",
-        search: "",
+        userId: state.userId,
+        type: state.type,
+        search: state.search,
         pageNum: page,
       })
     );
@@ -52,11 +60,52 @@ const LiveList = () => {
     //회원 follow목록 가져오기
   }, []);
 
+  function listUpdate() {}
+
+  function upload() {
+    console.log("upload");
+    window.sessionStorage.setItem(
+      "liveRoom",
+      JSON.stringify({
+        hostId: "",
+        hostNickname: "",
+        maxAge: "",
+        minAge: "",
+        title: "",
+        type: "",
+      })
+    );
+    dispatch(isCreate(true));
+    dispatch(changeModalOpen(true));
+  }
+
+  function sortChange(flow: boolean, type, keyword) {
+    var id = "";
+    if (flow) {
+      const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+
+      id = loginUser.id;
+    }
+    console.log("id : " + id);
+    dispatch(setUserId(id));
+    dispatch(
+      action.getLiveList({
+        userId: state.userId,
+        type: state.type,
+        search: state.search,
+        pageNum: state.page,
+      })
+    );
+
+    console.log("id : " + state.userId);
+    // listUpdate();
+  }
+
   return (
     <>
       {
         // 업로드 모달
-        state.createModalOpen ? (
+        state.ModalOpen ? (
           <div className={`${liveStyle.createModal}`}>
             <LiveCreate />
           </div>
@@ -87,7 +136,7 @@ const LiveList = () => {
               {/* 업로드 버튼 */}
               <button
                 onClick={() => {
-                  dispatch(changeCreateModalOpen(true));
+                  upload();
                 }}
               >
                 업로드
@@ -99,10 +148,10 @@ const LiveList = () => {
               <div className={`${liveStyle.sortBtn}`}>
                 <button
                   onClick={async () => {
-                    dispatch(changeSortType(1));
+                    sortChange(false, "", "");
                   }}
                   style={
-                    state.sortType === 1
+                    state.userId == ""
                       ? { backgroundColor: "#4570F5", color: "white" }
                       : null
                   }
@@ -111,10 +160,10 @@ const LiveList = () => {
                 </button>
                 <button
                   onClick={async () => {
-                    dispatch(changeSortType(2));
+                    sortChange(true, "", "");
                   }}
                   style={
-                    state.sortType === 2
+                    state.userId != ""
                       ? { backgroundColor: "#4570F5", color: "white" }
                       : null
                   }

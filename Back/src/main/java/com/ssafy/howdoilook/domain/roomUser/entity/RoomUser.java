@@ -39,4 +39,10 @@ public class RoomUser extends BaseTimeEntity {
         this.room = room;
         this.status = status;
     }
+
+    public Long updateStatus(RoomUserType status) {
+        this.status = status;
+
+        return this.id;
+    }
 }

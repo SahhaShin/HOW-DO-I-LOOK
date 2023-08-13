@@ -36,7 +36,7 @@ public class UserController {
                 .body(userService.quit(authorization, id));
     }
 
-    @ApiOperation(value = "JWT 토큰 테스트", notes = "추후 삭제 예정")
+    @ApiOperation(value = "JWT 재발급용 (재발급을 원한다면 RefreshToken을 헤더에)", notes = "추후 삭제 예정")
     @GetMapping("/jwt")
     public ResponseEntity<?> jwtTest() {
 
@@ -68,6 +68,30 @@ public class UserController {
                 .body(userService.getUserList());
     }
 
+    @ApiOperation(value = "이메일로 유저 아이디(PK) 얻기")
+    @GetMapping("/userId/{email}")
+    public ResponseEntity<?> getUserIdByEmail(@PathVariable String email) {
+
+        return ResponseEntity.ok()
+                .body(userService.getUserIdByEmail(email));
+    }
+    
+    @ApiOperation(value = "이메일로 유저 검색 (이메일 중복 체크 용)", notes = "true : email 이미 존재, false : email 존재 X")
+    @GetMapping("/checkbyemail/{email}")
+    public ResponseEntity<?> checkUserEmail(@PathVariable String email) {
+
+        return ResponseEntity.ok()
+                .body(userService.checkUserEmail(email));
+    }
+
+    @ApiOperation(value = "닉네임으로 유저 검색 (닉네임 중복 체크 용)", notes = "true : nickname 이미 존재, false : nickname 존재 X")
+    @GetMapping("/checkbynickname/{nickname}")
+    public ResponseEntity<?> checkUserNickname(@PathVariable String nickname) {
+
+        return ResponseEntity.ok()
+                .body(userService.checkUserNickname(nickname));
+    }
+
     @ApiOperation(value = "유저 검색", notes = "NonPaging")
     @GetMapping("/search")
     public ResponseEntity<?> searchUsers(UserSearchCondition condition) {
@@ -93,11 +117,11 @@ public class UserController {
     }
 
     @ApiOperation(value = "소셜 로그인 유저 추가 정보 입력", notes = "age, gender, nickname를 입력하면, role도 GUEST -> USER로 변경됨")
-    @PutMapping("/social/update/{id}")
-    public ResponseEntity<?> updateSocialUserInfo(@PathVariable Long id, @RequestBody UserBySocialUpdateRequestDto userBySocialUpdateRequestDto) {
+    @PutMapping("/social/update/{email}")
+    public ResponseEntity<?> updateSocialUserInfo(@PathVariable String email, @RequestBody UserBySocialUpdateRequestDto userBySocialUpdateRequestDto) {
 
         return ResponseEntity.ok()
-                .body(userService.updateSocialUserInfo(id, userBySocialUpdateRequestDto));
+                .body(userService.updateSocialUserInfo(email, userBySocialUpdateRequestDto));
     }
 
     /*
@@ -111,6 +135,13 @@ public class UserController {
                 .body(userService.updateUserInfo(id, userUpdateRequestDto));
     }
 
+    @ApiOperation(value = "유저 대표 뱃지 수정", notes = "만약 대표 뱃지가 없다면 X임.")
+    @PutMapping("/update/{id}/{badge}")
+    public ResponseEntity<?> updateShowBadge(@PathVariable Long id, @PathVariable String badge) {
+
+        return ResponseEntity.ok()
+                .body(userService.updateShowBadge(id, badge));
+    }
 
     /*
      * 유저 프로필 사진 업데이트 : 추후 진행 예정

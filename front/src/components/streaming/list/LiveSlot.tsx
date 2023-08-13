@@ -3,7 +3,7 @@ import liveSlotStyle from "./LiveSlot.module.css";
 import { useNavigate } from "react-router-dom";
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { action } from "../../../store/LiveSlice";
+import { action, changeModalOpen, isCreate } from "../../../store/LiveSlice";
 
 const LiveSlot = (props) => {
   //oneRoom이 들어옴
@@ -20,16 +20,23 @@ const LiveSlot = (props) => {
 
   const navigate = useNavigate();
 
-  function chatStart() {
-    //id는 roomId임
-    navigate(
-      "/liveroom/" +
-        props.oneRoom.userBId +
-        "/" +
-        props.oneRoom.id +
-        "/" +
-        props.oneRoom.liveroomCode
+  const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+
+  function enterLiveRoom() {
+    console.log(props.oneRoom);
+    dispatch(
+      action.enterLiveRoom({
+        userId: loginUser.id,
+        roomId: props.oneRoom.title,
+      })
     );
+  }
+  function change() {
+    console.log("change");
+    window.sessionStorage.setItem("liveRoom", JSON.stringify(props.oneRoom));
+    console.log(props.oneRoom);
+    dispatch(isCreate(false));
+    dispatch(changeModalOpen(true));
   }
 
   return (
@@ -42,7 +49,7 @@ const LiveSlot = (props) => {
               src={process.env.PUBLIC_URL + `/img/user/profileImg.png`}
             ></img>
 
-            <div className={`${liveSlotStyle.redDot}`}>1</div>
+            {/* <div className={`${liveSlotStyle.redDot}`}></div> */}
           </div>
         </div>
         {/* 중앙 */}
@@ -63,10 +70,17 @@ const LiveSlot = (props) => {
         <div className={`${liveSlotStyle.enterBnt}`}>
           <button
             onClick={() => {
-              console.log("zzz");
+              enterLiveRoom();
             }}
           >
             입장
+          </button>
+          <button
+            onClick={async () => {
+              change();
+            }}
+          >
+            수정
           </button>
         </div>
       </div>
