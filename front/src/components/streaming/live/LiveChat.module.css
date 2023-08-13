@@ -27,7 +27,7 @@
     justify-content: center;
     padding-left: 10px;
 
-
+    
 }
 
 .chatArea{
@@ -74,8 +74,101 @@
     color: white;
 }
 
+.content{
+    margin-left: 5px;
+}
+
 .chatArea > div{
     /* 본문 */
     /* height: 50px; */
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
+
+/* 채팅에 들어간 이미지 */
+.sendImgWrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin-top: 5px;
+    text-align: left;
+}
+.sendImgCLOTHES{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 5px;
+}
+.sendImgCLOTHES>img{
+    width: 100px;
+    height: 100%;
+}
+
+.sendImgFEED{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 5px;
+}
+.sendImgFEED>img{
+    width: 200px;
+    height: 100%;
+}
+
+
+/* 채팅 뱃지에 따른 색깔 */
+.lovelyBadge{
+    width: 50px;
+    border-radius: 1rem;
+    background-color: var(--lovelyBtn);
+    color: white;
+    /* color:var(--lovelyBtn) */
+}
+.naturalBadge{
+    width: 50px;
+    border-radius: 1rem;
+    background-color: var(--naturalBtn);
+    color: white;
+    /* color:var(--naturalBtn) */
+}
+.modernBadge{
+    width: 50px;
+    border-radius: 1rem;
+    background-color: var(--modernBtn);
+    color: white;
+    /* color:var(--modernBtn) */
+}
+.sexyBadge{
+    width: 50px;
+    border-radius: 1rem;
+    background-color: var(--sexyBtn);
+    color: white;
+    /* color:var(--sexyBtn); */
+}
+.X{
+    width: 50px;
+    border-radius: 1rem;
+    background-color: grey;
+    color: white;
+}
+
+
+/* 스크롤 */
+.chatArea::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .chatArea::-webkit-scrollbar-thumb {
+    background-color: var(--signiture);
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  
+  .chatArea::-webkit-scrollbar-track {
+    background-color: lightgrey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }

@@ -8,7 +8,7 @@ import liveMenuStyle from "./LiveMenu.module.css";
 import { useSelector, useDispatch} from "react-redux"; 
 import {action, changePick} from "../../../store/ClosetSlice";
 import {action_feed, changePick_feed} from "../../../store/FeedSlice";
-import {action_live, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
+import {action_live, sendPickListChat, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -146,6 +146,27 @@ const LiveMenu = () => {
 
         console.log(pickList);
     }
+
+
+    //세트 이미지 삭제
+    function handleDeleteClothing(index) {
+        const updatedPickList = [...state_live.pickList]; // 현재 리스트 복사
+      
+        // 선택한 인덱스에 해당하는 사진 제거
+        updatedPickList.splice(index, 1);
+      
+        // Redux 스토어 업데이트
+        dispatch(rearrangePickList(updatedPickList));
+      
+        // setPickList 업데이트
+        setPickList(updatedPickList);
+      }
+
+
+    // 이미지 채팅으로 보내기
+    function sendImgToChat(){
+        dispatch(sendPickListChat(true));
+    }
   
     return (
       <div className={`${liveMenuStyle.sidebar}`}>
@@ -205,9 +226,10 @@ const LiveMenu = () => {
             <div className={`${liveMenuStyle.closetList2}`}>
                 {
                     state_feed.mypageFeedPic.length>0?state_feed.mypageFeedPic?.map((item)=>{
+                        console.log(item);
                         return(
                             <div className={`${liveMenuStyle.clothItem2}`}>
-                                <img style={item.pick===true?{border: "1px solid #4570F5"}:null} onClick={()=>{dispatch(changePick_feed(item.id));sendPickList(item.photoLink, "FEED")}} src={item.link}/>
+                                <img style={item.pick===true?{border: "1px solid #4570F5"}:null} onClick={()=>{dispatch(changePick_feed(item.id));sendPickList(item.link, "FEED")}} src={item.link}/>
                                 {item.pick?<div className={`${liveMenuStyle.pickLabel}`}>PICK!</div>:null}
                             </div>
                         );
@@ -226,7 +248,7 @@ const LiveMenu = () => {
                 <div className={`${liveMenuStyle.statement}`}>
                     <p>Today</p> <p>Codi</p> <p>Set</p>
                 </div>
-                <div className={`${liveMenuStyle.statement2}`}>나의 코디를 전송해보세요 ♡</div>
+                <div className={`${liveMenuStyle.statement2}`}>♡ 나의 코디를 전송해보세요 ♡</div>
                 <div className={`${liveMenuStyle.closetList3}`}>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <div className={`${liveMenuStyle.set}`}>       
@@ -287,7 +309,7 @@ const LiveMenu = () => {
                     </DragDropContext>
                 </div>
                 {state_live.pickList.length===0?<div className={`${liveMenuStyle.noset}`}><img src={process.env.PUBLIC_URL + '/img/live/question.png'}/>Pick한 코디가 없습니다!</div>:null}
-                <div className={`${liveMenuStyle.submit}`}><button>전송</button></div>
+                <div className={`${liveMenuStyle.submit}`}><button onClick={()=>{sendImgToChat()}}>전송</button></div>
             </div>
         )}
         {selectedMenu === "Menu 4" && <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>

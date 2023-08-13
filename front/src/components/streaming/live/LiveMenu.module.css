@@ -512,7 +512,7 @@ button{
 }
 
 
-/* 닫기 버튼 */
+/* 전체 닫기 버튼 */
 .outer {
     position: relative;
     margin: auto;
@@ -544,7 +544,7 @@ button{
     content: '';
     height: 1px;
     width: inherit;
-    background: #FFC107;
+    background: rgb(210, 179, 161);
     left: 0;
     transition: all .3s ease-in;
   }
