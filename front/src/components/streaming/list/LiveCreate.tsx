@@ -90,7 +90,7 @@ const LiveCreate = () => {
   useEffect(() => {}, []);
 
   return (
-    <div className={`${liveCreateStyle.modal}`}>
+    <div className={`${liveCreateStyle.createTotal}`}>
       {/* 입력창 */}
 
       <div className={``}>
