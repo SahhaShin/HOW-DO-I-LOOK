@@ -20,6 +20,7 @@ public class BadgeUpdateScheduler {
 
     private final BadgeService badgeService;
 
+    // 매 시간 발동
     @Scheduled(cron = "0 0 * * * *")
     public void updateBadge() {
         badgeService.deleteAllBadge();
@@ -40,5 +41,7 @@ public class BadgeUpdateScheduler {
 
         for (RankingResponseDto rankingResponseDto : naturalBadgeOwnerList)
             badgeService.awardedBadge(rankingResponseDto.getUserId(), BadgeType.valueOf(String.valueOf(rankingResponseDto.getLikeType())));
+
+        System.out.println("////////////////////////////////////////////BADGE 부여 Time//////////////////////////////////////////////////////////////////////");
     }
 }

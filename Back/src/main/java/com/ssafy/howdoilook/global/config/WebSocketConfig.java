@@ -8,10 +8,13 @@
     import org.springframework.web.socket.config.annotation.*;
 
     @Configuration
+    @RequiredArgsConstructor
     @EnableWebSocketMessageBroker
     @RequiredArgsConstructor
     public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         private final ChatHandler chatHandler;
+
+//        private final ChatHandler chatHandler; //웹 소켓 jwt 처리를 위한 핸들러
 
         //엔드포인트 /ws 에 등록 + 모든 접근 허용 => /ws를 통해 웹소켓 연결
         @Override

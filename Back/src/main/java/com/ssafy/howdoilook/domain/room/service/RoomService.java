@@ -8,10 +8,7 @@ import com.ssafy.howdoilook.domain.room.dto.request.RoomAddRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomChatImageRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomChatRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomUpdateRequestDto;
-import com.ssafy.howdoilook.domain.room.dto.response.RoomChatImageResponseDto;
-import com.ssafy.howdoilook.domain.room.dto.response.RoomChatResponseDto;
-import com.ssafy.howdoilook.domain.room.dto.response.RoomDetailResponseDto;
-import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.*;
 import com.ssafy.howdoilook.domain.room.entity.*;
 import com.ssafy.howdoilook.domain.room.repository.ChatRepository.RoomChatImageRepository;
 import com.ssafy.howdoilook.domain.room.repository.ChatRepository.RoomChatRepository;
@@ -115,7 +112,7 @@ public class RoomService {
         }
 
         Room room = Room.builder()
-                .code(roomAddRequestDto.getCode())
+                .code(UUID.randomUUID().toString())
                 .title(roomAddRequestDto.getTitle())
                 .type(RoomType.valueOf(roomAddRequestDto.getType()))
                 .host(user)
@@ -127,7 +124,7 @@ public class RoomService {
 
         Room saveRoom = roomRepository.save(room);
 
-        roomUserService.addRoomUser(saveRoom.getHost().getId(), saveRoom.getId(), userDetails);
+//        roomUserService.addRoomUser(saveRoom.getHost().getId(), saveRoom.getId(), userDetails);
 
         return room.getId();
     }
@@ -149,70 +146,72 @@ public class RoomService {
         return findRoom.update(roomUpdateRequestDto);
     }
 
-    public List<RoomListResponseDto> getAllRoomList(String type, int page, String search) {
+    public RoomListResponseWithTotalPageDto getAllRoomList(String type, int page, String search) {
 
         List<RoomListResponseDto> allRoomResponseDtoList = new ArrayList<>();
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         PageRequest pageRequest = PageRequest.of(page, 5, sort);
+        int totalPage = 0;
 
         /**
          * 모든 방 찾을 때
          */
         if(type == null && search == null) {
             Page<Room> allRooms = roomRepository.findAll(pageRequest);
+            totalPage = allRooms.getTotalPages();
 
             for(Room room : allRooms) {
                 allRoomResponseDtoList.add(new RoomListResponseDto(room));
             }
-
-            return allRoomResponseDtoList;
         }
 
         /**
          * 타입만 설정되어 있을 때
          */
-        if(type != null && search == null) {
+        else if(type != null && search == null) {
             RoomType roomType = RoomType.valueOf(type);
             Page<Room> getRoomList = roomRepository.findByType(roomType, pageRequest);
+            totalPage = getRoomList.getTotalPages();
 
             for(Room room : getRoomList) {
                 allRoomResponseDtoList.add(new RoomListResponseDto(room));
             }
-
-            return allRoomResponseDtoList;
         }
 
         /**
          * 검색어만 입력이 있을 때
          */
-        if(type == null && search != null) {
+        else if(type == null && search != null) {
             Page<Room> getRoomList = roomRepository.findByTitleContaining(search, pageRequest);
+            totalPage = getRoomList.getTotalPages();
 
             for(Room room : getRoomList) {
                 allRoomResponseDtoList.add(new RoomListResponseDto(room));
             }
-
-            return allRoomResponseDtoList;
         }
 
         /**
          * 타입도 설정되어 있고 검색어도 입력이 들어와 있을 때
          */
-        if(type != null && search != null) {
+        else if(type != null && search != null) {
             Page<Room> getRoomList = roomRepository.findByTypeAndTitleContaining(RoomType.valueOf(type), search, pageRequest);
+            totalPage = getRoomList.getTotalPages();
 
             for(Room room : getRoomList) {
                 allRoomResponseDtoList.add(new RoomListResponseDto(room));
             }
-
-            return allRoomResponseDtoList;
         }
 
-        return allRoomResponseDtoList;
+        RoomListResponseWithTotalPageDto result = RoomListResponseWithTotalPageDto.builder()
+                .totalPage(totalPage)
+                .roomListResponseDtos(allRoomResponseDtoList)
+                .build();
+
+        return result;
 
     }
 
-    public List<RoomListResponseDto> getFollowingRoomList(String type, int page, Long userId, String search, UserDetails userDetails) throws AccessException {
+    public RoomListResponseWithTotalPageDto getFollowingRoomList(String type, int page, Long userId, String search, UserDetails userDetails) throws AccessException {
 
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         PageRequest pageRequest = PageRequest.of(page, 5, sort);
@@ -229,7 +228,9 @@ public class RoomService {
         // 유저가 팔로잉 하고있는 팔로잉 유저 리스트
         List<Follow> followingList = user.getFollowerList();
 
-        List<RoomListResponseDto> getRoomList = roomRepository.findFollowingRoomList(followingList, type, search, pageRequest);
+        System.out.println(followingList.size());
+
+        RoomListResponseWithTotalPageDto getRoomList = roomRepository.findFollowingRoomList(followingList, type, search, pageRequest);
 
         return getRoomList;
     }

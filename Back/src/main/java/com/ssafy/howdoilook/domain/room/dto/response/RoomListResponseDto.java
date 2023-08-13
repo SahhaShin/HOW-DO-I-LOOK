@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoomListResponseDto {
 
+    private Long roomId;
     private String type;
     private String title;
     private int minAge;
@@ -20,6 +21,7 @@ public class RoomListResponseDto {
 
     @Builder @QueryProjection
     public RoomListResponseDto(Room room) {
+        this.roomId = room.getId();
         this.type = String.valueOf(room.getType());
         this.title = room.getTitle();
         this.minAge = room.getMinAge();

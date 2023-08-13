@@ -17,13 +17,16 @@ public class AuthorizationService {
 
     private final UserRepository userRepository;
 
-    public void auth(Long userId,UserDetails userDetails){
+    public User auth(Long userId,UserDetails userDetails){
         String clientEmail = userDetails.getUsername();
 
         User findUser = userRepository.findById(userId).orElseThrow(
                 () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
+
         if (!findUser.getEmail().equals(clientEmail)){
             throw new AccessException("접근 권한이 없습니다.");
         }
+
+        return findUser;
     }
 }
