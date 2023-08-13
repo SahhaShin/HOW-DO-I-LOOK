@@ -1,9 +1,6 @@
 package com.ssafy.howdoilook.domain.user.dto.response;
 
-import com.ssafy.howdoilook.domain.user.entity.Gender;
-import com.ssafy.howdoilook.domain.user.entity.Role;
-import com.ssafy.howdoilook.domain.user.entity.SocialType;
-import com.ssafy.howdoilook.domain.user.entity.User;
+import com.ssafy.howdoilook.domain.user.entity.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,6 +34,24 @@ public class UserSimpleResponseDto {
 
     private String socialId;
 
+    private BadgeType showBadgeType;
+
+    @Builder
+    public UserSimpleResponseDto(Long id, String email, String password, String name, String nickname, Gender gender, int age, String profileImg, Role role, SocialType socialType, String socialId, BadgeType showBadgeType) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.nickname = nickname;
+        this.gender = gender;
+        this.age = age;
+        this.profileImg = profileImg;
+        this.role = role;
+        this.socialType = socialType;
+        this.socialId = socialId;
+        this.showBadgeType = showBadgeType;
+    }
+
     @Builder
     public UserSimpleResponseDto(User user) {
         this.id = user.getId();
@@ -50,5 +65,6 @@ public class UserSimpleResponseDto {
         this.role = user.getRole();
         this.socialType = user.getSocialType();
         this.socialId = user.getSocialId();
+        this.showBadgeType = user.getShowBadgeType();
     }
 }

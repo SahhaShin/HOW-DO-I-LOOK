@@ -8,10 +8,10 @@ import UtilSlice from "./UtilSlice";
 import ChatSlice from "./ChatSlice";
 import UserSlice from "./UserSlice";
 import RankingSlice from "./RankingSlice";
+import LiveSlice from "./LiveSlice";
 
 import StreamingSlice from "./StreamingSlice";
 import FollowSlice from "./FollowSlice";
-
 
 //reducer 등록
 export const store = configureStore({
@@ -24,6 +24,7 @@ export const store = configureStore({
     user: UserSlice,
     rank: RankingSlice,
     streaming: StreamingSlice,
-    follow:FollowSlice,
+    follow: FollowSlice,
+    live: LiveSlice,
   },
 });

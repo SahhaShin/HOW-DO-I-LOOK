@@ -7,7 +7,10 @@ import com.ssafy.howdoilook.domain.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,28 +22,30 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/")
-    public Long saveComment(@RequestBody CommentSaveRequestDto commentSaveRequestDto) {
-        return commentService.saveComment(commentSaveRequestDto);
+    @PostMapping("")
+    public ResponseEntity<Long> saveComment(@RequestBody CommentSaveRequestDto commentSaveRequestDto,@AuthenticationPrincipal UserDetails userDetails) {
+        Long id = commentService.saveComment(commentSaveRequestDto,userDetails);
+        return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
     @GetMapping("/{feedId}")
-    public ResponseEntity<?> selectByFeed(@PathVariable(name = "feedId") Long feedId, Pageable page){
+    public ResponseEntity<Page<CommentResponseDto>> selectByFeed(@PathVariable(name = "feedId") Long feedId, Pageable page){
         Page<CommentResponseDto> commentResponseDtos = commentService.selectCommentByFeedId(feedId, page);
-        return ResponseEntity.ok().body(commentResponseDtos);
+        return ResponseEntity.status(HttpStatus.OK).body(commentResponseDtos);
     }
     @GetMapping("/{feedId}/{parentCommentId}")
-    public ResponseEntity<?> selectByFeedAndParentComment(@PathVariable(name = "feedId") Long feedId
-            , @PathVariable(name = "parentCommentId") Long parentCommetId,Pageable page){
+    public ResponseEntity<Page<CommentResponseDto>> selectByFeedAndParentComment(@PathVariable(name = "feedId") Long feedId
+            , @PathVariable(name = "parentCommentId") Long parentCommetId, Pageable page){
         Page<CommentResponseDto> commentResponseDtos = commentService.selectCommentByFeedIdAndParentCommentId(feedId, parentCommetId, page);
-        return ResponseEntity.ok().body(commentResponseDtos);
+        return ResponseEntity.status(HttpStatus.OK).body(commentResponseDtos);
     }
     @PutMapping("/{commentId}")
-    public Long updateComment(@PathVariable(name = "commentId") Long commentId, @RequestBody CommentUpdateRequestDto commentUpdateRequestDto){
-        return commentService.updateComment(commentId, commentUpdateRequestDto);
+    public ResponseEntity<Long> updateComment(@PathVariable(name = "commentId") Long commentId, @RequestBody CommentUpdateRequestDto commentUpdateRequestDto,@AuthenticationPrincipal UserDetails userDetails){
+        Long id = commentService.updateComment(commentId, commentUpdateRequestDto,userDetails);
+        return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
     @DeleteMapping("/{commentId}")
-    public Long deleteComment(@PathVariable(name = "commentId") Long commentId){
-        commentService.deleteComment(commentId);
-        return commentId;
+    public ResponseEntity<String> deleteComment(@PathVariable(name = "commentId") Long commentId,@AuthenticationPrincipal UserDetails userDetails){
+        commentService.deleteComment(commentId,userDetails);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 }
