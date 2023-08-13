@@ -3,6 +3,8 @@ import {useParams, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import * as StompJs from '@stomp/stompjs';
 
+import { getCookie } from "../../../hook/Cookie";
+
 //css
 import chatHistoryStyle from "./ChatHistory.module.css";
 
@@ -19,6 +21,8 @@ const ChatHistory = () => {
     const navigate = useNavigate();
     
     const params = useParams();
+
+    let token = getCookie("Authorization");
     
     interface ChatList{
         "chatRoomId": number,

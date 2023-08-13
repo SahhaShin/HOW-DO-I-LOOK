@@ -7,12 +7,13 @@ import liveMenuModalStyle from "./LiveMenuModal.module.css";
 //redux
 import { useSelector, useDispatch} from "react-redux"; 
 import {action, changePick} from "../../../store/ClosetSlice";
-import {action_feed, changePick_feed} from "../../../store/FeedSlice";
-import {action_live, sendPickListChat, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
+import {action_live, changeMenuModalOpen} from "../../../store/StreamingSlice";
 
 
 // alert창
 import Swal from "sweetalert2";
+
+const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
 
 const LiveMenuModal = ()=>{
@@ -26,8 +27,36 @@ const LiveMenuModal = ()=>{
 
 
     return(
-        <div>
+        <div className={`${liveMenuModalStyle.modal}`}>
+            
+            <p><img onClick={()=>{dispatch(changeMenuModalOpen(false))}} className={`${liveMenuModalStyle.closeBtn}`} src={process.env.PUBLIC_URL + '/img/feed/closeBtn.png'} /></p>
+            
+            <p>{loginUser.nickname}님 메뉴를 선택해주세요!</p>
+            
+            <div className={`${liveMenuModalStyle.menu}`}>
+                <div><img src={process.env.PUBLIC_URL + '/img/live/laundry.png'}/></div>
+                <div>옷장보기</div>
+            </div>
 
+            <div className={`${liveMenuModalStyle.menu}`}>
+                <div><img src={process.env.PUBLIC_URL + '/img/badge/Modern_colored.png'}/></div>
+                <div>점수주기</div>
+            </div>
+
+            <div className={`${liveMenuModalStyle.menu}`}>
+                <div><img src={process.env.PUBLIC_URL + '/img/live/like.png'}/></div>
+                <div>팔로잉</div>
+            </div>
+
+            <div className={`${liveMenuModalStyle.menu}`}>
+                <div><img src={process.env.PUBLIC_URL + '/img/live/ban-user.png'}/></div>
+                <div>블랙리스트</div>
+            </div>
+
+            <div className={`${liveMenuModalStyle.menu}`}>
+                <div><img src={process.env.PUBLIC_URL + '/img/live/exit.png'}/></div>
+                <div>강퇴하기</div>
+            </div>
         </div>
     );
 }
