@@ -2,7 +2,6 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 
 //css
 import liveCreateStyle from "./LiveCreate.module.css";
-import loginStyle from "./login.module.css";
 import styled from "styled-components";
 
 //redux
@@ -91,40 +90,40 @@ const LiveCreate = () => {
   useEffect(() => {}, []);
 
   return (
-    <div className={`${liveCreateStyle.createTotal}`}>
+    <div className={`${liveCreateStyle.modal}`}>
       {/* 입력창 */}
 
-      <div className={`${loginStyle.login}`}>
+      <div className={``}>
         <div>
           <div>
-            <label htmlFor="title" className={`${loginStyle.lable}`}>
+            <label htmlFor="title" className={`${liveCreateStyle.lable}`}>
               <p>Title</p>
             </label>
             <input
               type="text"
               id="title"
               placeholder="방 이름을 입력해주세요"
-              className={`${loginStyle.input}`}
+              className={`${liveCreateStyle.input}`}
               onChange={(e) => setTitle(e.target.value)}
               value={title}
             />
           </div>
           <div>
-            <label htmlFor="type" className={`${loginStyle.lable}`}>
+            <label htmlFor="type" className={`${liveCreateStyle.lable}`}>
               <p>Type</p>
             </label>
             <input
               type="text"
               id="type"
               placeholder="방 타입을 입력해주세요"
-              className={`${loginStyle.input}`}
+              className={`${liveCreateStyle.input}`}
               onChange={(e) => setType(e.target.value)}
               value={type}
             />
             {false && <div>사용하실 수 없는 타입입니다.</div>}
           </div>
           <div>
-            <label htmlFor="minAge" className={`${loginStyle.lable}`}>
+            <label htmlFor="minAge" className={`${liveCreateStyle.lable}`}>
               <p>최소나이</p>
             </label>
             <input
@@ -132,36 +131,37 @@ const LiveCreate = () => {
               id="minAge"
               onChange={(e) => setMinAge(e.target.value)}
               placeholder="입장 최소 나이를 선택해 주십시오"
-              className={`${loginStyle.input}`}
+              className={`${liveCreateStyle.input}`}
               value={minAge}
             />
             {false && <div>사용하실 수 없는 나이조건입니다.</div>}
           </div>
           <div>
-            <label htmlFor="maxAge" className={`${loginStyle.lable}`}>
+            <label htmlFor="maxAge" className={`${liveCreateStyle.lable}`}>
               <p>최고나이</p>
             </label>
             <input
               type="number"
               id="maxAge"
               placeholder="입장 최고 나이를 선택해 주십시오"
-              className={`${loginStyle.input}`}
+              className={`${liveCreateStyle.input}`}
               onChange={(e) => setMaxAge(e.target.value)}
               value={maxAge}
             />
           </div>
 
           <div>
-            <label htmlFor="gender" className={`${loginStyle.lable}`}>
+            <label htmlFor="gender" className={`${liveCreateStyle.lable}`}>
               <p>입장 가능 성별</p>
             </label>
-            <div className={`${loginStyle.half}`}>
+            <div className={`${liveCreateStyle.half}`}>
               <input
                 type="radio"
                 id="MALE"
                 name="gender"
                 value="MALE"
                 onClick={(e) => setGender(e.target.value)}
+                checked={gender == "MALE"}
               />
               <label htmlFor="MALE">남자</label>
 
@@ -171,6 +171,7 @@ const LiveCreate = () => {
                 name="gender"
                 value="FEMALE"
                 onClick={(e) => setGender(e.target.value)}
+                checked={gender == "FEMALE"}
               />
               <label htmlFor="FEMALE">여자</label>
               <input
@@ -179,6 +180,7 @@ const LiveCreate = () => {
                 name="gender"
                 value="X"
                 onClick={(e) => setGender("X")}
+                checked={gender == "X"}
               />
               <label htmlFor="X">상관없음 </label>
             </div>
@@ -202,39 +204,3 @@ const LiveCreate = () => {
 };
 
 export default LiveCreate;
-
-const StyledSlider = styled(Slider)`
-  .slick-prev {
-    z-index: 1;
-    left: 30px;
-    top: 50%;
-  }
-
-  .slick-next {
-    z-index: 1;
-    right: 40px;
-    top: 50%;
-  }
-
-  .slick-prev:before,
-  .slick-next:before {
-    font-size: 30px;
-    opacity: 1;
-    color: black;
-  }
-
-  .slick-dots {
-    display: flex;
-    justify-content: center;
-    bottom: 100px;
-    color: black;
-
-    li button:before {
-      color: black;
-    }
-
-    li.slick-active button:before {
-      color: white;
-    }
-  }
-`;

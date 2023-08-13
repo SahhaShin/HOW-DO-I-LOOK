@@ -197,48 +197,6 @@
   overflow: auto;
 }
 
-.oneTag {
-  /* 크기 */
-  width: 70px;
-  height: 40px;
-  border-radius: 10px;
-
-  /* 위치 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
-  margin-bottom: 10px;
-
-  /* 컬러 */
-  background-color: var(--signiture);
-  color: white;
-
-  /* 폰트 */
-  font-size: 12px;
-}
-
-.oneTag2 {
-  /* 크기 */
-  width: 70px;
-  height: 40px;
-  border-radius: 10px;
-
-  /* 위치 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
-  margin-bottom: 10px;
-
-  /* 컬러 */
-  background-color: var(--signiture);
-  color: white;
-
-  /* 폰트 */
-  font-size: 12px;
-}
-
 .rightBtns {
   /* 위치 */
   display: flex;
@@ -321,7 +279,7 @@ input:focus {
   outline: 0;
 }
 
-.lable {
+lable {
   padding: 0;
   margin: 0;
   margin-left: 10%;
@@ -329,10 +287,11 @@ input:focus {
   border: 0;
   font-size: 13px;
   line-height: 1rm;
+  color: balck;
 }
 
 p {
   margin: 0px;
   color: black;
-  background-color: aqua;
+  /* background-color: aqua; */
 }
