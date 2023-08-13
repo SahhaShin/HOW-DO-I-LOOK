@@ -215,7 +215,8 @@ const LiveSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(action.getLiveList.fulfilled, (state, action) => {
-      state.liveList = action.payload;
+      state.page = action.payload.totalPage;
+      state.liveList = action.payload.roomList;
       console.log(state.liveList);
     });
 
