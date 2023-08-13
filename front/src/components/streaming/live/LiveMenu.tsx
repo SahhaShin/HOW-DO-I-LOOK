@@ -199,7 +199,7 @@ const LiveMenu = () => {
                                 {item.pick?<div>PICK!</div>:null}
                             </div>
                         );
-                    }):<div className={`${liveMenuStyle.noItem}`}>등록된 옷이 없습니다.</div>
+                    }):<div className={`${liveMenuStyle.noset}`}><img src={process.env.PUBLIC_URL + '/img/live/question.png'}/><div className={`${liveMenuStyle.noItem}`}>등록된 옷이 없습니다.</div></div>
                 }    
             </div>  
         </div>}
@@ -233,7 +233,7 @@ const LiveMenu = () => {
                                 {item.pick?<div className={`${liveMenuStyle.pickLabel}`}>PICK!</div>:null}
                             </div>
                         );
-                    }):<div className={`${liveMenuStyle.noItem}`}>등록된 피드가 없습니다.</div>
+                    }):<div className={`${liveMenuStyle.noset}`}><img src={process.env.PUBLIC_URL + '/img/live/question.png'}/><div className={`${liveMenuStyle.noItem}`}>등록된 피드가 없습니다.</div></div>
                 }    
             </div>
         </div>}
