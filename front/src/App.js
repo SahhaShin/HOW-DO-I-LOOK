@@ -40,6 +40,7 @@ function App() {
             <Route path="/mypage/:watchingUserId" element={<Mypage />} />
 
             <Route path="/live/:roomId/:hostId" element={<Live />} />
+
             <Route path="/liveList" element={<LiveList />} />
 
             {/* <Route path="/" element={<LogHin/>}/> */}

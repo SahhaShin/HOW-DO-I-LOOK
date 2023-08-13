@@ -32,6 +32,7 @@ const LiveCreate = () => {
   const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
   //문구 입력
+  const [roomId, setRoomId] = useState("");
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
   const [minAge, setMinAge] = useState("");
@@ -42,11 +43,12 @@ const LiveCreate = () => {
     if (!state.create) {
       const liveRoom = JSON.parse(sessionStorage.getItem("liveRoom"));
       console.log(liveRoom);
+      setRoomId(liveRoom.roomId);
       setTitle(liveRoom.title);
       setType(liveRoom.type);
       setMinAge(liveRoom.minAge);
       setMaxAge(liveRoom.maxAge);
-
+      setGender(liveRoom.gender);
       // sessionStorage.removeItem("liveRoom");
     }
 
@@ -70,7 +72,7 @@ const LiveCreate = () => {
     } else {
       dispatch(
         action.changeLiveInfo({
-          roomId: state.roomId,
+          roomId: roomId,
           title: title,
           type: type,
           hostId: loginUser.id,
@@ -80,7 +82,7 @@ const LiveCreate = () => {
         })
       );
     }
-    window.location.href = `${process.env.REACT_APP_FRONT}/liveList`;
+    // window.location.href = `${process.env.REACT_APP_FRONT}/liveList`;
   }
 
   //모달 끄기

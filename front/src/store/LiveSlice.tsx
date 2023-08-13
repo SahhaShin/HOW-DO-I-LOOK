@@ -42,10 +42,11 @@ export const action = {
   changeLiveInfo: createAsyncThunk(
     "LiveSlice/changeLiveInfo",
     async (formdata: LiveRoom, thunkAPI) => {
+      console.log(formdata.gender);
       try {
         const token = await CheckToken();
         const response = await axios.put(
-          `${process.env.REACT_APP_SERVER}/api/room`,
+          `${process.env.REACT_APP_SERVER}/api/room/${formdata.roomId}`,
           {
             title: formdata.title,
             type: formdata.type,
@@ -144,7 +145,7 @@ export const action = {
         window.sessionStorage.setItem("roomCode", JSON.stringify(roomCode));
         window.sessionStorage.setItem("chatCode", JSON.stringify(chatCode));
 
-        window.location.href = `${process.env.REACT_APP_FRONT}/live`;
+        window.location.href = `${process.env.REACT_APP_FRONT}/live/${formdata.roomId}/${formdata.hostId}`;
         return response.data;
       } catch (e) {
         alert(e.response.data.message);
@@ -154,8 +155,9 @@ export const action = {
   ),
 };
 
-//채팅방 - 생성, 조회
+//방송 - 생성, 조회
 interface LiveRoom {
+  roomId: string;
   title: string;
   type: string;
   hostId: string;
@@ -163,17 +165,18 @@ interface LiveRoom {
   maxAge: number;
   gender: string;
 }
-//채팅방 조회용 조건
+//방송 조회용 조건
 interface getChatRoomList {
   userId: string;
   type: string;
   search: string;
   pageNum: number;
 }
-//채팅방 입장용
+//방송 입장용
 interface joinRoom {
   userId: string;
   roomId: string;
+  hostId: string;
 }
 
 // 초기화
@@ -217,6 +220,7 @@ const LiveSlice = createSlice({
     builder.addCase(action.getLiveList.fulfilled, (state, action) => {
       state.page = action.payload.totalPage;
       state.liveList = action.payload.roomList;
+
       console.log(state.liveList);
     });
 
