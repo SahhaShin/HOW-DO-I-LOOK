@@ -6,6 +6,7 @@ import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.follow.entity.QFollow;
 import com.ssafy.howdoilook.domain.room.dto.response.QRoomListResponseDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseWithTotalPageDto;
 import com.ssafy.howdoilook.domain.room.entity.QRoom;
 import com.ssafy.howdoilook.domain.room.entity.RoomType;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +26,15 @@ public class RoomCustomRepositoryImpl implements RoomCustomRepository {
     }
 
     @Override
-    public List<RoomListResponseDto> findFollowingRoomList(List<Follow> followingList, String type, String search, Pageable pageable) {
+    public RoomListResponseWithTotalPageDto findFollowingRoomList(List<Follow> followingList, String type, String search, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
-        for (Follow follow : followingList) {
-            builder.or(room.host.id.eq(follow.getFollowee().getId()));
+        if (!followingList.isEmpty()) {
+            for (Follow follow : followingList) {
+                builder.or(room.host.id.eq(follow.getFollowee().getId()));
+            }
+        } else {
+            // 팔로이가 없으면 아무런 조건을 추가하지 않음으로써 모든 값을 가져오지 않도록 처리
+            builder.and(room.id.isNull()); // 무효한 조건을 추가
         }
 
         /**
@@ -56,8 +62,19 @@ public class RoomCustomRepositoryImpl implements RoomCustomRepository {
                 .orderBy(room.id.desc())
                 .fetch();
 
-        List<RoomListResponseDto> content = queryResults;
+        long totalCount = jpaQueryFactory.selectFrom(room)
+                .leftJoin(follow)
+                .on(room.host.id.eq(follow.followee.id))
+                .where(builder)
+                .fetchCount();
 
-        return content;
+        long totalPages = (totalCount + pageable.getPageSize() - 1) / pageable.getPageSize(); // 올림 연산 적용
+
+        RoomListResponseWithTotalPageDto result = RoomListResponseWithTotalPageDto.builder()
+                .totalPage((int) totalPages)
+                .roomListResponseDtos(queryResults)
+                .build();
+
+        return result;
     }
 }
