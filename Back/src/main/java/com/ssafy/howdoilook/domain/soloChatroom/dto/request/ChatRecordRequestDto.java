@@ -1,16 +1,15 @@
 package com.ssafy.howdoilook.domain.soloChatroom.dto.request;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatRecordRequestDto {
     private String chatContent;
     private long roomId;
     private long userId;
+    private String senderEmail;
 
     @Builder
     public ChatRecordRequestDto(String chatContent, long roomId, long userId) {

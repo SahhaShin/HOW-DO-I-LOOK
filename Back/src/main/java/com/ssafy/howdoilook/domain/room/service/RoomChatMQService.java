@@ -38,7 +38,6 @@ public class RoomChatMQService {
     }
 
     public void imageEnqueue(RoomChatImageResponseDto responseDto){
-        System.out.println("33333333333333333333");
         try{
             String chatContent = objectMapper.writeValueAsString(responseDto);
             redisTemplate.opsForList().leftPush(IMAGE_QUEUE_KEY, chatContent);
