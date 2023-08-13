@@ -39,7 +39,7 @@ const IntroArea = () => {
       <div className={`${introStyle.firstArea}`}>
         <div className={`${introStyle.intro}`}>
           <div>
-            {loginUser.nickname}님이 궁금한 오늘의 방송은 무엇인가요?
+            {loginUser.nickname}님이 궁금한 오늘의 라이브는 무엇인가요?
             <div className={`${introStyle.light}`}></div>
           </div>
         </div>

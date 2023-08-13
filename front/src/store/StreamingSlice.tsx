@@ -97,7 +97,6 @@ const StreamingSlice = createSlice({
     },
     changeMenuModalOpen(state, action){
       state.menuModalOpen = action.payload;
-      console.log(`in!`);
     }
   },
 

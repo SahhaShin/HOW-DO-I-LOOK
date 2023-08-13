@@ -120,35 +120,35 @@
 
 /* 채팅 뱃지에 따른 색깔 */
 .lovelyBadge{
-    width: 50px;
+    width: 100px;
     border-radius: 1rem;
     background-color: var(--lovelyBtn);
     color: white;
     /* color:var(--lovelyBtn) */
 }
 .naturalBadge{
-    width: 50px;
+    width: 100px;
     border-radius: 1rem;
     background-color: var(--naturalBtn);
     color: white;
     /* color:var(--naturalBtn) */
 }
 .modernBadge{
-    width: 50px;
+    width: 100px;
     border-radius: 1rem;
     background-color: var(--modernBtn);
     color: white;
     /* color:var(--modernBtn) */
 }
 .sexyBadge{
-    width: 50px;
+    width: 100px;
     border-radius: 1rem;
     background-color: var(--sexyBtn);
     color: white;
     /* color:var(--sexyBtn); */
 }
 .X{
-    width: 50px;
+    width: 100px;
     border-radius: 1rem;
     background-color: grey;
     color: white;
