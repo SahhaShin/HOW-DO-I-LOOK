@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ScoreSaveRequestDto {
 
-    private Long userId;
-    private Long roomId;
-    private String type;
-    private int score;
+    private Long targetUserId;
 
+    private Long roomId;
+
+    private String type;
+
+    private int score;
 }
