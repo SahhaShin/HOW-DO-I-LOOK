@@ -8,7 +8,7 @@ import liveStyle from "./LiveList.module.css";
 
 //redux
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { action_follow } from "../../../store/FollowSlice";
 
@@ -23,9 +23,9 @@ import Footer from "../../../components/util/Footer";
 import Menu from "../../../components/util/Menu";
 import FeedModify from "../../../components/sns/feed/FeedModify";
 import LiveFollow from "../../../components/sns/feed/FeedFollow";
-import LiveSlot from "../../../components/streaming/list/ListSlot";
+import LiveSlot from "../../../components/streaming/list/LiveSlot";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   action,
   changeModalOpen,
@@ -36,14 +36,8 @@ import {
 } from "../../../store/LiveSlice"; // todo
 
 //컴포넌트
-import LiveSlot from "../../../components/streaming/list/LiveSlot";
 import Pagination from "../../../components/util/Pagination";
-import FollowSlot from "../../../components/util/FollowSlot";
-import Header from "../../../components/util/Header";
-import Menu from "../../../components/util/Menu";
-import Footer from "../../../components/util/Footer";
-import LiveFollow from "../../../components/streaming/list/LiveFollow";
-import IntroArea from "../../../components/streaming/list/IntroArea";
+
 import LiveCreate from "../../../components/streaming/list/LiveCreate";
 import { login } from "../../../store/UserSlice";
 
