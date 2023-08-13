@@ -1,7 +1,6 @@
 package com.ssafy.howdoilook.domain.room.service;
 
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
-import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
 import com.ssafy.howdoilook.domain.feedPhoto.repository.FeedPhotoRepository;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.room.dto.ImageChatDto;
@@ -35,11 +34,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,8 +47,6 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final RoomUserRepository roomUserRepository;
-    private final RoomChatRepository roomChatRepository;
-    private final RoomChatImageRepository roomChatImageRepository;
     private final FeedPhotoRepository feedPhotoRepository;
     private final ClothesRepository clothesRepository;
 
@@ -59,12 +54,11 @@ public class RoomService {
     private final RoomUserService roomUserService;
 
     @Transactional
-    public RoomChatImageResponseDto imageIntegrity(RoomChatImageRequestDto requestDto){
+    public RoomChatImageResponseDto imageIntegrity(RoomChatImageRequestDto requestDto, UserDetails userDetails){
         LocalDateTime time = LocalDateTime.now();
 
         //닉네임 무결성 검증
-        String email = jwtService.extractEmail(requestDto.getToken()).get();
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
         //이미지 링크 무결성 검증
@@ -90,11 +84,11 @@ public class RoomService {
                 .build();
     }
     @Transactional
-    public RoomChatResponseDto chatIntegrity(RoomChatRequestDto requestDto){
+    public RoomChatResponseDto chatIntegrity(RoomChatRequestDto requestDto, UserDetails userDetails){
         LocalDateTime time = LocalDateTime.now();
+
         //닉네임 무결성 검증
-        String email = jwtService.extractEmail(requestDto.getToken()).get();
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
         return RoomChatResponseDto.builder()
