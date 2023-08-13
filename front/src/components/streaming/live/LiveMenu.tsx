@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
+import {useParams, useNavigate} from 'react-router-dom';
 
 //css
 import liveMenuStyle from "./LiveMenu.module.css";
@@ -26,7 +27,10 @@ const LiveMenu = () => {
     let state_closet = useSelector((state:any)=>state.closet);
     let state_feed = useSelector((state:any)=>state.feed);
     let state_live = useSelector((state:any)=>state.streaming);
+    
     let dispatch = useDispatch();
+
+    const params = useParams();
 
     const [selectedMenu, setSelectedMenu] = useState(null);
     const [searchInput, setSearchInput] = useState<string>("");
@@ -38,6 +42,11 @@ const LiveMenu = () => {
 
     // 로그인 유저
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+    
+    //호스트 아이디
+    const hostId  = String(params.hostId);
+    const roomId = String(params.roomId);
+
 
     // 드래그 앤 드랍
     const onDragEnd = (result) => {
@@ -141,10 +150,10 @@ const LiveMenu = () => {
     return (
       <div className={`${liveMenuStyle.sidebar}`}>
         <div>
-            <button onClick={() => {dispatch(action.getClothesListByType({clothesType:"ALL", userId:loginUser.id, pageNum:10})); handleMenuClick("Menu 1")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu1_closet.png'}/></button>
+            <button onClick={() => {dispatch(action.getClothesListByType({clothesType:"ALL", userId:hostId, pageNum:10})); handleMenuClick("Menu 1")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu1_closet.png'}/></button>
             <button onClick={() => {dispatch(action_feed.hashSearchTotalList()); handleMenuClick("Menu 2")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu2_search.png'}/></button>
             <button onClick={() => {handleMenuClick("Menu 3")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu3_set.png'}/></button>
-            <button onClick={() => {handleMenuClick("Menu 4")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu4_info.png'}/></button>
+            <button onClick={() => {dispatch(action_live.getInfo(roomId)); handleMenuClick("Menu 4")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu4_info.png'}/></button>
             <button onClick={() => {handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_exit.png'}/></button>
         </div>
         {selectedMenu === "Menu 1" && <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>
@@ -293,12 +302,12 @@ const LiveMenu = () => {
                 <p>ROOM INFOMATION</p>
             </div>
             <div className={`${liveMenuStyle.closetList4}`}>
-                <div><p>제목</p> <p>내일 소개팅 가는데 옷 추천해줄 사람</p></div>
-                <div><p>호스트 나이</p><p>20대</p></div>
-                <div><p>호스트 성별</p><p>여</p></div>
-                <div><p>입장제한 최소 나이</p><p>20세</p></div>
-                <div><p>입장제한 최소 나이</p><p>30세</p></div>
-                <div><p>입장 제한 성별</p><p>없음</p></div>
+                <div><p>제목</p> <p>{state_live.roomInfo?.title}</p></div>
+                <div><p>호스트 나이</p><p>{state_live.roomInfo?.hostAge}</p></div>
+                <div><p>호스트 성별</p><p>{state_live.roomInfo?.hostGender}</p></div>
+                <div><p>입장제한 최소 나이</p><p>{state_live.roomInfo?.roomMinAge}</p></div>
+                <div><p>입장제한 최소 나이</p><p>{state_live.roomInfo?.roomMaxAge}</p></div>
+                <div><p>입장 제한 성별</p><p>{state_live.roomInfo?.roomGender}</p></div>
             </div>    
         </div>}
       </div>
