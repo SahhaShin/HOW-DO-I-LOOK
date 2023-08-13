@@ -27,7 +27,7 @@ const LiveSlot = (props) => {
     dispatch(
       action.enterLiveRoom({
         userId: loginUser.id,
-        roomId: props.oneRoom.title,
+        roomId: 1, //props.oneRoom.title, 임시
       })
     );
   }

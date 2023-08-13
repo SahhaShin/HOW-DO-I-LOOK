@@ -147,7 +147,7 @@ export const action = {
         window.location.href = `${process.env.REACT_APP_FRONT}/live`;
         return response.data;
       } catch (e) {
-        console.log(e);
+        alert(e.response.data.message);
         throw e;
       }
     }
