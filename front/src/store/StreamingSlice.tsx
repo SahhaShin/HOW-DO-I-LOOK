@@ -23,6 +23,22 @@ export const action_live = {
         throw e;
     }
   }),
+
+  //참여자 목록
+  peopleList : createAsyncThunk("FeedSlice/peopleList", async({userId, roomId}, thunkAPI)=>{
+    try{
+        const token = await CheckToken();
+        const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/roomuser/list?userId=${userId}&roomId=${roomId}`,{
+            headers:{"Authorization":token}
+        });
+
+        console.log(response.data);
+        return response.data;
+    } catch(e){
+        console.log(e);
+        throw e;
+    }
+  }),
   
 }
 
@@ -56,6 +72,7 @@ const initialState = {
   roomInfo:null,
   pickList:[],
   sendImg:false,
+  roomPeopleList:[],
 };
 
 const StreamingSlice = createSlice({
@@ -83,7 +100,13 @@ const StreamingSlice = createSlice({
     builder.addCase(action_live.getInfo.fulfilled,(state,action)=>{
       state.roomInfo = action.payload; //내가 누른 좋아요 정보
     })
+
+    builder.addCase(action_live.peopleList.fulfilled,(state,action)=>{
+      state.roomPeopleList = action.payload; //방 참가자들
+      
+    })
   }
+  
 });
 
 export let { sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
