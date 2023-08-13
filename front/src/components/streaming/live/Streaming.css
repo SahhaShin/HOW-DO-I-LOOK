@@ -23,8 +23,8 @@
   z-index: 1;
   height: 40px;
   width: 750px;
-  top: 540px;
-  left: 0px;
+  top: 450px;
+  left: 60px;
 }
 
 .leaveButton {
@@ -60,4 +60,7 @@ img {
   background-color: rgb(240, 240, 240);
   color: black;
   font-size: 17px;
+}
+.displayNone {
+  display: none;
 }

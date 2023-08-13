@@ -8,7 +8,7 @@ import liveChatStyle from "./LiveChat.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {pushAnyChatList} from "../../../store/StreamingSlice";
+import {pushAnyChatList, sendPickListChat} from "../../../store/StreamingSlice";
 
 const LiveChat = () => {
 
@@ -24,6 +24,7 @@ const LiveChat = () => {
     interface anyChatList{
         nickname:string,
         chatContent : string|null,
+        badge : string|null,
         image:[
             {
                 type:string|null, //CLOTHES OR FEED
@@ -42,7 +43,8 @@ const LiveChat = () => {
         roomId:string,
         chatContent:string,
         nickname:string,
-        time:string
+        time:string,
+        badge:string,
     }
 
     interface ImgSend{
@@ -72,7 +74,8 @@ const LiveChat = () => {
         ],
         nickname:string,
         time:string,
-        roomId:string
+        roomId:string,
+        badge:string,
     }
 
 
@@ -162,13 +165,15 @@ const LiveChat = () => {
     //2. 채팅방 다대다 구독, 이미지 전송도 가능
     function subscribe(){
         console.log("현재 2 subscribe이다.");
+        
         client.current.subscribe('/sub/roomChat/'+roomCode,(chatMessage)=>{
             const message = JSON.parse(chatMessage.body);
 
             let addData={
                 nickname:message.nickName,
                 chatContent : message.chatContent,
-                image:null
+                image:null,
+                badge:message.badge,
             }
 
             console.log(message)
@@ -194,6 +199,7 @@ const LiveChat = () => {
                 nickname:loginUser.nickname,
                 chatContent : null,
                 image:messageImg.image,
+                badge:messageImg.badge,
             }
 
             console.log(messageImg)
@@ -205,6 +211,12 @@ const LiveChat = () => {
             ]);
 
         });
+
+        // 이미지 전송 요청이 왓으면 실행
+        if(state.sendImg){
+            sendImgMessage();
+            console.log("여기까지 왔는데...");
+        }
     }
 
 
@@ -220,14 +232,14 @@ const LiveChat = () => {
     }
 
     //3-2. 채팅방에 이미지를 보낸다. (사전 셋팅)
-    function sendImgMessage(event, chat){
-        event.preventDefault();//버튼 눌렀을 때 새로고침 방지
+    function sendImgMessage(){
         
         if(chat!==""){//빈문자열 입력 방지
-            publishImg(chat);
+            publishImg(state.pickList);
         }
         else if(imgSrc!==null){
-            publishImg(chat);//이 때는 이미지 주소를 보낼 것임
+            console.log("이미지 사전 셋팅");
+            publishImg(state.pickList);//이 때는 이미지 주소를 보낼 것임
         }
     }
 
@@ -255,8 +267,9 @@ const LiveChat = () => {
 
     //4. 채팅방에 이미지를 보낸다. (서버전송)
     function publishImg(chatImg:ImgSendSplit){
-
         if(!client.current.connected){
+            console.log("연결이 안되서 실패한 거 같은데");
+
             return;
         }
 
@@ -268,6 +281,8 @@ const LiveChat = () => {
                 roomId:roomId
             })
         });
+
+        dispatch(sendPickListChat(false));//다시 사진 보낼 수 있게 수정
     }
 
     //5. 채팅 종료
@@ -285,7 +300,41 @@ const LiveChat = () => {
 
           disconnect();
         }
-      }, []);
+    }, [state.sendImg]);
+
+
+    // changeColor
+    function changeColor(badge){
+        console.log(badge);
+        if(badge==="X"){
+            return `${liveChatStyle.X}`;;
+        }
+        else if(badge==="LOVELY"){
+            return `${liveChatStyle.lovelyBadge}`;
+        }
+        else if(badge==="NATURAL"){
+            return `${liveChatStyle.naturalBadge}`;
+        }
+        else if(badge==="MODERN"){
+            return `${liveChatStyle.modernBadge}`;
+        }
+        else if(badge==="SEXY"){
+            return `${liveChatStyle.sexyBadge}`;
+        }
+
+    }
+
+    // feed or cloth에 따른 사진 크기 css
+    function clothorfeed(type){
+        if(type==="CLOTHES"){
+            return `${liveChatStyle.sendImgCLOTHES}`;
+        }
+
+        else if(type==="FEED"){
+            return `${liveChatStyle.sendImgFEED}`;
+        }
+    }
+
 
 
     return(
@@ -296,21 +345,29 @@ const LiveChat = () => {
             <div className={`${liveChatStyle.chatArea} ${liveChatStyle.totalChat}`} ref={scrollRef}>
                 {   
                     state.anyChatList?.map((one, index)=>{
+                        console.log(one);
                         return(
-                            <div key={index} className={`${liveChatStyle.mainChatArea}`}>
-                                <div>{`${one?.nickname} : `} </div>
-                                {one?.chatContent!==null?
-                                    <div>{one.chatContent}</div>:null
-                                }
-
-                                {
-                                    one?.image?.length>0?
-                                    one?.image?.map((oneSrc, imgIndex)=>{
-                                        return(
-                                            <div key={imgIndex}><img src={`${oneSrc}`}/></div>
-                                        );
-                                    }):null
-                                }
+                            <div>
+                                <div key={index} className={`${liveChatStyle.mainChatArea}`}>
+                                    <div className={`${changeColor(one.badge)}`}>{`${one?.nickname} `} </div>
+                                    {one?.chatContent!==null?
+                                        <div className={`${liveChatStyle.content}`}>{one.chatContent}</div>:null
+                                    }
+                                </div>
+                                <div>
+                                    <div className={liveChatStyle.sendImgWrapper}>
+                                    {
+                                        one?.image?.length>0?
+                                        one?.image?.map((oneSrc, imgIndex)=>{
+                                            return(
+                                                <div className={`${clothorfeed(oneSrc.type)}`} key={imgIndex}>
+                                                    <img src={`${oneSrc.photoLink}`}/>
+                                                </div>
+                                            );
+                                        }):null
+                                    }
+                                    </div>
+                                </div>
                             </div>
                         );
                     })
