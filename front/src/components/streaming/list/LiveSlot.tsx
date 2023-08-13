@@ -21,13 +21,17 @@ const LiveSlot = (props) => {
   const navigate = useNavigate();
 
   const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+  console.log("props : " + props.oneRoom.hostNickname);
+  console.log("login : " + loginUser.nickname);
 
   function enterLiveRoom() {
     console.log(props.oneRoom);
+    console.log(props.oneRoom.title);
     dispatch(
       action.enterLiveRoom({
         userId: loginUser.id,
-        roomId: 1, //props.oneRoom.title, 임시
+        roomId: props.oneRoom.roomId, //
+        hostId: props.oneRoom.hostId,
       })
     );
   }
@@ -75,13 +79,15 @@ const LiveSlot = (props) => {
           >
             입장
           </button>
-          <button
-            onClick={async () => {
-              change();
-            }}
-          >
-            수정
-          </button>
+          {props.oneRoom.hostNickname == loginUser.nickname ? (
+            <button
+              onClick={async () => {
+                change();
+              }}
+            >
+              수정
+            </button>
+          ) : null}
         </div>
       </div>
     </div>
