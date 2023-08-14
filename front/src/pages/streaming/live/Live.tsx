@@ -12,7 +12,7 @@ import liveStyle from "./Live.module.css";
 import LiveMenu from '../../../components/streaming/live/LiveMenu';
 import LiveChat from '../../../components/streaming/live/LiveChat';
 import LiveAdvisor from '../../../components/streaming/live/LiveAdvisor';
-import Streaming from "../../../components/streaming/live/Streaming"
+import Streaming from "../../../components/streaming/live/Streaming.jsx"
 import LiveMenuModal from '../../../components/streaming/live/LiveMenuModal';
 import LiveScoreModal from '../../../components/streaming/live/LiveScoreModal';
 

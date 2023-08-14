@@ -5,6 +5,10 @@ import axios from "axios";
 
 import {CheckToken} from "../hook/UserApi"
 
+// alert창
+import Swal from "sweetalert2";
+
+
 // axios
 export const action_live = {
 
@@ -29,6 +33,23 @@ export const action_live = {
     try{
         const token = await CheckToken();
         const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/roomuser/list?userId=${userId}&roomId=${roomId}`,{
+            headers:{"Authorization":token}
+        });
+
+        console.log(response.data);
+        return response.data;
+    } catch(e){
+        console.log(e);
+        throw e;
+    }
+  }),
+
+  // 점수주기
+  giveScore : createAsyncThunk("FeedSlice/giveScore", async({targetUserId, roomId, type, score}, thunkAPI)=>{
+    try{
+      console.log(`${targetUserId}, ${roomId}, ${type}, ${score}`);
+        const token = await CheckToken();
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/userlike`,{targetUserId, roomId, type, score},{
             headers:{"Authorization":token}
         });
 
@@ -74,7 +95,7 @@ const initialState = {
   sendImg:false,
   roomPeopleList:[],
   menuModalOpen:false,
-  selectAdvisor:null,
+  selectAdvisor:null, //아이디가 들어가있음
   otherClosetOpen:false,
   scoreModalOpen:false,
   pickBadge:null,
@@ -113,6 +134,7 @@ const StreamingSlice = createSlice({
     },
     changepPickBadge(state,action){
       state.pickBadge=action.payload
+      console.log(action.payload);
     }
   },
 
@@ -125,9 +147,19 @@ const StreamingSlice = createSlice({
       state.roomPeopleList = action.payload; //방 참가자들
       
     })
+
+    builder.addCase(action_live.giveScore.fulfilled,(state,action)=>{
+      Swal.fire({
+        icon: 'success',
+        title: '마스터 점수 주기 성공!',
+        text: '마스터 점수가 제공되었습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+      
+    })
   }
   
 });
 
-export let {changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
+export let {changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
 export default StreamingSlice.reducer;

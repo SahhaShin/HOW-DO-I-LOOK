@@ -73,8 +73,6 @@ const LiveAdvisor = () => {
 
     const params = useParams();
 
-    let [advisor, setAdvisor] = useState<number[]>([1,2,3,4]);
-
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
     const userId = String(loginUser.id);
     const roomId = params.roomId; 

@@ -22,7 +22,7 @@
     /* 컬러 */
     background-color: white;
 
-    z-index: 10000;
+    z-index: 10;
 }
 
 .modal > p:nth-child(1){
@@ -37,7 +37,8 @@
     justify-content: center;
     align-items: center;
     
-    margin-top: 5%;
+    margin-top: 3%;
+    margin-bottom: 3%;
 
     height: 50px;
     font-weight: 900;
@@ -69,6 +70,7 @@
     transform: scale(1.1); /* 이미지를 1.1배 확대 */
     z-index: 1; /* 이미지를 다른 내용 위로 올림 */
 }
+
 
 .select>img{
     width: 80px;
@@ -111,9 +113,17 @@
 }
 
 .pick{
-    position:relative;
+    position:absolute;
     background-color: var(--signiture);
     color: white;
     border-radius: 1rem;
     width: 100px;
+    margin-top: -170px;
+}
+
+
+/* 알럴트 스타일 이렇게 바꿀 수 있다고 했는데 왜 안바뀌지 ㅎㅎ */
+.custom-swal-confirm-button {
+    width: 200px;
+    height: 50px;
 }
