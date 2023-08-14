@@ -24,6 +24,12 @@ const LiveChat = () => {
     
     const params = useParams();
 
+    let token = getCookie("Authorization");
+
+    const headers = {
+        Authorization : `Bearer ${token}`,
+    };
+
     //새로운 정보 가공 이미지와 채팅 모두 필요하기 때문
     interface anyChatList{
         nickname:string,
@@ -93,8 +99,6 @@ const LiveChat = () => {
     const nickname:string = loginUser.nickname; //나의 닉네임
     const roomId  = String(params.roomId);
 
-    let token = getCookie("Authorization");
-
 
     const client = useRef({}); //useRef는 저장공간 또는 DOM요소에 접근하기 위해 사용되는 React Hook == like query selector
     
@@ -108,7 +112,7 @@ const LiveChat = () => {
 
     // 방 생성할 때 생성되는 uuid임 -> 어디에서 가져와야하는지 설명 필요
     // const roomCode = `9e2d5fca-93e8-4c15-a2ab-7d03b9714ae8`;
-    const roomCode = String(JSON.parse(sessionStorage.getItem("loginUser")).roomCode);
+    const roomCode = String(JSON.parse(sessionStorage.getItem("chatCode")));
 
     // 유저가 올린 파일 이미지를 미리보기로 띄워주는 함수
     const onUploadImage = useCallback((file: any) => {
@@ -170,7 +174,7 @@ const LiveChat = () => {
         //     }
         // });
 
-        client.current.connect({},()=>{
+        client.current.connect(headers,()=>{
             subscribe();
         })
 
@@ -274,7 +278,8 @@ const LiveChat = () => {
                 chatContent : chat,
                 token : token,
                 roomId : roomId,
-            })
+            }),
+            headers
         });
         console.log("현재 4 publish가 지났따.");
 
@@ -295,7 +300,8 @@ const LiveChat = () => {
                 image:chatImg,
                 token:token,
                 roomId:roomId
-            })
+            }),
+            headers
         });
 
         dispatch(sendPickListChat(false));//다시 사진 보낼 수 있게 수정

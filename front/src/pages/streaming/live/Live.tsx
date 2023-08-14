@@ -32,7 +32,7 @@ const Live = () => {
         <div className={`${liveStyle.Wrapper}`}>
             {
                 // 사용자 클릭 시 메뉴 모달
-                loginId!==hostId&&state_live.menuModalOpen?<div className={`${liveStyle.menuModal}`}><LiveMenuModal/></div>:null
+                loginId===hostId&&state_live.menuModalOpen?<div className={`${liveStyle.menuModal}`}><LiveMenuModal/></div>:null
             }
 
             {
