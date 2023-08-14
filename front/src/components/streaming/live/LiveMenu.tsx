@@ -189,7 +189,7 @@ const LiveMenu = () => {
             {/* 닫기 버튼 */}
             <div onClick={()=>{setSelectedMenu(null)}} className={`${liveMenuStyle.outer}`}>
                 <div className={`${liveMenuStyle.inner}`}>
-                    <label>Back</label>
+                    <label className={`${liveMenuStyle.livelabel}`}>Back</label>
                 </div>
             </div>
             <div className={`${liveMenuStyle.statement_CLOSET}`}>
@@ -217,7 +217,7 @@ const LiveMenu = () => {
             {/* 닫기 버튼 */}
             <div onClick={()=>{setSelectedMenu(null)}} className={`${liveMenuStyle.outer}`}>
                 <div className={`${liveMenuStyle.inner}`}>
-                    <label>Back</label>
+                    <label className={`${liveMenuStyle.livelabel}`}>Back</label>
                 </div>
             </div>
 
@@ -249,7 +249,7 @@ const LiveMenu = () => {
                 {/* 닫기 버튼 */}
                 <div onClick={()=>{setSelectedMenu(null)}} className={`${liveMenuStyle.outer}`}>
                     <div className={`${liveMenuStyle.inner}`}>
-                        <label>Back</label>
+                        <label className={`${liveMenuStyle.livelabel}`}>Back</label>
                     </div>
                 </div>
                 <div className={`${liveMenuStyle.statement}`}>
@@ -323,7 +323,7 @@ const LiveMenu = () => {
             {/* 닫기 버튼 */}
             <div onClick={()=>{setSelectedMenu(null)}} className={`${liveMenuStyle.outer}`}>
                 <div className={`${liveMenuStyle.inner}`}>
-                    <label>Back</label>
+                    <label className={`${liveMenuStyle.livelabel}`}>Back</label>
                 </div>
             </div>
 

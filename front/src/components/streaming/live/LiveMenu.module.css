@@ -529,7 +529,7 @@ button{
     text-align: center;
   }
   
-  label {
+  .livelabel {
     font-size: .4em;
     line-height: 5em;
     text-transform: uppercase;
@@ -560,7 +560,7 @@ button{
     transform: rotate(-45deg);
   }
   
-  .outer:hover label {
+  .outer:hover .livelabel {
     opacity: 1;
   }
   
