@@ -322,13 +322,7 @@ class Streaming extends Component {
         {/* 만약 세션이 있다면 아래의 html 코드가 실행된다. */}
         {this.state.session !== undefined ? (
           <div id="session" className="StreamingComponent">
-            {/* <input
-              className="leaveButton"
-              type="button"
-              id="buttonLeaveSession"
-              onClick={this.leaveSession}
-              value="Leave session"
-            /> */}
+
             {/* 비디오 출력 */}
             {isStreamer ? (
               // 자기가 publisher라면 자기 화면 송출
@@ -351,7 +345,7 @@ class Streaming extends Component {
                   sub.stream.videoActive ? "" : "displayNone"
                 }`}
               >
-                <span>{sub.id}</span>
+                
                 {/* 결국에는 화면이 띄워지는 것은 UserVideoComponent 이다. */}
 
                 <UserVideoComponent streamManager={sub} />
@@ -371,7 +365,7 @@ class Streaming extends Component {
                         `/img/live/camera${cameraOn ? "-white" : ""}.png`
                       }
                       alt="카메라"
-                    />{" "}
+                    />
                     카메라 {cameraOn ? "끄기" : "켜기"}
                   </button>
                 </div>

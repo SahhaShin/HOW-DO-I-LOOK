@@ -23,7 +23,7 @@
   z-index: 1;
   height: 40px;
   width: 750px;
-  top: 450px;
+  top: 0;
   left: 60px;
 }
 
@@ -33,6 +33,7 @@
   left: 0px;
   height: 40px;
   width: 150px;
+  
   /* z-index: 1000; */
 }
 
@@ -61,7 +62,6 @@ img {
   background-color: rgb(240, 240, 240);
   color: black;
   font-size: 17px;
-  margin-top: -430px;
 }
 .displayNone {
   display: none;
