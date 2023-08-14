@@ -16,6 +16,7 @@ public class RoomListResponseDto {
     private String title;
     private int minAge;
     private int maxAge;
+    private String genderLimit;
     private Long hostId;
     private String hostNickname;
 
@@ -26,6 +27,7 @@ public class RoomListResponseDto {
         this.title = room.getTitle();
         this.minAge = room.getMinAge();
         this.maxAge = room.getMaxAge();
+        this.genderLimit = String.valueOf(room.getGender());
         this.hostId = room.getHost().getId();
         this.hostNickname = room.getHost().getNickname();
     }
