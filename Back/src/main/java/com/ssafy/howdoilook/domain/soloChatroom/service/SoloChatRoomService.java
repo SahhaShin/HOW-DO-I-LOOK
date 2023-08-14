@@ -39,7 +39,7 @@ public class SoloChatRoomService {
 
     //채팅 정보에 대한 인가처리
     @Transactional
-    public void authorize(ChatRecordRequestDto requestDto){
+    public void authorizeChat(ChatRecordRequestDto requestDto){
         SoloChatRoom chatroom = soloChatRoomRepository.findById(requestDto.getRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 채팅방이 존재하지 않습니다"));
     }
@@ -57,13 +57,13 @@ public class SoloChatRoomService {
 
     //채팅시 채팅 기록 MongoDB에 저장
     @Transactional
-    public void recordChat(ChatRecordRequestDto requestDto, SoloChatRoom room){
+    public void recordChat(ChatRecordRequestDto requestDto){
         String content = requestDto.getChatContent();
 
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
-        long roomId = room.getId();
+        long roomId = requestDto.getRoomId();
 
         SoloChat chat = SoloChat.builder()
                 .roomId(roomId)
@@ -79,7 +79,7 @@ public class SoloChatRoomService {
 
     //특정 유저가 진행했던 채팅방 리스트 반환
     @Transactional
-    public List<ChatRoomDto> getUserChatRoom(UserDetails userDetails){
+    public List<ChatRoomDto> getUserChatRoomList(UserDetails userDetails){
         User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
@@ -107,7 +107,7 @@ public class SoloChatRoomService {
 
     //채팅방 입장 Mongodb ( 채팅 내용 반환 )
     @Transactional
-    public ChatContextListResponseDto enterChatRoom(ChatContextRequestDto requestDto, UserDetails userDetails){
+    public ChatContextListResponseDto getChatContextList(ChatContextRequestDto requestDto, UserDetails userDetails){
         User userA = userRepository.findById(requestDto.getUserA())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
@@ -146,11 +146,11 @@ public class SoloChatRoomService {
             Long roomId = chatRoom.getId();
 
             //최근 채팅 리스트 반환
-            return getChat(chatRoom.getId(), 0);
+            return getNextPageChat(chatRoom.getId(), 0);
         }
     }
     @Transactional
-    public ChatContextListResponseDto getChat(long roomId, int page){
+    public ChatContextListResponseDto getNextPageChat(long roomId, int page){
         SoloChatRoom chatRoom = soloChatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 채팅방은 존재하지 않습니다"));
 

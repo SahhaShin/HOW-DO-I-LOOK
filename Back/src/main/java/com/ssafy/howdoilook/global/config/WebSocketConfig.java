@@ -40,4 +40,6 @@
         public void configureClientInboundChannel(ChannelRegistration registration) {
             registration.interceptors(chatHandler);
         }
+
+
     }

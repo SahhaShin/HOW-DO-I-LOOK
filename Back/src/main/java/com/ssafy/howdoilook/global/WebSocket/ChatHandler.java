@@ -29,9 +29,10 @@ public class ChatHandler implements ChannelInterceptor {
     private final String BEARER_PREFIX = "Bearer ";
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
+
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         String token = String.valueOf(accessor.getNativeHeader("Authorization"));
-
+        System.out.println(accessor.getSessionId());
         if(token.equals("null")){
             return ChannelInterceptor.super.preSend(message, channel);
         }

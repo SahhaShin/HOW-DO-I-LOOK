@@ -13,6 +13,7 @@ import com.ssafy.howdoilook.domain.room.repository.ChatRepository.RoomChatReposi
 import com.ssafy.howdoilook.global.handler.SerializationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@EnableScheduling
 public class RoomChatMQService {
     private final RedisTemplate<String,String> redisTemplate;
     private final RoomChatRepository roomChatRepository;
@@ -70,7 +72,7 @@ public class RoomChatMQService {
         return null;
     }
 
-    @Scheduled(fixedRate = 100)
+    @Scheduled(fixedRate = 1000)
     public void processRoomChatMessageQueue(){
 
         RoomChatResponseDto chatMessage = chatDequeue();

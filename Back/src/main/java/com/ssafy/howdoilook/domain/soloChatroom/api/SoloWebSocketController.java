@@ -32,7 +32,7 @@ public class SoloWebSocketController {
     @SendTo("/sub/soloChat/{roomCode}")
     public ChatRecordRequestDto broadCasting(ChatRecordRequestDto requestDto, SimpMessageHeaderAccessor accessor){
         /*
-        1. 무결성 체크 => jwt기반의 무결성 검사진행
+        1. 무결성 체크 => jwt, json 데이터 무결성 검사진행
         2. 메시지큐에 저장 ( 추후 데이터 저장 및 알림 추가 )
         3. return을 통해 데이터 송신
          */
@@ -46,7 +46,7 @@ public class SoloWebSocketController {
 
         requestDto.setSenderEmail(userDetails.getUsername());
 
-        soloChatRoomService.authorize(requestDto); // 채팅방이 있는지 확인
+        soloChatRoomService.authorizeChat(requestDto); // 채팅방이 있는지 확인
         // 메시지큐에 저장
         soloChatMQService.enqueue(requestDto);
 
