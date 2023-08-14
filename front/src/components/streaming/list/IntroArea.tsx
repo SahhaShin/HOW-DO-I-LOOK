@@ -20,8 +20,7 @@ const IntroArea = () => {
   const [type, setType] = useState("");
 
   function getList() {
-    dispatch(setListType(type));
-    dispatch(setSearch(searchInput));
+    console.log(searchInput)
     dispatch(changePage(0));
 
     dispatch(
@@ -32,6 +31,29 @@ const IntroArea = () => {
         pageNum: state.page,
       })
     );
+  }
+
+  function clickH(hash){
+    console.log(searchInput)
+
+    if(type == hash){
+      setType(""
+      )
+    }
+    else { 
+      setType(hash)
+    }
+    dispatch(setListType(type));
+  }
+
+  function typeIn(e){
+
+    setSearchInput(e.target.value);
+    dispatch(setSearch(e.target.value));
+    
+
+
+
   }
 
   return (
@@ -49,7 +71,7 @@ const IntroArea = () => {
         <input
           value={searchInput}
           onChange={(e) => {
-            setSearchInput(e.target.value);
+            typeIn(e);
           }}
           placeholder="키워드를 입력하세요 "
           type="text"
@@ -66,7 +88,7 @@ const IntroArea = () => {
       <div className={`${introStyle.tag}`}>
         <button
           onClick={(e) => {
-            setType(`DATE`);
+            clickH(`DATE`);
           }}
         >
           {type == "DATE" ? (
@@ -77,7 +99,7 @@ const IntroArea = () => {
         </button>
         <button
           onClick={(e) => {
-            setType(`DAILY`);
+            clickH(`DAILY`);
           }}
         >
           {type == "DAILY" ? (
@@ -88,7 +110,7 @@ const IntroArea = () => {
         </button>
         <button
           onClick={(e) => {
-            setType(`TRAVEL`);
+            clickH(`TRAVEL`);
           }}
         >
           {type == "TRAVEL" ? (
@@ -99,7 +121,7 @@ const IntroArea = () => {
         </button>
         <button
           onClick={(e) => {
-            setType(`EXERCISE`);
+            clickH(`EXERCISE`);
           }}
         >
           {type == "EXERCISE" ? (
@@ -110,7 +132,7 @@ const IntroArea = () => {
         </button>
         <button
           onClick={(e) => {
-            setType(`INTERVIEW`);
+            clickH(`INTERVIEW`);
           }}
         >
           {type == "INTERVIEW" ? (

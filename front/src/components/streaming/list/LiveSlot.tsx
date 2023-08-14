@@ -21,12 +21,12 @@ const LiveSlot = (props) => {
   const navigate = useNavigate();
 
   const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
-  console.log("props : " + props.oneRoom.hostNickname);
-  console.log("login : " + loginUser.nickname);
+  // console.log("props : " + props.oneRoom.hostNickname);
+  // console.log("login : " + loginUser.nickname);
 
   function enterLiveRoom() {
-    console.log(props.oneRoom);
-    console.log(props.oneRoom.title);
+    // console.log(props.oneRoom);
+    // console.log(props.oneRoom.title);
     dispatch(
       action.enterLiveRoom({
         userId: loginUser.id,
@@ -36,11 +36,11 @@ const LiveSlot = (props) => {
     );
   }
   function change() {
-    console.log("change");
+    // console.log("change");
     window.sessionStorage.setItem("liveRoom", JSON.stringify(props.oneRoom));
     console.log(props.oneRoom);
-    dispatch(isCreate(false));
-    dispatch(changeModalOpen(true));
+    // dispatch(isCreate(false));
+    // dispatch(changeModalOpen(true));
   }
 
   return (

@@ -13,15 +13,10 @@ import { useDispatch } from "react-redux";
 import { action_follow } from "../../../store/FollowSlice";
 
 // 컴포넌트
-import FeedSlot from "../../../components/sns/feed/FeedSlot";
 import IntroArea from "../../../components/streaming/list/IntroArea";
-import FeedDetail from "../../../components/sns/feed/FeedDetail";
-import FeedCreate from "../../../components/sns/feed/FeedCreate";
-import FeedDeclaration from "../../../components/sns/feed/FeedDeclaration";
 import Header from "../../../components/util/Header";
 import Footer from "../../../components/util/Footer";
 import Menu from "../../../components/util/Menu";
-import FeedModify from "../../../components/sns/feed/FeedModify";
 import LiveFollow from "../../../components/sns/feed/FeedFollow";
 import LiveSlot from "../../../components/streaming/list/LiveSlot";
 
@@ -102,7 +97,7 @@ const LiveList = () => {
     dispatch(setUserId(id));
     dispatch(
       action.getLiveList({
-        userId: state.userId,
+        userId: id,
         type: state.type,
         search: state.search,
         pageNum: state.page,
@@ -151,7 +146,7 @@ const LiveList = () => {
                   upload();
                 }}
               >
-                업로드
+                새로운 방 만들기
               </button>
             </div>
 

@@ -189,6 +189,7 @@ const initialState = {
   chatHistory: null,
   otherNickname: "",
   page: 0,
+  pageAll: 0,
   ModalOpen: false,
   create: false,
 
@@ -223,7 +224,7 @@ const LiveSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(action.getLiveList.fulfilled, (state, action) => {
       console.log(state);
-      state.page = action.payload.totalPage;
+      state.pageAll = action.payload.totalPage;
       state.liveList = action.payload.roomList;
 
     });
