@@ -14,7 +14,7 @@ export const action = {
     async (formdata: LiveRoom, thunkAPI) => {
       try {
         const token = await CheckToken();
-        const response = await axios.post(
+        const responseCreate = await axios.post(
           `${process.env.REACT_APP_SERVER}/api/room`,
           {
             title: formdata.title,
@@ -30,10 +30,29 @@ export const action = {
             },
           }
         );
-        window.location.href = `${process.env.REACT_APP_FRONT}/livelist`;
+        const response = await axios.post(
+          `${process.env.REACT_APP_SERVER}/api/roomuser?userId=${formdata.hostId}&roomId=${responseCreate.data}`,
+          {},
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        const roomCode = response.data.roomCode;
+        const chatCode = response.data.chatCode;
+        window.sessionStorage.setItem("roomCode", JSON.stringify(roomCode));
+        window.sessionStorage.setItem("chatCode", JSON.stringify(chatCode));
+        window.sessionStorage.setItem(
+          "hostId",
+          JSON.stringify(formdata.hostId)
+        );
+
+        window.location.href = `${process.env.REACT_APP_FRONT}/live/${formdata.roomId}/${formdata.hostId}`;
         return response.data;
       } catch (e) {
         console.log(e);
+        alert(e.response.data.message);
         throw e;
       }
     }
