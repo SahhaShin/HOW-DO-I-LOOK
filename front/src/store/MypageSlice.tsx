@@ -760,7 +760,24 @@ const MypageSlice = createSlice({
           profileImg: loginUser.profileImg,
         });
       }
+
+      Swal.fire({
+        icon: 'success',
+        title: '팔로우 완료',
+        text: '팔로우 등록이 완료되었습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+
     });
+
+    builder.addCase(action_mypage.follow.rejected, (state, action) => {
+      Swal.fire({
+        icon: 'info',
+        title: '이미 팔로우를 하셨어요!',
+        text: '팔로우 등록이 이미 완료되었습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+    })
 
     builder.addCase(action_mypage.unfollow.fulfilled, (state, action) => {
       for (let i = 0; i < state.myFollowingUsers.length; i++) {
