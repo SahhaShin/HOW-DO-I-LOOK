@@ -30,6 +30,8 @@ export const action = {
             },
           }
         );
+        console.log("hostId : " + formdata.hostId);
+        console.log("roomId : " + responseCreate.data);
         const response = await axios.post(
           `${process.env.REACT_APP_SERVER}/api/roomuser?userId=${formdata.hostId}&roomId=${responseCreate.data}`,
           {},
@@ -48,7 +50,7 @@ export const action = {
           JSON.stringify(formdata.hostId)
         );
 
-        window.location.href = `${process.env.REACT_APP_FRONT}/live/${formdata.roomId}/${formdata.hostId}`;
+        window.location.href = `${process.env.REACT_APP_FRONT}/live/${responseCreate.data}/${formdata.hostId}`;
         return response.data;
       } catch (e) {
         console.log(e);
@@ -82,7 +84,7 @@ export const action = {
           }
         );
         window.location.href = `${process.env.REACT_APP_FRONT}/livelist`;
-        
+
         return response.data;
       } catch (e) {
         console.log(e);
@@ -139,7 +141,7 @@ export const action = {
             Authorization: token,
           },
         });
-        console.log(response.data)
+        console.log(response.data);
         return response.data;
       } catch (e) {
         console.log(e);
@@ -249,7 +251,6 @@ const LiveSlice = createSlice({
       console.log(state);
       state.pageAll = action.payload.totalPage;
       state.liveList = action.payload.roomList;
-
     });
 
     builder.addCase(action.createLiveList.fulfilled, (state, action) => {
