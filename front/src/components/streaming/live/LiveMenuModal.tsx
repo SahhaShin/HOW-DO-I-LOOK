@@ -25,20 +25,56 @@ const LiveMenuModal = ()=>{
 
     const params = useParams();
 
+    const roomId = params.roomId;
+    const hostId = params.hostId;
+
+    const navigate = useNavigate();
+
     //팔로우 신청을 위한 폼
     const [followingData, setFollowingData] = useState({
         id: 0,
         targetId: 0,
+        nickname:"",
+        profileImg:""
     });
 
     // 팔로우 신청
     function registFollow(){
         setFollowingData({
             id:loginUser.id,
-            targetId:state_live.selectAdvisor
+            targetId:state_live.selectAdvisor.id,
+            nickname:state_live.selectAdvisor.nickname,
+            profileImg:state_live.selectAdvisor.profileImg
         });
-        dispatch(action_mypage.follow(followingData))
+        dispatch(action_mypage.follow({
+            id:loginUser.id,
+            targetId:state_live.selectAdvisor.id,
+            nickname:state_live.selectAdvisor.nickname,
+            profileImg:state_live.selectAdvisor.profileImg
+        }))
     }
+
+    //블랙리스트 신청
+    function registblackList(){
+        setFollowingData({
+            id:loginUser.id,
+            targetId:state_live.selectAdvisor.id,
+            nickname:state_live.selectAdvisor.nickname,
+            profileImg:state_live.selectAdvisor.profileImg
+        });
+        dispatch(action_mypage.addBlackList({
+            id:loginUser.id,
+            targetId:state_live.selectAdvisor.id,
+            nickname:state_live.selectAdvisor.nickname,
+            profileImg:state_live.selectAdvisor.profileImg
+        }))
+    }
+
+    // 유저 강퇴 > 나는 나가면 안되기 때문에 네비게이션 쓰면 안됨
+    function kickInModal(){
+        dispatch(action_live.kickUser({userId:loginUser.id,roomId:roomId}));
+    }
+
 
 
     return(
@@ -48,29 +84,31 @@ const LiveMenuModal = ()=>{
             
             <p>{loginUser.nickname}님 메뉴를 선택해주세요!</p>
             
-            <div onClick={()=>{dispatch(action.getClothesListByType({clothesType:"ALL", userId:state_live.selectAdvisor, pageNum:10})); dispatch(changeOtherClosetOpen(true));dispatch(changeMenuModalOpen(false))}} className={`${liveMenuModalStyle.menu}`}>
-                <div><img src={process.env.PUBLIC_URL + '/img/live/laundry.png'}/></div>
-                <div>옷장보기</div>
-            </div>
+            <div className={`${liveMenuModalStyle.menumiddle}`}>
+                <div onClick={()=>{dispatch(action.getClothesListByType({clothesType:"ALL", userId:state_live.selectAdvisor.id, pageNum:10})); dispatch(changeOtherClosetOpen(true));dispatch(changeMenuModalOpen(false))}} className={`${liveMenuModalStyle.menu}`}>
+                    <div><img src={process.env.PUBLIC_URL + '/img/live/laundry.png'}/></div>
+                    <div>옷장보기</div>
+                </div>
 
-            <div onClick={()=>{dispatch(changeMenuModalOpen(false));dispatch(changeScoreModalOpen(true))}} className={`${liveMenuModalStyle.menu}`}>
-                <div><img src={process.env.PUBLIC_URL + '/img/badge/Modern_colored.png'}/></div>
-                <div>점수주기</div>
-            </div>
+                {hostId===String(loginUser.id)?<div onClick={()=>{dispatch(changeMenuModalOpen(false));dispatch(changeScoreModalOpen(true))}} className={`${liveMenuModalStyle.menu}`}>
+                    <div><img src={process.env.PUBLIC_URL + '/img/badge/Modern_colored.png'}/></div>
+                    <div>점수주기</div>
+                </div>:null}
 
-            <div onClick={()=>{registFollow()}} className={`${liveMenuModalStyle.menu}`}>
-                <div><img src={process.env.PUBLIC_URL + '/img/live/like.png'}/></div>
-                <div>팔로잉</div>
-            </div>
+                <div onClick={()=>{registFollow()}} className={`${liveMenuModalStyle.menu}`}>
+                    <div><img src={process.env.PUBLIC_URL + '/img/live/like.png'}/></div>
+                    <div>팔로잉</div>
+                </div>
 
-            <div className={`${liveMenuModalStyle.menu}`}>
-                <div><img src={process.env.PUBLIC_URL + '/img/live/ban-user.png'}/></div>
-                <div>블랙리스트</div>
-            </div>
+                {hostId===String(loginUser.id)?<div onClick={()=>{registblackList()}} className={`${liveMenuModalStyle.menu}`}>
+                    <div><img src={process.env.PUBLIC_URL + '/img/live/ban-user.png'}/></div>
+                    <div>블랙리스트</div>
+                </div>:null}
 
-            <div className={`${liveMenuModalStyle.menu}`}>
-                <div><img src={process.env.PUBLIC_URL + '/img/live/exit.png'}/></div>
-                <div>강퇴하기</div>
+                {hostId===String(loginUser.id)?<div onClick={()=>{kickInModal()}} className={`${liveMenuModalStyle.menu}`}>
+                    <div><img src={process.env.PUBLIC_URL + '/img/live/exit.png'}/></div>
+                    <div>강퇴하기</div>
+                </div>:null}
             </div>
         </div>
     );
