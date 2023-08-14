@@ -85,7 +85,7 @@ const Login: React.FC = () => {
       <form onSubmit={login} className={`${loginStyle.login}`}>
         <div>
           <div>
-            <label htmlFor="email" className={`${loginStyle.lable}`}>
+            <label htmlFor="email" className={`${loginStyle.loginlable}`}>
               <p>이메일</p>
             </label>
             <input
@@ -93,26 +93,26 @@ const Login: React.FC = () => {
               id="email"
               placeholder="이메일을 입력해주세요"
               value={email}
-              className={`${loginStyle.input}`}
+              className={`${loginStyle.logininput}`}
               onChange={(e) => setemail(e.target.value)}
             />
           </div>
           <div>
-            <label htmlFor="userPW" className={`${loginStyle.lable}`}>
+            <label htmlFor="userPW" className={`${loginStyle.loginlable}`}>
               <p>비밀번호</p>
             </label>
             <input
               type="password"
               id="userPW"
               placeholder="비밀번호를 입력해주세요"
-              className={`${loginStyle.input}`}
+              className={`${loginStyle.logininput}`}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
         </div>
 
         <div>
-          <div className={`${loginStyle.rememberID}`}>
+          <div className={`${loginStyle.loginrememberID}`}>
             <input type="checkbox" id="rememberID" checked={rememberID} onClick={(e) => {setRememberID(!rememberID)}}/>
             <label htmlFor="rememberID">
               <p>이메일 저장</p>
@@ -121,7 +121,7 @@ const Login: React.FC = () => {
           <input
             type="button"
             value={"로그인"}
-            className={`${loginStyle.submit}`}
+            className={`${loginStyle.loginsubmit}`}
             onClick={(e) => {
               loginClick(e);
             }}
@@ -129,12 +129,12 @@ const Login: React.FC = () => {
         </div>
       </form>
       <div>
-        <a href={process.env.REACT_APP_FRONT + `/user/sign-up`} className={`${loginStyle.signin}`}>
+        <a href={process.env.REACT_APP_FRONT + `/user/sign-up`} className={`${loginStyle.loginsignin}`}>
           혹시 아직 회원이 아니십니까? <strong>회원가입</strong>
         </a>
       </div>
-      <div className={`${loginStyle.line}`}>소셜 로그인</div>
-      <div className={`${loginStyle.social}`}>
+      <div className={`${loginStyle.loginline}`}>소셜 로그인</div>
+      <div className={`${loginStyle.loginsocial}`}>
         <button
           type="button"
           onClick={(e) => {

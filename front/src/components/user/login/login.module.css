@@ -1,6 +1,4 @@
-.info {
-    
-}
+
 
 .login {
     text-align: left;
@@ -8,7 +6,7 @@
     width: 100%;
 }
 
-.input { 
+.logininput { 
     width: 100%;
     height: 40px;
     background-color: white;
@@ -23,7 +21,7 @@ input:focus {
     outline: 0;
 }
 
-.lable { 
+.loginlable { 
     padding: 0;
     margin: 0;
     margin-left: 10%;
@@ -32,7 +30,7 @@ input:focus {
     font-size: 13px;
 }
 
-.submit{
+.loginsubmit{
     width: 100%;
     height: 40px;
     font-size: 20px;
@@ -41,31 +39,31 @@ input:focus {
     color: white;
 }
 
-.rememberID { 
+.loginrememberID { 
     display: flex;
     text-align: right;
     text-decoration: none;
     color:black;
 }
-.rememberID a{
+.loginrememberID a{
     text-decoration: none;
     text-decoration-color: none;
 }
 
-.signin { 
+.loginsignin { 
     text-align: center;
     color: #9baacf;
     font-size: 13px;
 
 }
 
-.findInfo { 
+.loginfindInfo { 
     display: flex;
     text-align: center;
     margin: 20px, 10px;
 }
 
-.line{
+.loginline{
     display: flex;
     flex-basis: 100%;
     align-items: center;
@@ -74,7 +72,7 @@ input:focus {
     margin: 8px, 0px;
     margin-top: 20px;
 }
-.line::after{
+.loginline::after{
     content:"";
     flex-grow: 1;
     margin: 0px, 16px;
@@ -94,7 +92,7 @@ input:focus {
     font-size: 0px;
     line-height: 0px;
 }
-.social button{
+.loginsocial button{
     margin: 0;
     padding: 0;
     height: 45px;
@@ -102,7 +100,7 @@ input:focus {
     background-color: white;
 
 }
-.social img{
+.loginsocial img{
     width: 300px;
     height: 45px;
     margin: 0;
