@@ -44,12 +44,12 @@ export const action_live = {
     }
   }),
 
-  // 점수주기
+  // 점수주기 (슬래시를 붙여야 한다.)
   giveScore : createAsyncThunk("FeedSlice/giveScore", async({targetUserId, roomId, type, score}, thunkAPI)=>{
     try{
       console.log(`${targetUserId}, ${roomId}, ${type}, ${score}`);
         const token = await CheckToken();
-        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/userlike`,{targetUserId, roomId, type, score},{
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/userlike/`,{targetUserId, roomId, type, score},{
             headers:{"Authorization":token}
         });
 
@@ -153,6 +153,16 @@ const StreamingSlice = createSlice({
         icon: 'success',
         title: '마스터 점수 주기 성공!',
         text: '마스터 점수가 제공되었습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+      
+    })
+
+    builder.addCase(action_live.giveScore.rejected,(state,action)=>{
+      Swal.fire({
+        icon: 'error',
+        title: '마스터 점수를 이미 주셨어요!',
+        text: '마스터 점수는 1번만 주실 수 있습니다 :)',
         confirmButtonColor: '#4570F5',
       })
       

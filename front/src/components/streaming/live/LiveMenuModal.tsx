@@ -8,6 +8,7 @@ import liveMenuModalStyle from "./LiveMenuModal.module.css";
 import { useSelector, useDispatch} from "react-redux"; 
 import {action, changePick} from "../../../store/ClosetSlice";
 import {action_live, changeScoreModalOpen, changeMenuModalOpen, changeOtherClosetOpen} from "../../../store/StreamingSlice";
+import {action_mypage} from "../../../store/MypageSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -23,6 +24,21 @@ const LiveMenuModal = ()=>{
     let dispatch = useDispatch();
 
     const params = useParams();
+
+    //팔로우 신청을 위한 폼
+    const [followingData, setFollowingData] = useState({
+        id: 0,
+        targetId: 0,
+    });
+
+    // 팔로우 신청
+    function registFollow(){
+        setFollowingData({
+            id:loginUser.id,
+            targetId:state_live.selectAdvisor
+        });
+        dispatch(action_mypage.follow(followingData))
+    }
 
 
     return(
@@ -42,7 +58,7 @@ const LiveMenuModal = ()=>{
                 <div>점수주기</div>
             </div>
 
-            <div className={`${liveMenuModalStyle.menu}`}>
+            <div onClick={()=>{registFollow()}} className={`${liveMenuModalStyle.menu}`}>
                 <div><img src={process.env.PUBLIC_URL + '/img/live/like.png'}/></div>
                 <div>팔로잉</div>
             </div>
