@@ -55,6 +55,12 @@ public class FeedService {
     private final FeedPhotoRepository feedPhotoRepository;
     private final UserRepository userRepository;
 
+    public List<FeedResponseDto> selectAllExceptBlackList(Long userId){
+        User findUser = userRepository.findById(userId).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 User 입니다.", 1));
+        List<Feed> feeds = feedRepository.selectFeedExceptBlackList(findUser);
+        return builder(feeds);
+    }
     public Page<FeedResponseDto> selectAll(Pageable pageable){
         Page<Feed> feeds = feedRepository.selectFeedAll(pageable);
         List<Feed> feedList = feeds.getContent();
