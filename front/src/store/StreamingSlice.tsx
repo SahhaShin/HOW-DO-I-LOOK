@@ -77,6 +77,7 @@ const initialState = {
   selectAdvisor:null,
   otherClosetOpen:false,
   scoreModalOpen:false,
+  pickBadge:null,
 };
 
 const StreamingSlice = createSlice({
@@ -109,6 +110,9 @@ const StreamingSlice = createSlice({
     },
     changeScoreModalOpen(state, action){
       state.scoreModalOpen=action.payload;
+    },
+    changepPickBadge(state,action){
+      state.pickBadge=action.payload
     }
   },
 
