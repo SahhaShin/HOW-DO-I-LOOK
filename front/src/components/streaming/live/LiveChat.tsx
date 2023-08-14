@@ -1,6 +1,10 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import {useParams, useNavigate} from 'react-router-dom';
+
+// 소켓 통신
+import SockJS from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
+
 import { getCookie } from "../../../hook/Cookie";
 
 //css
@@ -152,15 +156,26 @@ const LiveChat = () => {
 
     // 1. 서버와 소켓 연결 - jwt 토큰을 넣어야함
     function connect(){
-        // 클라이언트 소켓 생성
-        client.current = new StompJs.Client({
-            brokerURL : 'ws://localhost:8081/ws',
-            onConnect: () => {
-                subscribe();
-            }
-        });
+        //SOCK JS 클라이언트를 만든다.
+        const socket = new SockJS('http://localhost:8081/ws');
 
-        client.current.activate();
+        client.current = StompJs.Stomp.over(socket); //연결 요청
+
+
+        // 클라이언트 소켓 생성
+        // client.current = new StompJs.Client({
+        //     brokerURL : 'ws://localhost:8081/ws',
+        //     onConnect: () => {
+        //         subscribe();
+        //     }
+        // });
+
+        client.current.connect({},()=>{
+            subscribe();
+        })
+
+
+        // client.current.activate();
     }
 
     //2. 채팅방 다대다 구독, 이미지 전송도 가능
@@ -288,7 +303,7 @@ const LiveChat = () => {
 
     //5. 채팅 종료
     function disconnect() {
-        client.current.deactivate();
+        client.current.disconnect();
     };
 
 
