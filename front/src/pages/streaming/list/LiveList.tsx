@@ -63,6 +63,7 @@ const LiveList = () => {
       })
     );
     setLen(state.liveList?.length);
+    
 
     //회원 follow목록 가져오기
   }, []);

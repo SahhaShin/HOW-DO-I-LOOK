@@ -30,6 +30,7 @@ export const action = {
             },
           }
         );
+        window.location.href = `${process.env.REACT_APP_FRONT}/livelist`;
         return response.data;
       } catch (e) {
         console.log(e);
@@ -61,6 +62,8 @@ export const action = {
             },
           }
         );
+        window.location.href = `${process.env.REACT_APP_FRONT}/livelist`;
+        
         return response.data;
       } catch (e) {
         console.log(e);
@@ -117,6 +120,7 @@ export const action = {
             Authorization: token,
           },
         });
+        console.log(response.data)
         return response.data;
       } catch (e) {
         console.log(e);

@@ -35,13 +35,7 @@ const LiveSlot = (props) => {
       })
     );
   }
-  function change() {
-    // console.log("change");
-    window.sessionStorage.setItem("liveRoom", JSON.stringify(props.oneRoom));
-    console.log(props.oneRoom);
-    // dispatch(isCreate(false));
-    // dispatch(changeModalOpen(true));
-  }
+
 
   return (
     <div>
@@ -79,15 +73,7 @@ const LiveSlot = (props) => {
           >
             입장
           </button>
-          {props.oneRoom.hostNickname == loginUser.nickname ? (
-            <button
-              onClick={async () => {
-                change();
-              }}
-            >
-              수정
-            </button>
-          ) : null}
+
         </div>
       </div>
     </div>
