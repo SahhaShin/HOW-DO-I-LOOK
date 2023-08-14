@@ -115,7 +115,7 @@ button{
 .sidebar{
     display: flex;
     width: 70px;
-    height: 510px;
+    height: 650px;
     background-color: var(--signiture);
 }
 
@@ -575,4 +575,23 @@ button{
   
   .outer:hover .inner:after {
     bottom: 0;
+  }
+
+
+  /* 스크롤 */
+.closetList1::-webkit-scrollbar, .closetList2::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+.closetList1::-webkit-scrollbar-thumb,.closetList2::-webkit-scrollbar-thumb {
+    background-color: var(--signiture);
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+  
+  .closetList1::-webkit-scrollbar-track,.closetList2::-webkit-scrollbar-track {
+    background-color: lightgrey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
   }

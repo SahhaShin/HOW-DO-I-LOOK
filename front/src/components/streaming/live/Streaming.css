@@ -51,6 +51,7 @@ img {
   background-color: rgb(69, 112, 245);
   color: white;
   font-size: 17px;
+  margin-top: -430px;
 }
 .disableButton {
   height: 40px;
@@ -60,6 +61,7 @@ img {
   background-color: rgb(240, 240, 240);
   color: black;
   font-size: 17px;
+  margin-top: -430px;
 }
 .displayNone {
   display: none;
