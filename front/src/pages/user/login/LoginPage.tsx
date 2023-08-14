@@ -11,16 +11,11 @@ import {changeDetailModalOpen} from "../../../store/FeedSlice";
 import {useParams} from 'react-router-dom'
 
 //컴포넌트
-import MypageHeader from '../../../components/user/my_page/MypageHeader';
-import MypageMain from '../../../components/user/my_page/MypageMain';
-import MypageFollowModal from '../../../components/user/my_page/MypageFollowModal';
-import MypageFeed from '../../../components/user/my_page/MypageFeed';
-import MypageManagement from '../../../components/user/my_page/MypageManagement';
-import FeedDetail from '../../../components/sns/feed/FeedDetail';
+
 import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
-import MypageBadgeModal from '../../../components/user/my_page/MypageBadgeModal';
+
 
 import Login from '../../../components/user/login/login';
 

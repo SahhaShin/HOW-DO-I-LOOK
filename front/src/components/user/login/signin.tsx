@@ -130,32 +130,32 @@ const Login: React.FC = () => {
       <form className={`${loginStyle.login}`}>
         <div>
           <div>
-            <label htmlFor="name" className={`${loginStyle.lable}`}>
+            <label htmlFor="name" className={`${loginStyle.loginlable}`}>
               <p>이름</p>
             </label>
             <input
               type="name"
               id="name"
               placeholder="이름을 입력해주세요"
-              className={`${loginStyle.input}`}
+              className={`${loginStyle.logininput}`}
               onChange={(e) => setname(e.target.value)}
             />
           </div>
           <div>
-            <label htmlFor="email" className={`${loginStyle.lable}`}>
+            <label htmlFor="email" className={`${loginStyle.loginlable}`}>
               <p>이메일</p>
             </label>
             <input
               type="email"
               id="email"
               placeholder="이메일을 입력해주세요"
-              className={`${loginStyle.input}`}
+              className={`${loginStyle.logininput}`}
               onChange={(e) => changeEmail(e.target.value)}
             />
             {emailNotice && <div>사용하실 수 없는 이메일입니다.</div>}
           </div>
           <div>
-            <label htmlFor="nickname" className={`${loginStyle.lable}`}>
+            <label htmlFor="nickname" className={`${loginStyle.loginlable}`}>
               <p>닉네임</p>
             </label>
             <input
@@ -164,41 +164,41 @@ const Login: React.FC = () => {
               value={nickname}
               onChange={(e) => changeNickname(e.target.value)}
               placeholder="사용하실 닉네임을 입력해주세요"
-              className={`${loginStyle.input}`}
+              className={`${loginStyle.logininput}`}
             />
             {nicknameNotice && <div>사용하실 수 없는 닉네임입니다.</div>}
           </div>
           <div>
-            <label htmlFor="userPW" className={`${loginStyle.lable}`}>
+            <label htmlFor="userPW" className={`${loginStyle.loginlable}`}>
               <p>비밀번호</p>
             </label>
             <input
               type="password"
               id="userPW"
               placeholder="비밀번호를 입력해주세요"
-              className={`${loginStyle.input}`}
+              className={`${loginStyle.logininput}`}
               onChange={(e) => changePassword(e.target.value)}
             />
           </div>
           <div>
-            <label htmlFor="userPW" className={`${loginStyle.lable}`}>
+            <label htmlFor="userPW" className={`${loginStyle.loginlable}`}>
               <p>비밀번호 확인</p>
             </label>
             <input
               type="password"
               id="userPWa"
               placeholder="비밀번호를 다시 입력해주세요"
-              className={`${loginStyle.input}`}
+              className={`${loginStyle.logininput}`}
               onChange={(e) => changePassworda(e.target.value)}
             />
             {pwNotice && <div>비밀번호가 서로 다릅니다.</div>}
           </div>
 
           <div>
-            <label htmlFor="gender" className={`${loginStyle.lable}`}>
+            <label htmlFor="gender" className={`${loginStyle.loginlable}`}>
               <p>성별</p>
             </label>
-            <div className={`${loginStyle.half}`}>
+            <div className={`${loginStyle.loginhalf}`}>
               <input
                 type="radio"
                 id="MALE"
@@ -217,8 +217,8 @@ const Login: React.FC = () => {
               />
               <label htmlFor="FEMALE">여자</label>
             </div>
-            <div className={`${loginStyle.half}`}>
-              <label htmlFor="age" className={`${loginStyle.lable}`}>
+            <div className={`${loginStyle.loginhalf}`}>
+              <label htmlFor="age" className={`${loginStyle.loginlable}`}>
                 <p>나이</p>
               </label>
               <input
@@ -226,7 +226,7 @@ const Login: React.FC = () => {
                 id="age"
                 name="age"
                 placeholder="나이를 입력해주세요"
-                className={`${loginStyle.input}`}
+                className={`${loginStyle.logininput}`}
                 onChange={(e) => setAge(e.target.value)}
               />
             </div>
@@ -234,7 +234,7 @@ const Login: React.FC = () => {
         </div>
 
         <div>
-          <div className={`${loginStyle.rememberID}`}>
+          <div className={`${loginStyle.loginrememberID}`}>
             <input
               type="checkbox"
               id="rememberID"
@@ -249,7 +249,7 @@ const Login: React.FC = () => {
           <input
             type="button"
             value={"회원가입"}
-            className={`${loginStyle.submit}`}
+            className={`${loginStyle.loginsubmit}`}
             onClick={(e) => {
               signinClick(e);
             }}
@@ -257,7 +257,7 @@ const Login: React.FC = () => {
         </div>
       </form>
       <div>
-        <a href={process.env.REACT_APP_FRONT + `/user/log-in`} className={`${loginStyle.signin}`}>
+        <a href={process.env.REACT_APP_FRONT + `/user/log-in`} className={`${loginStyle.loginsignin}`}>
           이미 계정이 있으신가요? <strong>로그인</strong>
         </a>
       </div>
