@@ -7,10 +7,7 @@ import UserVideoComponent from "./UserVideoComponent";
 
 import { CheckToken } from "../../../hook/UserApi";
 
-const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production"
-    ? ""
-    : `${process.env.REACT_APP_OPENVIDU}`;
+const APPLICATION_SERVER_URL = process.env.REACT_APP_OPENVIDU;
 
 class Streaming extends Component {
   constructor(props) {
@@ -322,7 +319,6 @@ class Streaming extends Component {
         {/* 만약 세션이 있다면 아래의 html 코드가 실행된다. */}
         {this.state.session !== undefined ? (
           <div id="session" className="StreamingComponent">
-
             {/* 비디오 출력 */}
             {isStreamer ? (
               // 자기가 publisher라면 자기 화면 송출
@@ -345,7 +341,6 @@ class Streaming extends Component {
                   sub.stream.videoActive ? "" : "displayNone"
                 }`}
               >
-                
                 {/* 결국에는 화면이 띄워지는 것은 UserVideoComponent 이다. */}
 
                 <UserVideoComponent streamManager={sub} />
@@ -413,7 +408,7 @@ class Streaming extends Component {
   async createSession(sessionId) {
     const token = await CheckToken();
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions",
+      `${process.env.REACT_APP_OPENVIDU}api/sessions`,
       { customSessionId: sessionId },
       {
         headers: {
@@ -429,7 +424,7 @@ class Streaming extends Component {
   async createToken(sessionId) {
     const token = await CheckToken();
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      `${process.env.REACT_APP_OPENVIDU}api/sessions/${sessionId}/connections`,
       {},
       {
         headers: {
