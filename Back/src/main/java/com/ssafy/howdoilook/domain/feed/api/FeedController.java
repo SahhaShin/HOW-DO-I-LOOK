@@ -27,6 +27,11 @@ public class FeedController {
         Page<FeedResponseDto> feedResponseDtos = feedService.selectAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
     }
+    @GetMapping("/blacklist/{userId}")
+    public ResponseEntity<List<FeedResponseDto>> selectAll(@PathVariable(name = "userId") Long userId){
+        List<FeedResponseDto> feedResponseDtoList = feedService.selectAllExceptBlackList(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtoList);
+    }
 
     @GetMapping("/hashtag")
     public ResponseEntity<Page<FeedResponseDto>> selectByHashTag(@RequestParam(name = "hashtag") List<String> list, Pageable pageable){
