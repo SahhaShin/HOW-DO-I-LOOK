@@ -7,6 +7,7 @@ import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesListResponseDto;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
+import com.ssafy.howdoilook.domain.user.entity.ClosetAccess;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.global.s3upload.ImageService;
@@ -99,14 +100,17 @@ public class ClothesService {
 
     public List<ClothesListResponseDto> findClothesList(String type, Long userId, int page, UserDetails userDetails) throws AccessException {
 
-        String clientEmail = userDetails.getUsername();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
-        if (!clientEmail.equals(user.getEmail())){
-            throw new AccessException("접근 권한이 없습니다.");
-        }
+        if(user.getClosetAccess().equals(ClosetAccess.PRIVATE)) {
+            String clientEmail = userDetails.getUsername();
 
+            if (!clientEmail.equals(user.getEmail())){
+                throw new AccessException("접근 권한이 없습니다.");
+            }
+        }
+        
         List<ClothesListResponseDto> findClothesListResponseDtoList = new ArrayList<>();
         PageRequest pageRequest = PageRequest.of(page, 8);
 
