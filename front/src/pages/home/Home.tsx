@@ -1,58 +1,56 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Home.module.css"; // 스타일 파일을 불러옵니다.
-import Gallery from "./Gallery";
-import Gallery2 from "./Gallery2";
+import React, { useRef } from "react";
+import styles from "./Home.module.css";
+// import { MainLayout } from "./layout/MainLayout";
+import { FullPageScroll } from "./FullPageScroll";
 
-//redux
-import { useSelector, useDispatch } from "react-redux";
-import { action_user } from "../../store/UserSlice";
+function Home() {
 
-import { getCookie } from "../../hook/Cookie";
-import { getUserInfo, CheckToken } from "../../hook/UserApi";
+	const scrollRef = useRef(null);
 
-import Header from "../../components/util/Header";
+	const scrollToNextSection = () => {
+		if (scrollRef.current) {
+			scrollRef.current.scrollIntoView({ behavior: "smooth" });
+		}
+	};
 
-// import { isVisible } from "@testing-library/user-event/dist/types/utils";
-
-const Home: React.FC = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log("페이지 로드");
-
-    //회원정보 가져오기
-    const sEmail = getCookie("new_social_user_email");
-    const bEmail = getCookie("new_basic_user_email");
-    if (!((typeof sEmail == "undefined") || (typeof sEmail === null))) {
-      console.log("sEmail");
-      dispatch(action_user.GetUserInfo(sEmail));
-    } else if (!((typeof bEmail == "undefined") || (typeof bEmail === null))) {
-      console.log("bEmail");
-      dispatch(action_user.GetUserInfo(bEmail));
-    } else {
-      //window.location.href = `${process.env.REACT_APP_FRONT}/user/log-in`;
-    }
-  }, []);
-
-  const tokenTest = () => {
-    console.log("button clicked");
-    CheckToken().then((res) => {
-      console.log(res);
-    });
-  };
-
-  return (
-    <div>
-      <Header></Header>
-
-      {/* <h1>홈</h1>
-      <div>
-        <button onClick={tokenTest}>토큰 테스트 </button>
-      </div> */}
-      <Gallery />
-      <Gallery2 />
-    </div>
-  );
-};
+	return (
+		// <MainLayout>
+		<FullPageScroll>
+			<div
+				className={`${styles.bg} ${styles.section}`}
+				style={{ backgroundImage: "url('/img/intro/mainIntro1.gif')" }}
+			>
+				<a
+					href={process.env.REACT_APP_FRONT + `/user/log-in`}
+					className={styles.button}
+				>
+					시작하러가기
+				</a>
+				<button className={styles.button} onClick={scrollToNextSection}>
+					둘러보기
+				</button>
+			</div>
+			<div
+				className={`${styles.bg} ${styles.section}`}
+				style={{ backgroundImage: "url('/img/intro/mainIntro2.gif')" }}
+				ref={scrollRef}
+			>
+				<button className={styles.button}>Click me</button>
+			</div>
+			<div className={`${styles.bg} ${styles.section}`} style={{ backgroundImage: "url('/img/intro/mainIntro2.gif')" }}>
+				<button className={styles.button}>Click me</button>
+			</div>
+			<div className={`${styles.bg} ${styles.section}`} style={{ backgroundImage: "url('/img/intro/mainIntro2.gif ')" }}>
+				<button className={styles.button}>Click me</button>
+			</div>
+			{/* <div className={`${styles.bg} ${styles.section}`}></div>
+			<div className={`${styles.bg} ${styles.section}`}></div>
+			<div className={`${styles.bg} ${styles.section}`}></div>
+			<div className={`${styles.bg} ${styles.section}`}></div>
+			<div className={`${styles.bg} ${styles.section}`}></div> */}
+		</FullPageScroll>
+		// </MainLayout>
+	);
+}
 
 export default Home;

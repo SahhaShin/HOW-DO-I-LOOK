@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-
-//css
-import homeStyle from "./Home.module.css";
-import styled from 'styled-components';
+import styles from "./Home.module.css"; // 스타일 파일을 불러옵니다.
+import Gallery from "./Gallery";
+import Gallery2 from "./Gallery2";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -12,7 +11,6 @@ import { getCookie } from "../../hook/Cookie";
 import { getUserInfo, CheckToken } from "../../hook/UserApi";
 
 import Header from "../../components/util/Header";
-import About from "./About"; // About 컴포넌트를 임포트
 
 // import { isVisible } from "@testing-library/user-event/dist/types/utils";
 
@@ -46,11 +44,13 @@ const Home: React.FC = () => {
   return (
     <div>
       <Header></Header>
-        <h1>홈</h1>
-        <div>
-          <button onClick={tokenTest}>토큰 테스트 </button>
-        </div>
-      <About /> {/* About 컴포넌트 추가 */}
+
+      {/* <h1>홈</h1>
+      <div>
+        <button onClick={tokenTest}>토큰 테스트 </button>
+      </div> */}
+      <Gallery />
+      <Gallery2 />
     </div>
   );
 };
