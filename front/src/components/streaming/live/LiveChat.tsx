@@ -103,7 +103,8 @@ const LiveChat = () => {
     const [imageFile, setImageFile] : any = useState();
 
     // 방 생성할 때 생성되는 uuid임 -> 어디에서 가져와야하는지 설명 필요
-    const roomCode = `9e2d5fca-93e8-4c15-a2ab-7d03b9714ae8`;
+    // const roomCode = `9e2d5fca-93e8-4c15-a2ab-7d03b9714ae8`;
+    const roomCode = String(JSON.parse(sessionStorage.getItem("loginUser")).roomCode);
 
     // 유저가 올린 파일 이미지를 미리보기로 띄워주는 함수
     const onUploadImage = useCallback((file: any) => {

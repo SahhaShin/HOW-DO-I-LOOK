@@ -6,12 +6,63 @@ import liveAdvisorStyle from "./LiveAdvisor.module.css";
 
 //redux
 import { useSelector, useDispatch} from "react-redux"; 
-import {action_live, changeMenuModalOpen} from "../../../store/StreamingSlice";
-import {action} from "../../../store/LiveSlice";
+import {action_live, changeMenuModalOpen, changeSelectAdvisor} from "../../../store/StreamingSlice";
 
 
 
 const LiveAdvisor = () => {
+
+    // 뱃지 선택
+    function selectBadge(badge){
+        if(badge==="LOVELY"){
+            return process.env.PUBLIC_URL + '/img/badge/Lovely_colored.png';
+        }
+
+        else if(badge==="NATURAL"){
+            return process.env.PUBLIC_URL + '/img/badge/Natural_colored.png';
+        }
+
+        else if(badge==="MODERN"){
+            return process.env.PUBLIC_URL + '/img/badge/Natural_colored.png';
+        }
+
+        else if(badge==="SEXY"){
+            return process.env.PUBLIC_URL + '/img/badge/Sexy_colored.png';
+        }
+    }
+
+
+    // 성별
+    function genderColor(gender){
+        if(gender==="FEMALE"){
+            return `${liveAdvisorStyle.profileImgF}`
+        }else{
+            return `${liveAdvisorStyle.profileImgM}`
+        }
+    }
+
+    // 닉네임 색깔 > 뱃지
+    function badgeColor(badge){
+        if(badge==="X"){
+            return `${liveAdvisorStyle.nickname_NO}`
+        }
+
+        else if(badge==="LOVELY"){
+            return `${liveAdvisorStyle.nickname_LOVELY}`
+        }
+
+        else if(badge==="NATURAL"){
+            return `${liveAdvisorStyle.nickname_NATURAL}`
+        }
+
+        else if(badge==="MODERN"){
+            return `${liveAdvisorStyle.nickname_MODERN}`
+        }
+
+        else if(badge==="SEXY"){
+            return `${liveAdvisorStyle.nickname_SEXY}`
+        }
+    }
 
     //redux 관리
     let state_closet = useSelector((state:any)=>state.closet);
@@ -35,14 +86,20 @@ const LiveAdvisor = () => {
     return(
         <div className={`${liveAdvisorStyle.total}`}>
             {
-                advisor.map(()=>{
+                state_live.roomPeopleList?.map((user)=>{
                     return(
-                        <div onClick={()=>{dispatch(changeMenuModalOpen(true))}} className={`${liveAdvisorStyle.onePeople}`}>
-                            <div className={`${liveAdvisorStyle.profileImg}`}></div>
+                        <div onClick={()=>{dispatch(changeSelectAdvisor(user.userId));dispatch(changeMenuModalOpen(true))}} className={`${liveAdvisorStyle.onePeople}`}>
+                            <div className={`${genderColor(user.userGender)}`}>
+                                <img src={user.userProfileImg}/>
+                            </div>
                             
-                            <div className={`${liveAdvisorStyle.badge}`}></div>
-                            <div className={`${liveAdvisorStyle.nickname}`}>
-                                미팅만 50번
+                            {user.userBadgeType!=="X"?
+                                <div className={`${liveAdvisorStyle.badge}`}>
+                                    <img src={`${selectBadge(user.userBadgeType)}`}/>
+                                </div>:null}
+
+                            <div className={`${badgeColor(user.userBadgeType)}`}>
+                                {user.userNickname}
                             </div>
                         </div>
                     );
