@@ -46,7 +46,10 @@ const LiveSlot = (props) => {
             <img
               src={process.env.PUBLIC_URL + `/img/user/profileImg.png`}
             ></img>
+            <p>
+              {props.oneRoom.hostNickname}
 
+            </p>
             {/* <div className={`${liveSlotStyle.redDot}`}></div> */}
           </div>
         </div>
@@ -54,14 +57,14 @@ const LiveSlot = (props) => {
         <div className={`${liveSlotStyle.content}`}>
           {/* 닉네임, 시간 */}
           <div>
-            <p className={`${liveSlotStyle.nickname}`}></p>
+            <p className={`${liveSlotStyle.nickname}`}>{props.oneRoom.title}</p>
             <p className={`${liveSlotStyle.time}`}>
-              {props.oneRoom.hostNickname}
+            {props.oneRoom.type}
             </p>
           </div>
 
           {/* 내용 */}
-          <div>{props.oneRoom.title}</div>
+          <div >성별 조건 : {props.oneRoom.genderLimit} / 입장 가능 나이 : {props.oneRoom.minAge}~{props.oneRoom.maxAge}</div>
         </div>
 
         {/* 우측 : 입장 버튼 */}
