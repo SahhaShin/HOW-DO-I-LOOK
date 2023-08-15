@@ -18,6 +18,8 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const LiveMenu = () => {
 
+    const navigate = useNavigate();
+
     interface clothImage{ 
         type:string, //CLOTHES OR FEED
         photoLink:string
@@ -169,11 +171,31 @@ const LiveMenu = () => {
     }
 
     useEffect(()=>{
-        if(state_live.otherClosetOpen===true){
-            setSelectedMenu("Menu 1");
+        // if(state_live.otherClosetOpen===true){
+        //     setSelectedMenu("Menu 1");
+        // }
+        // dispatch(changeOtherClosetOpen(false));
+
+        if (state_live.otherClosetOpen === true) {
+            dispatch(changeOtherClosetOpen(false));
+            setTimeout(() => {
+                setSelectedMenu("Menu 1");
+            }, 0); // Use a very short delay, such as 0 milliseconds
         }
-        dispatch(changeOtherClosetOpen(false));
     },[state_live.otherClosetOpen])
+
+
+    console.log(state_live.otherClosetOpen);
+
+    // 유저 스스로 퇴장
+    function kick(){
+        navigate('/liveList');
+    }
+
+    // 라이브 종료
+    function endLive(){
+        dispatch(action_live.liveEnd({userId:hostId, roomId}));
+    }
   
     return (
       <div className={`${liveMenuStyle.sidebar}`}>
@@ -182,18 +204,28 @@ const LiveMenu = () => {
             <button onClick={() => {dispatch(action_feed.hashSearchTotalList()); handleMenuClick("Menu 2")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu2_search.png'}/></button>
             <button onClick={() => {handleMenuClick("Menu 3")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu3_set.png'}/></button>
             <button onClick={() => {dispatch(action_live.getInfo(roomId)); handleMenuClick("Menu 4")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu4_info.png'}/></button>
-            <button onClick={() => {handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_exit.png'}/></button>
+            
+            {/* 내가 호스트인데 나가면 방송종료, 다른 사람이 나가면 퇴장 */}
+            {
+                loginUser.id===hostId?
+                <button onClick={() => {kick(); handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_exit.png'}/></button>
+                :
+                <button onClick={() => {endLive(); handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_closeLive.png'}/></button>
+            }
         </div>
         {selectedMenu === "Menu 1" && <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>
             
             {/* 닫기 버튼 */}
-            <div onClick={()=>{setSelectedMenu(null)}} className={`${liveMenuStyle.outer}`}>
+            <div onClick={()=>{setSelectedMenu(null);}} className={`${liveMenuStyle.outer}`}>
                 <div className={`${liveMenuStyle.inner}`}>
                     <label className={`${liveMenuStyle.livelabel}`}>Back</label>
                 </div>
             </div>
             <div className={`${liveMenuStyle.statement_CLOSET}`}>
-                <p>HOST CLOSET</p>
+                {   state_live.otherClosetOpen===false?
+                    <p>HOST CLOSET</p>:
+                    <p>{state_live.selectAdvisor?.nickname} CLOSET</p>
+                }
             </div>
 
             {/* 전체 옷 리스트 */}
