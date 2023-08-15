@@ -285,7 +285,7 @@ const FeedCreate = () => {
         dispatch(action_feed.addFeed(formdata));
 
         let data = {size:0, page:0};
-        dispatch(action_feed.getFeedTotalList(data));
+        dispatch(action_feed.getFeedTotalList(loginUser.id));
     }
 
 
