@@ -107,10 +107,12 @@ const MypageHeader = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
+        console.log(reader.result)
       };
       reader.readAsDataURL(e.target.files[0]);
     } else {
       setImage(state.targetUser.profileImg);
+
     }
   };
 

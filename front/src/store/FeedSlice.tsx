@@ -33,7 +33,7 @@ export const action_feed = {
 
 
     //피드 전체 리스트 가져오기 O
-    getFeedTotalList : createAsyncThunk("FeedSlice/getFeedList", async({size, page}, thunkAPI)=>{
+    getFeedTotalList : createAsyncThunk("FeedSlice/getFeedTotalList", async({size, page}, thunkAPI)=>{
         try{
             const token = await CheckToken();
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`,{
@@ -254,6 +254,18 @@ export const action_feed = {
         }
     }),
 
+    followCheck : createAsyncThunk("FeedSlice/followCheck", async({user_id, target_user_id}) => {
+        try {
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/check/following/${user_id}/${target_user_id}`);
+
+            return response.data;
+        } catch(e) {
+            throw e;
+        }
+    })
+
 }
 
 
@@ -334,6 +346,9 @@ interface totalFeed{
     content: [
         {
             userId: number,
+            userNickname: string | null,
+            userProfileImg: string | null,
+            userGender: string | null,
             feedId: number,
             feedContent: string,
             feedCreatedDate: string,
@@ -454,9 +469,7 @@ const FeedSlice = createSlice({
     name:'FeedSlice',
     initialState,
     reducers:{
-        changeFollow(state, action){
-            state.isFollow = action.payload;
-        },
+        
         changeDetailModalOpen(state, action){
             state.detailModalOpen = action.payload;
         },
@@ -611,7 +624,13 @@ const FeedSlice = createSlice({
             state.mypageFeedPic = action.payload.content;
         })
 
-       
+        builder.addCase(action_feed.followCheck.fulfilled, (state, action) => {
+            console.log("followCheck")
+            console.log(action.payload);
+            state.isFollow = action.payload;
+        })
+
+
     }
 });
 
