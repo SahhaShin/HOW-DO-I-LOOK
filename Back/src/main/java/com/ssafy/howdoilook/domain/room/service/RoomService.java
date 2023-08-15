@@ -88,6 +88,9 @@ public class RoomService {
         if(status.equals("master")){
             this.endRoom(room.getId(),userDetails);
         }
+        else{
+            roomUserService.updateRoomUser(user.getId(),room.getId(),userDetails);
+        }
         return RoomChatUserOutResponseDto.builder()
                 .command(status)
                 .userId(user.getId())
