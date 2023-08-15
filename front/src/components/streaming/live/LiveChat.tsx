@@ -12,7 +12,7 @@ import liveChatStyle from "./LiveChat.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action_live, changeLiveEndAlert, pushAnyChatList, sendPickListChat, changeAreYouKick} from "../../../store/StreamingSlice";
+import {action_live, changeExitAlam, changeLiveEndAlert, pushAnyChatList, sendPickListChat, changeAreYouKick} from "../../../store/StreamingSlice";
 
 const LiveChat = () => {
 
@@ -298,13 +298,17 @@ const LiveChat = () => {
 
             //시청자가 방을 나간 경우 브로드 캐스트 메세지
             else if(messageOut.command==="viewer"){
-                publish(`${messageOut.nickName}이 퇴장하셨습니다.`);
+                
                 //유저가 퇴장하면 시청자 재업로드
                 dispatch(action_live.peopleList({userId:myId, roomId: roomId}));
-
+                
+                if(loginUser.id===messageOut.userId){
+                    publish(`${messageOut.nickName}님이 퇴장하셨습니다.`);
+                }
 
                 //퇴장하는 사람 연결을 끊는다.
-                if(String(loginUser.id)===messageOut.userId){
+                if(loginUser.id===messageOut.userId){
+                    dispatch(changeExitAlam(true));
                     disconnect();
                 }
             }
@@ -390,7 +394,7 @@ const LiveChat = () => {
     }
 
 
-    //4. 채팅방에 out 메세지를 보낸다.
+    //4. 채팅방에 out 메세지를 보낸다. -> 방장
     function publishOut(){
 
         //redux -> liveEndRoomNo
@@ -409,6 +413,28 @@ const LiveChat = () => {
             headers
         });
         console.log("현재 publishOut가 지났따.");
+    }
+
+
+    //4. 채팅방에 out 메세지를 보낸다. -> 일반 유저
+    function publishOutUser(){
+
+        //redux -> liveEndRoomNo
+
+        if(!client.current.connected){
+            console.log("현재 publishOut2 연결되지 않았따!");
+            return;
+        }
+        console.log("현재 publishOut2 연결되었다!");
+        // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
+        client.current.publish({
+            destination: '/pub/roomChat/user/out/'+roomCode,
+            body: JSON.stringify({
+                roomId:state.exitRoomNo
+            }),
+            headers
+        });
+        console.log("현재 publishOut2가 지났따.");
     }
 
 
@@ -498,6 +524,20 @@ const LiveChat = () => {
         }
 
     },[state.liveEndRoomNo])
+
+
+    //방장이 아닌 유저가 라이브를 나갔을 때 -> redux exitLiveByUser=true
+    //roomId를 보내면 됨, 토큰이 유저를 구분함
+    console.log(state.exitRoomNo);
+    useEffect(()=>{
+
+        if(state.exitRoomNo!==null){
+            console.log(`state.liveEndRoomNo: ${state.exitRoomNo}`);
+            publishOutUser();
+            console.log(`들어왓다!!!`);
+        }
+
+    },[state.exitRoomNo])
 
 
     // changeColor

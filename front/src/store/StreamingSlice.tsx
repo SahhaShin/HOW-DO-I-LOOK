@@ -131,6 +131,10 @@ const initialState = {
   liveEndByHost : false,//호스트가 라이브 종료
   liveEndRoomNo : null, //호스트가 라이브 종료하는 방 번호
   liveEndAlert:false, //방이 폭파되고 리스트 창에서 알리는 alert 유무
+
+  exitLiveByUser : false,//방장이 아닌 유저가 방 나가는 여부
+  exitRoomNo : null, //방장이 아닌 유저가 나가는 방 번호
+  exitAlam : false,
 };
 
 const StreamingSlice = createSlice({
@@ -183,6 +187,15 @@ const StreamingSlice = createSlice({
     },
     changeLiveEndAlert(state, action){
       state.liveEndAlert=action.payload;
+    },
+    changeExitLiveByUser(state, action){
+      state.exitLiveByUser=action.payload;
+    },
+    changeExitRoomNo(state, action){
+      state.exitRoomNo=action.payload;
+    },
+    changeExitAlam(state, action){
+      state.exitAlam=action.payload;
     }
   },
 
@@ -250,5 +263,5 @@ const StreamingSlice = createSlice({
   
 });
 
-export let {changeLiveEndAlert,changeLiveEndRoomNo,changeLiveEndByHost,changeAreYouKick,setKickUser,changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
+export let {changeExitAlam,changeExitRoomNo,changeExitLiveByUser,changeLiveEndAlert,changeLiveEndRoomNo,changeLiveEndByHost,changeAreYouKick,setKickUser,changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
 export default StreamingSlice.reducer;

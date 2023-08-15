@@ -3,7 +3,7 @@ import {useParams, useNavigate} from 'react-router-dom';
 
 //redux
 import { useSelector, useDispatch} from "react-redux"; 
-import {action_live, setKickUser, changeMenuModalOpen, changeScoreModalOpen} from "../../../store/StreamingSlice";
+import {action_live, changeExitAlam, changeExitRoomNo,changeExitLiveByUser, setKickUser, changeMenuModalOpen, changeScoreModalOpen} from "../../../store/StreamingSlice";
 
 //css
 import liveStyle from "./Live.module.css";
@@ -61,6 +61,20 @@ const Live = () => {
         }
     },[state_live.liveEndAlert])
 
+
+    // 방장이 아닌 사람이 라이브를 나감
+    useEffect(()=>{
+        if(state_live.exitAlam){
+            console.log("여기 들어 오나?");
+            //초기화
+            dispatch(changeExitLiveByUser(false));
+            dispatch(changeExitRoomNo(null));
+            dispatch(changeExitAlam(false));
+
+            // 리스트 페이지로 이동
+            navigate("/liveList");
+        }
+    },[state_live.exitAlam])
     return(
         <div className={`${liveStyle.Wrapper}`}>
             {
