@@ -12,7 +12,7 @@ import liveChatStyle from "./LiveChat.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {pushAnyChatList, sendPickListChat} from "../../../store/StreamingSlice";
+import {action_live, pushAnyChatList, sendPickListChat} from "../../../store/StreamingSlice";
 
 const LiveChat = () => {
 
@@ -238,7 +238,7 @@ const LiveChat = () => {
         //---------------------------------------
 
 
-        //init 요청 -> 응답옴
+        //init 요청 -> 응답옴 -> 메세지를 받은 유저들 참여 유저 리스트 다시 받아오게 하기
 
         client.current.subscribe('/sub/roomChat/user/init/'+roomCode,(chatMessage)=>{
             const messageInit = JSON.parse(chatMessage.body);
@@ -247,7 +247,10 @@ const LiveChat = () => {
 
             // {userId: 1, nickName: '산하', badge: 'X', profileImage: 'https://howdobucket.s3.ap-northeast-2.amazonaws.com/DefaultProfile.png'}
 
-            publish(`${messageInit.nickName}님이 입장하셨습니다.`);
+            if(loginUser.id===messageInit.userId){
+                publish(`${messageInit.nickName}님이 입장하셨습니다.`);
+            }
+            dispatch(action_live.peopleList({userId:myId, roomId: roomId}));
             
 
         });
