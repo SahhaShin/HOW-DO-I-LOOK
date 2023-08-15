@@ -52,7 +52,7 @@ export const action_live = {
   }),
 
 
-  //참여자 강퇴/삭제라고 볼 수 있겠다.
+  //참여자 강퇴/삭제라고 볼 수 있겠다. -> 소켓 백에서 자동으로 해줘서 이거 안씀
   kickUser : createAsyncThunk("FeedSlice/kickUser", async({userId, roomId}, thunkAPI)=>{
     try{
         const token = await CheckToken();
@@ -120,10 +120,12 @@ const initialState = {
   sendImg:false,
   roomPeopleList:[],
   menuModalOpen:false,
-  selectAdvisor:null, //아이디가 들어가있음
+  selectAdvisor:null, //id, nickname, profileImg
   otherClosetOpen:false,
   scoreModalOpen:false,
   pickBadge:null,
+  kickUser:null, //방장이 강퇴하고 싶은 유저, userId/ roomId
+  areYouKick:false,//소켓으로 킥당한 유저
 };
 
 const StreamingSlice = createSlice({
@@ -161,6 +163,12 @@ const StreamingSlice = createSlice({
     changepPickBadge(state,action){
       state.pickBadge=action.payload
       console.log(action.payload);
+    },
+    setKickUser(state,action){
+      state.kickUser=action.payload; //userId, roomId
+    },
+    changeAreYouKick(state, action){
+      state.areYouKick=action.payload;
     }
   },
 
@@ -228,5 +236,5 @@ const StreamingSlice = createSlice({
   
 });
 
-export let {changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
+export let {changeAreYouKick,setKickUser,changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
 export default StreamingSlice.reducer;
