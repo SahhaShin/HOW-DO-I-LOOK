@@ -9,6 +9,15 @@ const FollowSlot = (props) => {
 
     const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
 
+    // 성별
+    // function genderColor(gender){
+    //     if(gender==="FEMALE"){
+    //         return `${followSlotStyle.profileImgF}`
+    //     }else{
+    //         return `${followSlotStyle.profileImgM}`
+    //     }
+    // }
+
     return(
         <div>
             <div className={`${followSlotStyle.line}`} style={{borderRadius:"1rem"}}>

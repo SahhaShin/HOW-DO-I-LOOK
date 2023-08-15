@@ -59,17 +59,7 @@ const FeedDetail = (props) => {
         content:string,
     }
 
-    let [subCmt, setSubCmt] = useState<comment[]|null>([
-        {
-            mainCmtNo:1,
-            subCmtNo:1,
-            dateTime:"23.07.19 09:10",
-            id:"user3",
-            nickname:"user3",
-            // profile:null,
-            content:"그쵸 ㅠㅠ",
-        },
-    ]);
+
 
 
     //개인 like 표시에 따른 요청
@@ -135,7 +125,7 @@ const FeedDetail = (props) => {
         let data = {size:0, page:0};
         dispatch(action_feed.getFeedTotalList(data));
         
-    },[state.likeOk])
+    },[state.likeOk, state.totalDetailObjLikes])
 
     useEffect(()=>{
         // 전체 피드 가져오면 그 안에 like 만 추출해서 계산
@@ -145,7 +135,7 @@ const FeedDetail = (props) => {
     useEffect(()=>{
         // 댓글 가져오기
         dispatch(action_feed.getComment(props.feedId));
-    },[state.addCommentOk])
+    },[state.addCommentOk, state.totalDetailObjLikes])
 
     console.log(`state.detailObjLikes ${state.detailObjLikes?.lovelyType}`);
     console.log(state.totalDetailObjLikes);
@@ -288,52 +278,56 @@ const FeedDetail = (props) => {
                                             
                                             <div className={`${FeedDetailStyle.etcBtns}`}>
                                                 {/* 답글 달기 보기 */}
-                                                <div className={`${FeedDetailStyle.reply}`}>
+                                                {/* <div className={`${FeedDetailStyle.reply}`}>
                                                     <button>답글 달기</button>
                                                     <button>답글 보기</button>
-                                                </div>
+                                                </div> */}
 
                                                 {/* 수정 삭제 시간 */}
                                                 <div className={`${FeedDetailStyle.btnAndDate}`}>
+                                                    <div className={`${FeedDetailStyle.btnDate}`}>
+                                                        {one.modifiedDate?.split("T")[0].split("-")[0][2]}{one.modifiedDate?.split("T")[0].split("-")[0][3]}.
+                                                        {one.modifiedDate?.split("T")[0].split("-")[1]}.
+                                                        {one.modifiedDate?.split("T")[0].split("-")[2]} &nbsp;   
+                                                        {/* {Number(one.modifiedDate?.split("T")[1].split(":")[0])<12?"오전 ":"오후 "} */}
+                                                        {one.modifiedDate?.split("T")[1].split(":")[0]}:
+                                                        {one.modifiedDate?.split("T")[1].split(":")[1]}   
+                                                    </div>
+
                                                     <div className={`${FeedDetailStyle.rightBtns}`}>
                                                         {/* <button onClick={()=>{updateComment(one.content)}}>수정</button> */}
                                                         <button onClick={()=>dispatch(action_feed.deleteComment(one.commentId))}>삭제</button>
-                                                    </div>
-                                                    <div className={`${FeedDetailStyle.btnDate}`}>
-                                                        {Number(one.modifiedDate?.split("T")[1].split(":")[0])<12?"오전 ":"오후 "}
-                                                        {one.modifiedDate?.split("T")[1].split(":")[0]}:
-                                                        {one.modifiedDate?.split("T")[1].split(":")[1]}    
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className={`${FeedDetailStyle.replyTotal}`}>
-                                            {/* 대댓글 map */}
+                                        {/* 대댓글 map */}
+                                        {/* <div className={`${FeedDetailStyle.replyTotal}`}>
                                             {
                                                 subCmt?.map((oneReple)=>{
                                                     return(
                                                         oneReple.mainCmtNo===one.mainCmtNo?
                                                         <div className={`${FeedDetailStyle.oneReplyTotal}`}>
                                                             <div className={`${FeedDetailStyle.oneReplyStyle}`}>
-                                                
+                                                 */}
                                                                 {/* 대댓글 유저 정보 */}
-                                                                <div className={`${FeedDetailStyle.profile3}`}>
+                                                                {/* <div className={`${FeedDetailStyle.profile3}`}> */}
                                                                     {/* 왼쪽 : 프로필 사진 */}
-                                                                    <div className={`${FeedDetailStyle.profile3}`}>
+                                                                    {/* <div className={`${FeedDetailStyle.profile3}`}>
                                                                         <div className={`${FeedDetailStyle.profileCircle_G3}`}>
                                                                             <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
                                                                         </div>
                                                                         <p>{one.nickname}</p>
                                                                     </div>
-                                                                </div>
+                                                                </div> */}
 
                                                                 {/* 대댓글 내용 */}
-                                                                <div className={`${FeedDetailStyle.replyContent}`}>{oneReple.content}</div>
-                                                            </div>
+                                                                {/* <div className={`${FeedDetailStyle.replyContent}`}>{oneReple.content}</div>
+                                                            </div> */}
 
                                                             {/* 수정 삭제 시간 */}
-                                                            <div className={`${FeedDetailStyle.repleBtnsAndTime}`}>
+                                                            {/* <div className={`${FeedDetailStyle.repleBtnsAndTime}`}>
                                                                 <div className={`${FeedDetailStyle.repleBtns}`}>
                                                                     <button>수정</button>
                                                                     <button>삭제</button>
@@ -347,7 +341,7 @@ const FeedDetail = (props) => {
                                                 })
                                             }
                                                         
-                                        </div>
+                                        </div> */}
 
                                         
                                     </div>

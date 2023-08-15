@@ -18,7 +18,6 @@ const IntroArea = () => {
 
     function sendHash(){
         // {hashtag, size, page}
-        console.log(`1 ${searchInput}`);
 
         // let hashremove = searchInput.replace("#","");
         const hashList = searchInput.split(" ");
@@ -56,7 +55,7 @@ const IntroArea = () => {
             page:1,
         }
 
-        dispatch(action.searchHash(info));
+        dispatch(action_feed.searchHash(info));
         
     }
 

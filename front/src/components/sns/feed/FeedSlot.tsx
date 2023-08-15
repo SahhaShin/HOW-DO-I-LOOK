@@ -58,13 +58,6 @@ const FeedSlot = () => {
     }
 
 
-    //피드 수정 버튼을 누르면 피드 수정 창이 뜬다.
-    //피드 수정 창은 create 창과 같다.
-    function modifyFeed(){
-
-    }
-    
-
     return(   
         <>
             {  state.feedTotalObj?.content.length!==0?
@@ -77,7 +70,7 @@ const FeedSlot = () => {
                                 {/* 왼쪽 : 프로필 사진 -- 이미지 아직 저장 안함 */}
                                 <div className={`${feedSlotStyle.profile}`}>
                                     <div className={`${feedSlotStyle.profileCircle_G}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
+                                        <img src={loginUser.profileImg}></img>
                                     </div>
                                                     
                                 </div>
@@ -140,7 +133,9 @@ const FeedSlot = () => {
                                     <p>{oneFeed.commentCount}</p>
                                 </div>
                                 {oneFeed.userId===loginUser.id?<div className={`${feedSlotStyle.feedBtns}`}>
-                                    <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId)); dispatch(action_feed.getFeedLikeOnMe({userId:oneFeed.userId,feedId:oneFeed.feedId}));}}>수정</button>
+
+                                    {/* 수정 기능 임시 폐쇄 */}
+                                    {/* <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId)); dispatch(action_feed.getFeedLikeOnMe({userId:oneFeed.userId,feedId:oneFeed.feedId}));}}>수정</button> */}
                                     <button onClick={()=>deleteFeed(oneFeed.feedId)}>삭제</button>
                                 </div>:null}
                             </div>
