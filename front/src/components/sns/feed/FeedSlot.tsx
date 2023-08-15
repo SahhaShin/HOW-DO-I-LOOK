@@ -58,13 +58,6 @@ const FeedSlot = () => {
     }
 
 
-    //피드 수정 버튼을 누르면 피드 수정 창이 뜬다.
-    //피드 수정 창은 create 창과 같다.
-    function modifyFeed(){
-
-    }
-    
-
     return(   
         <>
             {  state.feedTotalObj?.content.length!==0?
@@ -77,7 +70,7 @@ const FeedSlot = () => {
                                 {/* 왼쪽 : 프로필 사진 -- 이미지 아직 저장 안함 */}
                                 <div className={`${feedSlotStyle.profile}`}>
                                     <div className={`${feedSlotStyle.profileCircle_G}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
+                                        <img src={loginUser.profileImg}></img>
                                     </div>
                                                     
                                 </div>
