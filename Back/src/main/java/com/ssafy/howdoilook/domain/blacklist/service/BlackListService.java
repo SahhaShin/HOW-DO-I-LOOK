@@ -64,6 +64,10 @@ public class BlackListService {
             throw new AccessException("접근 권한이 없습니다.");
         }
 
+        if(blackListSaveRequestDto.getUserId() == blackListSaveRequestDto.getTargetUserId()) {
+            throw new IllegalArgumentException("자기 자신은 블랙리스트 처리할 수 없습니다.");
+        }
+
         Optional<BlackList> blackList = blackListRepository.selectBlackListByUserIdTargetUserId(blackListSaveRequestDto.getUserId(),
                 blackListSaveRequestDto.getTargetUserId());
         if (blackList.isPresent()){
