@@ -420,32 +420,26 @@ const ClosetSlice = createSlice({
         builder.addCase(action.OOTDList.fulfilled, (state, action) => {
 
             //옷장 1개씩 돔
-            console.log(action.payload);
             for(let i=0;i<action.payload.length;i++){
                 
-                if(action.payload.ootdId===1){
-                    state.clothesOOTDTop_1 = action.payload.tops;
-                    state.clothesOOTDBottom_1 = action.payload.bottoms;
-                    state.clothesOOTDShoe_1 = action.payload.shoes;
-                    state.clothesOOTDAccessory1_1 = action.payload.accessories1;
-                    state.clothesOOTDAccessory2_1 = action.payload.accessories2;
-                    state.clothesOOTDAccessory3_1 = action.payload.accessories3;
+                if(i==0){
+                    state.clothesOOTDTop_1 = action.payload[i].tops;
+                    state.clothesOOTDBottom_1 = action.payload[i].bottoms;
+                    state.clothesOOTDShoe_1 = action.payload[i].shoes;
+                    state.clothesOOTDAccessory1_1 = action.payload[i].accessories1;
+                    state.clothesOOTDAccessory2_1 = action.payload[i].accessories2;
+                    state.clothesOOTDAccessory3_1 = action.payload[i].accessories3;
                 }
 
-                else if(action.payload.ootdId===1){
-                    state.clothesOOTDTop_2 = action.payload.tops;
-                    state.clothesOOTDBottom_2 = action.payload.bottoms;
-                    state.clothesOOTDShoe_2 = action.payload.shoes;
-                    state.clothesOOTDAccessory1_2 = action.payload.accessories1;
-                    state.clothesOOTDAccessory2_2 = action.payload.accessories2;
-                    state.clothesOOTDAccessory3_2 = action.payload.accessories3;
+                else if(i==1){
+                    state.clothesOOTDTop_2 = action.payload[i].tops;
+                    state.clothesOOTDBottom_2 = action.payload[i].bottoms;
+                    state.clothesOOTDShoe_2 = action.payload[i].shoes;
+                    state.clothesOOTDAccessory1_2 = action.payload[i].accessories1;
+                    state.clothesOOTDAccessory2_2 = action.payload[i].accessories2;
+                    state.clothesOOTDAccessory3_2 = action.payload[i].accessories3;
                 }
             }
-
-            console.log(state.clothesOOTDTop_1);
-            console.log(state.clothesOOTDTop_2);
-          
-            
 
         })
 
