@@ -2,17 +2,24 @@ package com.ssafy.howdoilook.domain.room.repository.RoomRepository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.howdoilook.domain.blacklist.entity.BlackList;
+import com.ssafy.howdoilook.domain.blacklist.entity.QBlackList;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.follow.entity.QFollow;
 import com.ssafy.howdoilook.domain.room.dto.response.QRoomListResponseDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseWithTotalPageDto;
 import com.ssafy.howdoilook.domain.room.entity.QRoom;
+import com.ssafy.howdoilook.domain.room.entity.Room;
 import com.ssafy.howdoilook.domain.room.entity.RoomType;
+import com.ssafy.howdoilook.domain.user.entity.User;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RoomCustomRepositoryImpl implements RoomCustomRepository {
 
@@ -20,6 +27,7 @@ public class RoomCustomRepositoryImpl implements RoomCustomRepository {
 
     QRoom room = QRoom.room;
     QFollow follow = QFollow.follow;
+    QBlackList blackList = QBlackList.blackList;
 
     public RoomCustomRepositoryImpl(EntityManager em) {
         this.jpaQueryFactory = new JPAQueryFactory(em);
@@ -76,5 +84,26 @@ public class RoomCustomRepositoryImpl implements RoomCustomRepository {
                 .build();
 
         return result;
+    }
+
+    @Override
+    public List<Room> selectAllExceptBlackList(Long userId) {
+        List<BlackList> blackListList = jpaQueryFactory.selectFrom(blackList)
+                .where(blackList.user.id.eq(userId))
+                .fetch();
+        List<BlackList> targetblackListList= jpaQueryFactory.selectFrom(blackList)
+                .where(blackList.targetUser.id.eq(userId))
+                .fetch();
+        Set<User> set = new HashSet<>();
+        for (BlackList blackList1 : blackListList) {
+            set.add(blackList1.getTargetUser());
+        }
+        for (BlackList blackList1 : targetblackListList) {
+            set.add(blackList1.getUser());
+        }
+        List<Room> roomList = jpaQueryFactory.selectFrom(room)
+                .where(room.host.notIn(set))
+                .fetch();
+        return roomList;
     }
 }
