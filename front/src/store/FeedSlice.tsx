@@ -48,6 +48,21 @@ export const action_feed = {
         }
     }),
 
+    // 내가 팔로우한 유저 피드 전체 리스트 가져오기
+    getFollowingFeedTotalList : createAsyncThunk("FeedSlice/getFollowingFeedTotalList", async(user_id, thunkAPI) => {
+        try {
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/follow/blacklist/${user_id}`, {
+                headers:{"Authorization" : token}
+            });
+
+            return response.data;
+        } catch(e) {
+            throw e;
+        }
+    }),
+
     //피드 하나 지우기 O
     deleteFeed : createAsyncThunk("FeedSlice/deleteFeed", async(feedId, thunkAPI)=>{
        
@@ -258,7 +273,11 @@ export const action_feed = {
         try {
             const token = await CheckToken();
 
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/check/following/${user_id}/${target_user_id}`);
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/check/following/${user_id}/${target_user_id}`, {
+                headers: {
+                    "Authorization" : token
+                }
+            });
 
             return response.data;
         } catch(e) {
@@ -395,6 +414,7 @@ interface Feed{
     uploadPictures:string[],
     declarationModalOpen:boolean,
     feedTotalObj:totalFeed[]|null,
+    feedFollowingCheck:boolean[]|null,
     detailFeedId : number,
     detailObj:specificFeed|null, //특정 피드 정보
     detailObjLikes:specificFeedLikes|null,
@@ -406,6 +426,7 @@ interface Feed{
     likeOk:boolean,
     addCommentOk:boolean,
     mypageFeedPic:myPageFeedSearch[],
+    feedMode:number,
 }
 
 // 초기화
@@ -424,7 +445,8 @@ const initialState:Feed = {
     uploadHashtags:[],
     uploadPictures:[],
     declarationModalOpen:false,
-    feedTotalObj:null,
+    feedTotalObj:[],
+    feedFollowingCheck:[],
     detailFeedId:0,
     detailObj:null,
     detailObjLikes:null,
@@ -436,6 +458,7 @@ const initialState:Feed = {
     likeOk:false,
     addCommentOk:false,
     mypageFeedPic:[],
+    feedMode:1, // 1 : ALL, 2 : FOLLOWING, 3 : MY
 }
 
 
@@ -503,6 +526,19 @@ const FeedSlice = createSlice({
                     else state.mypageFeedPic[i].pick=true;
                 }
             } 
+        },
+        changeFollowingCheckToTrue(state, action) {
+            console.log(action.payload);
+            state.feedFollowingCheck[action.payload] = true;
+            console.log(state.feedFollowingCheck);
+        },
+        changeFollowingCheckToFalse(state, action) {
+            console.log(action.payload);
+            state.feedFollowingCheck[action.payload] = false;
+            console.log(state.feedFollowingCheck);
+        },
+        changeFeedMode(state, action) {
+            state.feedMode = action.payload;
         }
     },
     extraReducers:(builder) => {
@@ -513,6 +549,10 @@ const FeedSlice = createSlice({
 
         builder.addCase(action_feed.getFeedTotalList.fulfilled,(state,action)=>{
             state.feedTotalObj = action.payload;
+
+            for(let i=0; i<state.feedTotalObj.length; i++) {
+                state.feedFollowingCheck?.push(action.payload[i].followingCheck);
+            }
         })
 
         builder.addCase(action_feed.deleteFeed.fulfilled,(state,action)=>{
@@ -527,8 +567,9 @@ const FeedSlice = createSlice({
 
             // 리스트에서 제거
             for(let i=0;i<state.feedTotalObj?.length;i++){
-                if(state.feedTotalObj[i]?.feedId==action.payload){
+                if(state.feedTotalObj[i]?.feedId == action.payload){
                     state.feedTotalObj?.splice(i,1);
+                    state.feedFollowingCheck?.splice(i,1);
                     console.log(i);
                 }
             }
@@ -609,5 +650,5 @@ const FeedSlice = createSlice({
     }
 });
 
-export let {changePick_feed, calTotalFeedLikes, changeModifyModalOpen,changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
+export let {changePick_feed, calTotalFeedLikes, changeModifyModalOpen,changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen, changeFollowingCheckToTrue, changeFollowingCheckToFalse, changeFeedMode} = FeedSlice.actions;
 export default FeedSlice.reducer;
