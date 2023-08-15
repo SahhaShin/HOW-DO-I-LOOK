@@ -1,9 +1,9 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 
 //redux
 import { useSelector, useDispatch} from "react-redux"; 
-import {action_live, changeMenuModalOpen, changeScoreModalOpen} from "../../../store/StreamingSlice";
+import {action_live, setKickUser, changeMenuModalOpen, changeScoreModalOpen} from "../../../store/StreamingSlice";
 
 //css
 import liveStyle from "./Live.module.css";
@@ -16,6 +16,11 @@ import Streaming from "../../../components/streaming/live/Streaming.jsx"
 import LiveMenuModal from '../../../components/streaming/live/LiveMenuModal';
 import LiveScoreModal from '../../../components/streaming/live/LiveScoreModal';
 
+
+// alert창
+import Swal from "sweetalert2";
+
+
 const Live = () => {
     //redux 관리
     let state_live = useSelector((state:any)=>state.streaming);
@@ -27,6 +32,24 @@ const Live = () => {
 
     const loginId = String(loginUser.id);
     const hostId = params.hostId;
+
+    const navigate = useNavigate();
+
+
+    useEffect(()=>{
+        if(state_live.areYouKick){
+            dispatch(setKickUser(null));
+            navigate("/liveList");
+            Swal.fire({
+                icon: 'info',
+                title: '강퇴',
+                text: '라이브에서 강퇴당하셨습니다.',
+                confirmButtonColor: '#4570F5',
+            })
+
+        }
+
+    },[state_live.areYouKick])
 
     return(
         <div className={`${liveStyle.Wrapper}`}>

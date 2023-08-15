@@ -291,9 +291,10 @@ const LiveChat = () => {
     function sendMessage(event, chat){
         event.preventDefault();//버튼 눌렀을 때 새로고침 방지
         
-        if(chat!==""){//빈문자열 입력 방지
+        if(chat.trim()!==""){//빈문자열 입력 방지
             console.log("현재 3-1 sendMessage이다.");
             publish(chat);
+            setChat('');
         }
 
     }
@@ -343,10 +344,10 @@ const LiveChat = () => {
         // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
         client.current.publish({
             destination: '/pub/roomChat/user/kick/'+roomCode,
-            body: {
+            body: JSON.stringify({
                 userId:state.kickUser.userId,
                 roomId:state.kickUser.roomId
-            },
+            }),
             headers
         });
         console.log("현재 publishKick publish가 지났따.");
@@ -416,7 +417,16 @@ const LiveChat = () => {
 
           disconnect();
         }
-    }, [state.sendImg, state.kickUser]);
+    }, [state.sendImg]);
+
+    useEffect(()=>{
+
+        if(state.kickUser!==null){
+            console.log(`state.kickUser: ${state.kickUser}`);
+            publishKick();
+        }
+
+    },[state.kickUser])
 
 
     // changeColor

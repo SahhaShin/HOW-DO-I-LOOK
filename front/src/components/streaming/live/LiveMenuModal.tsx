@@ -74,6 +74,7 @@ const LiveMenuModal = ()=>{
     function kickInModal(){
         // dispatch(action_live.kickUser({userId:loginUser.id,roomId:roomId}));
         dispatch(setKickUser({userId:state_live.selectAdvisor.id, roomId:roomId}));
+        console.log(`userId: ${state_live.selectAdvisor.id}, roomId: ${roomId}`);
     }
 
 
