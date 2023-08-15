@@ -11,6 +11,8 @@ import {
 
 
 function Pagination({ total, limit, page, setPage }) {
+  const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+
 
   //redux 관리
   let state = useSelector((state:any)=>state.closet);
@@ -22,7 +24,8 @@ function Pagination({ total, limit, page, setPage }) {
     console.log("Pagenation render")
     dispatch(
       action.getLiveList({
-        userId: state.userId,
+        following: (state.userId == "") ?false : true,
+        userId: loginUser.id,
         type: state.type,
         search: state.searchInput, 
         pageNum: page,
