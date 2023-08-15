@@ -84,3 +84,23 @@
     /* 크기조정 */
     width: 100%;
 }
+
+.rain{
+    font-family: 'Pretendard-Regular';
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    font-size: 40px;
+    transform: translate(700px, -55px);
+}
+.rain>div:nth-child(2){
+    /* position: absolute; */
+    transform: translate(50px, 40px);
+    font-size: 50px;
+}
+.rain>img{
+    position: absolute;
+    /* width: 70px; */
+    height: 100%;
+    transform: translate(120px, -10px);
+}

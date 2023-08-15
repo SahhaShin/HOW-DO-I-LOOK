@@ -11,7 +11,6 @@ export const action = {
     // 옷 분야별 리스트 O
     getClothesListByType : createAsyncThunk("ClosetSlice/getClothesListByType", async({clothesType, userId, pageNum}:ClothesListByTypeReq, thunkAPI)=>{
         try{
-            console.log(`${clothesType} ${userId} ${pageNum}`);
             const token = await CheckToken();
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,{
                 headers: {
@@ -36,7 +35,6 @@ export const action = {
     //옷 id 같은 것끼리도 저장 가능
     OOTDSave: createAsyncThunk("ClosetSlice/OOTDSave",async ({userId, order, slotIds}:saveOOTD,thunkAPI) =>{
         try{
-            console.log(`${userId} ${order} ${slotIds.ACCESSORY1}`);
             const token = await CheckToken();
             const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/ootd`,{userId,order,slotIds},{
                 headers: {
@@ -61,7 +59,6 @@ export const action = {
 
     //OOTD 리스트 불러오기 -> 진행중
     OOTDList: createAsyncThunk("ClosetSlice/OOTDList",async (userId,thunkAPI) =>{
-        console.log(userId);
         try{
             const token = await CheckToken();
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/ootd/list/${userId}`,{
@@ -104,7 +101,6 @@ export const action = {
     getClothInfo : createAsyncThunk("ClosetSlice/getClothInfo", async(clothesId, thunkAPI)=>{
 
         try{
-            console.log(clothesId);
             const token = await CheckToken();
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/detail/${clothesId}`,{
                 headers: {
@@ -112,7 +108,6 @@ export const action = {
                 }
             });
             
-            console.log(response.data);
             return response.data; // 액션의 payload로 값을 반환해야 합니다.
         } catch (e) {
             console.log(e);
@@ -124,14 +119,12 @@ export const action = {
     updateClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async({userId,type,name,brand,info,clothesId}, thunkAPI)=>{
 
         try{
-            console.log(userId);
             const token = await CheckToken();
             const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`,{userId,type,name,brand,info},{
                 headers: {
                   "Authorization" : token,
                 }
             });
-            console.log(response.data);
             return response.data; // 액션의 payload로 값을 반환해야 합니다.
         } catch (e) {
             console.log(e);
@@ -355,7 +348,6 @@ const ClosetSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
-            console.log(`!!!${action.payload.type}`);
             if(action.payload?.type==="TOP"){
                 state.clothesTop = [...action.payload.response];
             }else if(action.payload?.type==="BOTTOM"){
@@ -371,7 +363,6 @@ const ClosetSlice = createSlice({
 
             state.clothesListByType = [...action.payload.response];
 
-            console.log(state.clothesTop.length);
         })
         builder.addCase(action.getClothInfo.fulfilled, (state, action) => {
             //옷 특정 정보 결과
