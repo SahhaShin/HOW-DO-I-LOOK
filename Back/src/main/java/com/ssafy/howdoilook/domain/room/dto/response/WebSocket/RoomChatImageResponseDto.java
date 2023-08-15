@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.room.dto.response;
+package com.ssafy.howdoilook.domain.room.dto.response.WebSocket;
 
 import com.ssafy.howdoilook.domain.room.dto.ImageChatDto;
 import lombok.*;

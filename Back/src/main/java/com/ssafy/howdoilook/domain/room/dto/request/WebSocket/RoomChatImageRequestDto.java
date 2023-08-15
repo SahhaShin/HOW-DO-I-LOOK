@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.room.dto.request;
+package com.ssafy.howdoilook.domain.room.dto.request.WebSocket;
 
 import com.ssafy.howdoilook.domain.room.dto.ImageChatDto;
 import lombok.AccessLevel;

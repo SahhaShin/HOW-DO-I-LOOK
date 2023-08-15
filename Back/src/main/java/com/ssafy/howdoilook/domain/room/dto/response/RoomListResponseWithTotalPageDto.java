@@ -12,7 +12,6 @@ import java.util.List;
 public class RoomListResponseWithTotalPageDto {
 
     private int totalPage;
-
     private List<RoomListResponseDto> roomList;
 
     @Builder

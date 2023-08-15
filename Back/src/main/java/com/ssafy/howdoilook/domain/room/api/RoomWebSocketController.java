@@ -1,9 +1,10 @@
 package com.ssafy.howdoilook.domain.room.api;
 
-import com.ssafy.howdoilook.domain.room.dto.request.RoomChatImageRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.request.WebSocket.RoomChatImageRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomChatRequestDto;
-import com.ssafy.howdoilook.domain.room.dto.response.RoomChatImageResponseDto;
-import com.ssafy.howdoilook.domain.room.dto.response.RoomChatResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.request.WebSocket.RoomChatUserKickRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.request.WebSocket.RoomChatUserOutRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.response.WebSocket.*;
 import com.ssafy.howdoilook.domain.room.service.RoomChatMQService;
 import com.ssafy.howdoilook.domain.room.service.RoomService;
 import com.ssafy.howdoilook.global.WebSocket.WebSocketSessionManager;
@@ -40,6 +41,43 @@ public class RoomWebSocketController {
         roomChatMQService.chatEnqueue(responseDto);
         return responseDto;
     }
+
+    @MessageMapping("/roomChat/user/init/{roomCode}")
+    @SendTo("/sub/roomChat/user/init/{roomCode}")
+    public RoomChatUserInitResponseDto broadCastingInitUser(SimpMessageHeaderAccessor accessor){
+        String sessonId = accessor.getSessionId();
+        SecurityContext context = webSocketSessionManager.get(sessonId);
+
+        Authentication authentication = context.getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        return roomService.userInitRoom(userDetails);
+    }
+
+    @MessageMapping("/roomChat/user/out/{roomCode}")
+    @SendTo("/sub/roomChat/user/out/{roomCode}")
+    public RoomChatUserOutResponseDto broadCastingOutUser(RoomChatUserOutRequestDto requestDto, SimpMessageHeaderAccessor accessor){
+        String sessonId = accessor.getSessionId();
+        SecurityContext context = webSocketSessionManager.get(sessonId);
+
+        Authentication authentication = context.getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        return roomService.userOutRoom(requestDto, userDetails);
+    }
+
+    @MessageMapping("/roomChat/user/kick/{roomCode}")
+    @SendTo("/sub/roomChat/user/kick/{roomCode}")
+    public RoomChatUserKickResponseDto broadCastingKickUser(RoomChatUserKickRequestDto requestDto, SimpMessageHeaderAccessor accessor){
+        String sessionId = accessor.getSessionId();
+        SecurityContext context = webSocketSessionManager.get(sessionId);
+
+        Authentication authentication = context.getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        return roomService.userKickRoom(requestDto, userDetails);
+    }
+
 
     @MessageMapping("/roomChat/image/{roomCode}")
     @SendTo("/sub/roomChat/image/{roomCode}")
