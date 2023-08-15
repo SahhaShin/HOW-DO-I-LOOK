@@ -34,8 +34,57 @@ public class RoomCustomRepositoryImpl implements RoomCustomRepository {
     }
 
     @Override
+    public RoomListResponseWithTotalPageDto findAllRoomList(List<Long> blackListIds, String type, String search, Pageable pageable) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        // 블랙리스트에 포함된 hostId들을 제외
+        builder.and(room.host.id.notIn(blackListIds));
+
+        /**
+         * 타입이 설정되어 있을 때 where 절 해당 필터링 추가
+         */
+        if (type != null) {
+            builder.and(room.type.eq(RoomType.valueOf(type)));
+        }
+
+        /**
+         * 검색어 입력이 있을 때 where 절 해당 필터링 추가
+         */
+        if (search != null) {
+            // search 값을 사용하여 필터링 (제목에 search 값이 포함되어야 함)
+            builder.and(room.title.like("%" + search + "%"));
+        }
+
+        List<RoomListResponseDto> queryResults = jpaQueryFactory.select(new QRoomListResponseDto(room))
+                .from(room)
+                .leftJoin(follow)
+                .on(room.host.id.eq(follow.followee.id))
+                .where(builder)
+                .offset(pageable.getOffset()) // 페이지 번호
+                .limit(pageable.getPageSize()) // 페이지 사이즈
+                .orderBy(room.id.desc())
+                .fetch();
+
+        long totalCount = jpaQueryFactory.selectFrom(room)
+                .leftJoin(follow)
+                .on(room.host.id.eq(follow.followee.id))
+                .where(builder)
+                .fetchCount();
+
+        long totalPages = (totalCount + pageable.getPageSize() - 1) / pageable.getPageSize(); // 올림 연산 적용
+
+        RoomListResponseWithTotalPageDto result = RoomListResponseWithTotalPageDto.builder()
+                .totalPage((int) totalPages)
+                .roomListResponseDtos(queryResults)
+                .build();
+
+        return result;
+    }
+
+    @Override
     public RoomListResponseWithTotalPageDto findFollowingRoomList(List<Follow> followingList, String type, String search, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
+
         if (!followingList.isEmpty()) {
             for (Follow follow : followingList) {
                 builder.or(room.host.id.eq(follow.getFollowee().getId()));
@@ -87,23 +136,22 @@ public class RoomCustomRepositoryImpl implements RoomCustomRepository {
     }
 
     @Override
-    public List<Room> selectAllExceptBlackList(Long userId) {
+    public List<Long> selectAllExceptBlackList(Long userId) {
         List<BlackList> blackListList = jpaQueryFactory.selectFrom(blackList)
                 .where(blackList.user.id.eq(userId))
                 .fetch();
         List<BlackList> targetblackListList= jpaQueryFactory.selectFrom(blackList)
                 .where(blackList.targetUser.id.eq(userId))
                 .fetch();
-        Set<User> set = new HashSet<>();
+        Set<Long> set = new HashSet<>();
         for (BlackList blackList1 : blackListList) {
-            set.add(blackList1.getTargetUser());
+            set.add(blackList1.getTargetUser().getId());
         }
         for (BlackList blackList1 : targetblackListList) {
-            set.add(blackList1.getUser());
+            set.add(blackList1.getUser().getId());
         }
-        List<Room> roomList = jpaQueryFactory.selectFrom(room)
-                .where(room.host.notIn(set))
-                .fetch();
-        return roomList;
+
+        List<Long> userList = new ArrayList<>(set);
+        return userList;
     }
 }
