@@ -312,6 +312,10 @@ const LiveChat = () => {
         client.current.disconnect();
     };
 
+    //화면 들어올 시 init 요청을 보낸다.
+    // useEffect(()=>{
+        
+    // },[])
 
     // 화면 들어올 시 초기화
     useEffect(() => {
