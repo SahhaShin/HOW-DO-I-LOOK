@@ -185,6 +185,8 @@ const LiveChat = () => {
     //2. 채팅방 다대다 구독, 이미지 전송도 가능
     function subscribe(){
         console.log("현재 2 subscribe이다.");
+
+        publishInit(); //최초 한 번 init 요청을 보낸다.
         
         client.current.subscribe('/sub/roomChat/'+roomCode,(chatMessage)=>{
             const message = JSON.parse(chatMessage.body);
@@ -232,6 +234,28 @@ const LiveChat = () => {
 
         });
 
+
+        //---------------------------------------
+
+
+        //init 요청 -> 응답옴
+
+        client.current.subscribe('/sub/roomChat/user/init/'+roomCode,(chatMessage)=>{
+            const messageInit = JSON.parse(chatMessage.body);
+
+            console.log(messageInit);
+
+            // {userId: 1, nickName: '산하', badge: 'X', profileImage: 'https://howdobucket.s3.ap-northeast-2.amazonaws.com/DefaultProfile.png'}
+
+            publish(`${messageInit.nickName}님이 입장하셨습니다.`);
+            
+
+        });
+
+
+
+        //---------------------------------------
+
         // 이미지 전송 요청이 왓으면 실행
         if(state.sendImg){
             sendImgMessage();
@@ -251,6 +275,7 @@ const LiveChat = () => {
 
     }
 
+
     //3-2. 채팅방에 이미지를 보낸다. (사전 셋팅)
     function sendImgMessage(){
         
@@ -262,6 +287,26 @@ const LiveChat = () => {
             publishImg(state.pickList);//이 때는 이미지 주소를 보낼 것임
         }
     }
+
+
+
+    //4. 채팅방에 init 메세지를 보낸다.
+    function publishInit(){
+
+        if(!client.current.connected){
+            console.log("현재 publishInit 연결되지 않았따!");
+            return;
+        }
+        console.log("현재 publishInit 연결되었다!");
+        // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
+        client.current.publish({
+            destination: '/pub/roomChat/user/init/'+roomCode,
+            body: {},
+            headers
+        });
+        console.log("현재 publishInit publish가 지났따.");
+    }
+
 
     //4. 채팅방에 메세지를 보낸다. (서버전송)
     function publish(chat:string){
