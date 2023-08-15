@@ -32,7 +32,6 @@ public class ChatHandler implements ChannelInterceptor {
 
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         String token = String.valueOf(accessor.getNativeHeader("Authorization"));
-        System.out.println(accessor.getSessionId());
         if(token.equals("null")){
             return ChannelInterceptor.super.preSend(message, channel);
         }

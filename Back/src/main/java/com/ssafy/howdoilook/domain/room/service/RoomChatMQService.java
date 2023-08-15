@@ -3,8 +3,8 @@ package com.ssafy.howdoilook.domain.room.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.howdoilook.domain.room.dto.ImageChatDto;
-import com.ssafy.howdoilook.domain.room.dto.response.RoomChatImageResponseDto;
-import com.ssafy.howdoilook.domain.room.dto.response.RoomChatResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.WebSocket.RoomChatImageResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.WebSocket.RoomChatResponseDto;
 import com.ssafy.howdoilook.domain.room.entity.ImageType;
 import com.ssafy.howdoilook.domain.room.entity.RoomChat;
 import com.ssafy.howdoilook.domain.room.entity.RoomChatImage;
@@ -74,11 +74,9 @@ public class RoomChatMQService {
 
     @Scheduled(fixedRate = 1000)
     public void processRoomChatMessageQueue(){
-
         RoomChatResponseDto chatMessage = chatDequeue();
 
         if(chatMessage != null){
-
             //몽고db에 저장
             roomChatRepository.save(
                     RoomChat.builder()
@@ -91,7 +89,7 @@ public class RoomChatMQService {
         }
     }
 
-    @Scheduled(fixedRate = 100)
+    @Scheduled(fixedRate = 1000)
     public void processRoomImageMessageQueue(){
         RoomChatImageResponseDto chatMessage = imageDequeue();
 
