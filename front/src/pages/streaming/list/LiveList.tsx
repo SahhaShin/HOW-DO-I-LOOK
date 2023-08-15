@@ -208,6 +208,9 @@ const LiveList = () => {
         <div className={`${liveStyle.footer}`}>
           <Footer />
         </div>
+                    {/* 피드블러 */}
+                    <div onClick={async()=>{dispatch(changeModalOpen(false));dispatch(changeModalOpen(false));}} style={((state.ModalOpen))?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
+        
       </div>
     </>
   );
