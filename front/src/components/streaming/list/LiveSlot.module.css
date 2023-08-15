@@ -113,11 +113,17 @@
     height: 100%;
 }
 
+.profileCircle_G > p{
+    /* 여자 프로필 border 크기 */
+    margin-left: -50%;
+    width: 200%;
+}
 .profile{
     /* 프로필 위치 */
     display: flex;
     justify-content: center;
     padding-top: 3%;
+    
 }
 
 

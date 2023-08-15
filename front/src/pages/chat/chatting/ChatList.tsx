@@ -17,7 +17,7 @@ import FollowSlot from "../../../components/util/FollowSlot";
 import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
-import ChatFollow from "../../../components/chat/chatting/ChatFollow"
+import ChatFollow from "../../../components/sns/feed/FeedFollow"
 
 const ChatList = () => {
 
