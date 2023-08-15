@@ -19,6 +19,7 @@ public class RoomListResponseDto {
     private String genderLimit;
     private Long hostId;
     private String hostNickname;
+    private String hostProfileImg;
 
     @Builder @QueryProjection
     public RoomListResponseDto(Room room) {
@@ -30,5 +31,6 @@ public class RoomListResponseDto {
         this.genderLimit = String.valueOf(room.getGender());
         this.hostId = room.getHost().getId();
         this.hostNickname = room.getHost().getNickname();
+        this.hostProfileImg = room.getHost().getProfileImg();
     }
 }
