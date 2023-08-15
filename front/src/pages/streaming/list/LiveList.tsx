@@ -64,7 +64,6 @@ const LiveList = () => {
 
   useEffect(() => {
     //리스트 가져오기
-    console.log("list useEffect")
     setPage(state.page)
     dispatch(
       action.getLiveList({
@@ -77,13 +76,11 @@ const LiveList = () => {
     );
 
 
-    console.log("render")
     //회원 follow목록 가져오기
   }, [state.page]);
 
 
   function upload() {
-    console.log("upload");
     window.sessionStorage.setItem(
       "liveRoom",
       JSON.stringify({
@@ -106,7 +103,6 @@ const LiveList = () => {
 
       id = loginUser.id;
     }
-    console.log("id : " + id);
     dispatch(setUserId(id));
     dispatch(
       action.getLiveList({
@@ -118,13 +114,11 @@ const LiveList = () => {
       })
     );
 
-    console.log("id : " + state.userId);
     // listUpdate();
   }
 
   //호스트가 라이브 종료 시 리스트로 이동
   //호스트가 라이브 종료 시 라이브 리스트 다시 부르고, 알럴트 띄워주기
-  console.log(`현재 리스트 ${state_streaming.liveEndAlert}`);
   useEffect(()=>{
 
     if(state_streaming.liveEndAlert){
