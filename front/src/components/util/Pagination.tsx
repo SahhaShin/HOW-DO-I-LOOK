@@ -2,7 +2,12 @@ import styled from "styled-components";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {changePage} from "../../store/ChatSlice";
+import React, { useEffect, useState } from "react";
+
+import {
+  action,changePage,
+
+} from "../../store/LiveSlice";
 
 
 function Pagination({ total, limit, page, setPage }) {
@@ -11,12 +16,29 @@ function Pagination({ total, limit, page, setPage }) {
   let state = useSelector((state:any)=>state.closet);
   let dispatch = useDispatch();
 
-  const numPages = Math.ceil(total / limit);
+  useEffect(() => {
+    //리스트 가져오기
+    setPage(state.page)
+    console.log("Pagenation render")
+    dispatch(
+      action.getLiveList({
+        userId: state.userId,
+        type: state.type,
+        search: state.searchInput, 
+        pageNum: page,
+      })
+    );
+
+
+    //회원 follow목록 가져오기
+  }, [state.page]);
+
+  const numPages = Math.ceil(total);
 
   return (
     <>
       <Nav>
-        <Button onClick={() => {dispatch(changePage(page-1)); setPage(page - 1)}} disabled={page === 1}>
+        <Button onClick={() => { dispatch(changePage(page - 1));console.log(page)}} disabled={page === 0}>
           &lt;
         </Button>
         {numPages > 0 && Array(numPages)
@@ -24,13 +46,13 @@ function Pagination({ total, limit, page, setPage }) {
           .map((_, i) => (
             <Button
               key={i + 1}
-              onClick={() => {dispatch(changePage(i+1)); setPage(i + 1)}}
-              aria-current={page === i + 1 ? "page" : null}
+              onClick={() => {dispatch(changePage(i));console.log(i) }}
+              aria-current={page === i ? "page" : null}
             >
               {i + 1}
             </Button>
           ))}
-        <Button onClick={() => {dispatch(changePage(page+1));setPage(page + 1)}} disabled={page === numPages}>
+        <Button onClick={() => {dispatch(changePage(page + 1));console.log(page)}} disabled={page === numPages-1}>
           &gt;
         </Button>
       </Nav>

@@ -45,7 +45,7 @@ const LiveList = () => {
 
   // 페이지네이션
   const [len, setLen] = useState(0);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const offset = (page - 1) * limit;
 
@@ -54,21 +54,22 @@ const LiveList = () => {
 
   useEffect(() => {
     //리스트 가져오기
+    console.log("list useEffect")
+    setPage(state.page)
     dispatch(
       action.getLiveList({
         userId: state.userId,
         type: state.type,
         search: state.search,
-        pageNum: page,
+        pageNum: state.page,
       })
     );
-    setLen(state.page);
-    
 
+
+    console.log("render")
     //회원 follow목록 가져오기
-  }, []);
+  }, [state.page]);
 
-  function listUpdate() {}
 
   function upload() {
     console.log("upload");
@@ -125,7 +126,7 @@ const LiveList = () => {
         </div>
         <div>
           {/* 문구 & 해시태그 */}
-          <IntroArea />
+          <IntroArea  />
         </div>
 
         <div className={`${liveStyle.main}`}>
@@ -193,13 +194,13 @@ const LiveList = () => {
             </div>
 
             <div className={`${liveStyle.paginationContainer}`}>
-              <Pagination
-                total={len}
-                limit={limit}
-                page={page}
-                setPage={setPage}
-              />
-            </div>
+                            <Pagination
+                                total={state.pageAll}
+                                limit={limit}
+                                page={page}
+                                setPage={setPage}
+                            />
+                        </div>
           </div>
 
           <LiveFollow />
