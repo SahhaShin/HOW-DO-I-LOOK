@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.feed.dto.request.FeedSaveRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedUpdateRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.response.FeedResponseDto;
 import com.ssafy.howdoilook.domain.feed.service.FeedService;
+import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,11 @@ public class FeedController {
     public ResponseEntity<Page<FeedResponseDto>> selectAll(Pageable pageable){
         Page<FeedResponseDto> feedResponseDtos = feedService.selectAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
+    }
+    @GetMapping("/blacklist/{userId}")
+    public ResponseEntity<List<FeedResponseDto>> selectAllExceptBlackList(@PathVariable(name = "userId") Long userId){
+        List<FeedResponseDto> feedResponseDtoList = feedService.selectAllExceptBlackList(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtoList);
     }
 
     @GetMapping("/hashtag")

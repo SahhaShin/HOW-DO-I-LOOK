@@ -16,6 +16,7 @@ import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,12 +36,15 @@ public class SoloChatRoomService {
 
     private final int PAGESIZE = 30;
 
-//    @Transactional
-//    public String checkJWT(ChatRecodRequestDto requestDto){
-//
-//    }
 
+    //채팅 정보에 대한 인가처리
+    @Transactional
+    public void authorizeChat(ChatRecordRequestDto requestDto){
+        SoloChatRoom chatroom = soloChatRoomRepository.findById(requestDto.getRoomId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 채팅방이 존재하지 않습니다"));
+    }
 
+    //클릭시 최근 읽은 채팅 시간 저장
     @Transactional
     public ChatClickResponseDto clickEvent(ChatClickRequestDto requestDto){
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -53,13 +57,13 @@ public class SoloChatRoomService {
 
     //채팅시 채팅 기록 MongoDB에 저장
     @Transactional
-    public void recordChat(ChatRecordRequestDto requestDto, SoloChatRoom room){
+    public void recordChat(ChatRecordRequestDto requestDto){
         String content = requestDto.getChatContent();
 
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
-        long roomId = room.getId();
+        long roomId = requestDto.getRoomId();
 
         SoloChat chat = SoloChat.builder()
                 .roomId(roomId)
@@ -75,12 +79,12 @@ public class SoloChatRoomService {
 
     //특정 유저가 진행했던 채팅방 리스트 반환
     @Transactional
-    public List<ChatRoomDto> getUserChatRoom(Long userId){
-        User user = userRepository.findById(userId)
+    public List<ChatRoomDto> getUserChatRoomList(UserDetails userDetails){
+        User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
 
-        List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUser(userId);
+        List<SoloChatRoom> chatRoomListPrev = soloChatRoomRepository.findByUser(user.getId());
         List<ChatRoomDto> chatRoomListNext = new ArrayList<>();
 
         //Entity To Dto
@@ -89,9 +93,9 @@ public class SoloChatRoomService {
             ChatRoomDto dto = ChatRoomDto.builder()
                     .id(chatRoom.getId())
                     .userAId(user.getId())
-                    .userBId((chatRoom.getUserA().getId() == userId) ? chatRoom.getUserB().getId() : chatRoom.getUserA().getId())
+                    .userBId((chatRoom.getUserA().getId() == user.getId()) ? chatRoom.getUserB().getId() : chatRoom.getUserA().getId())
                     .chatroomCode(chatRoom.getRoomCode())
-                    .anotherNickName((chatRoom.getUserA().getId() == userId) ? chatRoom.getUserB().getNickname() : chatRoom.getUserA().getNickname())
+                    .anotherNickName((chatRoom.getUserA().getId() == user.getId()) ? chatRoom.getUserB().getNickname() : chatRoom.getUserA().getNickname())
                     .lastChat((lastChat == null) ? "대화내용이 없습니다.":lastChat.getContent())
                     .lastChatTime((lastChat == null) ? "":lastChat.getTime().toString())
                     .build();
@@ -103,12 +107,19 @@ public class SoloChatRoomService {
 
     //채팅방 입장 Mongodb ( 채팅 내용 반환 )
     @Transactional
-    public ChatContextListResponseDto enterChatRoom(ChatContextRequestDto requestDto){
+    public ChatContextListResponseDto getChatContextList(ChatContextRequestDto requestDto, UserDetails userDetails){
         User userA = userRepository.findById(requestDto.getUserA())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
 
         User userB = userRepository.findById(requestDto.getUserB())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다"));
+
+        if(userA.getId() != user.getId() && userB.getId() != user.getId()){
+            new IllegalArgumentException("본인이 아닙니다.");
+        }
 
         int isExist = soloChatRoomRepository.countByUserAAndUserB(userA, userB)
                 + soloChatRoomRepository.countByUserAAndUserB(userB, userA);
@@ -135,11 +146,11 @@ public class SoloChatRoomService {
             Long roomId = chatRoom.getId();
 
             //최근 채팅 리스트 반환
-            return getChat(chatRoom.getId(), 0);
+            return getNextPageChat(chatRoom.getId(), 0);
         }
     }
     @Transactional
-    public ChatContextListResponseDto getChat(long roomId, int page){
+    public ChatContextListResponseDto getNextPageChat(long roomId, int page){
         SoloChatRoom chatRoom = soloChatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 채팅방은 존재하지 않습니다"));
 
