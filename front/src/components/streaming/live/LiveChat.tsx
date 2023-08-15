@@ -12,7 +12,7 @@ import liveChatStyle from "./LiveChat.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action_live, pushAnyChatList, sendPickListChat, changeAreYouKick} from "../../../store/StreamingSlice";
+import {action_live, changeLiveEndAlert, pushAnyChatList, sendPickListChat, changeAreYouKick} from "../../../store/StreamingSlice";
 
 const LiveChat = () => {
 
@@ -267,11 +267,47 @@ const LiveChat = () => {
 
             if(loginUser.id===messageKick.userId){
                 dispatch(changeAreYouKick(true));
+                disconnect();
             }
 
             //강퇴당한 후 리스트 재 업로드
             dispatch(action_live.peopleList({userId:myId, roomId: roomId}));
             
+
+        });
+
+
+        client.current.subscribe('/sub/roomChat/user/out/'+roomCode,(chatMessage)=>{
+            const messageOut = JSON.parse(chatMessage.body);
+
+            console.log(messageOut);
+
+            // {
+            //     userId : 1,
+            //     nickName : "하하하",
+            //     badge : "x",
+            //     command : "master"
+            // }
+
+            //방이 폭파된 경우
+            if(messageOut.command==="master"){
+                console.log(`라이브 종료`);
+                dispatch(changeLiveEndAlert(true)); //모든 유저에게 리스트 페이지로 가면 alert를 주세요.
+                disconnect();
+            }
+
+            //시청자가 방을 나간 경우 브로드 캐스트 메세지
+            else if(messageOut.command==="viewer"){
+                publish(`${messageOut.nickName}이 퇴장하셨습니다.`);
+                //유저가 퇴장하면 시청자 재업로드
+                dispatch(action_live.peopleList({userId:myId, roomId: roomId}));
+
+
+                //퇴장하는 사람 연결을 끊는다.
+                if(String(loginUser.id)===messageOut.userId){
+                    disconnect();
+                }
+            }
 
         });
 
@@ -354,6 +390,28 @@ const LiveChat = () => {
     }
 
 
+    //4. 채팅방에 out 메세지를 보낸다.
+    function publishOut(){
+
+        //redux -> liveEndRoomNo
+
+        if(!client.current.connected){
+            console.log("현재 publishOut 연결되지 않았따!");
+            return;
+        }
+        console.log("현재 publishOut 연결되었다!");
+        // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
+        client.current.publish({
+            destination: '/pub/roomChat/user/out/'+roomCode,
+            body: JSON.stringify({
+                roomId:state.liveEndRoomNo
+            }),
+            headers
+        });
+        console.log("현재 publishOut가 지났따.");
+    }
+
+
     //4. 채팅방에 메세지를 보낸다. (서버전송)
     function publish(chat:string){
 
@@ -419,6 +477,7 @@ const LiveChat = () => {
         }
     }, [state.sendImg]);
 
+    //강퇴 유저가 발생했을 시 -> 강퇴 처리 -> Live 페이지에서 강퇴 유저 null처리 후 리스트 다시 불러옴
     useEffect(()=>{
 
         if(state.kickUser!==null){
@@ -427,6 +486,18 @@ const LiveChat = () => {
         }
 
     },[state.kickUser])
+
+
+    //방장이 라이브 종료했을 시 -> redux liveEndByHost=true
+    //roomId를 보내면 됨, 토큰이 유저를 구분함
+    useEffect(()=>{
+
+        if(state.liveEndRoomNo!==null){
+            console.log(`state.liveEndRoomNo: ${state.liveEndRoomNo}`);
+            publishOut();
+        }
+
+    },[state.liveEndRoomNo])
 
 
     // changeColor

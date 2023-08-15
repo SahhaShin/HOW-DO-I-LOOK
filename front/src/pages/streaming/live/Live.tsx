@@ -51,6 +51,16 @@ const Live = () => {
 
     },[state_live.areYouKick])
 
+
+    //호스트가 라이브 종료 시 리스트로 이동
+    // 리스트에서 라이브 리스트 다시 부르고, 알럴트 띄워주기
+    useEffect(()=>{
+        if(state_live.liveEndAlert){
+            // 리스트 페이지로 이동
+            navigate("/liveList");
+        }
+    },[state_live.liveEndAlert])
+
     return(
         <div className={`${liveStyle.Wrapper}`}>
             {
