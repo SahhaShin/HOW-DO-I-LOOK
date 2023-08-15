@@ -32,12 +32,12 @@ const Live = () => {
         <div className={`${liveStyle.Wrapper}`}>
             {
                 // 사용자 클릭 시 메뉴 모달
-                loginId===hostId&&state_live.menuModalOpen?<div className={`${liveStyle.menuModal}`}><LiveMenuModal/></div>:null
+                state_live.menuModalOpen?<div className={`${liveStyle.menuModal}`}><LiveMenuModal/></div>:null
             }
 
             {
                 // 메뉴 중 점수 주기 클릭 시
-                state_live.scoreModalOpen?<div className={`${liveStyle.menuModal}`}><LiveScoreModal/></div>:null
+                loginId===hostId&&state_live.scoreModalOpen?<div className={`${liveStyle.menuModal}`}><LiveScoreModal/></div>:null
             }
 
             <div className={`${liveStyle.total}`}>
@@ -66,7 +66,7 @@ const Live = () => {
             </div>
 
             {/* 피드블러 */}
-            <div onClick={async()=>{dispatch(changeScoreModalOpen(false));dispatch(changeMenuModalOpen(false));}} style={loginId===hostId&&((state_live.menuModalOpen)||(state_live.scoreModalOpen))?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
+            <div onClick={async()=>{dispatch(changeScoreModalOpen(false));dispatch(changeMenuModalOpen(false));}} style={((state_live.menuModalOpen)||(state_live.scoreModalOpen))?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
         </div>
     );
 }

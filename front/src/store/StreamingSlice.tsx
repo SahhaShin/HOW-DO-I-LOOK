@@ -19,11 +19,8 @@ export const action_live = {
         const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/room/detail/${roomId}`,{
             headers:{"Authorization":token}
         });
-
-        console.log(response.data);
         return response.data;
     } catch(e){
-        console.log(e);
         throw e;
     }
   }),
@@ -35,31 +32,59 @@ export const action_live = {
         const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/roomuser/list?userId=${userId}&roomId=${roomId}`,{
             headers:{"Authorization":token}
         });
-
-        console.log(response.data);
         return response.data;
     } catch(e){
-        console.log(e);
         throw e;
     }
   }),
 
-  // 점수주기
+  // 점수주기 (슬래시를 붙여야 한다.)
   giveScore : createAsyncThunk("FeedSlice/giveScore", async({targetUserId, roomId, type, score}, thunkAPI)=>{
     try{
-      console.log(`${targetUserId}, ${roomId}, ${type}, ${score}`);
         const token = await CheckToken();
-        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/userlike`,{targetUserId, roomId, type, score},{
+        const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/userlike/`,{targetUserId, roomId, type, score},{
+            headers:{"Authorization":token}
+        });
+        return response.data;
+    } catch(e){
+        throw e;
+    }
+  }),
+
+
+  //참여자 강퇴/삭제라고 볼 수 있겠다.
+  kickUser : createAsyncThunk("FeedSlice/kickUser", async({userId, roomId}, thunkAPI)=>{
+    try{
+        const token = await CheckToken();
+        const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/roomuser/kick?userId=${userId}&roomId=${roomId}`,{
             headers:{"Authorization":token}
         });
 
         console.log(response.data);
-        return response.data;
+        return userId;
     } catch(e){
         console.log(e);
         throw e;
     }
   }),
+
+  // 라이브 종료
+  liveEnd : createAsyncThunk("FeedSlice/liveEnd", async({userId, roomId}, thunkAPI)=>{
+    try{
+        const token = await CheckToken();
+        const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/roomuser/kick?userId=${userId}&roomId=${roomId}`,{
+            headers:{"Authorization":token}
+        });
+
+        console.log(response.data);
+        return userId;
+    } catch(e){
+        console.log(e);
+        throw e;
+    }
+  }),
+
+
   
 }
 
@@ -128,6 +153,7 @@ const StreamingSlice = createSlice({
     },
     changeOtherClosetOpen(state, action){
       state.selectAdvisor=action.payload;
+      state.otherClosetOpen=true;
     },
     changeScoreModalOpen(state, action){
       state.scoreModalOpen=action.payload;
@@ -144,6 +170,7 @@ const StreamingSlice = createSlice({
     })
 
     builder.addCase(action_live.peopleList.fulfilled,(state,action)=>{
+      console.log(action.payload);
       state.roomPeopleList = action.payload; //방 참가자들
       
     })
@@ -153,6 +180,46 @@ const StreamingSlice = createSlice({
         icon: 'success',
         title: '마스터 점수 주기 성공!',
         text: '마스터 점수가 제공되었습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+      
+    })
+
+    builder.addCase(action_live.giveScore.rejected,(state,action)=>{
+      Swal.fire({
+        icon: 'info',
+        title: '마스터 점수를 이미 주셨어요!',
+        text: '마스터 점수는 1번만 주실 수 있습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+      
+    })
+
+    builder.addCase(action_live.kickUser.fulfilled,(state,action)=>{
+      // Swal.fire({
+      //   icon: 'info',
+      //   title: '',
+      //   text: '강퇴되었습니다.',
+      //   confirmButtonColor: '#4570F5',
+      // })
+      console.log(action.payload);
+      
+      for(let i=0;i<state.roomPeopleList.length;i++){
+        if(state.roomPeopleList?.userId === action.payload){
+          state.roomPeopleList.splice(i,1);
+          return;
+        }
+      }
+
+      console.log(state.roomPeopleList);
+      
+    })
+
+    builder.addCase(action_live.liveEnd.fulfilled,(state,action)=>{
+      Swal.fire({
+        icon: 'info',
+        title: '라이브 종료',
+        text: '라이브가 종료되었습니다 :)',
         confirmButtonColor: '#4570F5',
       })
       

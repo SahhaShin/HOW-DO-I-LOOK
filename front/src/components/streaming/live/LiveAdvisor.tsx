@@ -77,16 +77,39 @@ const LiveAdvisor = () => {
     const userId = String(loginUser.id);
     const roomId = params.roomId; 
 
+    // 처음에 유저 리스트를 가져와서 보여줌
     useEffect(()=>{
         dispatch(action_live.peopleList({userId:userId, roomId:roomId}));
-    },[])
+    },[state_live.roomPeopleList.length])
+
+    const [advisor, setAdvisor] = useState({
+        id: 0,
+        nickname:"",
+        profileImg:""
+    });
+
+    function sendAdvisor(userId,userNickname,userProfileImg){
+        setAdvisor({
+            id: userId,
+            nickname:userNickname,
+            profileImg:userProfileImg
+        })
+
+        dispatch(changeSelectAdvisor({
+            id: userId,
+            nickname:userNickname,
+            profileImg:userProfileImg
+        }));
+        dispatch(changeMenuModalOpen(true));
+        
+    }
     
     return(
         <div className={`${liveAdvisorStyle.total}`}>
             {
                 state_live.roomPeopleList?.map((user)=>{
                     return(
-                        <div onClick={()=>{dispatch(changeSelectAdvisor(user.userId));dispatch(changeMenuModalOpen(true))}} className={`${liveAdvisorStyle.onePeople}`}>
+                        <div onClick={()=>{sendAdvisor(user.userId, user.userNickname, user.userProfileImg)}} className={`${liveAdvisorStyle.onePeople}`}>
                             <div className={`${genderColor(user.userGender)}`}>
                                 <img src={user.userProfileImg}/>
                             </div>
