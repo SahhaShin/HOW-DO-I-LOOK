@@ -87,6 +87,9 @@ public class RoomService {
         if(status.equals("master")){
             this.endRoom(room.getId(),userDetails);
         }
+        else{
+            roomUserService.updateRoomUser(user.getId(),room.getId(),userDetails);
+        }
         return RoomChatUserOutResponseDto.builder()
                 .command(status)
                 .userId(user.getId())
@@ -282,8 +285,6 @@ public class RoomService {
 
         // 유저가 팔로잉 하고있는 팔로잉 유저 리스트
         List<Follow> followingList = user.getFollowerList();
-
-        System.out.println(followingList.size());
 
         RoomListResponseWithTotalPageDto getRoomList = roomRepository.findFollowingRoomList(followingList, type, search, pageRequest);
 

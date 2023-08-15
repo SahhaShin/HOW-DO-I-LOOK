@@ -82,7 +82,7 @@ public class RoomUserService {
     }
 
     @Transactional
-    public void updateRoomUser(Long userId, Long roomId, UserDetails userDetails) throws AccessException {
+    public void updateRoomUser(Long userId, Long roomId, UserDetails userDetails) {
 
         authorizationService.auth(userId, userDetails);
 
