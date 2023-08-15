@@ -39,9 +39,11 @@ public class RoomController {
     @GetMapping("/list/all")
     public ResponseEntity<RoomListResponseWithTotalPageDto> getAllRoomList(@RequestParam(value = "type", required = false) String type,
                                                                            @RequestParam(value = "page") int page,
-                                                                           @RequestParam(value = "search", required = false) String search) {
+                                                                           @RequestParam(value = "search", required = false) String search,
+                                                                           @RequestParam(value = "userId") Long userId,
+                                                                           @AuthenticationPrincipal UserDetails userDetails) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(roomService.getAllRoomList(type, page, search));
+        return ResponseEntity.status(HttpStatus.OK).body(roomService.getAllRoomList(type, page, search, userId, userDetails));
     }
 
     @GetMapping("/list/following")

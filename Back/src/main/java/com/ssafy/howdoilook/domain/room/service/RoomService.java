@@ -1,5 +1,6 @@
 package com.ssafy.howdoilook.domain.room.service;
 
+import com.ssafy.howdoilook.domain.blacklist.entity.BlackList;
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
 import com.ssafy.howdoilook.domain.feedPhoto.repository.FeedPhotoRepository;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
@@ -204,68 +205,26 @@ public class RoomService {
         return findRoom.update(roomUpdateRequestDto);
     }
 
-    public RoomListResponseWithTotalPageDto getAllRoomList(String type, int page, String search) {
+    public RoomListResponseWithTotalPageDto getAllRoomList(String type, int page, String search, Long userId, UserDetails userDetails) {
 
-        List<RoomListResponseDto> allRoomResponseDtoList = new ArrayList<>();
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         PageRequest pageRequest = PageRequest.of(page, 5, sort);
-        int totalPage = 0;
 
-        /**
-         * 모든 방 찾을 때
-         */
-        if(type == null && search == null) {
-            Page<Room> allRooms = roomRepository.findAll(pageRequest);
-            totalPage = allRooms.getTotalPages();
+        User user = userRepository.findById(userId).orElseThrow(
+                ()->new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다.", 1));
 
-            for(Room room : allRooms) {
-                allRoomResponseDtoList.add(new RoomListResponseDto(room));
-            }
+        String clientEmail = userDetails.getUsername();
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
         }
 
-        /**
-         * 타입만 설정되어 있을 때
-         */
-        else if(type != null && search == null) {
-            RoomType roomType = RoomType.valueOf(type);
-            Page<Room> getRoomList = roomRepository.findByType(roomType, pageRequest);
-            totalPage = getRoomList.getTotalPages();
+        // 유저의 블랙리스트 관리
+        List<Long> blackListIds = roomRepository.selectAllExceptBlackList(userId);
 
-            for(Room room : getRoomList) {
-                allRoomResponseDtoList.add(new RoomListResponseDto(room));
-            }
-        }
+        RoomListResponseWithTotalPageDto getRoomList = roomRepository.findAllRoomList(blackListIds, type, search, pageRequest);
 
-        /**
-         * 검색어만 입력이 있을 때
-         */
-        else if(type == null && search != null) {
-            Page<Room> getRoomList = roomRepository.findByTitleContaining(search, pageRequest);
-            totalPage = getRoomList.getTotalPages();
-
-            for(Room room : getRoomList) {
-                allRoomResponseDtoList.add(new RoomListResponseDto(room));
-            }
-        }
-
-        /**
-         * 타입도 설정되어 있고 검색어도 입력이 들어와 있을 때
-         */
-        else if(type != null && search != null) {
-            Page<Room> getRoomList = roomRepository.findByTypeAndTitleContaining(RoomType.valueOf(type), search, pageRequest);
-            totalPage = getRoomList.getTotalPages();
-
-            for(Room room : getRoomList) {
-                allRoomResponseDtoList.add(new RoomListResponseDto(room));
-            }
-        }
-
-        RoomListResponseWithTotalPageDto result = RoomListResponseWithTotalPageDto.builder()
-                .totalPage(totalPage)
-                .roomListResponseDtos(allRoomResponseDtoList)
-                .build();
-
-        return result;
+        return getRoomList;
 
     }
 
@@ -285,6 +244,20 @@ public class RoomService {
 
         // 유저가 팔로잉 하고있는 팔로잉 유저 리스트
         List<Follow> followingList = user.getFollowerList();
+
+        // 유저의 블랙리스트 관리
+        List<Long> blackListIds = roomRepository.selectAllExceptBlackList(userId);
+
+        // 블랙리스트에 속해서 제외할 팔로잉 유저들
+        List<Follow> toBeRemoved = new ArrayList<>();
+
+        for (Follow follow : followingList) {
+            if (blackListIds.contains(follow.getFollowee().getId())) {
+                toBeRemoved.add(follow);
+            }
+        }
+
+        followingList.removeAll(toBeRemoved);
 
         RoomListResponseWithTotalPageDto getRoomList = roomRepository.findFollowingRoomList(followingList, type, search, pageRequest);
 
