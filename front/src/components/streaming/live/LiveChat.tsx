@@ -189,6 +189,8 @@ const LiveChat = () => {
         client.current.subscribe('/sub/roomChat/'+roomCode,(chatMessage)=>{
             const message = JSON.parse(chatMessage.body);
 
+            console.log(message);
+
             let addData={
                 nickname:message.nickName,
                 chatContent : message.chatContent,
@@ -282,6 +284,7 @@ const LiveChat = () => {
             headers
         });
         console.log("현재 4 publish가 지났따.");
+        console.log(`token ${token}`);
 
         setChat('');
     }
