@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //css
 import feedSlotStyle from './FeedSlot.module.css';
@@ -12,6 +12,7 @@ import 'slick-carousel/slick/slick-theme.css';
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action_feed, changeModifyModalOpen, changeDetailFeedId, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action_follow} from "../../../store/FollowSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -57,11 +58,67 @@ const FeedSlot = () => {
         });
     }
 
+    // 팔로잉 데이터
+    const [followingData, setFollowingData] = useState({
+        id: 0,
+        targetId: 0,
+        nickname: "",
+        profileImg: ""
+      });
+
+    const changeFollowingData = (feed) => {
+        console.log(feed)
+    setFollowingData({
+        id: loginUser.id,
+        targetId: feed.userId,
+        nickname: feed.userNickname,
+        profileImg: feed.userProfileImg
+    });
+    };
+
+    // 언팔로잉 데이터
+    const [deleteFollowingData, setDeleteFollowingData] = useState({
+        id: 0,
+        targetId: 0,
+        nickname: "",
+        profileImg: ""
+      });
+    
+      const changeDeleteFollowingData = (feed) => {
+        console.log(feed)
+        setDeleteFollowingData({
+            id: loginUser.id,
+            targetId: feed.userId,
+            nickname: feed.userNickname,
+            profileImg: feed.userProfileImg
+        });
+      };
+
+    // 팔로우
+    useEffect(
+        () => {
+        if (followingData.id === 0 || followingData.targetId === 0) return;
+
+        dispatch(action_follow.follow(followingData));
+        },
+        [followingData]
+    );
+
+    // 팔로우 끊기
+    useEffect(
+        () => {
+        if (deleteFollowingData.id === 0 || deleteFollowingData.targetId === 0)
+            return;
+
+        dispatch(action_follow.unfollow(deleteFollowingData));
+        },
+        [deleteFollowingData]
+    );
 
     return(   
         <>
-            {  state.feedTotalObj?.content.length!==0?
-                state.feedTotalObj?.content.map((oneFeed, idx)=>{
+            {  state.feedTotalObj?.length!==0?
+                state.feedTotalObj?.map((oneFeed, idx)=>{
                     
                     return(
                         <div key={idx} className={`${feedSlotStyle.card}`}>
@@ -81,10 +138,24 @@ const FeedSlot = () => {
                                         <p>{oneFeed.userNickname}</p>
                                     </div>
                                 </div>
-
                                 {/* 우측 : 팔로우 언팔로우 & 신고버튼 */}
                                 <div className={`${feedSlotStyle.btns}`}>
-                                    {state.isFollow?<div><button onClick={async()=>{dispatch(changeFollow(false))}}>Unfollow</button></div>:<div><button onClick={async()=>{dispatch(changeFollow(true))}}>Follow</button></div>}  
+                                    {state.isFollow?
+                                    <div>
+                                        <button onClick={async()=>{
+                                            changeDeleteFollowingData(oneFeed)
+                                            // dispatch(action_follow.followCheck(false))
+                                            dispatch(action_follow.getMyFollowingList(loginUser.id));
+                                        }}>Unfollow</button>
+                                    </div>
+                                    :
+                                    <div>
+                                        <button onClick={async()=>{
+                                            changeFollowingData(oneFeed)
+                                            // dispatch(changeFollow(true))
+                                            dispatch(action_follow.getMyFollowingList(loginUser.id));
+                                        }}>Follow</button>
+                                    </div>}  
                                     <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${feedSlotStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div>
                                 </div>
                             </div>

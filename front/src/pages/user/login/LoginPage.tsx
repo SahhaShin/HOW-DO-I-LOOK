@@ -27,17 +27,17 @@ const LoginPage = () => {
 
 
     return(
-        <div>
+        <div className={`${mypageStyle.wrapper}`}>
 
             <div className={`${mypageStyle.total}`}>
                 
                 {/* 헤더 */}
-                <div className={`${mypageStyle.header}`}><Header/></div>
+                {/* <div className={`${mypageStyle.header}`}><Header/></div> */}
 
                 {/* 메인 */}
                 <div className={`${mypageStyle.main}`}>
                     {/* 좌측 메뉴 */}
-                    <div className={`${mypageStyle.menuArea}`}><div><Menu/></div></div>
+                    {/* <div className={`${mypageStyle.menuArea}`}><div><Menu/></div></div> */}
 
                     {/* 우측 마이페이지 컴포넌트 */}
                     <div className={`${mypageStyle.mid}`}>
@@ -51,7 +51,7 @@ const LoginPage = () => {
                 </div>
 
                 {/* 푸터 */}
-                <div className={`${mypageStyle.footer}`}><Footer/></div>
+                {/* <div className={`${mypageStyle.footer}`}><Footer/></div> */}
 
             </div>
 

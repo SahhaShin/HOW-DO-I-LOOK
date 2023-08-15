@@ -123,7 +123,7 @@ const FeedDetail = (props) => {
 
         // 전체 피드 가져옴 (갯수가 있어서)
         let data = {size:0, page:0};
-        dispatch(action_feed.getFeedTotalList(data));
+        dispatch(action_feed.getFeedTotalList(loginUser.id));
         
     },[state.likeOk, state.totalDetailObjLikes])
 

@@ -121,11 +121,11 @@ export const action = {
     "LiveSlice/getLiveList",
     async (data: getChatRoomList, thunkAPI) => {
       var url = `${process.env.REACT_APP_SERVER}/api/room/list/`;
-      if (data.userId != "") {
+      if (data.following) {
         //친구관련인지 확인
         url = url + `following?page=${data.pageNum}&userId=${data.userId}`;
       } else {
-        url = url + `all?page=${data.pageNum}`;
+        url = url + `all?page=${data.pageNum}&userId=${data.userId}`;
       } //type이 있다면 삽입
       if (data.type != "") {
         url = url + `&type=${data.type}`;
@@ -197,6 +197,7 @@ interface LiveRoom {
 }
 //방송 조회용 조건
 interface getChatRoomList {
+  following : boolean;
   userId: string;
   type: string;
   search: string;
@@ -237,8 +238,13 @@ const LiveSlice = createSlice({
     setSearch(state, action) {
       state.search = action.payload;
     },
+    setAllPage(state, action) {
+      state.pageAll = action.payload;
+    },
     changePage(state, action) {
       state.page = action.payload;
+      console.log("action.paload : " + action.payload)
+      console.log("changde : " + state.page)
     },
     changeModalOpen(state, action) {
       state.ModalOpen = action.payload;
@@ -278,5 +284,6 @@ export let {
   setUserId,
   setListType,
   setSearch,
+  setAllPage,
 } = LiveSlice.actions;
 export default LiveSlice.reducer;

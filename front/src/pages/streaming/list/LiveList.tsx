@@ -55,7 +55,7 @@ const LiveList = () => {
 
   // 페이지네이션
   const [len, setLen] = useState(0);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const offset = (page - 1) * limit;
 
@@ -64,21 +64,23 @@ const LiveList = () => {
 
   useEffect(() => {
     //리스트 가져오기
+    console.log("list useEffect")
+    setPage(state.page)
     dispatch(
       action.getLiveList({
-        userId: state.userId,
+        following: (state.userId == "") ?false : true,
+        userId: loginUser.id,
         type: state.type,
         search: state.search,
-        pageNum: page,
+        pageNum: state.page,
       })
     );
-    setLen(state.page);
-    
 
+
+    console.log("render")
     //회원 follow목록 가져오기
-  }, []);
+  }, [state.page]);
 
-  function listUpdate() {}
 
   function upload() {
     console.log("upload");
@@ -99,8 +101,8 @@ const LiveList = () => {
 
   function sortChange(flow: boolean, type, keyword) {
     var id = "";
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
     if (flow) {
-      const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
       id = loginUser.id;
     }
@@ -108,7 +110,8 @@ const LiveList = () => {
     dispatch(setUserId(id));
     dispatch(
       action.getLiveList({
-        userId: id,
+        following:flow,
+        userId: loginUser.id,
         type: state.type,
         search: state.search,
         pageNum: page,
@@ -168,7 +171,7 @@ const LiveList = () => {
         </div>
         <div>
           {/* 문구 & 해시태그 */}
-          <IntroArea />
+          <IntroArea  />
         </div>
 
         <div className={`${liveStyle.main}`}>
@@ -236,13 +239,13 @@ const LiveList = () => {
             </div>
 
             <div className={`${liveStyle.paginationContainer}`}>
-              <Pagination
-                total={len}
-                limit={limit}
-                page={page}
-                setPage={setPage}
-              />
-            </div>
+                            <Pagination
+                                total={state.pageAll}
+                                limit={limit}
+                                page={page}
+                                setPage={setPage}
+                            />
+                        </div>
           </div>
 
           <LiveFollow />
