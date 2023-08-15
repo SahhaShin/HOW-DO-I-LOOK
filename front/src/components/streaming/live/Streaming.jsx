@@ -379,7 +379,6 @@ class Streaming extends Component {
                 />
                 마이크 {audioOn ? "끄기" : "켜기"}
               </button>
-
               </div>
             </div>
           </div>

@@ -62,7 +62,7 @@ const LiveList = () => {
         pageNum: page,
       })
     );
-    setLen(state.liveList?.length);
+    setLen(state.page);
     
 
     //회원 follow목록 가져오기
@@ -101,7 +101,7 @@ const LiveList = () => {
         userId: id,
         type: state.type,
         search: state.search,
-        pageNum: state.page,
+        pageNum: page,
       })
     );
 
@@ -194,7 +194,7 @@ const LiveList = () => {
 
             <div className={`${liveStyle.paginationContainer}`}>
               <Pagination
-                total={state.liveList?.length}
+                total={len}
                 limit={limit}
                 page={page}
                 setPage={setPage}
