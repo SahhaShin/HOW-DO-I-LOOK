@@ -56,6 +56,28 @@ public class FeedService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
 
+    public List<FeedResponseDto> selectFollowFeedExceptBlackList(Long userId) {
+        User findUser = userRepository.findById(userId).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 User 입니다.", 1));
+
+        List<Follow> followeeList = findUser.getFollowerList();
+
+        List<Feed> feeds = feedRepository.selectFollowingFeedExceptBlackList(followeeList, findUser);
+
+        List<FeedResponseDto> feedResponseDtoList = builder(feeds);
+
+        for (FeedResponseDto feedResponseDto : feedResponseDtoList) {
+            Follow follow = followRepository.findFollowIdByFollowerAndFollowee(userId, feedResponseDto.getUserId());
+
+            if(follow == null)
+                feedResponseDto.setFollowingCheck(false);
+            else
+                feedResponseDto.setFollowingCheck(true);
+        }
+
+        return feedResponseDtoList;
+    }
+
     public List<FeedResponseDto> selectAllExceptBlackList(Long userId){
         User findUser = userRepository.findById(userId).orElseThrow(
                 () -> new EmptyResultDataAccessException("존재하지 않는 User 입니다.", 1));

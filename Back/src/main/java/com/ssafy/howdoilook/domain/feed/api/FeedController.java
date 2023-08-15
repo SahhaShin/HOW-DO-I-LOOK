@@ -46,6 +46,15 @@ public class FeedController {
         Page<FeedResponseDto> feedResponseDtos = feedService.selectByUserFollowee(userId, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
     }
+
+    // Following 버튼 누르면서 블랙리스트는 거르면서 페이징은 아닌 피드 리스트
+    @GetMapping("/follow/blacklist/{userId}")
+    public ResponseEntity<?> selectFollowFeedExceptBlackList(@PathVariable Long userId) {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(feedService.selectFollowFeedExceptBlackList(userId));
+    }
+
     //특정 user의 피드를 불러오는 기능
     @GetMapping("/{userId}")
     public ResponseEntity<Page<FeedResponseDto>> selectUserFeed(@PathVariable(name = "userId")Long userId, Pageable pageable){

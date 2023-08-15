@@ -49,6 +49,8 @@ public class BlackListService {
                     .targetUserId(targetUser.getId())
                     .nickname(targetUser.getNickname())
                     .profileImg(targetUser.getProfileImg())
+                    .gender(targetUser.getGender())
+                    .showBadgeType(targetUser.getShowBadgeType())
                     .build();
             blackListSelectResponseDtoList.add(blacklistdto);
         }
@@ -124,12 +126,13 @@ public class BlackListService {
                     .nickname(black.getTargetUser().getNickname())
                     .profileImg(black.getTargetUser().getProfileImg())
                     .targetUserId(black.getTargetUser().getId())
+                    .gender(black.getTargetUser().getGender())
+                    .showBadgeType(black.getTargetUser().getShowBadgeType())
                     .build();
 
             blackListSelectResponseDtoList.add(blackListSelectResponseDto);
         }
 
         return blackListSelectResponseDtoList;
-
     }
 }

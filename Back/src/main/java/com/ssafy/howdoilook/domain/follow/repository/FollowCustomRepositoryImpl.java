@@ -83,7 +83,8 @@ public class FollowCustomRepositoryImpl implements FollowCustomRepository{
         return jpaQueryFactory
                 .select(Projections.constructor(PerfectFollowResponseDto.class,
                         follower.id, followee.id, follower.nickname, followee.nickname,
-                        follower.profileImg, followee.profileImg))
+                        follower.profileImg, followee.profileImg, follower.gender, followee.gender,
+                        follower.showBadgeType, followee.showBadgeType))
                 .from(follow)
                 .innerJoin(follower).on(follow.follower.id.eq(follower.id))
                 .innerJoin(followee).on(follow.followee.id.eq(followee.id))

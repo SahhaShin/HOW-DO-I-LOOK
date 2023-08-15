@@ -103,6 +103,7 @@ public class FollowService {
                     .id(followee.getId())
                     .nickname(followee.getNickname())
                     .profileImg(followee.getProfileImg())
+                    .showBadgeType(followee.getShowBadgeType())
                     .build()
             );
         }
@@ -128,6 +129,8 @@ public class FollowService {
                     .id(follower.getId())
                     .nickname(follower.getNickname())
                     .profileImg(follower.getProfileImg())
+                    .gender(follower.getGender())
+                    .showBadgeType(follower.getShowBadgeType())
                     .build();
             list.add(followerResponseDto);
         }
@@ -148,6 +151,8 @@ public class FollowService {
                     .id(follow.getFollowee().getId())
                     .nickname(follow.getFollowee().getNickname())
                     .profileImg(follow.getFollowee().getProfileImg())
+                    .gender(follow.getFollowee().getGender())
+                    .showBadgeType(follow.getFollowee().getShowBadgeType())
                     .build();
 
             followeeResponseDtoList.add(followeeResponseDto);
@@ -169,6 +174,8 @@ public class FollowService {
                     .id(follow.getFollower().getId())
                     .nickname(follow.getFollower().getNickname())
                     .profileImg(follow.getFollower().getProfileImg())
+                    .gender(follow.getFollower().getGender())
+                    .showBadgeType(follow.getFollower().getShowBadgeType())
                     .build();
 
             followerResponseDtoList.add(followerResponseDto);
