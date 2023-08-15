@@ -156,7 +156,7 @@ public class RoomService {
     }
 
     @Transactional
-    public Long addRoom(RoomAddRequestDto roomAddRequestDto, UserDetails userDetails) throws AccessException {
+    public Long addRoom(RoomAddRequestDto roomAddRequestDto, UserDetails userDetails) throws AccessException, org.springframework.expression.AccessException {
         String clientEmail = userDetails.getUsername();
 
         User user = userRepository.findById(roomAddRequestDto.getHostId())
