@@ -3,7 +3,7 @@ import {useParams, useNavigate} from 'react-router-dom';
 
 //redux
 import { useSelector, useDispatch} from "react-redux"; 
-import {action_live, changeMenuModalOpen, changeScoreModalOpen} from "../../../store/StreamingSlice";
+import {action_live, changeExitAlam, changeExitRoomNo,changeExitLiveByUser, setKickUser, changeMenuModalOpen, changeScoreModalOpen} from "../../../store/StreamingSlice";
 
 //css
 import liveStyle from "./Live.module.css";
@@ -15,6 +15,11 @@ import LiveAdvisor from '../../../components/streaming/live/LiveAdvisor';
 import Streaming from "../../../components/streaming/live/Streaming.jsx"
 import LiveMenuModal from '../../../components/streaming/live/LiveMenuModal';
 import LiveScoreModal from '../../../components/streaming/live/LiveScoreModal';
+
+
+// alert창
+import Swal from "sweetalert2";
+
 
 const Live = () => {
     //redux 관리
@@ -28,11 +33,48 @@ const Live = () => {
     const loginId = String(loginUser.id);
     const hostId = params.hostId;
 
-    // 소켓으로 킥을 당했다면 리스트로 이동
+    const navigate = useNavigate();
+
+
     useEffect(()=>{
-        
+        if(state_live.areYouKick){
+            dispatch(setKickUser(null));
+            navigate("/liveList");
+            Swal.fire({
+                icon: 'info',
+                title: '강퇴',
+                text: '라이브에서 강퇴당하셨습니다.',
+                confirmButtonColor: '#4570F5',
+            })
+
+        }
+
     },[state_live.areYouKick])
 
+
+    //호스트가 라이브 종료 시 리스트로 이동
+    // 리스트에서 라이브 리스트 다시 부르고, 알럴트 띄워주기
+    useEffect(()=>{
+        if(state_live.liveEndAlert){
+            // 리스트 페이지로 이동
+            navigate("/liveList");
+        }
+    },[state_live.liveEndAlert])
+
+
+    // 방장이 아닌 사람이 라이브를 나감
+    useEffect(()=>{
+        if(state_live.exitAlam){
+            console.log("여기 들어 오나?");
+            //초기화
+            dispatch(changeExitLiveByUser(false));
+            dispatch(changeExitRoomNo(null));
+            dispatch(changeExitAlam(false));
+
+            // 리스트 페이지로 이동
+            navigate("/liveList");
+        }
+    },[state_live.exitAlam])
     return(
         <div className={`${liveStyle.Wrapper}`}>
             {

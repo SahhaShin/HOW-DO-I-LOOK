@@ -6,6 +6,10 @@ import axios from "axios";
 //css
 import liveStyle from "./LiveList.module.css";
 
+
+// alert창
+import Swal from "sweetalert2";
+
 //redux
 
 import { useDispatch } from "react-redux";
@@ -30,6 +34,10 @@ import {
   setSearch,
 } from "../../../store/LiveSlice"; // todo
 
+
+import {changeLiveEndAlert,changeLiveEndRoomNo,changeLiveEndByHost
+} from "../../../store/StreamingSlice";
+
 //컴포넌트
 import Pagination from "../../../components/util/Pagination";
 
@@ -42,6 +50,8 @@ const LiveList = () => {
   //redux 관리
   let state = useSelector((state: any) => state.live);
   let dispatch = useDispatch();
+
+  let state_streaming = useSelector((state: any) => state.streaming);
 
   // 페이지네이션
   const [len, setLen] = useState(0);
@@ -111,6 +121,39 @@ const LiveList = () => {
     console.log("id : " + state.userId);
     // listUpdate();
   }
+
+  //호스트가 라이브 종료 시 리스트로 이동
+  //호스트가 라이브 종료 시 라이브 리스트 다시 부르고, 알럴트 띄워주기
+  console.log(`현재 리스트 ${state_streaming.liveEndAlert}`);
+  useEffect(()=>{
+
+    if(state_streaming.liveEndAlert){
+
+      dispatch(
+        action.getLiveList({
+          userId: loginUser.id,
+          type: state.type,
+          search: state.search,
+          pageNum: page,
+        })
+      );
+
+
+      // 초기화
+      dispatch(changeLiveEndByHost(false));
+      dispatch(changeLiveEndRoomNo(false));
+      dispatch(changeLiveEndAlert(false));
+
+
+      Swal.fire({
+        icon: 'info',
+        title: '라이브 종료',
+        text: '방장이 라이브를 종료하였습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+    }
+
+  },[state_streaming.liveEndAlert])
 
   return (
     <>
