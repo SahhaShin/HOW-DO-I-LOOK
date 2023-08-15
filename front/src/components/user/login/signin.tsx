@@ -97,10 +97,7 @@ const Login: React.FC = () => {
     // const ctf = dispatch(action.CheckEmail({email}));
     // console.log("ctf : "+ ctf)
 
-    if(!agree){
-      alert("이용약관 동의를 해 주십시오")
-    }
-    else if((emailNotice||pwNotice||nicknameNotice) ){
+    if((emailNotice||pwNotice||nicknameNotice) ){
       alert("입력한 정보를 다시 확인해 주시기 바랍니다.")
       return //유효성 검사
     }
