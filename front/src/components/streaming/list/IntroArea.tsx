@@ -7,10 +7,11 @@ import {
   action,
   setListType,
   setSearch,
+  setAllPage,
   changePage,
 } from "../../../store/LiveSlice";
 
-const IntroArea = () => {
+const IntroArea = ( setPage) => {
   //redux 관리
   let state = useSelector((state: any) => state.live);
   let dispatch = useDispatch();
@@ -20,40 +21,65 @@ const IntroArea = () => {
   const [type, setType] = useState("");
 
   function getList() {
-    console.log(searchInput)
-    dispatch(changePage(0));
+    console.log("input : " + searchInput)
+    console.log("type : " + type)
 
     dispatch(
       action.getLiveList({
         userId: state.userId,
-        type: state.type,
-        search: state.search,
+        type: type,
+        search: searchInput,
         pageNum: state.page,
       })
     );
+    dispatch(changePage(0));
+    console.log(state.page)
   }
 
-  function clickH(hash){
+  function clickH(hash:String){
     console.log(searchInput)
-
     if(type == hash){
-      setType(""
-      )
+      setType("")
     }
     else { 
       setType(hash)
     }
-    dispatch(setListType(type));
+    dispatch(
+      action.getLiveList({
+        userId: state.userId,
+        type: (type == hash)? "" : hash,
+        search: searchInput,
+        pageNum: 0,
+      })
+    );
+    dispatch(changePage(0));
+    dispatch(setListType((type == hash)? "" : hash));
+    dispatch(setSearch(searchInput));
+    console.log("area state : " + state.page)
+    console.log("type state : " + state.type)
+    console.log("searchInput state : " + state.searchInput)
   }
 
   function typeIn(e){
-
-    setSearchInput(e.target.value);
-    dispatch(setSearch(e.target.value));
-    
-
-
-
+    let inputNull = false;
+    if(e.target.value == ""){
+      inputNull = true;
+    }
+    setSearchInput(inputNull? "" : e.target.value);
+    dispatch(
+      action.getLiveList({
+        userId: state.userId,
+        type: type,
+        search: inputNull? "" : e.target.value,
+        pageNum: 0,
+      })
+    );
+    dispatch(changePage(0));
+    dispatch(setListType(type));
+    dispatch(setSearch(searchInput));
+    console.log("area state : " + state.page)
+    console.log("type state : " + state.type)
+    console.log("searchInput state : " + state.searchInput)
   }
 
   return (
@@ -88,7 +114,7 @@ const IntroArea = () => {
       <div className={`${introStyle.tag}`}>
         <button
           onClick={(e) => {
-            clickH(`DATE`);
+            clickH("DATE");
           }}
         >
           {type == "DATE" ? (
@@ -99,7 +125,7 @@ const IntroArea = () => {
         </button>
         <button
           onClick={(e) => {
-            clickH(`DAILY`);
+            clickH("DAILY");
           }}
         >
           {type == "DAILY" ? (

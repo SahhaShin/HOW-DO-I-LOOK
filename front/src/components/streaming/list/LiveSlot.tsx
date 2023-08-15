@@ -44,7 +44,7 @@ const LiveSlot = (props) => {
         <div className={`${liveSlotStyle.profile}`}>
           <div className={`${liveSlotStyle.profileCircle_G}`}>
             <img
-              src={process.env.PUBLIC_URL + `/img/user/profileImg.png`}
+              src={props.oneRoom.hostProfileImg}
             ></img>
             <p>
               {props.oneRoom.hostNickname}
