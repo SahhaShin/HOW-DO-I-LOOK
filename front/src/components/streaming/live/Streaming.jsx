@@ -59,6 +59,24 @@ class Streaming extends Component {
     //leavesession 버튼을 누르는것이랑 다르다.
     window.removeEventListener("beforeunload", this.onbeforeunload);
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      areYouKick,
+      liveEndAlert,
+      exitAlam
+    } = this.props;
+
+    // 이전 값과 현재 값이 다르고, 원하는 조건이 충족되었을 때 leaveSession 호출
+    if (
+      (prevState.areYouKick !== areYouKick && areYouKick) ||
+      (prevState.liveEndAlert !== liveEndAlert && liveEndAlert) ||
+      (prevState.exitAlam !== exitAlam && exitAlam)
+    ) {
+      this.leaveSession();
+    }
+  }
+  
   //위에서 실행된다.
   onbeforeunload(event) {
     this.leaveSession();

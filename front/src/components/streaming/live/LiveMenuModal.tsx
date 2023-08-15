@@ -6,8 +6,8 @@ import liveMenuModalStyle from "./LiveMenuModal.module.css";
 
 //redux
 import { useSelector, useDispatch} from "react-redux"; 
-import {action, changePick} from "../../../store/ClosetSlice";
-import {action_live, changeScoreModalOpen, changeMenuModalOpen, changeOtherClosetOpen} from "../../../store/StreamingSlice";
+import {action} from "../../../store/ClosetSlice";
+import {action_live, setKickUser, changeScoreModalOpen, changeMenuModalOpen, changeOtherClosetOpen} from "../../../store/StreamingSlice";
 import {action_mypage} from "../../../store/MypageSlice";
 
 // alert창
@@ -70,9 +70,11 @@ const LiveMenuModal = ()=>{
         }))
     }
 
-    // 유저 강퇴 > 나는 나가면 안되기 때문에 네비게이션 쓰면 안됨
+    // 1. 강퇴 유저 셋팅 > 나는 나가면 안되기 때문에 네비게이션 쓰면 안됨
     function kickInModal(){
-        dispatch(action_live.kickUser({userId:loginUser.id,roomId:roomId}));
+        // dispatch(action_live.kickUser({userId:loginUser.id,roomId:roomId}));
+        dispatch(setKickUser({userId:state_live.selectAdvisor.id, roomId:roomId}));
+        console.log(`userId: ${state_live.selectAdvisor.id}, roomId: ${roomId}`);
     }
 
 

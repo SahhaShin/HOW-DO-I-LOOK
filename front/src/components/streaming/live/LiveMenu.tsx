@@ -8,7 +8,7 @@ import liveMenuStyle from "./LiveMenu.module.css";
 import { useSelector, useDispatch} from "react-redux"; 
 import {action, changePick} from "../../../store/ClosetSlice";
 import {action_feed, changePick_feed} from "../../../store/FeedSlice";
-import {action_live, changeOtherClosetOpen, sendPickListChat, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
+import {action_live,changeExitRoomNo,changeExitLiveByUser,changeLiveEndRoomNo, changeLiveEndByHost,changeOtherClosetOpen, sendPickListChat, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -188,13 +188,56 @@ const LiveMenu = () => {
     console.log(state_live.otherClosetOpen);
 
     // 유저 스스로 퇴장
-    function kick(){
-        navigate('/liveList');
+    function exitLive(){
+
+        Swal.fire({
+            icon: "question",
+            title: "라이브 퇴장",
+            text: `라이브에서 퇴장하시겠습니까?`,
+            showCancelButton: true,
+            confirmButtonText: "나가기",
+            cancelButtonText: "취소",
+            confirmButtonColor:'#4570F5',
+            customClass: {
+                confirmButton: liveMenuStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+                cancelButton: liveMenuStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+              }
+        }).then((res) => {
+            if (res.isConfirmed) {
+                dispatch(changeExitLiveByUser(true))
+                dispatch(changeExitRoomNo(roomId));
+            }
+            else{
+                
+            }
+        });
     }
 
     // 라이브 종료
+    //redux에서 liveEndByHost true -> LiveChat에서 인지
     function endLive(){
-        dispatch(action_live.liveEnd({userId:hostId, roomId}));
+
+        Swal.fire({
+            icon: "question",
+            title: "라이브 종료",
+            text: `라이브를 종료하시겠습니까?`,
+            showCancelButton: true,
+            confirmButtonText: "종료",
+            cancelButtonText: "취소",
+            confirmButtonColor:'#4570F5',
+            customClass: {
+                confirmButton: liveMenuStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+                cancelButton: liveMenuStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+              }
+        }).then((res) => {
+            if (res.isConfirmed) {
+                dispatch(changeLiveEndByHost(true));
+                dispatch(changeLiveEndRoomNo(roomId));
+            }
+            else{
+                
+            }
+        });
     }
   
     return (
@@ -208,7 +251,7 @@ const LiveMenu = () => {
             {/* 내가 호스트인데 나가면 방송종료, 다른 사람이 나가면 퇴장 */}
             {
                 String(loginUser.id)!==hostId?
-                <button onClick={() => {kick(); handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_exit.png'}/></button>
+                <button onClick={() => {exitLive(); handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_exit.png'}/></button>
                 :
                 <button onClick={() => {endLive(); handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_closeLive.png'}/></button>
             }
