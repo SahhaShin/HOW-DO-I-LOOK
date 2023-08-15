@@ -1,4 +1,4 @@
-package com.ssafy.howdoilook.domain.room.dto.response;
+package com.ssafy.howdoilook.domain.room.dto.response.WebSocket;
 
 import lombok.AccessLevel;
 import lombok.Builder;

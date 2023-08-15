@@ -4,14 +4,13 @@ import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
 import com.ssafy.howdoilook.domain.feedPhoto.repository.FeedPhotoRepository;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.room.dto.ImageChatDto;
-import com.ssafy.howdoilook.domain.room.dto.request.RoomAddRequestDto;
-import com.ssafy.howdoilook.domain.room.dto.request.RoomChatImageRequestDto;
-import com.ssafy.howdoilook.domain.room.dto.request.RoomChatRequestDto;
-import com.ssafy.howdoilook.domain.room.dto.request.RoomUpdateRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.request.*;
+import com.ssafy.howdoilook.domain.room.dto.request.WebSocket.RoomChatImageRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.request.WebSocket.RoomChatUserKickRequestDto;
+import com.ssafy.howdoilook.domain.room.dto.request.WebSocket.RoomChatUserOutRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.response.*;
+import com.ssafy.howdoilook.domain.room.dto.response.WebSocket.*;
 import com.ssafy.howdoilook.domain.room.entity.*;
-import com.ssafy.howdoilook.domain.room.repository.ChatRepository.RoomChatImageRepository;
-import com.ssafy.howdoilook.domain.room.repository.ChatRepository.RoomChatRepository;
 import com.ssafy.howdoilook.domain.room.repository.RoomRepository.RoomRepository;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUser;
 import com.ssafy.howdoilook.domain.roomUser.entity.RoomUserType;
@@ -22,6 +21,7 @@ import com.ssafy.howdoilook.domain.roomUser.service.RoomUserService;
 import com.ssafy.howdoilook.domain.user.entity.Gender;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
+import com.ssafy.howdoilook.global.handler.AccessException;
 import com.ssafy.howdoilook.global.handler.ImageException;
 import com.ssafy.howdoilook.global.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.expression.AccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +51,62 @@ public class RoomService {
 
     private final JwtService jwtService;
     private final RoomUserService roomUserService;
+
+
+    @Transactional
+    public RoomChatUserKickResponseDto userKickRoom(RoomChatUserKickRequestDto requestDto, UserDetails userDetails){
+        User master = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        Room room = roomRepository.findById(requestDto.getRoomId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 방이 존재하지 않습니다", 1));
+
+        if(master.getId() != room.getHost().getId()){
+            throw new AccessException("방장이 아닌데 강퇴명령을 내렸습니다");
+        }
+
+        User kick = userRepository.findById(requestDto.getUserId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        roomUserService.kickRoomUser(kick.getId(),room.getId());
+
+        return RoomChatUserKickResponseDto.builder()
+                .userId(kick.getId())
+                .nickName(kick.getNickname())
+                .build();
+    }
+    @Transactional
+    public RoomChatUserOutResponseDto userOutRoom(RoomChatUserOutRequestDto requestDto, UserDetails userDetails){
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        Room room = roomRepository.findById(requestDto.getRoomId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 방이 존재하지 않습니다", 1));
+
+        String status = (room.getHost().getId() == user.getId()) ? "master" : "viewer";
+        if(status.equals("master")){
+            this.endRoom(room.getId(),userDetails);
+        }
+        return RoomChatUserOutResponseDto.builder()
+                .command(status)
+                .userId(user.getId())
+                .nickName(user.getNickname())
+                .badge(user.getShowBadgeType().toString())
+                .build();
+    }
+
+    @Transactional
+    public RoomChatUserInitResponseDto userInitRoom(UserDetails userDetails){
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        return RoomChatUserInitResponseDto.builder()
+                .userId(user.getId())
+                .nickName(user.getNickname())
+                .profileImage(user.getProfileImg())
+                .badge(user.getShowBadgeType().toString())
+                .build();
+    }
 
     @Transactional
     public RoomChatImageResponseDto imageIntegrity(RoomChatImageRequestDto requestDto, UserDetails userDetails){
