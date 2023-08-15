@@ -273,7 +273,7 @@ const LiveCreate = () => {
         >
           취소
         </button>
-        <button onClick={() => createRoom()}>업로드</button>
+        <button onClick={() => createRoom()}>방 만들기</button>
       </div>
     </div>
   );

@@ -237,8 +237,13 @@ const LiveSlice = createSlice({
     setSearch(state, action) {
       state.search = action.payload;
     },
+    setAllPage(state, action) {
+      state.pageAll = action.payload;
+    },
     changePage(state, action) {
       state.page = action.payload;
+      console.log("action.paload : " + action.payload)
+      console.log("changde : " + state.page)
     },
     changeModalOpen(state, action) {
       state.ModalOpen = action.payload;
@@ -278,5 +283,6 @@ export let {
   setUserId,
   setListType,
   setSearch,
+  setAllPage,
 } = LiveSlice.actions;
 export default LiveSlice.reducer;
