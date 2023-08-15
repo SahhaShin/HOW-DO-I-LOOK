@@ -137,3 +137,26 @@
     color: white;
 }
 
+.profileImgF{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: white;
+    border: 3px solid pink;
+}
+
+.profileImgM{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: white;
+    border: 3px solid lightskyblue;
+}
+
+.profileImgF>img, .profileImgM>img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+

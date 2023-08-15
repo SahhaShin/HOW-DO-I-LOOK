@@ -63,7 +63,8 @@ const FeedSlot = () => {
         id: 0,
         targetId: 0,
         nickname: "",
-        profileImg: ""
+        profileImg: "",
+        gender: ""
       });
 
     const changeFollowingData = (feed) => {
@@ -72,7 +73,8 @@ const FeedSlot = () => {
         id: loginUser.id,
         targetId: feed.userId,
         nickname: feed.userNickname,
-        profileImg: feed.userProfileImg
+        profileImg: feed.userProfileImg,
+        gender: feed.userGender
     });
     };
 
@@ -81,7 +83,8 @@ const FeedSlot = () => {
         id: 0,
         targetId: 0,
         nickname: "",
-        profileImg: ""
+        profileImg: "",
+        gender: ""
       });
     
       const changeDeleteFollowingData = (feed) => {
@@ -90,7 +93,8 @@ const FeedSlot = () => {
             id: loginUser.id,
             targetId: feed.userId,
             nickname: feed.userNickname,
-            profileImg: feed.userProfileImg
+            profileImg: feed.userProfileImg,
+            gender: feed.userGender
         });
       };
 
@@ -116,17 +120,11 @@ const FeedSlot = () => {
     );
 
     const changeFollowingCheckFalse = ((idx) => {
-        console.log(idx)
-        console.log(state.feedFollowingCheck)
         dispatch(changeFollowingCheckToFalse(idx));
-        console.log(state.feedFollowingCheck);
     })
 
     const changeFollowingCheckTrue = ((idx) => {
-        console.log(idx)
-        console.log(state.feedFollowingCheck);
         dispatch(changeFollowingCheckToTrue(idx));
-        console.log(state.feedFollowingCheck);
     })
 
     return(   

@@ -22,6 +22,8 @@ interface rank {
   profileImg: string | null;
   rank: number;
   likeType: string;
+  gender: string | null;
+  showBadgeType: string|null;
 }
 
 const initialState: Ranking = {
@@ -36,7 +38,9 @@ const initialState: Ranking = {
     nickname: "",
     profileImg: "",
     rank: 0,
-    likeType: ""
+    likeType: "",
+    gender: "",
+    showBadgeType: ""
   },
   top3RankingList: [],
 };
