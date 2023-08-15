@@ -760,7 +760,24 @@ const MypageSlice = createSlice({
           profileImg: loginUser.profileImg,
         });
       }
+
+      Swal.fire({
+        icon: 'success',
+        title: '팔로우 완료',
+        text: '팔로우 등록이 완료되었습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+
     });
+
+    builder.addCase(action_mypage.follow.rejected, (state, action) => {
+      Swal.fire({
+        icon: 'info',
+        title: '이미 팔로우를 하셨어요!',
+        text: '팔로우 등록이 이미 완료되었습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+    })
 
     builder.addCase(action_mypage.unfollow.fulfilled, (state, action) => {
       for (let i = 0; i < state.myFollowingUsers.length; i++) {
@@ -803,6 +820,23 @@ const MypageSlice = createSlice({
         nickname: action.payload.nickname,
         profileImg: action.payload.profileImg,
       });
+
+      Swal.fire({
+        icon: 'success',
+        title: '블랙리스트 등록 완료!',
+        text: '블랙리스트 등록이 완료되었습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+    });
+
+    builder.addCase(action_mypage.addBlackList.rejected, (state, action) => {
+
+      Swal.fire({
+        icon: 'info',
+        title: '이미 블랙리스트에 등록되었어요!',
+        text: '블랙리스트에 이미 등록된 유저입니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
     });
 
     builder.addCase(
