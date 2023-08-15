@@ -26,6 +26,8 @@ interface Followers {
   id: number;
   nickname: string;
   profileImg: string | null;
+  gender : string | null;
+  showBadgeType: string | null;
 }
 
 interface PerfectFollow {
@@ -35,6 +37,10 @@ interface PerfectFollow {
   nicknameB: string | null;
   profileImgA: string | null;
   profileImgB: string | null;
+  genderA : string | null;
+  genderB : string | null;
+  showBadgeTypeA : string | null;
+  showBadgeTypeB : string | null;
 }
 
 interface BlackLists {
@@ -42,6 +48,8 @@ interface BlackLists {
   nickname: string;
   profileImg: string | null;
   targetUserId: number;
+  gender: string | null;
+  showBadgeType : string | null;
 }
 
 interface Feeds {
@@ -646,23 +654,6 @@ const MypageSlice = createSlice({
     changeBadgeUpdateModalOpen(state, action){
       state.badgeUpdateModalOpen = action.payload;
     },
-    // addFollowUsers(state, action){
-    //     // 내가 아닌 다른 유저가 마이페이지에 들어왔을 때 follow 가능
-    //     state.followMeUsers?.push(action.payload);
-    // },
-    // removeFollowUsers(state, action){
-    //     //action.payload는 id:number
-    //     //내가 내 마이페이지에 들어갔을 때 unfollow 가능
-    //     let followNumber = state.followMeUsers?.length;
-
-    //     if(followNumber!==null && followNumber>0){
-    //         for(let i=0;i<followNumber;i++){
-    //             if(state.followMeUsers[i].id===action.payload){
-    //                 state.followMeUsers.splice(action.payload,1);
-    //             }
-    //         }
-    //     }
-    // },
     changeFollowMode(state, action) {
       state.followMode = action.payload;
     },
@@ -740,24 +731,32 @@ const MypageSlice = createSlice({
           id: action.payload.targetId,
           nickname: action.payload.nickname,
           profileImg: action.payload.profileImg,
+          gender: action.payload.gender,
+          showBadgeType: action.payload.showBadgeType
         });
 
         state.yourFollowerUsers.push({
           id: action.payload.id,
           nickname: loginUser.nickname,
           profileImg: loginUser.profileImg,
+          gender: action.payload.gender,
+          showBadgeType: action.payload.showBadgeType
         });
       } else if (action.payload.targetId === loginUser.id) {
         state.myFollowerUsers.push({
           id: action.payload.targetId,
           nickname: action.payload.nickname,
           profileImg: action.payload.profileImg,
+          gender: action.payload.gender,
+          showBadgeType: action.payload.showBadgeType
         });
 
         state.yourFollowingUsers.push({
           id: action.payload.id,
           nickname: loginUser.nickname,
           profileImg: loginUser.profileImg,
+          gender: action.payload.gender,
+          showBadgeType: action.payload.showBadgeType
         });
       }
 
@@ -819,6 +818,8 @@ const MypageSlice = createSlice({
         targetUserId: action.payload.targetId,
         nickname: action.payload.nickname,
         profileImg: action.payload.profileImg,
+        gender: action.payload.gender,
+        showBadgeType: action.payload.showBadgeType
       });
 
       Swal.fire({

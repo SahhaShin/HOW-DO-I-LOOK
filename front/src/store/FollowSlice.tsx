@@ -19,6 +19,8 @@ interface Followers {
   id: number;
   nickname: string;
   profileImg: string | null;
+  gender: string | null;
+  showBadgeType: string|null;
 }
 
 interface PerfectFollow {
@@ -28,6 +30,10 @@ interface PerfectFollow {
   nicknameB: string | null;
   profileImgA: string | null;
   profileImgB: string | null;
+  genderA: string | null;
+  genderB : string | null;
+  showBadgeTypeA: string | null;
+  showBadgeTypeB: string | null;
 }
 
 interface BlackLists {
@@ -35,6 +41,8 @@ interface BlackLists {
   nickname: string;
   profileImg: string | null;
   targetUserId: number;
+  gender : string | null;
+  showBadgeType : string | null;
 }
 
 // 초기화
@@ -274,25 +282,33 @@ const FollowSlice = createSlice({
             state.myFollowingUsers.push({
               id: action.payload.targetId,
               nickname: action.payload.nickname,
-              profileImg: action.payload.profileImg
+              profileImg: action.payload.profileImg,
+              gender: action.payload.gender,
+              showBadgeType : action.payload.showBadgeType
             });
     
             state.yourFollowerUsers.push({
               id: action.payload.id,
               nickname: loginUser.nickname,
-              profileImg: loginUser.profileImg
+              profileImg: loginUser.profileImg,
+              gender: action.payload.gender,
+              showBadgeType: action.payload.showBadgeType
             });
           } else if (action.payload.targetId === loginUser.id) {
             state.myFollowerUsers.push({
               id: action.payload.targetId,
               nickname: action.payload.nickname,
-              profileImg: action.payload.profileImg
+              profileImg: action.payload.profileImg,
+              gender: action.payload.gender,
+              showBadgeType: action.payload.showBadgeType
             });
     
             state.yourFollowingUsers.push({
               id: action.payload.id,
               nickname: loginUser.nickname,
-              profileImg: loginUser.profileImg
+              profileImg: loginUser.profileImg,
+              gender: action.payload.gender,
+              showBadgeType: action.payload.showBadgeType
             });
           }
         });
