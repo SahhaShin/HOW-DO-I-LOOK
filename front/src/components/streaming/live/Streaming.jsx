@@ -365,6 +365,7 @@ class Streaming extends Component {
                   </button>
                 </div>
               ) : null}
+              <div>
               <button
                 className={audioOn ? "activeButton" : "disableButton"}
                 onClick={this.toggleAudio}
@@ -378,6 +379,8 @@ class Streaming extends Component {
                 />
                 마이크 {audioOn ? "끄기" : "켜기"}
               </button>
+
+              </div>
             </div>
           </div>
         ) : null}
