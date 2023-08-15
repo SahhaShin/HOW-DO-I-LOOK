@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 
 //redux
@@ -27,6 +27,11 @@ const Live = () => {
 
     const loginId = String(loginUser.id);
     const hostId = params.hostId;
+
+    // 소켓으로 킥을 당했다면 리스트로 이동
+    useEffect(()=>{
+        
+    },[state_live.areYouKick])
 
     return(
         <div className={`${liveStyle.Wrapper}`}>

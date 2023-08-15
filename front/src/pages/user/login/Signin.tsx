@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 //css
-//import closetStyle from "./Login.css";
+import SingninStyle from "./Signin.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
@@ -22,7 +22,7 @@ const SigninPage = () => {
 
 
     return(
-        <div>
+        <div className={`${SingninStyle.wrapper}`}>
             <Signin></Signin>
 
         </div>
