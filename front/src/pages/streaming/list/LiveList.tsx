@@ -58,7 +58,8 @@ const LiveList = () => {
     setPage(state.page)
     dispatch(
       action.getLiveList({
-        userId: state.userId,
+        following: (state.userId == "") ?false : true,
+        userId: loginUser.id,
         type: state.type,
         search: state.search,
         pageNum: state.page,
@@ -90,8 +91,8 @@ const LiveList = () => {
 
   function sortChange(flow: boolean, type, keyword) {
     var id = "";
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
     if (flow) {
-      const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
       id = loginUser.id;
     }
@@ -99,7 +100,8 @@ const LiveList = () => {
     dispatch(setUserId(id));
     dispatch(
       action.getLiveList({
-        userId: id,
+        following:flow,
+        userId: loginUser.id,
         type: state.type,
         search: state.search,
         pageNum: page,
