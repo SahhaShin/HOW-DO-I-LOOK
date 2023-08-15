@@ -20,13 +20,16 @@ function Home() {
 				className={`${styles.bg} ${styles.section}`}
 				style={{ backgroundImage: "url('/img/intro/mainIntro1.gif')" }}
 			>
-				<a
-					href={process.env.REACT_APP_FRONT + `/user/log-in`}
-					className={styles.button}
+				<button
+					className={`${styles.button} ${styles.intro1Btn2}`} // 왼쪽 버튼에 새로운 클래스 추가
+					onClick={scrollToNextSection}
 				>
-					시작하러가기
-				</a>
-				<button className={styles.button} onClick={scrollToNextSection}>
+					<a href={process.env.REACT_APP_FRONT + `/user/log-in`} className={styles.buttonLink}>시작하러가기</a>
+				</button>
+				<button
+					className={`${styles.button} ${styles.intro1Btn}`} // 둘러보기 버튼에 새로운 클래스 추가
+					onClick={scrollToNextSection}
+				>
 					둘러보기
 				</button>
 			</div>
@@ -35,13 +38,41 @@ function Home() {
 				style={{ backgroundImage: "url('/img/intro/mainIntro2.gif')" }}
 				ref={scrollRef}
 			>
-				<button className={styles.button}>Click me</button>
+				<button
+					className={`${styles.button} ${styles.intro2Btn}`}
+				>
+					<a href={process.env.REACT_APP_FRONT + `/user/log-in`} className={styles.buttonLink}>Streaming Now</a>
+				</button>
 			</div>
-			<div className={`${styles.bg} ${styles.section}`} style={{ backgroundImage: "url('/img/intro/mainIntro2.gif')" }}>
-				<button className={styles.button}>Click me</button>
+			<div
+				className={`${styles.bg} ${styles.section}`}
+				style={{ backgroundImage: "url('/img/intro/mainIntro3.gif')" }}
+			>
+				<button
+					className={`${styles.button} ${styles.intro3Btn}`}
+				>
+					<a href={process.env.REACT_APP_FRONT + `/user/log-in`} className={styles.buttonLink}>Go Closet Now</a>
+				</button>
 			</div>
-			<div className={`${styles.bg} ${styles.section}`} style={{ backgroundImage: "url('/img/intro/mainIntro2.gif ')" }}>
-				<button className={styles.button}>Click me</button>
+			<div
+				className={`${styles.bg} ${styles.section}`}
+				style={{ backgroundImage: "url('/img/intro/mainIntro4.gif')" }}
+			>
+				<button
+					className={`${styles.button} ${styles.intro4Btn}`}
+				>
+					<a href={process.env.REACT_APP_FRONT + `/user/log-in`} className={styles.buttonLink}>Go Feed Now</a>
+				</button>
+			</div>
+			<div
+				className={`${styles.bg} ${styles.section}`}
+				style={{ backgroundImage: "url('/img/intro/mainIntro5.gif')" }}
+			>
+				<button
+					className={`${styles.button} ${styles.intro5Btn}`}
+				>
+					<a href={process.env.REACT_APP_FRONT + `/user/log-in`} className={styles.buttonLink}>Go Ranking Now</a>
+				</button>
 			</div>
 			{/* <div className={`${styles.bg} ${styles.section}`}></div>
 			<div className={`${styles.bg} ${styles.section}`}></div>

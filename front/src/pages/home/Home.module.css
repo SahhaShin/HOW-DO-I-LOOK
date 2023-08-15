@@ -36,6 +36,97 @@
 }
 
 .section:nth-child(5) {
-  height: 50vh;
+  /* height: 50vh; */
   background-color: rgb(126, 83, 255);
+}
+
+.buttonLink {
+  color: white;
+  text-decoration: none;
+}
+
+.intro1Btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #EAA595;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 68px;
+}
+
+.intro1Btn2 {
+  position: absolute;
+  bottom: 20px;
+  right: 220px;
+  background-color: #EAA595;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 68px;
+}
+
+.intro2Btn {
+  position: absolute;
+  bottom: 15%;
+  left: 14%;
+  background-color: #79AF9D;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 7%;
+  width: 12%;
+  text-decoration: none;
+}
+
+.intro3Btn {
+  position: absolute;
+  bottom: 23%;
+  left: 71%;
+  background-color: #D15014;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 7%;
+  width: 12%;
+  text-decoration: none;
+}
+
+.intro4Btn {
+  position: absolute;
+  bottom: 23%;
+  left: 17%;
+  background-color: #004A98;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 7%;
+  width: 12%;
+  text-decoration: none;
+}
+
+.intro5Btn {
+  position: absolute;
+  bottom: 28%;
+  left: 44%;
+  background-color: #DB809E;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 7%;
+  width: 12%;
+  text-decoration: none;
 }
