@@ -6,8 +6,18 @@ import { useSelector, useDispatch } from "react-redux";
 import {action_follow} from "../../store/FollowSlice";
 
 const FollowSlot = (props) => {
+    console.log(props)
 
     const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
+
+    // 성별
+    function genderColor(gender){
+        if(gender==="FEMALE"){
+            return `${followSlotStyle.profileImgF}`
+        }else{
+            return `${followSlotStyle.profileImgM}`
+        }
+    }
 
     return(
         <div>

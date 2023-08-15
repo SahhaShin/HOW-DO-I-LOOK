@@ -432,6 +432,7 @@
     background-color: var(--border);
     width: 50px;
     height: 20px;
+    border-radius: 1rem;
 }
 .rightBtns button:hover{
     background-color: var(--signiture);
