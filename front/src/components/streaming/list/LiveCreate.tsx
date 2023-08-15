@@ -33,7 +33,7 @@ const LiveCreate = () => {
   //문구 입력
   const [roomId, setRoomId] = useState("");
   const [title, setTitle] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("DATE");
   const [minAge, setMinAge] = useState("");
   const [maxAge, setMaxAge] = useState("");
   const [gender, setGender] = useState("X");
@@ -58,6 +58,15 @@ const LiveCreate = () => {
   function createRoom() {
     console.log(state.create);
     if (state.create) {
+      if(title == ""){
+        alert("방 타이틀을 입력해 주십시오.")
+        return
+      }
+      else if (minAge > maxAge){
+        alert("나이 제한을 잘못 입력하셨습니다.")
+        return 
+      }
+       
       dispatch(
         action.createLiveList({
           title: title,
@@ -84,14 +93,21 @@ const LiveCreate = () => {
     // window.location.href = `${process.env.REACT_APP_FRONT}/liveList`;
   }
 
-  //모달 끄기
-  function closeModel() {}
+  function clickH(hash){
+    setType(hash)
+  }
 
-  useEffect(() => {}, []);
+  function clickG(hash){
+    setGender(hash)
+  }
+
+
+
 
   return (
     <div className={`${liveCreateStyle.createTotal}`}>
       {/* 입력창 */}
+      <h1>방 생성하기</h1>
 
       <div className={``}>
         <div>
@@ -109,17 +125,67 @@ const LiveCreate = () => {
             />
           </div>
           <div>
-            <label htmlFor="type" className={`${liveCreateStyle.lable}`}>
+          <label htmlFor="title" className={`${liveCreateStyle.lable}`}>
               <p>Type</p>
             </label>
-            <input
-              type="text"
-              id="type"
-              placeholder="방 타입을 입력해주세요"
-              className={`${liveCreateStyle.input}`}
-              onChange={(e) => setType(e.target.value)}
-              value={type}
-            />
+
+      <div className={`${liveCreateStyle.tag}`}>
+        <button
+          onClick={(e) => {
+            clickH(`DATE`);
+          }}
+        >
+          {type == "DATE" ? (
+            <div style={{ color: "black" }}>#DATE</div>
+          ) : (
+            `#DATE`
+          )}
+        </button>
+        <button
+          onClick={(e) => {
+            clickH(`DAILY`);
+          }}
+        >
+          {type == "DAILY" ? (
+            <div style={{ color: "black" }}>#DAILY</div>
+          ) : (
+            `#DAILY`
+          )}
+        </button>
+        <button
+          onClick={(e) => {
+            clickH(`TRAVEL`);
+          }}
+        >
+          {type == "TRAVEL" ? (
+            <div style={{ color: "black" }}>#TRAVEL</div>
+          ) : (
+            `#TRAVEL`
+          )}
+        </button>
+        <button
+          onClick={(e) => {
+            clickH(`EXERCISE`);
+          }}
+        >
+          {type == "EXERCISE" ? (
+            <div style={{ color: "black" }}>#EXERCISE</div>
+          ) : (
+            `#EXERCISE`
+          )}
+        </button>
+        <button
+          onClick={(e) => {
+            clickH(`INTERVIEW`);
+          }}
+        >
+          {type == "INTERVIEW" ? (
+            <div style={{ color: "black" }}>#INTERVIEW</div>
+          ) : (
+            `#INTERVIEW`
+          )}
+        </button>
+      </div>
             {false && <div>사용하실 수 없는 타입입니다.</div>}
           </div>
           <div>
@@ -154,43 +220,49 @@ const LiveCreate = () => {
             <label htmlFor="gender" className={`${liveCreateStyle.lable}`}>
               <p>입장 가능 성별</p>
             </label>
-            <div className={`${liveCreateStyle.half}`}>
-              <input
-                type="radio"
-                id="MALE"
-                name="gender"
-                value="MALE"
-                onClick={(e) => setGender(e.target.value)}
-                checked={gender == "MALE"}
-              />
-              <label htmlFor="MALE">남자</label>
-
-              <input
-                type="radio"
-                id="FEMALE"
-                name="gender"
-                value="FEMALE"
-                onClick={(e) => setGender(e.target.value)}
-                checked={gender == "FEMALE"}
-              />
-              <label htmlFor="FEMALE">여자</label>
-              <input
-                type="radio"
-                id="X"
-                name="gender"
-                value="X"
-                onClick={(e) => setGender("X")}
-                checked={gender == "X"}
-              />
-              <label htmlFor="X">상관없음 </label>
-            </div>
+            <div className={`${liveCreateStyle.tag}`}>
+        <button
+          onClick={(e) => {
+            clickG(`MALE`);
+          }}
+        >
+          {gender == "MALE" ? (
+            <div style={{ color: "black" }}>#MALE</div>
+          ) : (
+            `#MALE`
+          )}
+        </button>
+        <button
+          onClick={(e) => {
+            clickG(`FEMALE`);
+          }}
+        >
+          {gender == "FEMALE" ? (
+            <div style={{ color: "black" }}>#FEMALE</div>
+          ) : (
+            `#FEMALE`
+          )}
+        </button>
+        <button
+          onClick={(e) => {
+            clickG(`X`);
+          }}
+        >
+          {gender == "X" ? (
+            <div style={{ color: "black" }}>#상관없음</div>
+          ) : (
+            `#상관없음`
+          )}
+        </button>
+       
+      </div>
           </div>
         </div>
       </div>
 
       {/* 버튼*/}
-      <div className={`${liveCreateStyle.rightBtns}`}>
-        <button
+      <div className={`${liveCreateStyle.roomCreate}`}>
+        <button 
           onClick={() => {
             dispatch(changeModalOpen(false));
           }}
