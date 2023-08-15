@@ -31,9 +31,11 @@ const Feed = () => {
         
     // }
 
+    const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
+
     useEffect(()=>{
         let data = {size:0, page:0};
-        dispatch(action_feed.getFeedTotalList(data));
+        dispatch(action_feed.getFeedTotalList(loginUser.id));
     },[state.feedAddOk, state.likeOk, state.addCommentOk, state.commentList])
 
     useEffect(()=>{
