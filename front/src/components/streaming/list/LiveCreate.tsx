@@ -221,28 +221,32 @@ const LiveCreate = () => {
               <p>입장 가능 성별</p>
             </label>
             <div className={`${liveCreateStyle.tag}`}>
+
         <button
           onClick={(e) => {
             clickG(`MALE`);
           }}
         >
           {gender == "MALE" ? (
-            <div style={{ color: "black" }}>#MALE</div>
+            <div style={{ color: "black" }}>#남자만</div>
           ) : (
-            `#MALE`
+            `#남자만`
           )}
         </button>
+
+
         <button
           onClick={(e) => {
             clickG(`FEMALE`);
           }}
         >
           {gender == "FEMALE" ? (
-            <div style={{ color: "black" }}>#FEMALE</div>
+            <div style={{ color: "black" }}>#여자만</div>
           ) : (
-            `#FEMALE`
+            `#여자만`
           )}
         </button>
+
         <button
           onClick={(e) => {
             clickG(`X`);
