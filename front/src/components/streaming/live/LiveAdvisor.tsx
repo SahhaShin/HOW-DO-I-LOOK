@@ -80,7 +80,7 @@ const LiveAdvisor = () => {
     // 처음에 유저 리스트를 가져와서 보여줌
     useEffect(()=>{
         dispatch(action_live.peopleList({userId:userId, roomId:roomId}));
-    },[])
+    },[state_live.roomPeopleList.length])
 
     const [advisor, setAdvisor] = useState({
         id: 0,
