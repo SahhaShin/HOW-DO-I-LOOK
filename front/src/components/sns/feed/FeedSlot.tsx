@@ -117,8 +117,8 @@ const FeedSlot = () => {
 
     return(   
         <>
-            {  state.feedTotalObj?.content.length!==0?
-                state.feedTotalObj?.content.map((oneFeed, idx)=>{
+            {  state.feedTotalObj?.length!==0?
+                state.feedTotalObj?.map((oneFeed, idx)=>{
                     
                     return(
                         <div key={idx} className={`${feedSlotStyle.card}`}>

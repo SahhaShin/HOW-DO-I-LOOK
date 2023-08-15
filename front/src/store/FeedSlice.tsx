@@ -33,10 +33,10 @@ export const action_feed = {
 
 
     //피드 전체 리스트 가져오기 O
-    getFeedTotalList : createAsyncThunk("FeedSlice/getFeedTotalList", async({size, page}, thunkAPI)=>{
+    getFeedTotalList : createAsyncThunk("FeedSlice/getFeedTotalList", async(user_id, thunkAPI)=>{
         try{
             const token = await CheckToken();
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`,{
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/blacklist/${user_id}`,{
                 headers:{"Authorization":token}
             });
 
@@ -343,57 +343,31 @@ interface specificFeed{
         }
 }
 interface totalFeed{
-    content: [
-        {
-            userId: number,
-            userNickname: string | null,
-            userProfileImg: string | null,
-            userGender: string | null,
-            feedId: number,
-            feedContent: string,
-            feedCreatedDate: string,
-            feedUpdateDate: string,
-            photoResponseDtoList: [
-                {
-                    id: number,
-                    link: string,
-                    hashtagList: string[]
-                },
 
-            ],
-            feedLikeCountResponseDto: {
-                natural: number,
-                modern: number,
-                lovely: number,
-                sexy: number
-            }
-        }
-    ],
-    pageable: {
-        sort: {
-            empty: boolean,
-            unsorted : boolean,
-            sorted: boolean
+    userId: number,
+    userNickname: string | null,
+    userProfileImg: string | null,
+    userGender: string | null,
+    followingCheck : boolean | null,
+    feedId: number,
+    feedContent: string,
+    commentCount: number | null,
+    feedCreatedDate: string,
+    feedUpdateDate: string,
+    photoResponseDtoList: [
+        {
+            id: number,
+            link: string,
+            hashtagList: string[]
         },
-        offset: number,
-        pageSize: number,
-        pageNumber: number,
-        paged: boolean,
-        unpaged: boolean
-    },
-    last: boolean,
-    totalElements: number,
-    totalPages: number,
-    size: number,
-    number: number,
-    sort: {
-        empty: boolean,
-        unsorted: boolean,
-        sorted: boolean
-    },
-    first: boolean,
-    numberOfElements: number,
-    empty: boolean
+
+    ],
+    feedLikeCountResponseDto: {
+        natural: number,
+        modern: number,
+        lovely: number,
+        sexy: number
+    }
 }
 interface comment{
     "commentId": number,
@@ -515,6 +489,7 @@ const FeedSlice = createSlice({
             }
         },
         calTotalFeedLikes(state){
+            console.log(state.detailObj)
             state.totalDetailObjLikes = state.detailObj?.feedLikeCountResponseDto;
             console.log(state.totalDetailObjLikes);
         },
