@@ -140,7 +140,7 @@ const FeedSlot = () => {
                                     <p>{oneFeed.commentCount}</p>
                                 </div>
                                 {oneFeed.userId===loginUser.id?<div className={`${feedSlotStyle.feedBtns}`}>
-                                    <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId)); dispatch(action.getFeedLikeOnMe({userId:oneFeed.userId,feedId:oneFeed.feedId}));}}>수정</button>
+                                    <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId)); dispatch(action_feed.getFeedLikeOnMe({userId:oneFeed.userId,feedId:oneFeed.feedId}));}}>수정</button>
                                     <button onClick={()=>deleteFeed(oneFeed.feedId)}>삭제</button>
                                 </div>:null}
                             </div>
