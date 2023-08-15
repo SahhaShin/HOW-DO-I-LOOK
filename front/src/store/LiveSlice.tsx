@@ -49,9 +49,10 @@ export const action = {
           "hostId",
           JSON.stringify(formdata.hostId)
         );
-
-        window.location.href = `${process.env.REACT_APP_FRONT}/live/${responseCreate.data}/${formdata.hostId}`;
-        return response.data;
+          const url =  `${process.env.REACT_APP_FRONT}/live/${responseCreate.data}/${formdata.hostId}`;
+          console.log(url)
+        // window.location.href = `${process.env.REACT_APP_FRONT}/live/${responseCreate.data}/${formdata.hostId}`;
+        return url;
       } catch (e) {
         console.log(e);
         alert(e.response.data.message);
@@ -174,8 +175,8 @@ export const action = {
           JSON.stringify(formdata.hostId)
         );
 
-        window.location.href = `${process.env.REACT_APP_FRONT}/live/${formdata.roomId}/${formdata.hostId}`;
-        return response.data;
+        const url = `${process.env.REACT_APP_FRONT}/live/${formdata.roomId}/${formdata.hostId}`;
+        return url;
       } catch (e) {
         alert(e.response.data.message);
         throw e;
@@ -256,6 +257,11 @@ const LiveSlice = createSlice({
     builder.addCase(action.createLiveList.fulfilled, (state, action) => {
       state.ModalOpen = false;
       console.log(state.liveList);
+        window.location.href = action.payload;      
+    });
+
+    builder.addCase(action.enterLiveRoom.fulfilled, (state, action) => {
+        window.location.href = action.payload;      
     });
 
     builder.addCase(action.changeLiveInfo.fulfilled, (state, action) => {

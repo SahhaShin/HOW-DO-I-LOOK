@@ -365,6 +365,7 @@ class Streaming extends Component {
                   </button>
                 </div>
               ) : null}
+              <div>
               <button
                 className={audioOn ? "activeButton" : "disableButton"}
                 onClick={this.toggleAudio}
@@ -378,6 +379,8 @@ class Streaming extends Component {
                 />
                 마이크 {audioOn ? "끄기" : "켜기"}
               </button>
+
+              </div>
             </div>
           </div>
         ) : null}
@@ -408,7 +411,7 @@ class Streaming extends Component {
   async createSession(sessionId) {
     const token = await CheckToken();
     const response = await axios.post(
-      `${process.env.REACT_APP_OPENVIDU}api/sessions`,
+      `${process.env.REACT_APP_OPENVIDU}/api/sessions`,
       { customSessionId: sessionId },
       {
         headers: {
@@ -424,7 +427,7 @@ class Streaming extends Component {
   async createToken(sessionId) {
     const token = await CheckToken();
     const response = await axios.post(
-      `${process.env.REACT_APP_OPENVIDU}api/sessions/${sessionId}/connections`,
+      `${process.env.REACT_APP_OPENVIDU}/api/sessions/${sessionId}/connections`,
       {},
       {
         headers: {
