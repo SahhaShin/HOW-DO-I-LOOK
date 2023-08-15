@@ -22,7 +22,6 @@ public class FeedResponseDto {
     private FeedLikeCountResponseDto feedLikeCountResponseDto;
 
     @Builder
-
     public FeedResponseDto(Long userId, String userNickname, Long feedId, String feedContent, Long commentCount, LocalDateTime feedCreatedDate, LocalDateTime feedUpdateDate, List<PhotoResponseDto> photoResponseDtoList, FeedLikeCountResponseDto feedLikeCountResponseDto) {
         this.userId = userId;
         this.userNickname = userNickname;
