@@ -140,12 +140,17 @@ const FeedSlot = () => {
                                 </div>
                                 {/* 우측 : 팔로우 언팔로우 & 신고버튼 */}
                                 <div className={`${feedSlotStyle.btns}`}>
-                                    {state.isFollow?
+                                    
+                                    {oneFeed.userId === loginUser.id
+                                    ?
+                                    null
+                                    :
+                                    oneFeed.followingCheck?
                                     <div>
                                         <button onClick={async()=>{
                                             changeDeleteFollowingData(oneFeed)
                                             // dispatch(action_follow.followCheck(false))
-                                            dispatch(action_follow.getMyFollowingList(loginUser.id));
+                                            // dispatch(action_follow.getMyFollowingList(loginUser.id));
                                         }}>Unfollow</button>
                                     </div>
                                     :
@@ -153,9 +158,28 @@ const FeedSlot = () => {
                                         <button onClick={async()=>{
                                             changeFollowingData(oneFeed)
                                             // dispatch(changeFollow(true))
-                                            dispatch(action_follow.getMyFollowingList(loginUser.id));
+                                            // dispatch(action_follow.getMyFollowingList(loginUser.id));
                                         }}>Follow</button>
-                                    </div>}  
+                                    </div>
+                                    }
+                                    
+                                    
+                                    {/* {state.oneFeed.followingCheck?
+                                    <div>
+                                        <button onClick={async()=>{
+                                            changeDeleteFollowingData(oneFeed)
+                                            // dispatch(action_follow.followCheck(false))
+                                            // dispatch(action_follow.getMyFollowingList(loginUser.id));
+                                        }}>Unfollow</button>
+                                    </div>
+                                    :
+                                    <div>
+                                        <button onClick={async()=>{
+                                            changeFollowingData(oneFeed)
+                                            // dispatch(changeFollow(true))
+                                            // dispatch(action_follow.getMyFollowingList(loginUser.id));
+                                        }}>Follow</button>
+                                    </div>}   */}
                                     <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${feedSlotStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div>
                                 </div>
                             </div>

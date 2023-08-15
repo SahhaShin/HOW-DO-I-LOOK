@@ -394,7 +394,7 @@ interface Feed{
     uploadHashtags:string[],
     uploadPictures:string[],
     declarationModalOpen:boolean,
-    feedTotalObj:totalFeed|null,
+    feedTotalObj:totalFeed[]|null,
     detailFeedId : number,
     detailObj:specificFeed|null, //특정 피드 정보
     detailObjLikes:specificFeedLikes|null,
@@ -471,9 +471,9 @@ const FeedSlice = createSlice({
             state.detailFeedId=action.payload;
 
             //세부피드 오브젝트도 채워준다. -> 이미 피드창 들어올 때 리스트는 채워져있음
-            for(let i=0;i<state.feedTotalObj?.content.length;i++){
-                if(state.feedTotalObj?.content[i].feedId===action.payload){
-                    state.detailObj = state.feedTotalObj?.content[i];
+            for(let i=0;i<state.feedTotalObj?.length;i++){
+                if(state.feedTotalObj[i]?.feedId===action.payload){
+                    state.detailObj = state.feedTotalObj[i];
                     console.log(`여기야!! ${i}`);
                     break;
                 }
@@ -526,9 +526,9 @@ const FeedSlice = createSlice({
             console.log(action.payload);
 
             // 리스트에서 제거
-            for(let i=0;i<state.feedTotalObj?.content.length;i++){
-                if(state.feedTotalObj?.content[i].feedId==action.payload){
-                    state.feedTotalObj?.content.splice(i,1);
+            for(let i=0;i<state.feedTotalObj?.length;i++){
+                if(state.feedTotalObj[i]?.feedId==action.payload){
+                    state.feedTotalObj?.splice(i,1);
                     console.log(i);
                 }
             }
