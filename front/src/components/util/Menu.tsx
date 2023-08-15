@@ -28,10 +28,11 @@ const NavigationBar: React.FC = () => {
   useEffect(()=>{
     setActiveMenu(state.menuItemNum);
   },[])
+  const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
 
-  const liveMenuItems = ["라이브", "피드", "채팅", "랭킹"];
-  const liveMenuLink = ["liveList", "feed", "chatList", "ranking"];
+  const liveMenuItems = ["라이브", "피드", "채팅", "랭킹", "마이페이지", "옷장"];
+  const liveMenuLink = ["liveList", "feed", "chatList", "ranking", "closet",`mypage/${loginUser.id}` ];
 
 
   return (
@@ -47,7 +48,7 @@ const NavigationBar: React.FC = () => {
             {/* 이미 체크된 메뉴가 아닐 경우 클릭한 버튼 위치로 이동 */}
             {state.menuItemNum!==-1?<div
               className={`${UtilStyle.activeMenuBlock} ${activeMenu !== null ? 'active' : ''}`}
-              style={{ top: activeMenu !== null ? `${activeMenu * 25}%` : '0' }}
+              style={{ top: activeMenu !== null ? `${activeMenu * 70}px` : '0' }}
               > {activeMenu !== null && <h2>{liveMenuItems[activeMenu]}</h2>} 
             </div>:null}
           </div>
