@@ -80,8 +80,12 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className={`${loginStyle}`}>
-      <h1>로그인</h1>
+    <div className={`${loginStyle.totalWrapper} ${loginStyle.fadeInBox}`}>
+      <h1 className={`${loginStyle.title}`}><p className={`${loginStyle.HELLO}`}>My colorful fashion</p><br/> <p className={`${loginStyle.H}`}>How</p> 
+      <p className={`${loginStyle.D}`}> Do</p> 
+      <p className={`${loginStyle.I}`}> I </p> 
+      <p className={`${loginStyle.Look}`}>Look</p>
+      </h1>
       <form onSubmit={login} className={`${loginStyle.login}`}>
         <div>
           <div>
@@ -112,12 +116,12 @@ const Login: React.FC = () => {
         </div>
 
         <div>
-          <div className={`${loginStyle.loginrememberID}`}>
+          {/* <div className={`${loginStyle.loginrememberID}`}>
             <input type="checkbox" id="rememberID" checked={rememberID} onClick={(e) => {setRememberID(!rememberID)}}/>
             <label htmlFor="rememberID">
               <p>이메일 저장</p>
             </label>
-          </div>
+          </div> */}
           <input
             type="button"
             value={"로그인"}
@@ -128,46 +132,54 @@ const Login: React.FC = () => {
           />
         </div>
       </form>
-      <div>
-        <a href={process.env.REACT_APP_FRONT + `/user/sign-up`} className={`${loginStyle.loginsignin}`}>
-          혹시 아직 회원이 아니십니까? <strong>회원가입</strong>
-        </a>
-      </div>
-      <div className={`${loginStyle.loginline}`}>소셜 로그인</div>
+  
+      {/* <div className={`${loginStyle.loginline}`}>소셜 로그인은 아래 버튼으로 이용해주세요</div> */}
       <div className={`${loginStyle.loginsocial}`}>
         <button
+          className={`${loginStyle.google}`}
           type="button"
           onClick={(e) => {
             socialLoginClick("google", e);
           }}
         >
-          <img
+          GOOGLE
+          {/* <img
             src={process.env.PUBLIC_URL + `/img/login/google.png`}
             alt="구글 로그인"
-          />
+          /> */}
         </button>
         <button
+          className={`${loginStyle.naver}`}
           type="button"
           onClick={(e) => {
             socialLoginClick("naver", e);
           }}
         >
-          <img
+          NAVER
+          {/* <img
             src={process.env.PUBLIC_URL + `/img/login/naver.png`}
             alt="네이버 로그인"
-          />
+          /> */}
         </button>
         <button
+          className={`${loginStyle.kakao}`}
           type="button"
           onClick={(e) => {
             socialLoginClick("kakao", e);
           }}
         >
-          <img
+          KAKAO
+          {/* <img
             src={process.env.PUBLIC_URL + `/img/login/kakao.png`}
             alt="카카오 로그인"
-          />
+          /> */}
         </button>
+      </div>
+
+      <div className={`${loginStyle.registBtn}`}>
+        <a href={process.env.REACT_APP_FRONT + `/user/sign-up`} className={`${loginStyle.loginsignin}`}>
+          혹시 아직 회원이 아니십니까? <strong>회원가입</strong>
+        </a>
       </div>
     </div>
   );
