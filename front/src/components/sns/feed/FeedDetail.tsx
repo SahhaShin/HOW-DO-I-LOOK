@@ -59,17 +59,7 @@ const FeedDetail = (props) => {
         content:string,
     }
 
-    let [subCmt, setSubCmt] = useState<comment[]|null>([
-        {
-            mainCmtNo:1,
-            subCmtNo:1,
-            dateTime:"23.07.19 09:10",
-            id:"user3",
-            nickname:"user3",
-            // profile:null,
-            content:"그쵸 ㅠㅠ",
-        },
-    ]);
+
 
 
     //개인 like 표시에 따른 요청
@@ -135,7 +125,7 @@ const FeedDetail = (props) => {
         let data = {size:0, page:0};
         dispatch(action_feed.getFeedTotalList(data));
         
-    },[state.likeOk])
+    },[state.likeOk, state.totalDetailObjLikes])
 
     useEffect(()=>{
         // 전체 피드 가져오면 그 안에 like 만 추출해서 계산
@@ -145,7 +135,7 @@ const FeedDetail = (props) => {
     useEffect(()=>{
         // 댓글 가져오기
         dispatch(action_feed.getComment(props.feedId));
-    },[state.addCommentOk])
+    },[state.addCommentOk, state.totalDetailObjLikes])
 
     console.log(`state.detailObjLikes ${state.detailObjLikes?.lovelyType}`);
     console.log(state.totalDetailObjLikes);
