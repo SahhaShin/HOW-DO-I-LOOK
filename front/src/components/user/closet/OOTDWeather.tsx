@@ -32,9 +32,6 @@ const OOTDWeather = () => {
         }
     },[todayWeather_info])
 
-    console.log(todayWeather_info[7]);
-
-
     //화면 단
     return(
         <div className={`${weatherStyle.weatherContainer}`}>
