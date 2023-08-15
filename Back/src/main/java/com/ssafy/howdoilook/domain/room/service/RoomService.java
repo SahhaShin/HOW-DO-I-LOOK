@@ -179,7 +179,7 @@ public class RoomService {
 
         Room saveRoom = roomRepository.save(room);
 
-//        roomUserService.addRoomUser(saveRoom.getHost().getId(), saveRoom.getId(), userDetails);
+        roomUserService.addRoomUser(saveRoom.getHost().getId(), saveRoom.getId(), userDetails);
 
         return room.getId();
     }
