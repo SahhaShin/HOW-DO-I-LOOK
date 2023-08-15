@@ -41,6 +41,10 @@ public class FollowService {
             throw new AccessException("접근 권한이 없습니다.");
         }
 
+        if(followSaveRequestDto.getTargetId() == followSaveRequestDto.getId()) {
+            throw new IllegalArgumentException("자기 자신은 팔로우 할 수 없습니다.");
+        }
+
         User followee = userRepository.findById(followSaveRequestDto.getTargetId())
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 followee입니다.",1));
 
