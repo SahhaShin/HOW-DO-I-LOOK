@@ -32,7 +32,6 @@ const OOTDWeather = () => {
         }
     },[todayWeather_info])
 
-
     //화면 단
     return(
         <div className={`${weatherStyle.weatherContainer}`}>
@@ -45,12 +44,20 @@ const OOTDWeather = () => {
                 {/* undefined가 아닐 시 값을 보여줘라. 이거 없음 에러난다. */}
                 {
                     todayWeather.length!==0 ? 
-                    <div className={`${weatherStyle.weatherContent}`}>
+                    <div>
                         { 
                             todayWeather[0]?.fcstValue!==undefined ?
-                            <div>
-                                <p>Have a good day!</p>
-                                <p>{citynName.si} {todayWeather[0].fcstValue}℃</p>
+                            <div className={`${weatherStyle.weatherContent}`}>
+
+                                <div>
+                                    <p>Have a good day!</p>
+                                    <p>{citynName.si} {todayWeather[0].fcstValue}℃</p>
+                                </div>
+
+                                <div className={`${weatherStyle.rain}`}>
+                                    <img src={`${process.env.PUBLIC_URL}/img/clothes/umbrella.png`}/>
+                                    <div>{todayWeather_info[7].fcstValue}%</div>
+                                </div>
                             </div>
                             :"" 
                         }

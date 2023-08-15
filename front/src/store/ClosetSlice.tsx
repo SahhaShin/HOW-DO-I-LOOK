@@ -11,7 +11,6 @@ export const action = {
     // 옷 분야별 리스트 O
     getClothesListByType : createAsyncThunk("ClosetSlice/getClothesListByType", async({clothesType, userId, pageNum}:ClothesListByTypeReq, thunkAPI)=>{
         try{
-            console.log(`${clothesType} ${userId} ${pageNum}`);
             const token = await CheckToken();
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,{
                 headers: {
@@ -36,7 +35,6 @@ export const action = {
     //옷 id 같은 것끼리도 저장 가능
     OOTDSave: createAsyncThunk("ClosetSlice/OOTDSave",async ({userId, order, slotIds}:saveOOTD,thunkAPI) =>{
         try{
-            console.log(`${userId} ${order} ${slotIds.ACCESSORY1}`);
             const token = await CheckToken();
             const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/ootd`,{userId,order,slotIds},{
                 headers: {
@@ -61,7 +59,6 @@ export const action = {
 
     //OOTD 리스트 불러오기 -> 진행중
     OOTDList: createAsyncThunk("ClosetSlice/OOTDList",async (userId,thunkAPI) =>{
-        console.log(userId);
         try{
             const token = await CheckToken();
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/ootd/list/${userId}`,{
@@ -104,7 +101,6 @@ export const action = {
     getClothInfo : createAsyncThunk("ClosetSlice/getClothInfo", async(clothesId, thunkAPI)=>{
 
         try{
-            console.log(clothesId);
             const token = await CheckToken();
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/detail/${clothesId}`,{
                 headers: {
@@ -112,7 +108,6 @@ export const action = {
                 }
             });
             
-            console.log(response.data);
             return response.data; // 액션의 payload로 값을 반환해야 합니다.
         } catch (e) {
             console.log(e);
@@ -124,14 +119,12 @@ export const action = {
     updateClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async({userId,type,name,brand,info,clothesId}, thunkAPI)=>{
 
         try{
-            console.log(userId);
             const token = await CheckToken();
             const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`,{userId,type,name,brand,info},{
                 headers: {
                   "Authorization" : token,
                 }
             });
-            console.log(response.data);
             return response.data; // 액션의 payload로 값을 반환해야 합니다.
         } catch (e) {
             console.log(e);
@@ -355,7 +348,6 @@ const ClosetSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
-            console.log(`!!!${action.payload.type}`);
             if(action.payload?.type==="TOP"){
                 state.clothesTop = [...action.payload.response];
             }else if(action.payload?.type==="BOTTOM"){
@@ -371,7 +363,6 @@ const ClosetSlice = createSlice({
 
             state.clothesListByType = [...action.payload.response];
 
-            console.log(state.clothesTop.length);
         })
         builder.addCase(action.getClothInfo.fulfilled, (state, action) => {
             //옷 특정 정보 결과
@@ -420,32 +411,26 @@ const ClosetSlice = createSlice({
         builder.addCase(action.OOTDList.fulfilled, (state, action) => {
 
             //옷장 1개씩 돔
-            console.log(action.payload);
             for(let i=0;i<action.payload.length;i++){
                 
-                if(action.payload.ootdId===1){
-                    state.clothesOOTDTop_1 = action.payload.tops;
-                    state.clothesOOTDBottom_1 = action.payload.bottoms;
-                    state.clothesOOTDShoe_1 = action.payload.shoes;
-                    state.clothesOOTDAccessory1_1 = action.payload.accessories1;
-                    state.clothesOOTDAccessory2_1 = action.payload.accessories2;
-                    state.clothesOOTDAccessory3_1 = action.payload.accessories3;
+                if(i==0){
+                    state.clothesOOTDTop_1 = action.payload[i].tops;
+                    state.clothesOOTDBottom_1 = action.payload[i].bottoms;
+                    state.clothesOOTDShoe_1 = action.payload[i].shoes;
+                    state.clothesOOTDAccessory1_1 = action.payload[i].accessories1;
+                    state.clothesOOTDAccessory2_1 = action.payload[i].accessories2;
+                    state.clothesOOTDAccessory3_1 = action.payload[i].accessories3;
                 }
 
-                else if(action.payload.ootdId===1){
-                    state.clothesOOTDTop_2 = action.payload.tops;
-                    state.clothesOOTDBottom_2 = action.payload.bottoms;
-                    state.clothesOOTDShoe_2 = action.payload.shoes;
-                    state.clothesOOTDAccessory1_2 = action.payload.accessories1;
-                    state.clothesOOTDAccessory2_2 = action.payload.accessories2;
-                    state.clothesOOTDAccessory3_2 = action.payload.accessories3;
+                else if(i==1){
+                    state.clothesOOTDTop_2 = action.payload[i].tops;
+                    state.clothesOOTDBottom_2 = action.payload[i].bottoms;
+                    state.clothesOOTDShoe_2 = action.payload[i].shoes;
+                    state.clothesOOTDAccessory1_2 = action.payload[i].accessories1;
+                    state.clothesOOTDAccessory2_2 = action.payload[i].accessories2;
+                    state.clothesOOTDAccessory3_2 = action.payload[i].accessories3;
                 }
             }
-
-            console.log(state.clothesOOTDTop_1);
-            console.log(state.clothesOOTDTop_2);
-          
-            
 
         })
 

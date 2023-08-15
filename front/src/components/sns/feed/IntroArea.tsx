@@ -36,17 +36,13 @@ const IntroArea = () => {
                 if(count===0){
                     hashquery = target;
                     count++;
-                    console.log(`3 ${hashquery}`);
                 }
                 else {
                     hashquery = hashquery+"&"+target;
                     count++;
-                    console.log(`4 ${hashquery}`);
                 }
              }
         }
-
-        console.log(hashquery);
 
 
         let info = {
