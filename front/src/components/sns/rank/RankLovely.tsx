@@ -32,6 +32,34 @@ const RankingLovely = () => {
         dispatch(action_ranking.getPartRankingList({type, page, limit}));
     }, [page])
 
+    // 성별
+    function firstRankGenderColor(gender){
+        console.log(gender)
+
+        if(gender==="FEMALE"){
+            return `${rankingStyle.firstRankProfileImgF}`
+        }else{
+            return `${rankingStyle.firstRankProfileImgM}`
+        }
+    }
+    function notFirstRankGenderColor(gender){
+        console.log(gender)
+
+        if(gender==="FEMALE"){
+            return `${rankingStyle.notFirstRankProfileImgF}`
+        }else{
+            return `${rankingStyle.notFirstRankProfileImgM}`
+        }
+    }
+    function subRankGenderColor(gender){
+        console.log(gender)
+
+        if(gender==="FEMALE"){
+            return `${rankingStyle.subRankProfileImgF}`
+        }else{
+            return `${rankingStyle.subRankProfileImgM}`
+        }
+    }
 
     if (state.partRankingList.length === 0) {
         return <div>Loading...</div>;
@@ -50,7 +78,8 @@ const RankingLovely = () => {
                     
                     {/* 2위 */}
                     <div className={`${rankingStyle.rankSet}`}>
-                        <div className={`${rankingStyle.notFirst}`}>
+                        <div className={`${notFirstRankGenderColor(state.top3RankingList[1]?.gender)}`}>
+                        {/* <div className={`${rankingStyle.notFirst}`}> */}
                             <img src={state.top3RankingList[1]?.profileImg}/>
                         </div>
 
@@ -60,7 +89,8 @@ const RankingLovely = () => {
                     
                     {/* 1위 */}
                     <div className={`${rankingStyle.rankSet }`}>
-                        <div className={`${rankingStyle.first}`}>
+                    <div className={`${firstRankGenderColor(state.top3RankingList[0]?.gender)}`}>
+                        {/* <div className={`${rankingStyle.first}`}> */}
                             <img src={state.top3RankingList[0]?.profileImg}/>
                 
                         </div>
@@ -70,7 +100,8 @@ const RankingLovely = () => {
                     
                     {/* 3위 */}
                     <div className={`${rankingStyle.rankSet}`}>
-                        <div className={`${rankingStyle.notFirst}`}>
+                    <div className={`${notFirstRankGenderColor(state.top3RankingList[2]?.gender)}`}>
+                        {/* <div className={`${rankingStyle.notFirst}`}> */}
                             <img src={state.top3RankingList[2]?.profileImg}/>
                         </div>
 
@@ -93,18 +124,24 @@ const RankingLovely = () => {
                         state.partRankingList?.map((oneUser, idx)=>{
                             
                         return(
-                            
                             <div key={idx} className={`${rankingStyle.userSlotLovely} ${
                                 oneUser.userId === loginUser.id ? rankingStyle.MyLovelyRank : rankingStyle.whiteRank
                             } `}>
                                 {/* 순위 / 프로필 이미지 / 닉네임 / 점수 */}
                                 <div>{oneUser.rank}위</div>
 
-                                <div className={`${rankingStyle.profileImg}`}>
+                                <div className={`${subRankGenderColor(oneUser.gender)}`}>
+                                {/* <div className={`${rankingStyle.profileImg}`}> */}
                                     <img src={oneUser.profileImg}/>
                                 </div>
-
-                                <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MyLovelyRank : rankingStyle.blackRank}`}>{oneUser.nickname}</div>
+                            
+                                <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MyLovelyRank : rankingStyle.blackRank}`}>{oneUser.nickname} 
+                                {oneUser.showBadgeType === "X" ? null : oneUser.showBadgeType === "LOVELY" ? <img src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} /> 
+                                : oneUser.showBadgeType === "NATURAL" ? <img src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} /> 
+                                : oneUser.showBadgeType === "MODERN" ? <img src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`} /> 
+                                : oneUser.showBadgeType === "SEXY" ? <img src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`} /> 
+                                : null}
+                                </div>
 
                                 <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MyLovelyRank : rankingStyle.blackRank}`}>{oneUser.score}</div>
                             </div>

@@ -39,30 +39,18 @@ const MypageMain = () => {
   // 최초 1회 실행
   useEffect(
     () => {
-      // if(loginUser.id !== Number(watchingUserId))
-      //   return;
-
       dispatch(action_mypage.getMyFollowerList(loginUser.id));
     },[])
 
   useEffect(() => {
-    // if(loginUser.id !== Number(watchingUserId))
-    //     return;
-
     dispatch(action_mypage.getMyFollowingList(loginUser.id));
   }, [])
 
   useEffect(() => {
-    // if(loginUser.id === Number(watchingUserId))
-    //     return;
-
     dispatch(action_mypage.getYourFollowerList(Number(watchingUserId)));
   }, [])
 
   useEffect(() => {
-    // if(loginUser.id === Number(watchingUserId))
-    //     return;
-
     dispatch(action_mypage.getYourFollowingList(Number(watchingUserId)));
   }, [])
 
