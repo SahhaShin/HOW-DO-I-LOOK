@@ -207,7 +207,7 @@ const LiveMenu = () => {
             
             {/* 내가 호스트인데 나가면 방송종료, 다른 사람이 나가면 퇴장 */}
             {
-                loginUser.id===hostId?
+                String(loginUser.id)!==hostId?
                 <button onClick={() => {kick(); handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_exit.png'}/></button>
                 :
                 <button onClick={() => {endLive(); handleMenuClick("Menu 5")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu5_closeLive.png'}/></button>
