@@ -145,7 +145,9 @@ public class RedisRankingService {
         List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
 
         for(int i=0; i<rankingList.size(); i++) {
+            System.out.println("랭킹리스트!!!");
             System.out.println(rankingList.get(i));
+            System.out.println(zSetOperations);
             User user = userRepository.findById(Long.parseLong(rankingList.get(i))).get();
 
             RankingResponseDto rankingResponseDto = RankingResponseDto.builder()

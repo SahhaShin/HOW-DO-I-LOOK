@@ -6,7 +6,7 @@ import com.ssafy.howdoilook.domain.follow.dto.response.FolloweeResponseDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.FollowerResponseDto;
 import com.ssafy.howdoilook.domain.follow.dto.response.PerfectFollowResponseDto;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
-import com.ssafy.howdoilook.domain.follow.repository.FollowReposiroty;
+import com.ssafy.howdoilook.domain.follow.repository.FollowRepository;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.global.handler.AccessException;
@@ -15,7 +15,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FollowService {
-    private final FollowReposiroty followRepository;
+    private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
     //데이터가 중복으로 삽입되는거 ifelse로 처리했는데 예외로 처리하면 더 좋을거 같다.
@@ -177,5 +176,14 @@ public class FollowService {
     public List<PerfectFollowResponseDto> getPerfectFollowList() {
 
         return followRepository.findPerfectFollowers();
+    }
+
+    public boolean checkFollowing(Long userId, Long targetUserId) {
+        Follow follow = followRepository.findFollowIdByFollowerAndFollowee(userId, targetUserId);
+
+        if(follow == null)
+            return false;
+        else
+            return true;
     }
 }
