@@ -26,7 +26,8 @@ const IntroArea = ( setPage) => {
 
     dispatch(
       action.getLiveList({
-        userId: state.userId,
+        following: (state.userId == "") ?false : true,
+        userId: loginUser.id,
         type: type,
         search: searchInput,
         pageNum: state.page,
@@ -46,7 +47,8 @@ const IntroArea = ( setPage) => {
     }
     dispatch(
       action.getLiveList({
-        userId: state.userId,
+        following: (state.userId == "") ?false : true,
+        userId: loginUser.id,
         type: (type == hash)? "" : hash,
         search: searchInput,
         pageNum: 0,
@@ -68,7 +70,8 @@ const IntroArea = ( setPage) => {
     setSearchInput(inputNull? "" : e.target.value);
     dispatch(
       action.getLiveList({
-        userId: state.userId,
+        following: (state.userId == "") ?false : true,
+        userId: loginUser.id,
         type: type,
         search: inputNull? "" : e.target.value,
         pageNum: 0,
