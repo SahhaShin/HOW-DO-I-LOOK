@@ -41,30 +41,32 @@ public class RoomUserService {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 방이 존재하지 않습니다.", 1));
 
-        if((room.getMinAge() > user.getAge()) || (room.getMaxAge() <= user.getAge())) {
-            throw new AccessException("나이 제한에 맞지 않습니다.");
-        }
+        if(!(room.getHost().getId() == userId)) {
+            if((room.getMinAge() > user.getAge()) || (room.getMaxAge() <= user.getAge())) {
+                throw new AccessException("나이 제한에 맞지 않습니다.");
+            }
 
-        if((room.getGender() != Gender.X) && !(room.getGender().equals(user.getGender()))) {
-            throw new AccessException("성별 제한에 맞지 않습니다.");
-        }
+            if((room.getGender() != Gender.X) && !(room.getGender().equals(user.getGender()))) {
+                throw new AccessException("성별 제한에 맞지 않습니다.");
+            }
 
-        Optional<RoomUser> findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(room.getId(), user.getId());
+            Optional<RoomUser> findRoomUser = roomUserRepository.findByRoom_IdAndUser_Id(room.getId(), user.getId());
 
-        if(findRoomUser.isPresent()) {
-             if(findRoomUser.get().getStatus() == RoomUserType.KICK) {
-                 throw new AccessException("강퇴 당한 방은 들어올 수 없습니다.");
-             }
-            if((findRoomUser.get().getStatus() == RoomUserType.JOIN) || (findRoomUser.get().getStatus() == RoomUserType.EXIT)) {
-                // 이미 참여중이거나 나갔다가 다시 들어올 경우
-                findRoomUser.get().updateStatus(RoomUserType.JOIN);
+            if(findRoomUser.isPresent()) {
+                if(findRoomUser.get().getStatus() == RoomUserType.KICK) {
+                    throw new AccessException("강퇴 당한 방은 들어올 수 없습니다.");
+                }
+                if((findRoomUser.get().getStatus() == RoomUserType.JOIN) || (findRoomUser.get().getStatus() == RoomUserType.EXIT)) {
+                    // 이미 참여중이거나 나갔다가 다시 들어올 경우
+                    findRoomUser.get().updateStatus(RoomUserType.JOIN);
 
-                RoomUserAddResponseDto roomUserAddResponseDto = RoomUserAddResponseDto.builder()
-                        .roomCode(room.getCode())
-                        .chatCode(room.getChatCode())
-                        .build();
+                    RoomUserAddResponseDto roomUserAddResponseDto = RoomUserAddResponseDto.builder()
+                            .roomCode(room.getCode())
+                            .chatCode(room.getChatCode())
+                            .build();
 
-                return roomUserAddResponseDto;
+                    return roomUserAddResponseDto;
+                }
             }
         }
 
