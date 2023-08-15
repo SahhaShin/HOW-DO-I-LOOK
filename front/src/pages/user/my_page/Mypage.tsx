@@ -55,7 +55,8 @@ const Mypage = () => {
                     {/* 우측 마이페이지 컴포넌트 */}
                     <div className={`${mypageStyle.mid}`}>
                         {/* 모달 */}
-                        {state.followModalOpen?<div className={`${mypageStyle.followModal}`}><MypageFollowModal/></div>:null}
+                        {state.followModalOpen && <div className={`${mypageStyle.followModal}`}><MypageFollowModal/></div>}
+                        {state.badgeUpdateModalOpen && <div className={`${mypageStyle.BadgeModal}`}><MypageBadgeModal/></div>}
                         
                         <MypageHeader/>
                         
