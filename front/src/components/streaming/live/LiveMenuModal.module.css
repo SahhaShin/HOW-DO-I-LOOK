@@ -11,7 +11,7 @@
     /* 위치 */
     margin: 0 auto;
     margin-top: 5%;
-    margin-bottom: 3%;
+    /* margin-bottom: 3%; */
     margin-left: 40%;
 
     /* 크기 */
@@ -22,14 +22,14 @@
     /* 컬러 */
     background-color: white;
 
-    z-index: 10000;
+    z-index: 10;
 }
 
-.modal > div{
+.menumiddle>div{
     display: flex;
     /* justify-content: center; */
     align-items: center;
-    margin-right: 10px;
+    /* margin-right: 10px; */
     width: 100%;
     height: 70px;
 
@@ -41,13 +41,13 @@
     border-bottom: 1px solid black;
 }
 
-.modal > div:hover{
+.menumiddle>div:hover{
     background-color: var(--signiture);
     color: white;
     font-weight: 900;
 }
 
-.modal > div:nth-child(3){
+.menumiddle>div:nth-child(1){
     margin-top: 20px;
     border-top: 1px solid black;
 }
@@ -84,4 +84,15 @@
 }
 .closeBtn{
     cursor: pointer;
+}
+
+
+.menumiddle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+
+    width: 100%;
+    height: 100%;
 }
