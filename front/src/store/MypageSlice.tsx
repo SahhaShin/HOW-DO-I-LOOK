@@ -714,7 +714,31 @@ export const action_mypage = {
     } catch(e) {
       throw e;
     }
-  })
+  }),
+
+  //프로필 이미지 수정
+  profileUpdate : createAsyncThunk(`MypageSlice/profileUpdate`, async(formdata) => {
+    try {
+
+      console.log(formdata);
+
+      const token = await CheckToken();
+
+      const user_id = JSON.parse(sessionStorage.getItem("loginUser")).id;
+
+      const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/user/update/profileImg/${user_id}`,formdata, {
+        headers: {
+          "Authorization" : token,
+          "Content-Type": "multipart/form-data"
+        }
+      })
+
+      console.log(response.data);
+      return response.data; //userId
+    } catch(e) {
+      throw e;
+    }
+  }),
 };
 
 const MypageSlice = createSlice({
@@ -980,8 +1004,11 @@ const MypageSlice = createSlice({
 
     builder.addCase(action_mypage.getShowBadge.fulfilled, (state, action) => {
       state.showBadge = action.payload;
-    })
+    });
+
   }
+
+  
 });
 
 export let {
