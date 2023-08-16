@@ -20,6 +20,9 @@ import { useParams } from "react-router-dom";
 //api
 import {ifBlackList} from "../../../hook/UserApi"
 
+// alert창
+import Swal from "sweetalert2";
+
 
 const MypageHeader = () => {
 
@@ -250,7 +253,49 @@ const MypageHeader = () => {
 
   }
 
-  
+
+  // 프로필 이미지 수정
+  function updateProfileImg(){
+
+    Swal.fire({
+      icon: "question",
+      title: "수정",
+      text: `프로필 이미지를 수정하시겠습니까??`,
+      showCancelButton: true,
+      confirmButtonText: "수정",
+      cancelButtonText: "취소",
+      confirmButtonColor:'#EAA595',
+      customClass: {
+          confirmButton: mypageHeaderStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+          cancelButton: mypageHeaderStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
+        }
+  }).then((res) => {
+      if (res.isConfirmed) {
+
+        // const id = loginUser.id;
+        const userUpdateProfileImgDto = {
+          "imageUrl":loginUser.profileImg
+        }
+
+        console.log(loginUser.profileImg);
+        const formdata = new FormData();
+        formdata.append("userUpdateProfileImgDto", new Blob([JSON.stringify(userUpdateProfileImgDto)],{type: "application/json"}));
+        formdata.append("s3upload", File);
+        
+        dispatch(action_mypage.profileUpdate(formdata));
+
+        // 세션에 저장
+        const newLoginuserInfo = loginUser;
+        newLoginuserInfo.profileImg = 
+
+        sessionStorage.setItem();
+      }
+      else{
+          
+      }
+  });
+
+  }
 
 
   
@@ -269,7 +314,7 @@ const MypageHeader = () => {
           {/* <div className={`${mypageHeaderStyle.profile}`}> */}
             <img src={Image} onClick={()=>{fileInput.current.click()}} />
             <input type='file' style={{display:'none'}} accept='image/jpg,image/png,image/jpeg' name='profile_img'
-              onChange={(e)=>onChange(e)} ref={fileInput}/>
+              onChange={(e)=>{onChange(e);updateProfileImg();}} ref={fileInput}/>
           </div>
           :
           <div className={`${genderColor(state.targetUser.gender)}`}>

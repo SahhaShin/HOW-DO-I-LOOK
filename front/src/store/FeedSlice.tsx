@@ -23,7 +23,7 @@ export const action_feed = {
             icon: 'success',
             title: '등록 완료',
             text: '피드가 성공적으로 등록되었습니다.',
-            confirmButtonColor: '#4570F5',
+            confirmButtonColor: '#EAA595',
         })
 
         // return res.data;
@@ -560,7 +560,7 @@ const FeedSlice = createSlice({
                 icon: 'success',
                 title: '삭제 완료',
                 text: '피드가 삭제되었습니다.',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
 
             console.log(action.payload);
@@ -595,7 +595,7 @@ const FeedSlice = createSlice({
                 icon: 'success',
                 title: '삭제 완료',
                 text: '댓글이 삭제되었습니다.',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
         })
 

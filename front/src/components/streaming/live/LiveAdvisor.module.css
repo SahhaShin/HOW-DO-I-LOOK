@@ -47,7 +47,8 @@
 
 .badge{
     position: absolute;
-    top: 570px;
+    top: 50px;
+    left: 110px;
     margin-left: 5%;
     width: 30px;
     height: 30px;

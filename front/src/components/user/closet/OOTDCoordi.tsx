@@ -168,7 +168,7 @@ const OOTDCoordi = (props) => {
                 icon: 'warning',
                 title: 'Closet을 채워주세요 :)',
                 text: '최소 옷/바지/신발 각 1벌과 악세서리 3개를 채워주세요!',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
             return;
         }

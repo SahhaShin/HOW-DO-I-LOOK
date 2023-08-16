@@ -39,7 +39,7 @@ const LiveScoreModal = ()=>{
                 icon: 'warning',
                 title: '제한 점수를 맞춰주세요!',
                 text: '-5 ~ 5점까지 점수를 주실 수 있습니다 :)',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
                 customClass: {
                     container: 'custom-swal-container', // 여기서 'custom-swal-container'는 사용자가 정의한 CSS 클래스 이름입니다.
                     confirmButton: 'custom-swal-confirm-button', // 사용자 정의 버튼 클래스

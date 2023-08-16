@@ -201,8 +201,8 @@
 /* 신고 모달 */
 .declarationModal{
     position: fixed;
-    margin-top: 5%;
-    margin-left: 32%;
+    margin-top: 250px;
+    margin-left: 35%;
     z-index: 10;
 }
 

@@ -714,7 +714,31 @@ export const action_mypage = {
     } catch(e) {
       throw e;
     }
-  })
+  }),
+
+  //프로필 이미지 수정
+  profileUpdate : createAsyncThunk(`MypageSlice/profileUpdate`, async(formdata) => {
+    try {
+
+      console.log(formdata);
+
+      const token = await CheckToken();
+
+      const user_id = JSON.parse(sessionStorage.getItem("loginUser")).id;
+
+      const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/user/update/profileImg/${user_id}`,formdata, {
+        headers: {
+          "Authorization" : token,
+          "Content-Type": "multipart/form-data"
+        }
+      })
+
+      console.log(response.data);
+      return response.data; //userId
+    } catch(e) {
+      throw e;
+    }
+  }),
 };
 
 const MypageSlice = createSlice({
@@ -841,7 +865,7 @@ const MypageSlice = createSlice({
         icon: 'success',
         title: '팔로우 완료',
         text: '팔로우 등록이 완료되었습니다 :)',
-        confirmButtonColor: '#4570F5',
+        confirmButtonColor: '#EAA595',
       })
 
     });
@@ -851,7 +875,7 @@ const MypageSlice = createSlice({
         icon: 'info',
         title: '이미 팔로우를 하셨어요!',
         text: '팔로우 등록이 이미 완료되었습니다 :)',
-        confirmButtonColor: '#4570F5',
+        confirmButtonColor: '#EAA595',
       })
     })
 
@@ -903,7 +927,7 @@ const MypageSlice = createSlice({
         icon: 'success',
         title: '블랙리스트 등록 완료!',
         text: '블랙리스트 등록이 완료되었습니다 :)',
-        confirmButtonColor: '#4570F5',
+        confirmButtonColor: '#EAA595',
       })
     });
 
@@ -913,7 +937,7 @@ const MypageSlice = createSlice({
         icon: 'info',
         title: '이미 블랙리스트에 등록되었어요!',
         text: '블랙리스트에 이미 등록된 유저입니다 :)',
-        confirmButtonColor: '#4570F5',
+        confirmButtonColor: '#EAA595',
       })
     });
 
@@ -974,14 +998,17 @@ const MypageSlice = createSlice({
         icon: 'success',
         title: '교체 완료',
         text: '뱃지가 교체되었습니다',
-        confirmButtonColor: '#4570F5',
+        confirmButtonColor: '#EAA595',
     })
     });
 
     builder.addCase(action_mypage.getShowBadge.fulfilled, (state, action) => {
       state.showBadge = action.payload;
-    })
+    });
+
   }
+
+  
 });
 
 export let {

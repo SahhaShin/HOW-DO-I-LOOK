@@ -17,8 +17,9 @@ const LiveAdvisor = () => {
         if(badge==="LOVELY"){
             return process.env.PUBLIC_URL + '/img/badge/Lovely_colored.png';
         }
-
+        
         else if(badge==="NATURAL"){
+            console.log("에에에ㅇㅇ");
             return process.env.PUBLIC_URL + '/img/badge/Natural_colored.png';
         }
 
@@ -104,6 +105,8 @@ const LiveAdvisor = () => {
         dispatch(changeMenuModalOpen(true));
         
     }
+
+    console.log(state_live.roomPeopleList);
     
     return(
         <div className={`${liveAdvisorStyle.total}`}>

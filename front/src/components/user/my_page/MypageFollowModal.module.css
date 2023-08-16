@@ -92,8 +92,11 @@
     width: 60px;
     height: 30px;
     margin-right: 3px;
-    border: 1px solid var(--border);
+    background-color: var(--pinkes);
+    border: 1px solid var(--pinkes);
+    color: white;
 }
+
 .followBtn > button:hover{
     background-color: var(--pinkes);
     color: white;

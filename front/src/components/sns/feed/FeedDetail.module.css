@@ -142,7 +142,8 @@
 }
 
 .alarmBtn > img{
-    width: 80%;
+    width: 70%;
+    height: 100%;
     cursor: pointer;
 }
 
@@ -650,6 +651,7 @@
     /* 기타 확인 버튼에 원하는 스타일을 추가하세요. */
     width: 100px;
     height: 50px;
+    background-color: var(--pinkes);
   }
   
   .cancelButton {
@@ -657,4 +659,25 @@
     /* 기타 취소 버튼에 원하는 스타일을 추가하세요. */
     width: 100px;
     height: 50px;
+    background-color: var(--pinkes);
+  }
+
+
+
+/* 스크롤 */
+.oneComment::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .oneComment::-webkit-scrollbar-thumb {
+    background-color: var(--pinkes);
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  
+  .oneComment::-webkit-scrollbar-track {
+    background-color: lightgrey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
   }
