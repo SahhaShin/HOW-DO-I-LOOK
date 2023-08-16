@@ -122,6 +122,7 @@ const initialState = {
   roomPeopleList:[],
   menuModalOpen:false,
   selectAdvisor:null, //id, nickname, profileImg
+  closetOpenAndSendAdvisor:null,
   otherClosetOpen:false,
   scoreModalOpen:false,
   pickBadge:null,
@@ -169,9 +170,11 @@ const StreamingSlice = createSlice({
     changeSelectAdvisor(state, action){
       state.selectAdvisor=action.payload;
     },
+    changeClosetOpenAndSendAdvisor(state, action){
+      state.closetOpenAndSendAdvisor=state.selectAdvisor;
+    },
     changeOtherClosetOpen(state, action){
-      state.selectAdvisor=action.payload;
-      state.otherClosetOpen=true;
+      state.otherClosetOpen=action.payload;
     },
     changeScoreModalOpen(state, action){
       state.scoreModalOpen=action.payload;
@@ -270,5 +273,5 @@ const StreamingSlice = createSlice({
   
 });
 
-export let {deletePickList,changeExitAlam,changeExitRoomNo,changeExitLiveByUser,changeLiveEndAlert,changeLiveEndRoomNo,changeLiveEndByHost,changeAreYouKick,setKickUser,changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
+export let {changeClosetOpenAndSendAdvisor,deletePickList,changeExitAlam,changeExitRoomNo,changeExitLiveByUser,changeLiveEndAlert,changeLiveEndRoomNo,changeLiveEndByHost,changeAreYouKick,setKickUser,changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
 export default StreamingSlice.reducer;

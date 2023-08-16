@@ -7,7 +7,7 @@ import liveMenuModalStyle from "./LiveMenuModal.module.css";
 //redux
 import { useSelector, useDispatch} from "react-redux"; 
 import {action} from "../../../store/ClosetSlice";
-import {action_live, setKickUser, changeScoreModalOpen, changeMenuModalOpen, changeOtherClosetOpen} from "../../../store/StreamingSlice";
+import {action_live,changeClosetOpenAndSendAdvisor, setKickUser, changeScoreModalOpen, changeMenuModalOpen, changeOtherClosetOpen} from "../../../store/StreamingSlice";
 import {action_mypage} from "../../../store/MypageSlice";
 
 // alert창
@@ -87,7 +87,7 @@ const LiveMenuModal = ()=>{
             <p>{loginUser.nickname}님 메뉴를 선택해주세요!</p>
             
             <div className={`${liveMenuModalStyle.menumiddle}`}>
-                <div onClick={()=>{dispatch(action.getClothesListByType({clothesType:"ALL", userId:state_live.selectAdvisor.id, pageNum:10})); dispatch(changeOtherClosetOpen(true));dispatch(changeMenuModalOpen(false))}} className={`${liveMenuModalStyle.menu}`}>
+                <div onClick={()=>{dispatch(changeClosetOpenAndSendAdvisor());dispatch(action.getClothesListByType({clothesType:"ALL", userId:state_live.selectAdvisor.id, pageNum:null})); dispatch(changeOtherClosetOpen(true));dispatch(changeMenuModalOpen(false))}} className={`${liveMenuModalStyle.menu}`}>
                     <div><img src={process.env.PUBLIC_URL + '/img/live/laundry.png'}/></div>
                     <div>옷장보기</div>
                 </div>

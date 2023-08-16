@@ -8,7 +8,7 @@ import liveMenuStyle from "./LiveMenu.module.css";
 import { useSelector, useDispatch} from "react-redux"; 
 import {action, changePick} from "../../../store/ClosetSlice";
 import {action_feed, changePick_feed} from "../../../store/FeedSlice";
-import {action_live,deletePickList,changeExitRoomNo,changeExitLiveByUser,changeLiveEndRoomNo, changeLiveEndByHost,changeOtherClosetOpen, sendPickListChat, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
+import {action_live,changeSelectAdvisor,deletePickList,changeExitRoomNo,changeExitLiveByUser,changeLiveEndRoomNo, changeLiveEndByHost,changeOtherClosetOpen, sendPickListChat, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -37,6 +37,8 @@ const LiveMenu = () => {
     const [selectedMenu, setSelectedMenu] = useState(null);
     const [searchInput, setSearchInput] = useState<string>("");
     const [pickList, setPickList] = useState<clothImage[]>([]);
+
+    const[hostCloset, setHostCloset] = useState(false);
 
     const handleMenuClick = (menu) => {
       setSelectedMenu(menu);
@@ -171,17 +173,15 @@ const LiveMenu = () => {
     }
 
     useEffect(()=>{
-
+        setHostCloset(false);
         if (state_live.otherClosetOpen === true) {
             dispatch(changeOtherClosetOpen(false));
             setTimeout(() => {
                 setSelectedMenu("Menu 1");
-            }, 0); // Use a very short delay, such as 0 milliseconds
+            }, 0);
         }
-    },[state_live.otherClosetOpen])
+    },[state_live.otherClosetOpen, state_live.selectAdvisor])
 
-
-    console.log(state_live.otherClosetOpen);
 
     // 유저 스스로 퇴장
     function exitLive(){
@@ -249,7 +249,7 @@ const LiveMenu = () => {
     return (
       <div className={`${liveMenuStyle.sidebar}`}>
         <div>
-            <button onClick={() => {dispatch(action.getClothesListByType({clothesType:"ALL", userId:hostId, pageNum:null})); handleMenuClick("Menu 1")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu1_closet.png'}/></button>
+            <button onClick={() => {setHostCloset(true);dispatch(action.getClothesListByType({clothesType:"ALL", userId:hostId, pageNum:null})); handleMenuClick("Menu 1")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu1_closet.png'}/></button>
             <button onClick={() => {dispatch(action_feed.hashSearchTotalList()); handleMenuClick("Menu 2")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu2_search.png'}/></button>
             <button onClick={() => {handleMenuClick("Menu 3")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu3_set.png'}/></button>
             <button onClick={() => {dispatch(action_live.getInfo(roomId)); handleMenuClick("Menu 4")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu4_info.png'}/></button>
@@ -265,15 +265,15 @@ const LiveMenu = () => {
         {selectedMenu === "Menu 1" && <div className={`${liveMenuStyle.menuContent}`} style={{ backgroundColor: "rgb(36,43,62)" }}>
             
             {/* 닫기 버튼 */}
-            <div onClick={()=>{setSelectedMenu(null);}} className={`${liveMenuStyle.outer}`}>
+            <div onClick={()=>{setHostCloset(false);setSelectedMenu(null);dispatch(changeOtherClosetOpen(false));}} className={`${liveMenuStyle.outer}`}>
                 <div className={`${liveMenuStyle.inner}`}>
                     <label className={`${liveMenuStyle.livelabel}`}>Back</label>
                 </div>
             </div>
             <div className={`${liveMenuStyle.statement_CLOSET}`}>
-                {   state_live.otherClosetOpen===false?
+                {   hostCloset || String(state_live.closetOpenAndSendAdvisor.id)===String(hostId)?
                     <p>HOST CLOSET</p>:
-                    <p>{state_live.selectAdvisor?.nickname} CLOSET</p>
+                    <p>{state_live.closetOpenAndSendAdvisor?.nickname}'s CLOSET</p>
                 }
             </div>
 
