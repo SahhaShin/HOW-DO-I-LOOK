@@ -127,10 +127,10 @@ export const action = {
       } else {
         url = url + `all?page=${data.pageNum}&userId=${data.userId}`;
       } //type이 있다면 삽입
-      if (data.type != "") {
+      if ( !(typeof data.type == "undefined" || data.type == null || data.type == "")) {
         url = url + `&type=${data.type}`;
       } //키워드로 서치중인지 확인
-      if (data.search != "") {
+      if (!(typeof data.search == "undefined" || data.search == null || data.search == "")) {
         url = url + `&search=${data.search}`;
       }
       console.log(url);
