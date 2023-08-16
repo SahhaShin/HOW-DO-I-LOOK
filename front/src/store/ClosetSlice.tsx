@@ -248,6 +248,7 @@ interface closet{
 
     // 페이지네이션
     page:number,
+    totalPage : number,
 
     clothRegistOk:boolean,
 
@@ -291,6 +292,7 @@ const initialState:closet = {
 
     clothInfo : null,
     page:0,
+    totalPage : 0,
 
     clothRegistOk : false,
 
@@ -316,14 +318,19 @@ const ClosetSlice = createSlice({
 
             if(state.clothesTypeKo==="상의"){
                 state.clothesTypeEn="TOP";
+                state.page = 0
             }else if(state.clothesTypeKo==="하의"){
                 state.clothesTypeEn="BOTTOM";
+                state.page = 0
             }else if(state.clothesTypeKo==="신발"){
                 state.clothesTypeEn="SHOE";
+                state.page = 0
             }else if(state.clothesTypeKo==="악세서리"){
                 state.clothesTypeEn="ACCESSORY";
+                state.page = 0
             }else{
                 state.clothesTypeEn="ALL";
+                state.page = 0
             }
         },
         changePage(state, action){
@@ -348,20 +355,21 @@ const ClosetSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
+            state.totalPage = action.payload.response.totalPage
             if(action.payload?.type==="TOP"){
-                state.clothesTop = [...action.payload.response];
+                state.clothesTop = [...action.payload.response.clothesList];
             }else if(action.payload?.type==="BOTTOM"){
-                state.clothesBottom = [...action.payload.response];
+                state.clothesBottom = [...action.payload.response.clothesList];
             }else if(action.payload?.type==="SHOE"){
-                state.clothesShoe = [...action.payload.response];
+                state.clothesShoe = [...action.payload.response.clothesList];
             }else if(action.payload?.type==="ACCESSORY"){
-                state.clothesAccessory = [...action.payload.response];
+                state.clothesAccessory = [...action.payload.response.clothesList];
             }else{
                 // all
-                state.clothesAll = [...action.payload.response];
+                state.clothesAll = [...action.payload.response.clothesList];
             }
 
-            state.clothesListByType = [...action.payload.response];
+            state.clothesListByType = [...action.payload.response.clothesList];
 
         })
         builder.addCase(action.getClothInfo.fulfilled, (state, action) => {
