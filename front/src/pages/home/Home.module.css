@@ -1,0 +1,219 @@
+.bg {
+  position: relative;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.outer {
+  height: 100vh;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.section {
+  height: 100vh;
+  width: 100%;
+}
+
+.section:nth-child(1) {
+  background-color: rgb(230, 74, 74);
+}
+
+.section:nth-child(2) {
+  background-color: rgb(255, 208, 53);
+}
+
+.section:nth-child(3) {
+  background-color: rgb(77, 218, 157);
+}
+
+.section:nth-child(4) {
+  background-color: rgb(83, 232, 255);
+}
+
+.section:nth-child(5) {
+  /* height: 50vh; */
+  background-color: rgb(126, 83, 255);
+}
+
+.buttonLink {
+  color: white;
+  text-decoration: none;
+}
+
+.intro1Btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #EAA595;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 68px;
+}
+
+.intro1Btn {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  background-color: #EAA595;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 55px;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.intro1Btn:hover {
+  background-color: #d1816c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.intro1Btn2 {
+  position: absolute;
+  bottom: 40px;
+  right: 240px;
+  background-color: #EAA595;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 55px;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.intro1Btn2:hover {
+  background-color: #d1816c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.intro2Btn {
+  position: absolute;
+  bottom: 20%;
+  left: 17%;
+  background-color: #79AF9D;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 7%;
+  width: 12%;
+  text-decoration: none;
+  font-size: 90%;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.intro2Btn:hover {
+  background-color: #619882;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.intro3Btn {
+  position: absolute;
+  bottom: 23%;
+  left: 71%;
+  background-color: #D15014;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 7%;
+  width: 12%;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.intro3Btn:hover {
+  background-color: #A0370A;
+  /* Slightly darker color on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.intro4Btn {
+  position: absolute;
+  bottom: 23%;
+  left: 17%;
+  background-color: #004A98;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 7%;
+  width: 12%;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.intro4Btn:hover {
+  background-color: #002A5C;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.intro5Btn {
+  position: absolute;
+  bottom: 28%;
+  left: 44%;
+  background-color: #DB809E;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 7%;
+  width: 12%;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.intro5Btn:hover {
+  background-color: #B1637B;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.intro5Btn2 {
+  position: absolute;
+  bottom: 1%;
+  right: 48%;
+  background-color: #DB809E;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 8%;
+  width: 6%;
+  opacity: 0;
+}

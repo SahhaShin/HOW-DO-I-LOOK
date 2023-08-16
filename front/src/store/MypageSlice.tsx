@@ -3,7 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 import { useDispatch } from "react-redux";
-
+import { useNavigate } from 'react-router-dom';
 import { CheckToken } from "../hook/UserApi";
 
 // 임시
@@ -118,6 +118,7 @@ interface Mypage {
 
   likeScore: likeScore;
   badgeList: Badges[];
+  showBadge: string|null;
 }
 
 // 초기화
@@ -156,6 +157,7 @@ const initialState: Mypage = {
     modernScore: 0,
   },
   badgeList: [],
+  showBadge: "X",
 
   followTempUser: {
     id: 0,
@@ -622,14 +624,14 @@ export const action_mypage = {
       }
     }),
 
-  updateBadge : createAsyncThunk(`MypageSlice/updateBadge`, async ({id, badge}:BadgeReq) => {
+  updateBadge : createAsyncThunk(`MypageSlice/updateBadge`, async ({id, badge}) => {
     try {
 
       console.log(`id = ${id}, badge = ${badge}`);
       const token = await CheckToken();
 
       const response = await axios.put(
-        `${process.env.REACT_APP_SERVER}/api/user/update/${id}/${badge}`,
+        `${process.env.REACT_APP_SERVER}/api/user/update/${id}/${badge}`,{},
         {
           headers: {
             Authorization: token
@@ -637,8 +639,29 @@ export const action_mypage = {
         }
       );
 
-      return response.data;
+      const dto = {
+        "id" : id,
+        "badge" : badge
+      }
+
+      return dto;
     } catch (e) {
+      throw e;
+    }
+  }),
+
+  getShowBadge : createAsyncThunk(`MypageSlice/getShowBadge`, async(user_id) => {
+    try {
+      const token = await CheckToken();
+
+      const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/user/showBadge/${user_id}`, {
+        headers: {
+          "Authorization" : token
+        }
+      })
+
+      return response.data;
+    } catch(e) {
       throw e;
     }
   })
@@ -671,7 +694,7 @@ const MypageSlice = createSlice({
     },
     changeFeedReadMode(state, action){
       state.feedReadMode = action.payload;
-    }
+    },
   },
 
   extraReducers: (builder) => {
@@ -885,6 +908,14 @@ const MypageSlice = createSlice({
     builder.addCase(action_mypage.updateBadge.fulfilled, (state, action) => {
       //저절로 session에 등록되나? 
 
+      const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
+
+      loginUser.showBadgeType = action.payload.badge;
+
+      window.sessionStorage.setItem("loginUser", JSON.stringify(loginUser));
+
+      state.showBadge = action.payload.badge;
+
       Swal.fire({
         icon: 'success',
         title: '교체 완료',
@@ -892,6 +923,10 @@ const MypageSlice = createSlice({
         confirmButtonColor: '#4570F5',
     })
     });
+
+    builder.addCase(action_mypage.getShowBadge.fulfilled, (state, action) => {
+      state.showBadge = action.payload;
+    })
   }
 });
 

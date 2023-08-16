@@ -7,6 +7,8 @@ import mypageStyle from "./Mypage.module.css";
 import { useSelector, useDispatch } from "react-redux"; 
 import {action_mypage, changeBadgeUpdateModalOpen, changeFollowModalOpen} from "../../../store/MypageSlice";
 import {changeDetailModalOpen} from "../../../store/FeedSlice";
+import {changeMenuItemNum} from "../../../store/UtilSlice";
+
 
 import {useParams} from 'react-router-dom'
 
@@ -29,6 +31,7 @@ const Mypage = () => {
     let state = useSelector((state:any)=>state.mypage);
     let state_feed = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
+    dispatch(changeMenuItemNum(5))
 
     const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
 

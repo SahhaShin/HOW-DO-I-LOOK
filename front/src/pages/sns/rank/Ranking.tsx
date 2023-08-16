@@ -4,6 +4,8 @@ import rankingStyle from "./Ranking.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action_ranking, changeRankMode} from "../../../store/RankingSlice";
+import {changeMenuItemNum} from "../../../store/UtilSlice";
+
 
 
 // 컴포넌트
@@ -23,6 +25,7 @@ const Ranking = () => {
     //redux 관리
     let state = useSelector((state: any) => state.rank);
     let dispatch = useDispatch();
+    dispatch(changeMenuItemNum(3))
 
 
 
