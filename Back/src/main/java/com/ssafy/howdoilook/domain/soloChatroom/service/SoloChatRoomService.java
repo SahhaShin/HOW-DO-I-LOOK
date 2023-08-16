@@ -135,6 +135,7 @@ public class SoloChatRoomService {
 
             ChatContextListResponseDto responseDto = ChatContextListResponseDto.builder()
                     .chatRoomCode(roomCode)
+                    .chatRoomId(chatRoom.getId())
                     .build();
             return responseDto;
         }
