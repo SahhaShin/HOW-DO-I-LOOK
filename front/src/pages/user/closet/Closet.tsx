@@ -6,6 +6,7 @@ import closetStyle from "./Closet.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action, changeModalOpen,changeMode} from "../../../store/ClosetSlice";
+import {changeMenuItemNum} from "../../../store/UtilSlice";
 
 //컴포넌트
 import OOTDWeather from "../../../components/user/closet/OOTDWeather";
@@ -24,6 +25,7 @@ const Closet = () => {
     //redux 관리
     let state = useSelector((state:any)=>state.closet);
     let dispatch = useDispatch();
+    dispatch(changeMenuItemNum(4))
 
     //로그인 유저 정보
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));

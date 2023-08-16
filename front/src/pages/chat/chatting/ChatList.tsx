@@ -9,6 +9,7 @@ import chatStyle from "./ChatList.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action} from "../../../store/ChatSlice";
+import {changeMenuItemNum} from "../../../store/UtilSlice";
 
 //컴포넌트
 import ChatSlot from "../../../components/chat/chatting/ChatSlot";
@@ -27,6 +28,8 @@ const ChatList = () => {
     //redux 관리
     let state = useSelector((state:any)=>state.chat);
     let dispatch = useDispatch();
+
+    dispatch(changeMenuItemNum(2))
 
     // 페이지네이션
     const [len, setLen] = useState(0);

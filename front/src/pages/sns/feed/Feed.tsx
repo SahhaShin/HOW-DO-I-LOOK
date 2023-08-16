@@ -4,7 +4,7 @@ import feedStyle from "./Feed.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action_feed, calTotalFeedLikes, changeModifyModalOpen,changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen, changeFeedMode} from "../../../store/FeedSlice";
-
+import {changeMenuItemNum} from "../../../store/UtilSlice";
 import { action_follow } from '../../../store/FollowSlice';
 
 // 컴포넌트
@@ -25,6 +25,7 @@ const Feed = () => {
     let state = useSelector((state:any)=>state.feed);
     let state_follow = useSelector((state:any)=>state.follow);
     let dispatch = useDispatch();
+    dispatch(changeMenuItemNum(1))
 
     // 등록된 피드 전체 불러오기
     // function getFeedTotalList(state,action){

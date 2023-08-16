@@ -19,6 +19,8 @@ const NavigationBar: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState<number | null>(0);
 
 
+
+
   //이미 체크된 메뉴냐? 그러면 움직이지 말 것
   //체크된 메뉴가 아니면 index 위치로 움직일 것
   const handleMenuClick = (index: number) => {
@@ -26,8 +28,9 @@ const NavigationBar: React.FC = () => {
   };
 
   useEffect(()=>{
-    setActiveMenu(state.menuItemNum);
-  },[])
+    console.log("state.menuItemNum : " + state.menuItemNum)
+    setActiveMenu(state.menuItemNum)
+  },[state.menuItemNum])
   const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
 
