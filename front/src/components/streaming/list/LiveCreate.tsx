@@ -100,6 +100,24 @@ const LiveCreate = () => {
   function clickG(hash){
     setGender(hash)
   }
+  
+  function selectedMenu(menu){
+    if(menu==="DATE"){
+      return liveCreateStyle.DATE;
+    }
+    else if(menu==="DAILY"){
+      return liveCreateStyle.DAILY;
+    }
+    else if(menu==="TRAVEL"){
+      return liveCreateStyle.TRAVEL;
+    }
+    else if(menu==="EXERCISE"){
+      return liveCreateStyle.EXERCISE;
+    }
+    else if(menu==="INTERVIEW"){
+      return liveCreateStyle.INTERVIEW;
+    }
+  }
 
 
 
@@ -131,59 +149,46 @@ const LiveCreate = () => {
 
       <div className={`${liveCreateStyle.tag}`}>
         <button
+          style={type == "DATE" ?{color: "white", backgroundColor:"#EAA595"}:null}
           onClick={(e) => {
             clickH(`DATE`);
           }}
         >
-          {type == "DATE" ? (
-            <div style={{ color: "black" }}>#DATE</div>
-          ) : (
-            `#DATE`
-          )}
+          #DATE
         </button>
+
         <button
+          style={type == "DAILY" ?{color: "white", backgroundColor:"#EAA595"}:null}
           onClick={(e) => {
             clickH(`DAILY`);
           }}
         >
-          {type == "DAILY" ? (
-            <div style={{ color: "black" }}>#DAILY</div>
-          ) : (
-            `#DAILY`
-          )}
+          #DAILY
         </button>
+
         <button
+          style={type == "TRAVEL" ?{color: "white", backgroundColor:"#EAA595"}:null}
           onClick={(e) => {
             clickH(`TRAVEL`);
           }}
         >
-          {type == "TRAVEL" ? (
-            <div style={{ color: "black" }}>#TRAVEL</div>
-          ) : (
-            `#TRAVEL`
-          )}
+          #TRAVEL
         </button>
         <button
+         style={type == "EXERCISE" ?{color: "white", backgroundColor:"#EAA595"}:null}
           onClick={(e) => {
             clickH(`EXERCISE`);
           }}
         >
-          {type == "EXERCISE" ? (
-            <div style={{ color: "black" }}>#EXERCISE</div>
-          ) : (
-            `#EXERCISE`
-          )}
+          #EXERCISE
         </button>
         <button
+          style={type == "INTERVIEW" ?{color: "white", backgroundColor:"#EAA595"}:null}
           onClick={(e) => {
             clickH(`INTERVIEW`);
           }}
         >
-          {type == "INTERVIEW" ? (
-            <div style={{ color: "black" }}>#INTERVIEW</div>
-          ) : (
-            `#INTERVIEW`
-          )}
+          #INTERVIEW
         </button>
       </div>
             {false && <div>사용하실 수 없는 타입입니다.</div>}
@@ -223,40 +228,31 @@ const LiveCreate = () => {
             <div className={`${liveCreateStyle.tag}`}>
 
         <button
+          style={gender == "MALE" ?{color: "white", backgroundColor:"#EAA595"}:null}
           onClick={(e) => {
             clickG(`MALE`);
           }}
         >
-          {gender == "MALE" ? (
-            <div style={{ color: "black" }}>#남자만</div>
-          ) : (
-            `#남자만`
-          )}
+          #남자만
         </button>
 
 
         <button
+         style={gender == "FEMALE" ?{color: "white", backgroundColor:"#EAA595"}:null}
           onClick={(e) => {
             clickG(`FEMALE`);
           }}
         >
-          {gender == "FEMALE" ? (
-            <div style={{ color: "black" }}>#여자만</div>
-          ) : (
-            `#여자만`
-          )}
+          #여자만
         </button>
 
         <button
+        style={gender == "X" ?{color: "white", backgroundColor:"#EAA595"}:null}
           onClick={(e) => {
             clickG(`X`);
           }}
         >
-          {gender == "X" ? (
-            <div style={{ color: "black" }}>#상관없음</div>
-          ) : (
-            `#상관없음`
-          )}
+          #상관없음
         </button>
        
       </div>
