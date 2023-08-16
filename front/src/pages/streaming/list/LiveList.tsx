@@ -1,116 +1,259 @@
-import React, { useEffect, useState } from 'react';
-import feedStyle from "./LiveList.module.css";
-import chatStyle from "../../../pages/chat/chatting/ChatList.module.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
+
+//css
+import liveStyle from "./LiveList.module.css";
+
+
+// alert창
+import Swal from "sweetalert2";
 
 //redux
-import { useSelector, useDispatch } from "react-redux"; 
-import {action, calTotalFeedLikes, changeModifyModalOpen,changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
 
-import { action_follow } from '../../../store/FollowSlice';
+import { useDispatch } from "react-redux";
+
+import { action_follow } from "../../../store/FollowSlice";
 
 // 컴포넌트
-import FeedSlot from '../../../components/sns/feed/FeedSlot';
-import IntroArea from '../../../components/sns/feed/IntroArea';
-import FeedDetail from '../../../components/sns/feed/FeedDetail';
-import FeedCreate from '../../../components/sns/feed/FeedCreate';
-import FeedDeclaration from '../../../components/sns/feed/FeedDeclaration';
-import Header from '../../../components/util/Header';
-import Footer from '../../../components/util/Footer';
-import Menu from '../../../components/util/Menu';
-import FeedModify from "../../../components/sns/feed/FeedModify";
-import LiveFollow from '../../../components/sns/feed/FeedFollow';
-import LiveSlot from '../../../components/streaming/list/ListSlot';
+import IntroArea from "../../../components/streaming/list/IntroArea";
+import Header from "../../../components/util/Header";
+import Footer from "../../../components/util/Footer";
+import Menu from "../../../components/util/Menu";
+import LiveFollow from "../../../components/sns/feed/FeedFollow";
+import LiveSlot from "../../../components/streaming/list/LiveSlot";
 
+import { useSelector } from "react-redux";
+import {
+  action,
+  changeModalOpen,
+  isCreate,
+  setUserId,
+  setType,
+  setSearch,
+} from "../../../store/LiveSlice"; // todo
+
+
+import {changeLiveEndAlert,changeLiveEndRoomNo,changeLiveEndByHost
+} from "../../../store/StreamingSlice";
+
+//컴포넌트
+import Pagination from "../../../components/util/Pagination";
+
+import LiveCreate from "../../../components/streaming/list/LiveCreate";
+import { login } from "../../../store/UserSlice";
 
 const LiveList = () => {
+  const navigate = useNavigate();
 
-    //redux 관리
-    let state = useSelector((state:any)=>state.feed);
-    let state_follow = useSelector((state:any)=>state.follow);
-    let dispatch = useDispatch();
+  //redux 관리
+  let state = useSelector((state: any) => state.live);
+  let dispatch = useDispatch();
 
-    // 등록된 피드 전체 불러오기
-    // function getFeedTotalList(state,action){
-        
-    // }
+  let state_streaming = useSelector((state: any) => state.streaming);
 
-    useEffect(()=>{
-        let data = {size:0, page:0};
-        dispatch(action.getFeedTotalList(data));
-    },[state.feedAddOk, state.likeOk, state.addCommentOk, state.commentList])
+  // 페이지네이션
+  const [len, setLen] = useState(0);
+  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(0);
+  const offset = (page - 1) * limit;
 
-    useEffect(()=>{
-        dispatch(calTotalFeedLikes());
-    },[state.feedTotalObj, state.addCommentOk])
+  // 유저정보 가져오기
+  const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
-    return(
-        <>
-            {
-                // 피드 상세보기 모달
-                state.detailModalOpen?<div className={`${feedStyle.detailModal}`}><FeedDetail feedId={state.detailFeedId}/></div>:null
-            }
-
-            <div className={`${feedStyle.total}`}>
-                <div className={`${feedStyle.header}`}><Header/></div>
-                
-                <div>
-                    {/* 문구 & 해시태그 */}
-                    <IntroArea/>
-                </div>
+  useEffect(() => {
+    //리스트 가져오기
+    setPage(state.page)
+    dispatch(
+      action.getLiveList({
+        following: (state.userId == "") ?false : true,
+        userId: loginUser.id,
+        type: state.type,
+        search: state.search,
+        pageNum: state.page,
+      })
+    );
 
 
-                <div className={`${feedStyle.main}`}>
-                    
-                    {/* main */}
-                    
-                    <div className={`${feedStyle.menuArea}`}>
-                        {/* floating menu start */}
-                        <div><Menu/></div>
-                    </div>
+    //회원 follow목록 가져오기
+  }, [state.page]);
 
-                    {/* 메인 컨텐츠 시작 */}
-                    <div className={`${feedStyle.contentArea}`}>
-                        
-                        <div className={`${feedStyle.uploadBtn}`}>
-                            {/* 업로드 버튼 */}
-                            <button onClick={()=>{dispatch(changeCreateModalOpen(true))}}>업로드</button>
-                        </div>
 
-                        <div className={`${feedStyle.title}`}>
-                            <div>Feed</div>
-                            <div className={`${feedStyle.sortBtn}`}>
-                                <button onClick={async()=>{dispatch(changeSortType(1))}} style={state.sortType===1?{backgroundColor:"#4570F5", color:"white"}:null}>ALL</button>
-                                <button onClick={async()=>{dispatch(changeSortType(2))}} style={state.sortType===2?{backgroundColor:"#4570F5", color:"white"}:null}>FLOWING</button>
-                            </div>
-                        </div>
+  function upload() {
+    window.sessionStorage.setItem(
+      "liveRoom",
+      JSON.stringify({
+        hostId: "",
+        hostNickname: "",
+        maxAge: "",
+        minAge: "",
+        title: "",
+        type: "",
+      })
+    );
+    dispatch(isCreate(true));
+    dispatch(changeModalOpen(true));
+  }
 
-                        {/* 채팅 리스트 */}
-                        <div className={`${chatStyle.list}`}>
-                            {
-                                state.chatList?.map((one, index)=>{
-                                    return(
-                                        <div key={index} className={`${chatStyle.onechat}`}><LiveSlot oneRoom={one} key={index}/></div>
-                                    );
-                                })
-                            }
-                        </div>
-                               
+  function sortChange(flow: boolean, type, keyword) {
+    var id = "";
+    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+    if (flow) {
 
-                    </div>
+      id = loginUser.id;
+    }
+    dispatch(setUserId(id));
+    dispatch(
+      action.getLiveList({
+        following:flow,
+        userId: loginUser.id,
+        type: state.type,
+        search: state.search,
+        pageNum: page,
+      })
+    );
 
-                    <LiveFollow/>
-                </div>
+    // listUpdate();
+  }
 
-                <div className={`${feedStyle.footer}`}><Footer/></div>
+  //호스트가 라이브 종료 시 리스트로 이동
+  //호스트가 라이브 종료 시 라이브 리스트 다시 부르고, 알럴트 띄워주기
+  useEffect(()=>{
 
-                
+    if(state_streaming.liveEndAlert){
+
+      dispatch(
+        action.getLiveList({
+          userId: loginUser.id,
+          type: state.type,
+          search: state.search,
+          pageNum: page,
+        })
+      );
+
+
+      // 초기화
+      dispatch(changeLiveEndByHost(false));
+      dispatch(changeLiveEndRoomNo(false));
+      dispatch(changeLiveEndAlert(false));
+
+
+      Swal.fire({
+        icon: 'info',
+        title: '라이브 종료',
+        text: '방장이 라이브를 종료하였습니다 :)',
+        confirmButtonColor: '#4570F5',
+      })
+    }
+
+  },[state_streaming.liveEndAlert])
+
+  return (
+    <>
+      {
+        // 업로드 모달
+        state.ModalOpen ? (
+          <div className={`${liveStyle.createModal}`}>
+            <LiveCreate />
+          </div>
+        ) : null
+      }
+      <div className={`${liveStyle.total}`}>
+        <div className={`${liveStyle.header}`}>
+          <Header />
+        </div>
+        <div>
+          {/* 문구 & 해시태그 */}
+          <IntroArea  />
+        </div>
+
+        <div className={`${liveStyle.main}`}>
+          {/* 메인은 두 영역으로 나뉨 */}
+
+          <div className={`${liveStyle.menuArea}`}>
+            {/* floating menu start */}
+            <div>
+              <Menu />
+            </div>
+          </div>
+
+          {/* 메인 컨텐츠 시작 */}
+          <div className={`${liveStyle.contentsArea}`}>
+            <div className={`${liveStyle.uploadBtn}`}>
+              {/* 업로드 버튼 */}
+              <button
+                onClick={() => {
+                  upload();
+                }}
+              >
+                새로운 방 만들기
+              </button>
             </div>
 
-            {/* 피드블러 */}
-            <div onClick={async()=>{dispatch(changeDetailModalOpen(false)); dispatch(changeCreateModalOpen(false));dispatch(changeDeclarationModalOpen(false));dispatch(changeModifyModalOpen(false))}} style={state.detailModalOpen||state.createModalOpen||state.declarationModalOpen||state.modifyModalOpen?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
-        </>
-    );
-}
+            <div className={`${liveStyle.title}`}>
+              <div>LIVE</div>
+              <div className={`${liveStyle.sortBtn}`}>
+                <button
+                  onClick={async () => {
+                    sortChange(false, "", "");
+                  }}
+                  style={
+                    state.userId == ""
+                      ? { backgroundColor: "#4570F5", color: "white" }
+                      : null
+                  }
+                >
+                  ALL
+                </button>
+                <button
+                  onClick={async () => {
+                    sortChange(true, "", "");
+                  }}
+                  style={
+                    state.userId != ""
+                      ? { backgroundColor: "#4570F5", color: "white" }
+                      : null
+                  }
+                >
+                  FLOWING
+                </button>
+              </div>
+            </div>
+
+            {/* 방송 리스트 */}
+            <div className={`${liveStyle.list}`}>
+              {state.liveList?.map((one, index) => {
+                return (
+                  <div key={index} className={`${liveStyle.onelive}`}>
+                    <LiveSlot oneRoom={one} key={index} />
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className={`${liveStyle.paginationContainer}`}>
+                            <Pagination
+                                total={state.pageAll}
+                                limit={limit}
+                                page={page}
+                                setPage={setPage}
+                            />
+                        </div>
+          </div>
+
+          <LiveFollow />
+        </div>
+
+        <div className={`${liveStyle.footer}`}>
+          <Footer />
+        </div>
+                    {/* 피드블러 */}
+                    <div onClick={async()=>{dispatch(changeModalOpen(false));dispatch(changeModalOpen(false));}} style={((state.ModalOpen))?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
+        
+      </div>
+    </>
+  );
+};
 
 export default LiveList;

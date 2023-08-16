@@ -4,8 +4,8 @@
 }
 
 .StreamingComponent {
-  height: 580px;
-  width: 750px;
+  height: 510px;
+  width: 77px;
   position: relative;
 }
 
@@ -20,11 +20,11 @@
   display: flex;
   /* flex: auto; */
   text-align: center;
-  z-index: 10000000;
+  z-index: 1;
   height: 40px;
   width: 750px;
-  top: 540px;
-  left: 0px;
+  top: 0;
+  left: 60px;
 }
 
 .leaveButton {
@@ -33,6 +33,7 @@
   left: 0px;
   height: 40px;
   width: 150px;
+  
   /* z-index: 1000; */
 }
 
@@ -51,6 +52,7 @@ img {
   background-color: rgb(69, 112, 245);
   color: white;
   font-size: 17px;
+  
 }
 .disableButton {
   height: 40px;
@@ -60,4 +62,7 @@ img {
   background-color: rgb(240, 240, 240);
   color: black;
   font-size: 17px;
+}
+.displayNone {
+  display: none;
 }

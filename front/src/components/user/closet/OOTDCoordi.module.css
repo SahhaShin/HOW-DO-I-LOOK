@@ -195,6 +195,9 @@
   color: white;
 }
 
+.btn>p{
+  color: white;
+}
 .btn p {
   /* 폰트 */
   font-family: 'Pretendard-Regular';

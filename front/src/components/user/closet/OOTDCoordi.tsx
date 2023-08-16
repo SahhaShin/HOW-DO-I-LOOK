@@ -17,8 +17,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 
-//idx는 몇 번째 ootd 순서인가 1번인가 2번인가를 알려줌
+//idx는 몇 번째 ootd 순서인가 1번인가 2번인가를 알려줌 {idx: 1}
 const OOTDCoordi = (props) => {
+
 
     const settings = {
         arrows:true,
@@ -119,6 +120,8 @@ const OOTDCoordi = (props) => {
         dispatch(action.OOTDSave({userId:userId,order:props.idx,slotIds:slotIds}));
     }
 
+    
+
     // 화면 단 : 이 부분은 백엔드에서 데이터 넘겨주면 map 형태로 다시 바꿀 것임
     return(
         // 전체
@@ -140,18 +143,18 @@ const OOTDCoordi = (props) => {
                             }}
                         >
 
-{
-                            state.clothesTop.map((oneT)=>{
-                                    return(
-                                        <div className={`${coordiStyle.slideT}`}>
-                                            <img src={oneT.photoLink}/>
-                                        </div>
-                                    );
-                                })
-                            }
-
-
                             {/* {
+                                state.clothesOOTDTop_1?.map((oneT)=>{
+                                        return(
+                                            <div className={`${coordiStyle.slideT}`}>
+                                                <img src={oneT.clothesPhotoLink}/>
+                                            </div>
+                                        );
+                                    })
+                            } */}
+
+
+                            {
                                 props.idx===1?
                                 state.clothesOOTDTop_1.map((oneT)=>{
                                     return(
@@ -159,16 +162,19 @@ const OOTDCoordi = (props) => {
                                             <img src={oneT.clothesPhotoLink}/>
                                         </div>
                                     );
-                                }):
+                                }):null
+                            }
+                            {
+                                props.idx===2?
                                 state.clothesOOTDTop_2.map((oneT)=>{
                                     return(
                                         <div className={`${coordiStyle.slideT}`}>
                                             <img src={oneT.clothesPhotoLink}/>
                                         </div>
                                     );
-                                })
+                                }):null
 
-                            } */}
+                            }
 
                         </StyledSlider>
 
@@ -194,10 +200,18 @@ const OOTDCoordi = (props) => {
                         >
 
                             {
-                                state.clothesBottom.map((oneB)=>{
+                                props.idx===1?
+                                state.clothesOOTDBottom_1.map((oneB)=>{
                                     return(
                                         <div className={`${coordiStyle.slideB}`}>
-                                            <img src={oneB.photoLink}/>
+                                            <img src={oneB.clothesPhotoLink}/>
+                                        </div>
+                                    );
+                                }):
+                                state.clothesOOTDBottom_2.map((oneB)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideB}`}>
+                                            <img src={oneB.clothesPhotoLink}/>
                                         </div>
                                     );
                                 })
@@ -220,10 +234,18 @@ const OOTDCoordi = (props) => {
                             }}
                         >
                             {
-                                state.clothesShoe.map((oneS)=>{
+                                props.idx===1?
+                                state.clothesOOTDShoe_1.map((oneB)=>{
                                     return(
                                         <div className={`${coordiStyle.slideS}`}>
-                                            <img src={oneS?.photoLink}/>
+                                            <img src={oneB.clothesPhotoLink}/>
+                                        </div>
+                                    );
+                                }):
+                                state.clothesOOTDShoe_2.map((oneB)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideS}`}>
+                                            <img src={oneB.clothesPhotoLink}/>
                                         </div>
                                     );
                                 })
@@ -251,10 +273,18 @@ const OOTDCoordi = (props) => {
                             }}
                         >
                             {
-                                state.clothesAccessory.map((oneA)=>{
+                                props.idx===1?
+                                state.clothesOOTDAccessory1_1.map((oneA)=>{
                                     return(
                                         <div className={`${coordiStyle.slideA1}`}>
-                                            <img src={oneA?.photoLink}/>
+                                            <img src={oneA?.clothesPhotoLink}/>
+                                        </div>
+                                    );
+                                }):
+                                state.clothesOOTDAccessory1_2.map((oneA)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideA1}`}>
+                                            <img src={oneA?.clothesPhotoLink}/>
                                         </div>
                                     );
                                 })
@@ -277,10 +307,18 @@ const OOTDCoordi = (props) => {
                             }}
                         >
                             {
-                                state.clothesAccessory.map((oneA)=>{
+                                props.idx===1?
+                                state.clothesOOTDAccessory2_1.map((oneA)=>{
                                     return(
                                         <div className={`${coordiStyle.slideA2}`}>
-                                            <img src={oneA?.photoLink}/>
+                                            <img src={oneA?.clothesPhotoLink}/>
+                                        </div>
+                                    );
+                                }):
+                                state.clothesOOTDAccessory2_2.map((oneA)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideA2}`}>
+                                            <img src={oneA?.clothesPhotoLink}/>
                                         </div>
                                     );
                                 })
@@ -304,10 +342,18 @@ const OOTDCoordi = (props) => {
                             }}
                         >
                             {
-                                state.clothesAccessory.map((oneA)=>{
+                                props.idx===1?
+                                state.clothesOOTDAccessory3_1.map((oneA)=>{
                                     return(
                                         <div className={`${coordiStyle.slideA3}`}>
-                                            <img src={oneA?.photoLink}/>
+                                            <img src={oneA?.clothesPhotoLink}/>
+                                        </div>
+                                    );
+                                }):
+                                state.clothesOOTDAccessory3_2.map((oneA)=>{
+                                    return(
+                                        <div className={`${coordiStyle.slideA3}`}>
+                                            <img src={oneA?.clothesPhotoLink}/>
                                         </div>
                                     );
                                 })

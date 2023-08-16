@@ -1,0 +1,6 @@
+.wrapper{
+    background-image: url("../../../../public/img/common/total_bg.jpg");
+    /* background-repeat: repeat-y; */
+    width: 100%;
+    height: 650px;
+}

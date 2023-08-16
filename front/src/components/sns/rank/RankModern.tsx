@@ -32,6 +32,35 @@ const RankingModern = () => {
         dispatch(action_ranking.getTop3Rank(type));
     }, [])
 
+    // 성별
+    function firstRankGenderColor(gender){
+        console.log(gender)
+
+        if(gender==="FEMALE"){
+            return `${rankingStyle.firstRankProfileImgF}`
+        }else{
+            return `${rankingStyle.firstRankProfileImgM}`
+        }
+    }
+    function notFirstRankGenderColor(gender){
+        console.log(gender)
+
+        if(gender==="FEMALE"){
+            return `${rankingStyle.notFirstRankProfileImgF}`
+        }else{
+            return `${rankingStyle.notFirstRankProfileImgM}`
+        }
+    }
+    function subRankGenderColor(gender){
+        console.log(gender)
+
+        if(gender==="FEMALE"){
+            return `${rankingStyle.subRankProfileImgF}`
+        }else{
+            return `${rankingStyle.subRankProfileImgM}`
+        }
+    }
+
     if (state.partRankingList.length === 0) {
         console.log("partRankingList")
         return <div>Loading...</div>;
@@ -51,7 +80,8 @@ const RankingModern = () => {
                     
                     {/* 2위 */}
                     <div className={`${rankingStyle.rankSet}`}>
-                        <div className={`${rankingStyle.notFirst}`}>
+                        <div className={`${notFirstRankGenderColor(state.top3RankingList[1]?.gender)}`}>
+                        {/* <div className={`${rankingStyle.notFirst}`}> */}
                             <img src={state.top3RankingList[1]?.profileImg}/>
                         </div>
 
@@ -61,7 +91,8 @@ const RankingModern = () => {
                     
                     {/* 1위 */}
                     <div className={`${rankingStyle.rankSet }`}>
-                        <div className={`${rankingStyle.first}`}>
+                    <div className={`${firstRankGenderColor(state.top3RankingList[0]?.gender)}`}>
+                        {/* <div className={`${rankingStyle.first}`}> */}
                             <img src={state.top3RankingList[0]?.profileImg}/>
                 
                         </div>
@@ -71,7 +102,8 @@ const RankingModern = () => {
                     
                     {/* 3위 */}
                     <div className={`${rankingStyle.rankSet}`}>
-                        <div className={`${rankingStyle.notFirst}`}>
+                    <div className={`${notFirstRankGenderColor(state.top3RankingList[2]?.gender)}`}>
+                        {/* <div className={`${rankingStyle.notFirst}`}> */}
                             <img src={state.top3RankingList[2]?.profileImg}/>
                         </div>
 
@@ -101,7 +133,8 @@ const RankingModern = () => {
                                 {/* 순위 / 프로필 이미지 / 닉네임 / 점수 */}
                                 <div>{oneUser.rank}위</div>
 
-                                <div className={`${rankingStyle.profileImg}`}>
+                                <div className={`${subRankGenderColor(oneUser.gender)}`}>
+                                {/* <div className={`${rankingStyle.profileImg}`}> */}
                                     <img src={oneUser.profileImg}/>
                                 </div>
 

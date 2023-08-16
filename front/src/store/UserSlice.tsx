@@ -3,7 +3,7 @@ import axios from "axios";
 import { getCookie, setCookie, removeCookie } from "../hook/Cookie";
 import { getUserInfo } from "../hook/UserApi";
 
-import {CheckToken} from "../hook/UserApi"
+import { CheckToken } from "../hook/UserApi";
 
 // axios
 export const action_user = {
@@ -56,7 +56,7 @@ export const action_user = {
           gender: gender,
           age: age,
         },
-        headers: { "Authorization": token },
+        headers: { Authorization: token },
       })
         .then((response) => {
           console.log(response.data);
@@ -108,9 +108,9 @@ export const action_user = {
           return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
-          console.log("error")
+          console.log("error");
           console.log(e.response.data);
-          alert(e.response.data)
+          alert(e.response.data);
         });
     }
   ),
@@ -163,15 +163,13 @@ export const action_user = {
 
   // 로그아웃  api
   Logout: createAsyncThunk(`UserSlice/Logout`, async (id: string, thunkAPI) => {
-    
-    
     // let Token = "Bearer " + getCookie("Authorization");
     const token = await CheckToken();
 
     return await axios({
       method: "get",
       url: `${process.env.REACT_APP_SERVER}/api/user/logout/${id}`,
-      headers: { "Authorization": token },
+      headers: { Authorization: token },
     })
       .then((response) => {
         //토큰 지우기
@@ -201,20 +199,22 @@ export const action_user = {
       return await axios({
         method: "get",
         url: `${process.env.REACT_APP_SERVER}/api/user/getuserbyemail/${email}`,
-        headers: { "Authorization": Token },
+        headers: { Authorization: Token },
       })
         .then((response) => {
           // console.log("res.data from Action : ");
           // console.log(response.data);
           removeCookie("new_basic_user_email", { path: "/" });
           removeCookie("new_social_user_email", { path: "/" });
-          console.log("res.data from Sesㄴㄷ채sion : ");
+          console.log("res.data from Session : ");
 
           window.sessionStorage.setItem(
             "loginUser",
             JSON.stringify(response.data)
           );
-          const userInfo = JSON.parse(window.sessionStorage.getItem("loginUser"));
+          const userInfo = JSON.parse(
+            window.sessionStorage.getItem("loginUser")
+          );
           // console.log(userInfo);
           return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })

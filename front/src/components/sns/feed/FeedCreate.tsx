@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeFollow, changeCreateModalOpen} from "../../../store/FeedSlice";
+import {action_feed, changeFollow, changeCreateModalOpen} from "../../../store/FeedSlice";
 
 //slick import
 import Slider from 'react-slick';
@@ -282,10 +282,10 @@ const FeedCreate = () => {
 
     async function sendFormdata(formdata){
         console.log(formdata);
-        dispatch(action.addFeed(formdata));
+        dispatch(action_feed.addFeed(formdata));
 
         let data = {size:0, page:0};
-        dispatch(action.getFeedTotalList(data));
+        dispatch(action_feed.getFeedTotalList(loginUser.id));
     }
 
 

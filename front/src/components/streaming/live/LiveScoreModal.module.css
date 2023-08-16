@@ -1,0 +1,129 @@
+*{
+    font-family: 'Pretendard-Regular';
+}
+
+.modal{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+
+    /* 위치 */
+    margin: 0 auto;
+    margin-top: 5%;
+    margin-bottom: 3%;
+    margin-left: 30%;
+
+    /* 크기 */
+    width: 600px;
+    height: 500px;
+    border-radius: 1rem;
+
+    /* 컬러 */
+    background-color: white;
+
+    z-index: 10;
+}
+
+.modal > p:nth-child(1){
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+    margin-top: 5%;
+}
+
+.modal > p:nth-child(2){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin-top: 3%;
+    margin-bottom: 3%;
+
+    height: 50px;
+    font-weight: 900;
+
+    background-color: var(--signiture);
+    color: white;
+}
+
+.Wrapper{
+    display: flex;
+}
+.select{
+     width: 130px;
+    
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+
+     margin-left: 15px;
+     margin-top: 6%;
+     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+
+     border-radius: 1rem;
+}
+
+.select:hover{
+    border: none;
+    transform: scale(1.1); /* 이미지를 1.1배 확대 */
+    z-index: 1; /* 이미지를 다른 내용 위로 올림 */
+}
+
+
+.select>img{
+    width: 80px;
+    height: 100%;
+    margin-bottom: 5%;
+}
+
+.select>div{
+    font-weight: 900;
+}
+
+.scoreInput{
+    margin-top: 10%;
+    width: 100%;
+}
+
+.scoreInput>input{
+    width: 300px;
+    height: 30px;
+    border-radius: 1rem;
+    padding-left: 3%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.btns{
+    display: flex;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.btns>button{
+    width: 250px;
+    height: 40px;
+    background-color: var(--signiture);
+    color: white;
+    border-radius: 1rem;
+    margin-left: 5%;
+}
+
+.pick{
+    position:absolute;
+    background-color: var(--signiture);
+    color: white;
+    border-radius: 1rem;
+    width: 100px;
+    margin-top: -170px;
+}
+
+
+/* 알럴트 스타일 이렇게 바꿀 수 있다고 했는데 왜 안바뀌지 ㅎㅎ */
+.custom-swal-confirm-button {
+    width: 200px;
+    height: 50px;
+}

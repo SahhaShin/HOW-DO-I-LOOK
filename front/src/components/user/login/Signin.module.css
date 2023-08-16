@@ -1,0 +1,198 @@
+@font-face {
+    font-family: 'KCCPakKyongni';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCPakKyongni.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.totalWrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.oneSection{
+    margin-right: 100px;
+}
+
+.title{
+    font-family: 'KCCPakKyongni';
+    color: white;
+    text-shadow: 2px 3px 5px grey;
+    font-size: 60px;
+}
+
+.oneContent{
+    margin-top: 10px;
+}
+
+
+.registForm{
+    display: flex;
+    margin-top: 10px;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    /* background-color: white; */
+    width: 100%;
+}
+
+.logininput { 
+    width: 400px;
+    height: 40px;
+    /* background-color: white; */
+    border: none;
+    font-size: 20px;
+    /* border-bottom: 1px solid lightgrey; */
+    border-radius: 1rem;
+    padding-left: 3%;
+}
+
+input:focus {
+    /* outline:1px solid #6d5dfc; */
+    /* border-bottom: 1px solid grey; */
+    outline: 0;
+}
+
+.loginlable { 
+    width: 50px;
+    height: 30px;
+    padding: 0;
+    margin: 0;
+    margin-left: 10%;
+    /* background-color: rgb(226, 139, 139); */
+    border: 0;
+    font-size: 13px;
+}
+
+.loginlable >p { 
+
+    background-color: rgb(226, 139, 139);
+    line-height: 20px;
+    text-align: center;
+    color: white;
+
+    width: 90px;
+    height: 20px;
+    border-radius: 1rem;
+    border: 0;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.loginsubmit{
+    margin-top: 70px;
+    width: 150px;
+    height: 40px;
+    font-size: 20px;
+    background-color: rgb(226, 139, 139);
+    border: 0;
+    border-radius: 1rem;
+    color: white;
+    cursor: pointer;
+}
+
+
+.loginsignin { 
+    text-align: center;
+    color: #9baacf;
+    font-size: 13px;
+    margin-top: 10px;
+    padding-bottom: 8px;
+
+}
+
+.loginfindInfo { 
+    display: flex;
+    text-align: center;
+    margin: 20px, 10px;
+}
+
+.loginline{
+    display: flex;
+    align-items: center;
+    color: gray;
+    font-size: 14px;
+    margin: 8px, 0px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+.loginline::after{
+    content:"";
+    flex-grow: 1;
+    margin: 0px, 16px;
+    background-color: gray;
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    
+
+}
+.line::before{
+    content:"";
+    flex-grow: 1;
+    margin: 0px, 16px;
+    background-color: gray;
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+}
+
+.registBtn{
+    /* margin-top: 0px; */
+}
+
+.gender{
+    margin-right: 10px;
+}
+
+
+/* fade in */
+.fadeInBox {
+    display: inline-block;
+    padding: 10px;
+    animation: fadein 3s;
+    -moz-animation: fadein 3s; /* Firefox */
+    -webkit-animation: fadein 3s; /* Safari and Chrome */
+    -o-animation: fadein 3s; /* Opera */
+  }
+  @keyframes fadein {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+  @-moz-keyframes fadein { /* Firefox */
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+  @-webkit-keyframes fadein { /* Safari and Chrome */
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+  @-o-keyframes fadein { /* Opera */
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }

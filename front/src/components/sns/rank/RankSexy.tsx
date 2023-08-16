@@ -35,6 +35,35 @@ const RankingSexy = () => {
         dispatch(action_ranking.getPartRankingList({type, page, limit}));
     }, [page])
 
+    // 성별
+    function firstRankGenderColor(gender){
+        console.log(gender)
+
+        if(gender==="FEMALE"){
+            return `${rankingStyle.firstRankProfileImgF}`
+        }else{
+            return `${rankingStyle.firstRankProfileImgM}`
+        }
+    }
+    function notFirstRankGenderColor(gender){
+        console.log(gender)
+
+        if(gender==="FEMALE"){
+            return `${rankingStyle.notFirstRankProfileImgF}`
+        }else{
+            return `${rankingStyle.notFirstRankProfileImgM}`
+        }
+    }
+    function subRankGenderColor(gender){
+        console.log(gender)
+
+        if(gender==="FEMALE"){
+            return `${rankingStyle.subRankProfileImgF}`
+        }else{
+            return `${rankingStyle.subRankProfileImgM}`
+        }
+    }
+
     if (state.partRankingList.length === 0) {
         return <div>Loading...</div>;
       }
@@ -46,13 +75,12 @@ const RankingSexy = () => {
     return(
         <div>
             <div className={`${rankingStyle.contentArea}`}>
-
                 {/* 1~3위 : 순위에 맞게 색깔이 바껴야함 */}
                 <div className={`${rankingStyle.topRankerSexy}`}>
-                    
                     {/* 2위 */}
                     <div className={`${rankingStyle.rankSet}`}>
-                        <div className={`${rankingStyle.notFirst}`}>
+                        <div className={`${notFirstRankGenderColor(state.top3RankingList[1]?.gender)}`}>
+                        {/* <div className={`${rankingStyle.notFirst}`}> */}
                             <img src={state.top3RankingList[1]?.profileImg}/>
                         </div>
 
@@ -62,7 +90,8 @@ const RankingSexy = () => {
                     
                     {/* 1위 */}
                     <div className={`${rankingStyle.rankSet }`}>
-                        <div className={`${rankingStyle.first}`}>
+                    <div className={`${firstRankGenderColor(state.top3RankingList[0]?.gender)}`}>
+                        {/* <div className={`${rankingStyle.first}`}> */}
                             <img src={state.top3RankingList[0]?.profileImg}/>
                 
                         </div>
@@ -72,15 +101,14 @@ const RankingSexy = () => {
                     
                     {/* 3위 */}
                     <div className={`${rankingStyle.rankSet}`}>
-                        <div className={`${rankingStyle.notFirst}`}>
+                    <div className={`${notFirstRankGenderColor(state.top3RankingList[2]?.gender)}`}>
+                        {/* <div className={`${rankingStyle.notFirst}`}> */}
                             <img src={state.top3RankingList[2]?.profileImg}/>
                         </div>
 
-                        <div className={`${rankingStyle.score} `}>{state.top3RankingList[2]?.nickname}</div>
+                        <div className={`${rankingStyle.score}`}>{state.top3RankingList[2]?.nickname}</div>
                         <div className={`${rankingStyle.nickname}`}>{state.top3RankingList[2]?.score}</div>
-                    </div>
-                    
-
+                    </div>                
                 </div>
 
                 {/* 내 순위 */}
@@ -102,7 +130,8 @@ const RankingSexy = () => {
                                 {/* 순위 / 프로필 이미지 / 닉네임 / 점수 */}
                                 <div>{oneUser.rank}위</div>
 
-                                <div className={`${rankingStyle.profileImg}`}>
+                                <div className={`${subRankGenderColor(oneUser.gender)}`}>
+                                {/* <div className={`${rankingStyle.profileImg}`}> */}
                                     <img src={oneUser.profileImg}/>
                                 </div>
 

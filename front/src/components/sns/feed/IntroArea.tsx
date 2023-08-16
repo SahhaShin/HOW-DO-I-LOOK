@@ -3,7 +3,7 @@ import introStyle from "./IntroArea.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action} from "../../../store/FeedSlice";
+import {action_feed} from "../../../store/FeedSlice";
 
 
 
@@ -18,7 +18,6 @@ const IntroArea = () => {
 
     function sendHash(){
         // {hashtag, size, page}
-        console.log(`1 ${searchInput}`);
 
         // let hashremove = searchInput.replace("#","");
         const hashList = searchInput.split(" ");
@@ -37,17 +36,13 @@ const IntroArea = () => {
                 if(count===0){
                     hashquery = target;
                     count++;
-                    console.log(`3 ${hashquery}`);
                 }
                 else {
                     hashquery = hashquery+"&"+target;
                     count++;
-                    console.log(`4 ${hashquery}`);
                 }
              }
         }
-
-        console.log(hashquery);
 
 
         let info = {
@@ -56,7 +51,7 @@ const IntroArea = () => {
             page:1,
         }
 
-        dispatch(action.searchHash(info));
+        dispatch(action_feed.searchHash(info));
         
     }
 

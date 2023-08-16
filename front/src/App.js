@@ -14,9 +14,8 @@ import ChatList from "./pages/chat/chatting/ChatList";
 import ChatRoom from "./pages/chat/chatting/ChatRoom";
 import Feed from "./pages/sns/feed/Feed";
 import Mypage from "./pages/user/my_page/Mypage";
-import List from "./pages/streaming//list/LiveList";
+import LiveList from "./pages/streaming/list/LiveList";
 import Live from "./pages/streaming/live/Live";
-
 
 import Login from "./pages/user/login/LoginPage";
 import Signin from "./pages/user/login/Signin";
@@ -39,9 +38,10 @@ function App() {
             />
             <Route path="/feed" element={<Feed />} />
             <Route path="/mypage/:watchingUserId" element={<Mypage />} />
-            <Route path="/liveList" element={<List />} />
-            <Route path="/live/:roomId" element={<Live />} />
 
+            <Route path="/live/:roomId/:hostId" element={<Live />} />
+
+            <Route path="/liveList" element={<LiveList />} />
 
             {/* <Route path="/" element={<LogHin/>}/> */}
 

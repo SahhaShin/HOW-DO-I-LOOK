@@ -7,24 +7,24 @@ import UserVideoComponent from "./UserVideoComponent";
 
 import { CheckToken } from "../../../hook/UserApi";
 
-const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production"
-    ? ""
-    : `${process.env.REACT_APP_OPENVIDU}`;
+const APPLICATION_SERVER_URL = process.env.REACT_APP_OPENVIDU;
 
 class Streaming extends Component {
   constructor(props) {
     super(props);
 
     //session에서 유저 정보를 가져온다.
-    const user = window.sessionStorage.getItem("loginUser");
-    const sessionid = "session2"; //window.sessionStorage.getItem("sessionid")
+    const user = JSON.parse(sessionStorage.getItem("loginUser"));
+    const hostId = window.sessionStorage.getItem("hostId");
+    // const sessionid = "session2"; //window.sessionStorage.getItem("sessionid")
     console.log(user);
+    console.log("userId : " + user.id);
+    console.log("hostID : " + hostId);
     //가져온 user정보를 this.state에 입력
     //
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
-      mySessionId: sessionid,
+      mySessionId: hostId,
       myUserName: user.id,
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
@@ -51,6 +51,7 @@ class Streaming extends Component {
     //beforeunload는 마운트가 해제되기 전에 실행되는 이벤트
     //onbeforeunload메서드를 실행시키는데 이게 leavesession을 실행시킨다.
     window.addEventListener("beforeunload", this.onbeforeunload);
+    this.joinSession();
   }
 
   componentWillUnmount() {
@@ -58,6 +59,24 @@ class Streaming extends Component {
     //leavesession 버튼을 누르는것이랑 다르다.
     window.removeEventListener("beforeunload", this.onbeforeunload);
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      areYouKick,
+      liveEndAlert,
+      exitAlam
+    } = this.props;
+
+    // 이전 값과 현재 값이 다르고, 원하는 조건이 충족되었을 때 leaveSession 호출
+    if (
+      (prevState.areYouKick !== areYouKick && areYouKick) ||
+      (prevState.liveEndAlert !== liveEndAlert && liveEndAlert) ||
+      (prevState.exitAlam !== exitAlam && exitAlam)
+    ) {
+      this.leaveSession();
+    }
+  }
+  
   //위에서 실행된다.
   onbeforeunload(event) {
     this.leaveSession();
@@ -101,7 +120,10 @@ class Streaming extends Component {
   async joinSession() {
     //Openvidu 객체 생성 하는 코드
     this.OV = new OpenVidu();
-    const isStreamer = this.state.myUserName === this.state.mySessionId;
+    const isStreamer = this.state.myUserName == this.state.mySessionId;
+    console.log("isStreamer : " + isStreamer);
+    console.log(this.state.myUserName);
+    console.log(this.state.mySessionId);
 
     //세션을 설정하는 부분
     this.setState(
@@ -157,7 +179,7 @@ class Streaming extends Component {
               let publisher = await this.OV.initPublisherAsync(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: isStreamer ? true : false, //(this.state.sessionId=this.session.user)?true:false, // Whether you want to start publishing with your audio unmuted or not
+                publishAudio: true, //(this.state.sessionId=this.session.user)?true:false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: isStreamer ? true : false, //(this.state.sessionId=this.session.user)?true:false, // Whether you want to start publishing with your video enabled or not
                 resolution: "640x480", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
@@ -210,16 +232,6 @@ class Streaming extends Component {
         });
       }
     );
-    if (!isStreamer) {
-      if (this.state.publisher) {
-        // 발행된 스트림을 제거하고 구독 취소
-        await this.state.session.unpublish(this.state.publisher);
-        // 발행자 제거 후 상태 업데이트
-        this.setState({
-          publisher: undefined,
-        });
-      }
-    }
   }
 
   leaveSession() {
@@ -234,8 +246,8 @@ class Streaming extends Component {
     // Empty all properties...
     this.OV = null;
     this.setState({
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      mySessionId: "",
+      myUserName: "",
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined,
@@ -318,95 +330,38 @@ class Streaming extends Component {
     const myUserName = this.state.myUserName;
     const cameraOn = this.state.cameraOn;
     const audioOn = this.state.audioOn;
-    const isStreamer = this.state.myUserName === this.state.mySessionId;
+    const isStreamer = this.state.myUserName == this.state.mySessionId;
 
     return (
       <div className="container">
-        {/* 세션이 없다면!! */}
-        {/* 맨처음 화면이 랜더링된다 그 아이디랑 세션 아이디 입력하는 부분 toDo: //  test때는 둔다. */}
-        {this.state.session === undefined ? (
-          <div id="join">
-            <div id="img-div">
-              <img
-                src="resources/images/openvidu_grey_bg_transp_cropped.png"
-                alt="OpenVidu logo"
-              />
-            </div>
-            <div id="join-dialog" className="jumbotron vertical-center">
-              <h1> Join a video session </h1>
-              <form className="form-group" onSubmit={this.joinSession}>
-                <p>
-                  <label>Participant: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="userName"
-                    value={myUserName}
-                    onChange={this.handleChangeUserName}
-                    required
-                  />
-                </p>
-                <p>
-                  <label> Session: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="sessionId"
-                    value={mySessionId}
-                    onChange={this.handleChangeSessionId}
-                    required
-                  />
-                </p>
-                <p className="text-center">
-                  <input
-                    className="btn btn-lg btn-success"
-                    name="commit"
-                    type="submit"
-                    value="JOIN"
-                  />
-                </p>
-              </form>
-            </div>
-          </div>
-        ) : // 만약 session이 있다면 null이므로 위에 html이 생략된다.
-        null}
         {/* 만약 세션이 있다면 아래의 html 코드가 실행된다. */}
         {this.state.session !== undefined ? (
           <div id="session" className="StreamingComponent">
-            {/* <input
-              className="leaveButton"
-              type="button"
-              id="buttonLeaveSession"
-              onClick={this.leaveSession}
-              value="Leave session"
-            /> */}
             {/* 비디오 출력 */}
             {isStreamer ? (
               // 자기가 publisher라면 자기 화면 송출
               <div
-                className="stream-container col-md-6 col-xs-6"
+                className={`stream-container col-md-6 col-xs-6 ${
+                  cameraOn ? "" : "displayNone"
+                }`}
                 onClick={() => this.handleMainVideoStream(this.state.publisher)}
               >
-                {cameraOn && (
-                  <UserVideoComponent streamManager={this.state.publisher} />
-                )}
+                <UserVideoComponent streamManager={this.state.publisher} />
               </div>
             ) : null}
             {/* subscribers를 돌면서 뿌린다. */}
             {/* 클릭하면 handleMainVideoStream  */}
             {this.state.subscribers.map((sub, i) => (
               // handleMainVideoStream은 mainstream 바꾸는 메서드
-              <div key={sub.id} className="stream-container">
-                <span>{sub.id}</span>
+              <div
+                key={sub.id}
+                className={`stream-container ${
+                  sub.stream.videoActive ? "" : "displayNone"
+                }`}
+              >
                 {/* 결국에는 화면이 띄워지는 것은 UserVideoComponent 이다. */}
 
-                {/* 로그 출력 */}
-                {console.log("Logging something:", sub)}
-
-                {/* UserVideoComponent 렌더링 */}
-                {sub.stream.videoActive && (
-                  <UserVideoComponent streamManager={sub} />
-                )}
+                <UserVideoComponent streamManager={sub} />
               </div>
             ))}
             <div id="session-header" className="buttons">
@@ -423,11 +378,12 @@ class Streaming extends Component {
                         `/img/live/camera${cameraOn ? "-white" : ""}.png`
                       }
                       alt="카메라"
-                    />{" "}
+                    />
                     카메라 {cameraOn ? "끄기" : "켜기"}
                   </button>
                 </div>
               ) : null}
+              <div>
               <button
                 className={audioOn ? "activeButton" : "disableButton"}
                 onClick={this.toggleAudio}
@@ -441,6 +397,7 @@ class Streaming extends Component {
                 />
                 마이크 {audioOn ? "끄기" : "켜기"}
               </button>
+              </div>
             </div>
           </div>
         ) : null}
@@ -471,7 +428,7 @@ class Streaming extends Component {
   async createSession(sessionId) {
     const token = await CheckToken();
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions",
+      `${process.env.REACT_APP_OPENVIDU}/api/sessions`,
       { customSessionId: sessionId },
       {
         headers: {
@@ -487,7 +444,7 @@ class Streaming extends Component {
   async createToken(sessionId) {
     const token = await CheckToken();
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      `${process.env.REACT_APP_OPENVIDU}/api/sessions/${sessionId}/connections`,
       {},
       {
         headers: {

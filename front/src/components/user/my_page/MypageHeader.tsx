@@ -35,7 +35,9 @@ const MypageHeader = () => {
     id: 0,
     targetId: 0,
     nickname: "",
-    profileImg: ""
+    profileImg: "",
+    gender: "",
+    showBadgeType : ""
   });
 
   const changeFollowingData = () => {
@@ -43,7 +45,9 @@ const MypageHeader = () => {
       id: loginUser.id,
       targetId: Number(watchingUserId),
       nickname: state.targetUser.nickname,
-      profileImg: state.targetUser.profileImg
+      profileImg: state.targetUser.profileImg,
+      gender: state.targetUser.gender,
+      showBadgeType: state.targetUser.showBadgeType
     });
   };
 
@@ -51,7 +55,9 @@ const MypageHeader = () => {
     id: 0,
     targetId: 0,
     nickname: "",
-    profileImg: ""
+    profileImg: "",
+    gender: "",
+    showBadgeType: ""
   });
 
   const changeDeleteFollowingData = () => {
@@ -59,7 +65,9 @@ const MypageHeader = () => {
       id: loginUser.id,
       targetId: Number(watchingUserId),
       nickname: state.targetUser.nickname,
-      profileImg: state.targetUser.profileImg
+      profileImg: state.targetUser.profileImg,
+      gender: state.targetUser.gender,
+      showBadgeType: state.targetUser.showBadgeType
     });
   };
 
@@ -67,7 +75,9 @@ const MypageHeader = () => {
     id: 0,
     targetId: 0,
     nickname: "",
-    profileImg: ""
+    profileImg: "",
+    gender: "",
+    showBadgeType: ""
   });
 
   const changeAddBlackListData = () => {
@@ -75,7 +85,9 @@ const MypageHeader = () => {
       id: loginUser.id,
       targetId: Number(watchingUserId),
       nickname: state.targetUser.nickname,
-      profileImg: state.targetUser.profileImg
+      profileImg: state.targetUser.profileImg,
+      gender: state.targetUser.gender,
+      showBadgeType: state.targetUser.showBadgeType
     });
   };
 
@@ -83,7 +95,9 @@ const MypageHeader = () => {
     id: 0,
     targetId: 0,
     nickname: "",
-    profileImg: ""
+    profileImg: "",
+    gender: "",
+    showBadgeType: ""
   });
 
   const changeDeleteBlackListData = () => {
@@ -91,7 +105,9 @@ const MypageHeader = () => {
       id: loginUser.id,
       targetId: Number(watchingUserId),
       nickname: state.targetUser.nickname,
-      profileImg: state.targetUser.profileImg
+      profileImg: state.targetUser.profileImg,
+      gender: state.targetUser.gender,
+      showBadgeType: state.targetUser.showBadgeType
     });
   };
 
@@ -107,10 +123,12 @@ const MypageHeader = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
+        console.log(reader.result)
       };
       reader.readAsDataURL(e.target.files[0]);
     } else {
       setImage(state.targetUser.profileImg);
+
     }
   };
 
@@ -193,11 +211,16 @@ const MypageHeader = () => {
     [state.blackListUsers, state.myFollowingUsers]
   );
 
-  
+  // 성별
+  function genderColor(gender){
+    console.log(gender)
 
-  // if (state.blackListUsers.length === 0) {
-  //   return <div>Loading...</div>;
-  // }
+    if(gender==="FEMALE"){
+        return `${mypageHeaderStyle.profileImgF}`
+    }else{
+        return `${mypageHeaderStyle.profileImgM}`
+    }
+}
 
   return (
     <div className={`${mypageHeaderStyle.total}`}>
@@ -210,16 +233,18 @@ const MypageHeader = () => {
       <div className={`${mypageHeaderStyle.userInfo}`}>
         <div>
           {loginUser.id===Number(watchingUserId)?
-          <div className={`${mypageHeaderStyle.profile}`}>
+          <div className={`${genderColor(state.targetUser.gender)}`}>
+          {/* <div className={`${mypageHeaderStyle.profile}`}> */}
             <img src={Image} onClick={()=>{fileInput.current.click()}} />
             <input type='file' style={{display:'none'}} accept='image/jpg,image/png,image/jpeg' name='profile_img'
               onChange={(e)=>onChange(e)} ref={fileInput}/>
           </div>:
-          <div className={`${mypageHeaderStyle.profile}`}>
+          <div className={`${genderColor(state.targetUser.gender)}`}>
+          {/* <div className={`${mypageHeaderStyle.profile}`}> */}
             <img src={Image} />
           </div>}
 
-          {/* 뱃지 */}
+          {/* 뱃지 */}  
           <div className={`${mypageHeaderStyle.profile_badge}`}>
 
             {loginUser.id===Number(watchingUserId)&&currentBadge==="X"?<div onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} className={`${mypageHeaderStyle.noBadge}`}></div>:null}

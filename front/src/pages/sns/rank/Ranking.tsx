@@ -33,18 +33,6 @@ const Ranking = () => {
         dispatch(action_ranking.getRankingList("MODERN"))
     }, [])
 
-    // 로딩 컴포넌트 필요함
-    // if (state.rankingList.length === 0) {
-    //     return <div>Loading...</div>;
-    // }
-
-    // useMemo(() => {
-    //     return dispatch(action_ranking.getRankingList("LOVELY"))
-    // }, [state.rankingList])
-
-    console.log(state.rankingList)
-    console.log(state.rankingList[0])
-    console.log(state.rankingList[0]?.nickname)
     //select 값 유지
     const [likeSelect, setLikeSelect] = useState<string>("lovely");
 
