@@ -102,7 +102,7 @@ const LiveMenuModal = ()=>{
                     <div>팔로잉</div>
                 </div>
 
-                {hostId===String(loginUser.id)?<div onClick={()=>{registblackList()}} className={`${liveMenuModalStyle.menu}`}>
+                {hostId===String(loginUser.id)?<div onClick={()=>{registblackList(); kickInModal()}} className={`${liveMenuModalStyle.menu}`}>
                     <div><img src={process.env.PUBLIC_URL + '/img/live/ban-user.png'}/></div>
                     <div>블랙리스트</div>
                 </div>:null}
