@@ -8,6 +8,9 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux"; 
 import {action} from "../../../store/ClosetSlice";
 
+//param
+import { useParams } from "react-router-dom";
+
 // alert창
 import Swal from "sweetalert2";
 
@@ -74,8 +77,8 @@ const OOTDCoordi = (props) => {
         ACCESSORY3:number
     }
     
-    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
-    const userId:number = loginUser.id;
+    const { closetUserId } = useParams();
+    const userId:number = parseInt(closetUserId);
 
     function saveOOTD(){
 

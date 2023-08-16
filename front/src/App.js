@@ -30,7 +30,7 @@ function App() {
       <div className="App">
         <Router>
           <Routes>
-            <Route path="/closet" element={<Closet />} />
+            <Route path="/closet/:id" element={<Closet />} />
             <Route path="/chatlist" element={<ChatList />} />
             <Route
               path="/chatroom/:otherId/:roomId/:roomCode"
