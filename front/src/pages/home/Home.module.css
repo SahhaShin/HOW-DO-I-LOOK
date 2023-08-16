@@ -74,12 +74,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.intro1Btn:hover {
-  background-color: #d1816c;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
 
 .intro1Btn2 {
   position: absolute;
@@ -97,7 +91,62 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.intro1Btn2:hover {
+.intro1Btn3 {
+  position: absolute;
+  bottom: 40px;
+  right: 360px;
+  background-color: #EAA595;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 55px;
+  width: 145px;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.intro1Btn4 {
+  position: absolute;
+  bottom: 40px;
+  right: 200px;
+  background-color: #EAA595;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 55px;
+  width: 145px;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.intro1Btn5 {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  background-color: #EAA595;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 55px;
+  width: 145px;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.intro1Btn:hover,
+.intro1Btn2:hover,
+.intro1Btn3:hover,
+.intro1Btn4:hover,
+.intro1Btn5:hover {
   background-color: #d1816c;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -105,20 +154,23 @@
 
 .intro2Btn {
   position: absolute;
-  bottom: 20%;
-  left: 17%;
+  bottom: 21%;
+  left: 18%;
   background-color: #79AF9D;
   color: white;
   padding: 12px 24px;
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  height: 7%;
-  width: 12%;
+  height: 5%;
+  width: 10%;
   text-decoration: none;
-  font-size: 90%;
+  font-size: 0.8rem;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
 .intro2Btn:hover {
@@ -130,19 +182,22 @@
 .intro3Btn {
   position: absolute;
   bottom: 23%;
-  left: 71%;
-  background-color: #D15014;
+  left: 73%;
+  background-color: #eb8964;
   color: white;
   padding: 12px 24px;
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  height: 7%;
-  width: 12%;
+  height: 5%;
+  width: 10%;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 80%;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
 .intro3Btn:hover {
@@ -155,20 +210,23 @@
 
 .intro4Btn {
   position: absolute;
-  bottom: 23%;
-  left: 17%;
-  background-color: #004A98;
+  bottom: 24%;
+  left: 18%;
+  background-color: #235e9c;
   color: white;
   padding: 12px 24px;
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  height: 7%;
-  width: 12%;
+  height: 5%;
+  width: 10%;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 80%;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
 .intro4Btn:hover {
@@ -188,12 +246,15 @@
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  height: 7%;
-  width: 12%;
+  height: 5%;
+  width: 11%;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 80%;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
 .intro5Btn:hover {

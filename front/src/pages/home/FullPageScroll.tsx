@@ -88,6 +88,12 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
         }
     };
 
+    const movePageTo = (index: number) => {
+        const num = currentPage.current;
+        if (index > num) for (let i = 0; i < index - num; i++) scrollDown();
+        else if (index < num) for (let i = 0; i < num - index; i++) scrollUp();
+    };
+
     useEffect(() => {
         const outer = outerDivRef.current;
         if (!outer) return;
@@ -106,11 +112,7 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
             outer.removeEventListener("touchend", onTouchUp);
         };
     }, []);
-    const movePageTo = (index: number) => {
-        const num = currentPage.current;
-        if (index > num) for (let i = 0; i < index - num; i++) scrollDown();
-        else if (index < num) for (let i = 0; i < num - index; i++) scrollUp();
-    };
+
 
     return (
         <>
@@ -123,7 +125,10 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
             <Dots
                 limit={outerDivRef.current?.childElementCount || 0}
                 currentIndex={currentPage.current}
-                onDotClick={movePageTo}
+                onDotClick={(index: number) => {
+                    movePageTo(index);
+                    onPageChange(index);
+                }}
             />
         </>
     );
