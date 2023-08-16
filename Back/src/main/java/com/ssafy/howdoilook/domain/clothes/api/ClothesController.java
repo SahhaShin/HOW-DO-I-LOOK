@@ -37,7 +37,8 @@ public class ClothesController {
                                             @RequestPart("s3upload") MultipartFile multipartFile,
                                             @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
-        clothesSaveRequestDto.setPhotoLink(imageService.saveImageAndRemoveBg(multipartFile));
+//        clothesSaveRequestDto.setPhotoLink(imageService.saveImageAndRemoveBg(multipartFile));
+        clothesSaveRequestDto.setPhotoLink(imageService.saveImage(multipartFile));
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(clothesService.saveClothes(clothesSaveRequestDto, userDetails));
@@ -62,7 +63,7 @@ public class ClothesController {
     @GetMapping("list")
     public ResponseEntity<List<ClothesListResponseDto>> findClothesList(@RequestParam(value = "type") String type,
                                                                         @RequestParam(value = "userId") Long userId,
-                                                                        @RequestParam(value = "page") int page,
+                                                                        @RequestParam(value = "page", required = false) Integer page,
                                                                         @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
 
         return ResponseEntity.status(HttpStatus.OK).body(clothesService.findClothesList(type, userId, page, userDetails));
