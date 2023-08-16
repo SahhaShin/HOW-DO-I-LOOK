@@ -40,6 +40,9 @@ public class RoomCustomRepositoryImpl implements RoomCustomRepository {
         // 블랙리스트에 포함된 hostId들을 제외
         builder.and(room.host.id.notIn(blackListIds));
 
+        // 스트리밍이 끝난 방은 제외
+        builder.and(room.endedDate.isNull());
+
         /**
          * 타입이 설정되어 있을 때 where 절 해당 필터링 추가
          */
@@ -93,6 +96,9 @@ public class RoomCustomRepositoryImpl implements RoomCustomRepository {
             // 팔로이가 없으면 아무런 조건을 추가하지 않음으로써 모든 값을 가져오지 않도록 처리
             builder.and(room.id.isNull()); // 무효한 조건을 추가
         }
+
+        // 스트리밍이 끝난 방은 제외
+        builder.and(room.endedDate.isNull());
 
         /**
          * 타입이 설정되어 있을 때 where 절 해당 필터링 추가
