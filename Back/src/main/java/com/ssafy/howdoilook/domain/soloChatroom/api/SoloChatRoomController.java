@@ -44,6 +44,4 @@ public class SoloChatRoomController {
         ChatContextListResponseDto result = soloChatRoomService.getChatContextList(requestDto, userDetails);
         return new ResponseEntity<ChatContextListResponseDto>(result, HttpStatus.OK);
     }
-
-
 }

@@ -316,4 +316,11 @@ public class UserService {
                 .closetAccess(user.getClosetAccess())
                 .build();
     }
+
+    public BadgeType getShowBadgeByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하는 유저가 없습니다."));
+
+        return user.getShowBadgeType();
+    }
 }

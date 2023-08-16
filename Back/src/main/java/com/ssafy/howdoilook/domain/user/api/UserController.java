@@ -193,4 +193,12 @@ public class UserController {
                 .body(userService.updateShowBadge(id, badge));
     }
 
+    @ApiOperation(value = "유저 대표 뱃지 출력")
+    @GetMapping("/showBadge/{id}")
+    public ResponseEntity<?> getShowBadgeByUserId(@PathVariable Long id) {
+
+        return ResponseEntity.ok()
+                .body(userService.getShowBadgeByUserId(id));
+    }
+
 }
