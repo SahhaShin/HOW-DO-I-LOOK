@@ -60,6 +60,10 @@ const Mypage = () => {
                         {/* 모달 */}
                         {state.followModalOpen && <div className={`${mypageStyle.followModal}`}><MypageFollowModal/></div>}
                         {state.badgeUpdateModalOpen && <div className={`${mypageStyle.BadgeModal}`}><MypageBadgeModal/></div>}
+                        {
+                // 피드 상세보기 모달
+                state.detailModalOpen?<div className={`${mypageStyle.detailModal}`}><FeedDetail feedId={state_feed.detailFeedId}/></div>:null
+            }
                         
                         <MypageHeader/>
                         

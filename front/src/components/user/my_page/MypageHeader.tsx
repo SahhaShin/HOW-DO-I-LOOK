@@ -27,12 +27,17 @@ const MypageHeader = () => {
   let state = useSelector((state: any) => state.mypage);
   let dispatch = useDispatch();
   
+  
   const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
   const { watchingUserId } = useParams();
   
   let getBlackList = (watchingUserId: number) => {
     dispatch(action_mypage.getBlackList(watchingUserId));
   };
+  dispatch(action_mypage.checkBlackList({
+    id1 : loginUser.id, 
+    id2 : watchingUserId}
+    ));
 
   const [followingData, setFollowingData] = useState({
     id: 0,
@@ -227,6 +232,8 @@ const MypageHeader = () => {
 
       checkFollowing();
       checkBlackList();
+
+      
     },
     [state.blackListUsers, state.myFollowingUsers]
   );
@@ -243,8 +250,9 @@ const MypageHeader = () => {
 
   }
 
-  let isBlacklist = false
-  ifBlackList(loginUser.id, watchingUserId ).then((res)=>(isBlacklist =res))
+  
+
+
   
   return (
     <div className={`${mypageHeaderStyle.total}`}>
@@ -321,11 +329,11 @@ const MypageHeader = () => {
             <button>팔로우</button>
             <button>대화</button>
             <button
-                  onClick={() => {isBlacklist?
-                    window.location.href = `${process.env.REACT_APP_FRONT}/closet/${watchingUserId}`:
-                    alert("접근할 수 없습니다.")
+                  onClick={() => { state.isBlacklist?
+                    alert("접근할 수 없습니다."):
+                    window.location.href = `${process.env.REACT_APP_FRONT}/closet/${watchingUserId}`
+                    
                   }}
-                  className={ isBlacklist ?`${mypageHeaderStyle.btnsBlackList}`:""}
                 >
                   옷장 보기 
                 </button>
@@ -398,11 +406,10 @@ const MypageHeader = () => {
                     블랙리스트 등록
                   </button>}
                   <button
-                  onClick={() => {isBlacklist?
-                    window.location.href = `${process.env.REACT_APP_FRONT}/closet/${watchingUserId}`:
-                    alert("접근할 수 없습니다.")
+                  onClick={() => {state.isBlacklist?alert("접근할 수 없습니다."):
+                    window.location.href = `${process.env.REACT_APP_FRONT}/closet/${watchingUserId}`
+                    
                   }}
-                  className={ isBlacklist ?`${mypageHeaderStyle.btnsBlackList}`:""}
                 >
                   옷장 보기 
                 </button>
