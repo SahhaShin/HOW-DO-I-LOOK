@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ClothesRepository extends JpaRepository<Clothes, Long> {
 
-    List<Clothes> findByUser_Id(Long userId);
+    Page<Clothes> findByUser_Id(Long userId, Pageable pageable);
 
     Page<Clothes> findByTypeAndUser_Id(ClothesType type, Long userId, Pageable pageable);
 

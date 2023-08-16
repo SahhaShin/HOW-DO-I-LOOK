@@ -98,7 +98,7 @@ public class ClothesService {
         clothesRepository.deleteById(clothesId);
     }
 
-    public List<ClothesListResponseDto> findClothesList(String type, Long userId, int page, UserDetails userDetails) throws AccessException {
+    public List<ClothesListResponseDto> findClothesList(String type, Long userId, Integer page, UserDetails userDetails) throws AccessException {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
@@ -112,11 +112,19 @@ public class ClothesService {
         }
         
         List<ClothesListResponseDto> findClothesListResponseDtoList = new ArrayList<>();
-        PageRequest pageRequest = PageRequest.of(page, 8);
+
+        PageRequest pageRequest;
+
+        if (page != null) {
+            pageRequest = PageRequest.of(page, 8);
+        } else {
+            pageRequest = PageRequest.of(0, Integer.MAX_VALUE);
+        }
+
 
         if(type.equals("ALL")) {
             System.out.println(userId);
-            List<Clothes> findClothesList = clothesRepository.findByUser_Id(userId);
+            Page<Clothes> findClothesList = clothesRepository.findByUser_Id(userId, pageRequest);
 
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
