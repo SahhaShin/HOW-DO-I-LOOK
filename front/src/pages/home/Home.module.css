@@ -130,3 +130,18 @@
   width: 12%;
   text-decoration: none;
 }
+
+.intro5Btn2 {
+  position: absolute;
+  bottom: 1%;
+  right: 48%;
+  background-color: #DB809E;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 8%;
+  width: 6%;
+  opacity: 0;
+}
