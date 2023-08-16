@@ -75,7 +75,7 @@ input:focus {
 
 .loginlable >p { 
 
-    background-color: rgb(226, 139, 139);
+    background-color: rgb(183, 190, 210);
     line-height: 20px;
     text-align: center;
     color: white;
@@ -159,10 +159,10 @@ input:focus {
 .fadeInBox {
     display: inline-block;
     padding: 10px;
-    animation: fadein 3s;
-    -moz-animation: fadein 3s; /* Firefox */
-    -webkit-animation: fadein 3s; /* Safari and Chrome */
-    -o-animation: fadein 3s; /* Opera */
+    animation: fadein 1s;
+    -moz-animation: fadein 1s; /* Firefox */
+    -webkit-animation: fadein 1s; /* Safari and Chrome */
+    -o-animation: fadein 1s; /* Opera */
   }
   @keyframes fadein {
       from {

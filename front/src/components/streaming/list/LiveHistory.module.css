@@ -42,7 +42,7 @@
   height: 100%;
 
   /* 컬러 */
-  background-color: var(--signiture);
+  background-color: var(--pinkes);
   color: white;
 }
 
@@ -123,8 +123,8 @@
 
   /* 컬러 */
   background-color: white;
-  border: 1px solid var(--signiture);
-  color: var(--signiture);
+  border: 1px solid var(--pinkes);
+  color: var(--pinkes);
 
   /* 채팅 내용에 맞게 띄어쓰기 해줌 */
   word-wrap: break-word;

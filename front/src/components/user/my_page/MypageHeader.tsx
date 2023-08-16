@@ -331,7 +331,7 @@ const MypageHeader = () => {
                   }}
                   style={
                     state.menuMode === 3
-                      ? { backgroundColor: "#4570F5", color: "white" }
+                      ? { backgroundColor: "#EAA595", color: "white" }
                       : null
                   }
                 >

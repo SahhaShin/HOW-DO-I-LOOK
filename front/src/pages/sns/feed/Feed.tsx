@@ -93,15 +93,15 @@ const Feed = () => {
                                 <button onClick={async()=>{
                                     dispatch(changeSortType(1))
                                     dispatch(changeFeedMode(1));
-                                    }} style={state.sortType===1?{backgroundColor:"#4570F5", color:"white"}:null}>ALL</button>
+                                    }} style={state.sortType===1?{backgroundColor:"#EAA595", color:"white"}:null}>ALL</button>
                                 <button onClick={async()=>{
                                     dispatch(changeSortType(2))
                                     dispatch(changeFeedMode(2));
-                                    }} style={state.sortType===2?{backgroundColor:"#4570F5", color:"white"}:null}>FOLLOWING</button>
+                                    }} style={state.sortType===2?{backgroundColor:"#EAA595", color:"white"}:null}>FOLLOWING</button>
                                 <button onClick={async()=>{
                                     dispatch(changeSortType(3))
                                     dispatch(changeFeedMode(3));
-                                    }} style={state.sortType===3?{backgroundColor:"#4570F5", color:"white"}:null}>MY</button>
+                                    }} style={state.sortType===3?{backgroundColor:"#EAA595", color:"white"}:null}>MY</button>
                             </div>
                         </div>
 

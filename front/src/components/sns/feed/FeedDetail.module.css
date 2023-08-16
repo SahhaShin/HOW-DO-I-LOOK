@@ -131,7 +131,7 @@
     margin-right: 10px;
     margin-bottom: 5px;
     font-size: 12px;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -188,7 +188,7 @@
     margin-right: 1%;
     font-size: 12px;
 
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -232,7 +232,7 @@
 }
 
 .feedBtns button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -435,7 +435,7 @@
     border-radius: 1rem;
 }
 .rightBtns button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -511,7 +511,7 @@
     height: 53px;
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -534,7 +534,7 @@
 }
 
 .reply button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -631,7 +631,7 @@
 }
 
 .repleBtns button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 

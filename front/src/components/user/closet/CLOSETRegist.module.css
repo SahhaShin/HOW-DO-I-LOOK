@@ -84,7 +84,7 @@
     /* border-radius: 1rem; */
 }
 .select:focus{
-    border-color: var(--signiture);
+    border-color: var(--pinkes);
     outline: none;
 }
 .input{
@@ -95,7 +95,7 @@
     margin-top: 3%;
 }
 .input:focus{
-    border-color: var(--signiture);
+    border-color: var(--pinkes);
     outline: none;
 }
 
@@ -142,7 +142,7 @@
 
 .buttons > button:hover{
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
