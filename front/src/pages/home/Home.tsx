@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import styles from "./Home.module.css";
-// import { MainLayout } from "./layout/MainLayout";
 import { FullPageScroll } from "./FullPageScroll";
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from "../../hook/Cookie";
@@ -17,9 +16,11 @@ function Home() {
 		}
 	};
 
+	const scrollRef2 = useRef(null);
+
 	const scrollToTopSection = () => {
-		if (scrollRef.current) {
-			window.scrollTo({ top: 0, behavior: 'smooth' }); // 맨 위로 스크롤
+		if (scrollRef2.current) {
+			scrollRef2.current.scrollIntoView({ behavior: "smooth" });
 		}
 	};
 
@@ -34,9 +35,11 @@ function Home() {
 		if (!((typeof sEmail == "undefined") || (typeof sEmail === null))) {
 			console.log("sEmail");
 			dispatch(action_user.GetUserInfo(sEmail));
+			window.location.reload();
 		} else if (!((typeof bEmail == "undefined") || (typeof bEmail === null))) {
 			console.log("bEmail");
 			dispatch(action_user.GetUserInfo(bEmail));
+			window.location.reload();
 		} else {
 			//window.location.href = `${process.env.REACT_APP_FRONT}/user/log-in`;
 		}
@@ -47,11 +50,11 @@ function Home() {
 	const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
 
 	return (
-		// <MainLayout>
 		<FullPageScroll>
 			<div
 				className={`${styles.bg} ${styles.section}`}
 				style={{ backgroundImage: "url('/img/intro/mainIntro1.gif')" }}
+				ref={scrollRef2}
 			>
 				{loginUser == null ? (
 					<button
@@ -61,18 +64,38 @@ function Home() {
 					</button>
 				) : (
 					<button
-						className={`${styles.button} ${styles.intro1Btn2}`}
+						className={`${styles.button} ${styles.intro1Btn3}`}
+						onClick={() => { navigate(`/liveList`) }}
+					>
+						라이브 바로가기
+					</button>
+				)}
+				{loginUser == null ? (
+					<button
+						className={`${styles.button} ${styles.intro1Btn}`}
+						onClick={scrollToNextSection}
+					>
+						둘러보기
+					</button>
+				) : (
+					<button
+						className={`${styles.button} ${styles.intro1Btn4}`}
+
+						onClick={() => { navigate(`/liveList`) }}
+					>
+						피드 바로가기
+					</button>
+				)}
+				{loginUser !== null && (
+					<button
+						className={`${styles.button} ${styles.intro1Btn5}`}
+
 						onClick={() => { navigate(`/mypage/${loginUser.id}`) }}
 					>
 						마이페이지
 					</button>
 				)}
-				<button
-					className={`${styles.button} ${styles.intro1Btn}`}
-					onClick={scrollToNextSection}
-				>
-					둘러보기
-				</button>
+
 			</div>
 			<div
 				className={`${styles.bg} ${styles.section}`}
@@ -87,7 +110,7 @@ function Home() {
 					</button>
 				) : (
 					<button
-						className={`${styles.button} ${styles.intro2Btn}`}
+						className={`${styles.button} ${styles.intro2Btn} ${styles.intro2BtnWrapper}`}
 						onClick={() => { navigate(`/livelist`) }}
 					>
 						Streaming Now
@@ -157,13 +180,7 @@ function Home() {
 					위로 가기
 				</button>
 			</div>
-			{/* <div className={`${styles.bg} ${styles.section}`}></div>
-			<div className={`${styles.bg} ${styles.section}`}></div>
-			<div className={`${styles.bg} ${styles.section}`}></div>
-			<div className={`${styles.bg} ${styles.section}`}></div>
-			<div className={`${styles.bg} ${styles.section}`}></div> */}
 		</FullPageScroll>
-		// </MainLayout>
 	);
 }
 

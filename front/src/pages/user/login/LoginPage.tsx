@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react';
 import mypageStyle from "./LoginPage.module.css";
 
 //redux
-import { useSelector, useDispatch } from "react-redux"; 
-import {action_mypage, changeBadgeUpdateModalOpen, changeFollowModalOpen} from "../../../store/MypageSlice";
-import {changeDetailModalOpen} from "../../../store/FeedSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { action_mypage, changeBadgeUpdateModalOpen, changeFollowModalOpen } from "../../../store/MypageSlice";
+import { changeDetailModalOpen } from "../../../store/FeedSlice";
 
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 //컴포넌트
 
@@ -26,11 +26,12 @@ const LoginPage = () => {
 
 
 
-    return(
+    return (
         <div className={`${mypageStyle.wrapper}`}>
+            <Header></Header>
 
             <div className={`${mypageStyle.total}`}>
-                
+
                 {/* 헤더 */}
                 {/* <div className={`${mypageStyle.header}`}><Header/></div> */}
 
@@ -41,11 +42,11 @@ const LoginPage = () => {
 
                     {/* 우측 마이페이지 컴포넌트 */}
                     <div className={`${mypageStyle.mid}`}>
-                        
-                        
-                        <Login/>
-                        
-                        
+
+
+                        <Login />
+
+
 
                     </div>
                 </div>
