@@ -137,6 +137,11 @@
     color: white;
 }
 
+.btns > .btnsBlackList:hover {
+    background-color: "#FAEBE7";
+    
+}
+
 .profileImgF{
     width: 200px;
     height: 200px;
