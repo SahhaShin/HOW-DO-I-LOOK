@@ -125,3 +125,8 @@ p {
   margin-left: 10px;
   margin-right: 10px;
 }
+
+.DATE{
+  background-color: var(--pinkes);
+  color: white;
+}

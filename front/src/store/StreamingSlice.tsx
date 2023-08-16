@@ -41,6 +41,7 @@ export const action_live = {
   // 점수주기 (슬래시를 붙여야 한다.)
   giveScore : createAsyncThunk("FeedSlice/giveScore", async({targetUserId, roomId, type, score}, thunkAPI)=>{
     try{
+      console.log(`${targetUserId}, ${roomId}, ${type}, ${score}`);
         const token = await CheckToken();
         const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/userlike/`,{targetUserId, roomId, type, score},{
             headers:{"Authorization":token}
@@ -150,11 +151,17 @@ const StreamingSlice = createSlice({
     addPickList(state, action){
       state.pickList.push(action.payload);
     },
+    deletePickList(state, action){
+      //action.payload에는 아이템이 삭제된 객체 리스트가 온다.
+      state.pickList=action.payload;
+    },
     rearrangePickList(state, action){
       state.pickList=action.payload;
     },
     sendPickListChat(state, action){
-      state.sendImg=action.payload;
+      if(state.sendImg===true) state.sendImg=false;
+      else state.sendImg=true;
+      // state.sendImg=action.payload;
     },
     changeMenuModalOpen(state, action){
       state.menuModalOpen = action.payload;
@@ -263,5 +270,5 @@ const StreamingSlice = createSlice({
   
 });
 
-export let {changeExitAlam,changeExitRoomNo,changeExitLiveByUser,changeLiveEndAlert,changeLiveEndRoomNo,changeLiveEndByHost,changeAreYouKick,setKickUser,changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
+export let {deletePickList,changeExitAlam,changeExitRoomNo,changeExitLiveByUser,changeLiveEndAlert,changeLiveEndRoomNo,changeLiveEndByHost,changeAreYouKick,setKickUser,changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
 export default StreamingSlice.reducer;
