@@ -41,6 +41,7 @@ export const action_live = {
   // 점수주기 (슬래시를 붙여야 한다.)
   giveScore : createAsyncThunk("FeedSlice/giveScore", async({targetUserId, roomId, type, score}, thunkAPI)=>{
     try{
+      console.log(`${targetUserId}, ${roomId}, ${type}, ${score}`);
         const token = await CheckToken();
         const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/userlike/`,{targetUserId, roomId, type, score},{
             headers:{"Authorization":token}
@@ -158,7 +159,9 @@ const StreamingSlice = createSlice({
       state.pickList=action.payload;
     },
     sendPickListChat(state, action){
-      state.sendImg=action.payload;
+      if(state.sendImg===true) state.sendImg=false;
+      else state.sendImg=true;
+      // state.sendImg=action.payload;
     },
     changeMenuModalOpen(state, action){
       state.menuModalOpen = action.payload;

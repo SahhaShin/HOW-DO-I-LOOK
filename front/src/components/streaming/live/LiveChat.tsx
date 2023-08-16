@@ -476,8 +476,8 @@ const LiveChat = () => {
             }),
             headers
         });
-        
-        dispatch(sendPickListChat(false));//다시 사진 보낼 수 있게 수정
+
+        // dispatch(sendPickListChat(false));//다시 사진 보낼 수 있게 수정
     }
 
     //5. 채팅 종료
@@ -492,10 +492,12 @@ const LiveChat = () => {
 
     // 화면 들어올 시 초기화 단 1회
     useEffect(() => {
-
+        // sendImgMessage(`publishInit`);
+        console.log(`22`);
         connect();
 
-        publishInit();
+        // publishInit();
+
 
         return () => {
 
@@ -507,7 +509,8 @@ const LiveChat = () => {
     // 텍스트는 아래 버튼을 통해 sendMessage로 간다.
     // 즉 이미지 전송 요청이 들어왔을 때 연결
     useEffect(() => {
-        sendImgMessage();
+        console.log(`1111`);
+        sendImgMessage(`state.sendImg`);
     }, [state.sendImg]);
 
     //강퇴 유저가 발생했을 시 -> 강퇴 처리 -> Live 페이지에서 강퇴 유저 null처리 후 리스트 다시 불러옴

@@ -171,10 +171,6 @@ const LiveMenu = () => {
     }
 
     useEffect(()=>{
-        // if(state_live.otherClosetOpen===true){
-        //     setSelectedMenu("Menu 1");
-        // }
-        // dispatch(changeOtherClosetOpen(false));
 
         if (state_live.otherClosetOpen === true) {
             dispatch(changeOtherClosetOpen(false));
