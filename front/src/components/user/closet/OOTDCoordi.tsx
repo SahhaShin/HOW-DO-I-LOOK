@@ -88,24 +88,77 @@ const OOTDCoordi = (props) => {
             ACCESSORY3:currentACC3ImageInfo?.clothesId
         }
 
-        if(slotIds.TOP===undefined){
-            if(state.clothesTop.length>=1) slotIds.TOP=state.clothesTop[0].clothesId;
+        if (slotIds.TOP === undefined) {
+            if (props.idx === 1 && state.clothesOOTDTop_1.length >= 1) {
+                slotIds.TOP = state.clothesOOTDTop_1[0].clothesId;
+            } else if (props.idx === 2 && state.clothesOOTDTop_2.length >= 1) {
+                slotIds.TOP = state.clothesOOTDTop_2[0].clothesId;
+            }
         }
-        if(slotIds.BOTTOM===undefined){
-            if(state.clothesBottom.length>=1) slotIds.BOTTOM=state.clothesBottom[0].clothesId;
+
+        if (slotIds.BOTTOM === undefined) {
+            if (props.idx === 1 && state.clothesOOTDBottom_1.length >= 1) {
+                slotIds.BOTTOM = state.clothesOOTDBottom_1[0].clothesId;
+            } else if (props.idx === 2 && state.clothesOOTDBottom_2.length >= 1) {
+                slotIds.BOTTOM = state.clothesOOTDBottom_2[0].clothesId;
+            }
         }
-        if(slotIds.SHOE===undefined){
-            if(state.clothesShoe.length>=1) slotIds.SHOE=state.clothesShoe[0].clothesId;
+
+        if (slotIds.SHOE === undefined) {
+            if (props.idx === 1 && state.clothesOOTDShoe_1.length >= 1) {
+                slotIds.SHOE = state.clothesOOTDShoe_1[0].clothesId;
+            } else if (props.idx === 2 && state.clothesOOTDShoe_2.length >= 1) {
+                slotIds.SHOE = state.clothesOOTDShoe_2[0].clothesId;
+            }
         }
-        if(slotIds.ACCESSORY1===undefined){
-            if(state.clothesAccessory.length>=1) slotIds.ACCESSORY1=state.clothesAccessory[0].clothesId;
+
+        if (slotIds.ACCESSORY1 === undefined) {
+            if (props.idx === 1 && state.clothesOOTDAccessory1_1.length >= 1) {
+                slotIds.ACCESSORY1 = state.clothesOOTDAccessory1_1[0].clothesId;
+            } else if (props.idx === 2 && state.clothesOOTDAccessory1_2.length >= 1) {
+                slotIds.ACCESSORY1 = state.clothesOOTDAccessory1_2[0].clothesId;
+            }
         }
-        if(slotIds.ACCESSORY2===undefined){
-            if(state.clothesAccessory.length>=1) slotIds.ACCESSORY2=state.clothesAccessory[0].clothesId;
+
+
+        if (slotIds.ACCESSORY2 === undefined) {
+            if (props.idx === 1 && state.clothesOOTDAccessory2_1.length >= 1) {
+                slotIds.ACCESSORY2 = state.clothesOOTDAccessory2_1[0].clothesId;
+            } else if (props.idx === 2 && state.clothesOOTDAccessory2_2.length >= 1) {
+                slotIds.ACCESSORY2 = state.clothesOOTDAccessory2_2[0].clothesId;
+            }
         }
-        if(slotIds.ACCESSORY3===undefined){
-            if(state.clothesAccessory.length>=1) slotIds.ACCESSORY3=state.clothesAccessory[0].clothesId;
+
+
+        if (slotIds.ACCESSORY3 === undefined) {
+            if (props.idx === 1 && state.clothesOOTDAccessory3_1.length >= 1) {
+                slotIds.ACCESSORY3 = state.clothesOOTDAccessory3_1[0].clothesId;
+            } else if (props.idx === 2 && state.clothesOOTDAccessory3_2.length >= 1) {
+                slotIds.ACCESSORY3 = state.clothesOOTDAccessory3_2[0].clothesId;
+            }
         }
+
+
+        // if(slotIds.TOP===undefined){
+        //     if(state.clothesTop.length>=1) slotIds.TOP=state.clothesTop[0].clothesId;
+        // }
+        // if(slotIds.BOTTOM===undefined){
+        //     if(state.clothesBottom.length>=1) slotIds.BOTTOM=state.clothesBottom[0].clothesId;
+        // }
+        // if(slotIds.SHOE===undefined){
+        //     if(state.clothesShoe.length>=1) slotIds.SHOE=state.clothesShoe[0].clothesId;
+        // }
+        // if(slotIds.ACCESSORY1===undefined){
+        //     if(state.clothesAccessory.length>=1) slotIds.ACCESSORY1=state.clothesAccessory[0].clothesId;
+        // }
+        // if(slotIds.ACCESSORY2===undefined){
+        //     if(state.clothesAccessory.length>=1) slotIds.ACCESSORY2=state.clothesAccessory[0].clothesId;
+        // }
+        // if(slotIds.ACCESSORY3===undefined){
+        //     if(state.clothesAccessory.length>=1) slotIds.ACCESSORY3=state.clothesAccessory[0].clothesId;
+        // }
+
+        // console.log(`state.clothesTop[0] = ${state.clothesTop[0].clothesId}`);
 
         if(slotIds.TOP===undefined || slotIds.BOTTOM===undefined || slotIds.SHOE===undefined || slotIds.ACCESSORY1===undefined || slotIds.ACCESSORY2===undefined || slotIds.ACCESSORY3===undefined){
             Swal.fire({
