@@ -150,6 +150,10 @@ const StreamingSlice = createSlice({
     addPickList(state, action){
       state.pickList.push(action.payload);
     },
+    deletePickList(state, action){
+      //action.payload에는 아이템이 삭제된 객체 리스트가 온다.
+      state.pickList=action.payload;
+    },
     rearrangePickList(state, action){
       state.pickList=action.payload;
     },
@@ -263,5 +267,5 @@ const StreamingSlice = createSlice({
   
 });
 
-export let {changeExitAlam,changeExitRoomNo,changeExitLiveByUser,changeLiveEndAlert,changeLiveEndRoomNo,changeLiveEndByHost,changeAreYouKick,setKickUser,changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
+export let {deletePickList,changeExitAlam,changeExitRoomNo,changeExitLiveByUser,changeLiveEndAlert,changeLiveEndRoomNo,changeLiveEndByHost,changeAreYouKick,setKickUser,changepPickBadge,changeScoreModalOpen,changeOtherClosetOpen,changeSelectAdvisor,changeMenuModalOpen, sendPickListChat,addPickList,rearrangePickList, changepublisher, pushAnyChatList } = StreamingSlice.actions;
 export default StreamingSlice.reducer;

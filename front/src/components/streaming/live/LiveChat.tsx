@@ -186,7 +186,7 @@ const LiveChat = () => {
     function subscribe(){
         console.log("현재 2 subscribe이다.");
 
-        publishInit(); //최초 한 번 init 요청을 보낸다.
+        // publishInit(); //최초 한 번 init 요청을 보낸다.
         
         client.current.subscribe('/sub/roomChat/'+roomCode,(chatMessage)=>{
             const message = JSON.parse(chatMessage.body);
@@ -321,11 +321,6 @@ const LiveChat = () => {
 
         //---------------------------------------
 
-        // 이미지 전송 요청이 왓으면 실행
-        if(state.sendImg){
-            sendImgMessage();
-            console.log("여기까지 왔는데...");
-        }
     }
 
 
@@ -481,7 +476,7 @@ const LiveChat = () => {
             }),
             headers
         });
-
+        
         dispatch(sendPickListChat(false));//다시 사진 보낼 수 있게 수정
     }
 
@@ -495,15 +490,24 @@ const LiveChat = () => {
         
     // },[])
 
-    // 화면 들어올 시 초기화
+    // 화면 들어올 시 초기화 단 1회
     useEffect(() => {
 
         connect();
+
+        publishInit();
 
         return () => {
 
           disconnect();
         }
+    }, []);
+
+    
+    // 텍스트는 아래 버튼을 통해 sendMessage로 간다.
+    // 즉 이미지 전송 요청이 들어왔을 때 연결
+    useEffect(() => {
+        sendImgMessage();
     }, [state.sendImg]);
 
     //강퇴 유저가 발생했을 시 -> 강퇴 처리 -> Live 페이지에서 강퇴 유저 null처리 후 리스트 다시 불러옴
