@@ -188,7 +188,7 @@ const LiveList = () => {
                   upload();
                 }}
               >
-                새로운 방 만들기
+                라이브 만들기
               </button>
             </div>
 
@@ -223,7 +223,7 @@ const LiveList = () => {
             </div>
 
             {/* 방송 리스트 */}
-            <div className={`${liveStyle.list}`}>
+            {state.liveList.length>0?<div className={`${liveStyle.list}`}>
               {state.liveList?.map((one, index) => {
                 return (
                   <div key={index} className={`${liveStyle.onelive}`}>
@@ -231,7 +231,7 @@ const LiveList = () => {
                   </div>
                 );
               })}
-            </div>
+            </div>:<div className={`${liveStyle.nolive}`}>진행중인 라이브가 없습니다.</div>}
 
             <div className={`${liveStyle.paginationContainer}`}>
                             <Pagination
@@ -240,7 +240,7 @@ const LiveList = () => {
                                 page={page}
                                 setPage={setPage}
                             />
-                        </div>
+            </div>
           </div>
 
           <LiveFollow />

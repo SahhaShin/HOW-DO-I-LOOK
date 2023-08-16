@@ -8,7 +8,7 @@ import liveMenuStyle from "./LiveMenu.module.css";
 import { useSelector, useDispatch} from "react-redux"; 
 import {action, changePick} from "../../../store/ClosetSlice";
 import {action_feed, changePick_feed} from "../../../store/FeedSlice";
-import {action_live,changeExitRoomNo,changeExitLiveByUser,changeLiveEndRoomNo, changeLiveEndByHost,changeOtherClosetOpen, sendPickListChat, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
+import {action_live,deletePickList,changeExitRoomNo,changeExitLiveByUser,changeLiveEndRoomNo, changeLiveEndByHost,changeOtherClosetOpen, sendPickListChat, rearrangePickList, addPickList} from "../../../store/StreamingSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -171,10 +171,6 @@ const LiveMenu = () => {
     }
 
     useEffect(()=>{
-        // if(state_live.otherClosetOpen===true){
-        //     setSelectedMenu("Menu 1");
-        // }
-        // dispatch(changeOtherClosetOpen(false));
 
         if (state_live.otherClosetOpen === true) {
             dispatch(changeOtherClosetOpen(false));
@@ -238,6 +234,16 @@ const LiveMenu = () => {
                 
             }
         });
+    }
+
+
+    //세트로 선택한 아이템 삭제
+    function removeItem(idx){
+        console.log(state_live.pickList);
+        const updatedPickList = [...state_live.pickList]; // Create a copy of the pickList array
+        updatedPickList.splice(idx, 1); // Remove the item at the specified index
+
+        dispatch(deletePickList(updatedPickList));
     }
   
     return (
@@ -350,6 +356,8 @@ const LiveMenu = () => {
                                                             ref={provided.innerRef}
                                                             className={`${getClothingClass(index)}`}
                                                         >
+                                                            {/* 선택 아이템 삭제 */}
+                                                            <img onClick={()=>{removeItem(index)}} src={process.env.PUBLIC_URL+'/img/clothes/closeBtn.png'}/>
                                                             <img src={item.photoLink} />
                                                         </div>
                                                     )}
@@ -379,6 +387,8 @@ const LiveMenu = () => {
                                                         ref={provided.innerRef}
                                                         className={`${getAccessoryClass(index+3)}`}
                                                     >
+                                                        {/* 선택 아이템 삭제 */}
+                                                        <img onClick={()=>{removeItem(index+3)}} src={process.env.PUBLIC_URL+'/img/clothes/closeBtn.png'}/>
                                                         <img src={item.photoLink} />
                                                     </div>
                                                 )}

@@ -142,14 +142,28 @@ const OOTDCoordi = (props) => {
         }
 
 
-        console.log(`slotIds.TOP= ${slotIds.TOP}`);
-        console.log(`slotIds.BOTTOM= ${slotIds.BOTTOM}`);
-        console.log(`slotIds.SHOE= ${slotIds.SHOE}`);
-        console.log(`slotIds.ACCESSORY1= ${slotIds.ACCESSORY1}`);
-        console.log(`slotIds.ACCESSORY2= ${slotIds.ACCESSORY2}`);
-        console.log(`slotIds.ACCESSORY3= ${slotIds.ACCESSORY3}`);
+        // if(slotIds.TOP===undefined){
+        //     if(state.clothesTop.length>=1) slotIds.TOP=state.clothesTop[0].clothesId;
+        // }
+        // if(slotIds.BOTTOM===undefined){
+        //     if(state.clothesBottom.length>=1) slotIds.BOTTOM=state.clothesBottom[0].clothesId;
+        // }
+        // if(slotIds.SHOE===undefined){
+        //     if(state.clothesShoe.length>=1) slotIds.SHOE=state.clothesShoe[0].clothesId;
+        // }
+        // if(slotIds.ACCESSORY1===undefined){
+        //     if(state.clothesAccessory.length>=1) slotIds.ACCESSORY1=state.clothesAccessory[0].clothesId;
+        // }
+        // if(slotIds.ACCESSORY2===undefined){
+        //     if(state.clothesAccessory.length>=1) slotIds.ACCESSORY2=state.clothesAccessory[0].clothesId;
+        // }
+        // if(slotIds.ACCESSORY3===undefined){
+        //     if(state.clothesAccessory.length>=1) slotIds.ACCESSORY3=state.clothesAccessory[0].clothesId;
+        // }
 
-        if (slotIds.TOP === undefined || slotIds.BOTTOM === undefined || slotIds.SHOE === undefined || slotIds.ACCESSORY1 === undefined || slotIds.ACCESSORY2 === undefined || slotIds.ACCESSORY3 === undefined) {
+        // console.log(`state.clothesTop[0] = ${state.clothesTop[0].clothesId}`);
+
+        if(slotIds.TOP===undefined || slotIds.BOTTOM===undefined || slotIds.SHOE===undefined || slotIds.ACCESSORY1===undefined || slotIds.ACCESSORY2===undefined || slotIds.ACCESSORY3===undefined){
             Swal.fire({
                 icon: 'warning',
                 title: 'Closet을 채워주세요 :)',

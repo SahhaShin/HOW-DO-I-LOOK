@@ -87,7 +87,7 @@ const LiveScoreModal = ()=>{
             <div className={`${liveScoreModalStyle.scoreInput}`}><input type="number" min="-5" max="5" onChange={(e)=>{scoreCheck(e)}} value={score} placeholder='-5 ~ 5점 사이로 가능합니다.'/></div>
         
             <div className={`${liveScoreModalStyle.btns}`}>
-                <button onClick={()=>{dispatch(action_live.giveScore({targetUserId:state_live.selectAdvisor, roomId:roomId, type:state_live.pickBadge, score:score}))}}>점수주기</button>
+                <button onClick={()=>{dispatch(action_live.giveScore({targetUserId:state_live.selectAdvisor.id, roomId:roomId, type:state_live.pickBadge, score:score}))}}>점수주기</button>
                 <button onClick={()=>{dispatch(changeScoreModalOpen(false))}}>취소</button>
             </div>
         </div>
