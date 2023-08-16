@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesSaveRequestDto;
 import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesUpdateDto;
 import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesDetailResponseDto;
 import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesListResponseDto;
+import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesListWithTotalPageDto;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
@@ -98,7 +99,7 @@ public class ClothesService {
         clothesRepository.deleteById(clothesId);
     }
 
-    public List<ClothesListResponseDto> findClothesList(String type, Long userId, Integer page, UserDetails userDetails) throws AccessException {
+    public ClothesListWithTotalPageDto findClothesList(String type, Long userId, Integer page, UserDetails userDetails) throws AccessException {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
@@ -129,6 +130,15 @@ public class ClothesService {
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
             }
+
+            int totalPages = findClothesList.getTotalPages();
+            ClothesListWithTotalPageDto result = ClothesListWithTotalPageDto.builder()
+                    .totalPage(totalPages)
+                    .clothesList(findClothesListResponseDtoList)
+                    .build();
+
+            return result;
+
         } else {
             ClothesType clothesType = ClothesType.valueOf(type);
             System.out.println(clothesType);
@@ -137,9 +147,15 @@ public class ClothesService {
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
             }
-        }
 
-        return findClothesListResponseDtoList;
+            int totalPages = findClothesList.getTotalPages();
+            ClothesListWithTotalPageDto result = ClothesListWithTotalPageDto.builder()
+                    .totalPage(totalPages)
+                    .clothesList(findClothesListResponseDtoList)
+                    .build();
+
+            return result;
+        }
     }
 
     public ClothesDetailResponseDto findClothesDetail(Long clothesId, UserDetails userDetails) throws AccessException {
