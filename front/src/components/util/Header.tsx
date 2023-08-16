@@ -43,7 +43,7 @@ const Header = () => {
       { loginUser !== null
       ?
         <div className={`${UtilStyle.etcMenu}`}>
-          <div onClick={()=>{navigate(`/closet`)}}>내 옷장</div>
+          <div onClick={()=>{navigate(`closet/${loginUser.id}`)}}>내 옷장</div>
           <div onClick={()=>{navigate(`/mypage/${loginUser.id}`)}}>마이페이지</div>
           <div onClick={()=>{logout()}}>로그아웃</div>
         </div>

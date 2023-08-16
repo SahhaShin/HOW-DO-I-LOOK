@@ -8,6 +8,9 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { action } from "../../../store/ClosetSlice";
 
+//param
+import { useParams } from "react-router-dom";
+
 // alert창
 import Swal from "sweetalert2";
 

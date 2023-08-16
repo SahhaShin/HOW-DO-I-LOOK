@@ -90,3 +90,18 @@ export const getUserInfo = () => {
 
   return userInfo;
 };
+
+//블랙리스트 확인하기 
+export async function ifBlackList(loginUserId:string, myPageUserId:string)  {
+  return await axios({
+    method: "get",
+    url: `${process.env.REACT_APP_SERVER}/api/user/`,
+  })
+    .then((response) => {
+      const result = response.data;
+      return result; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
+    })
+    .catch((e) => {
+      throw e;
+    });
+};
