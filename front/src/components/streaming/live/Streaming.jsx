@@ -333,7 +333,7 @@ class Streaming extends Component {
     const isStreamer = this.state.myUserName == this.state.mySessionId;
 
     return (
-      <div className="container">
+      <div className="container" style={{backgroundColor: "black",height:"100vh"}}>
         {/* 만약 세션이 있다면 아래의 html 코드가 실행된다. */}
         {this.state.session !== undefined ? (
           <div id="session" className="StreamingComponent">

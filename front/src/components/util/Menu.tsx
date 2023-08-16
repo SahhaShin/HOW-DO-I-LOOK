@@ -47,6 +47,35 @@ const NavigationBar: React.FC = () => {
             </button>
             ))}
 
+            {/* <button className={`${UtilStyle.menuBtn}`} key={0} onClick={() => {handleMenuClick(0); dispatch(changeMenuItemNum(0));navigate(`/${liveMenuLink[0]}`)}}>
+                <div><img src={`${process.env.PUBLIC_URL}/img/menuIcon/liveMenu.png`}/></div>
+                <p>라이브</p>
+            </button>
+
+            <button className={`${UtilStyle.menuBtn}`} key={1} onClick={() => {handleMenuClick(1); dispatch(changeMenuItemNum(1));navigate(`/${liveMenuLink[1]}`)}}>
+                <div><img src={`${process.env.PUBLIC_URL}/img/menuIcon/feedMenu.png`}/></div>
+                <p>피드</p>
+            </button>
+
+            <button className={`${UtilStyle.menuBtn}`} key={2} onClick={() => {handleMenuClick(2); dispatch(changeMenuItemNum(2));navigate(`/${liveMenuLink[2]}`)}}>
+                <div><img src={`${process.env.PUBLIC_URL}/img/menuIcon/chatMenu.png`}/></div>
+                <p>채팅</p>
+            </button>
+
+            <button className={`${UtilStyle.menuBtn}`} key={3} onClick={() => {handleMenuClick(3); dispatch(changeMenuItemNum(3));navigate(`/${liveMenuLink[3]}`)}}>
+                <div><img src={`${process.env.PUBLIC_URL}/img/menuIcon/rankMenu.png`}/></div>
+                <p>랭킹</p>
+            </button> */}
+
+            {/* <button className={`${UtilStyle.menuBtn}`} key={4} onClick={() => {handleMenuClick(4); dispatch(changeMenuItemNum(4));navigate(`/${liveMenuLink[4]}`)}}>
+                <div><img src={`${process.env.PUBLIC_URL}/img/menuIcon/closetMenu.png`}/></div>
+                <p>옷장</p>
+            </button>
+
+            <button className={`${UtilStyle.menuBtn}`} key={4} onClick={() => {handleMenuClick(5); dispatch(changeMenuItemNum(5));navigate(`/${liveMenuLink[5]}`)}}>
+                <div><img src={`${process.env.PUBLIC_URL}/img/menuIcon/myMenu.png`}/></div>
+                <p>마이페이지</p>
+            </button> */}
 
             {/* 이미 체크된 메뉴가 아닐 경우 클릭한 버튼 위치로 이동 */}
             {state.menuItemNum!==-1?<div

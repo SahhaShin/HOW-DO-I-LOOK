@@ -6,13 +6,14 @@
     /* 위치 */
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 
 /* 채팅 */
 .chatHeader{
     /* 크기 */
-    width: 316px;
+    width: 97%;
     height: 40px;
     background-color: var(--pinkes);
 
@@ -32,8 +33,8 @@
 
 .chatArea{
     /* 높이 */
-    width: 310px;
-    height: 548px;
+    width: 97%;
+    height: 645px;
     overflow: auto;
     padding-left: 10px;
     padding-top: 10px;
@@ -65,7 +66,7 @@
 
 .chatContent>form>input{
     /* 크기 */
-    width: 264px;
+    width: 404px;
     height: 50px;
     padding-left: 10px;
 

@@ -2,6 +2,8 @@
     /* 크기 */
     width: 100%;
     height: 100%;
+    /* background-color: var(--greyLight-2); */
+    /* background-color: var(--border); */
     /* background-color: var(--blue); */
     /* background-image: url("../../../../public/img/common/total_bg.jpg"); */
 }

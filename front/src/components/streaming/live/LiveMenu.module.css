@@ -115,7 +115,7 @@ button{
 .sidebar{
     display: flex;
     width: 70px;
-    height: 650px;
+    height: 100vh;
     background-color: var(--pinkes);
 }
 

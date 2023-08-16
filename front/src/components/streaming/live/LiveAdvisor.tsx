@@ -19,7 +19,6 @@ const LiveAdvisor = () => {
         }
         
         else if(badge==="NATURAL"){
-            console.log("에에에ㅇㅇ");
             return process.env.PUBLIC_URL + '/img/badge/Natural_colored.png';
         }
 

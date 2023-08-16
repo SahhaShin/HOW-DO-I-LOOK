@@ -81,7 +81,7 @@ function Home() {
 					<button
 						className={`${styles.button} ${styles.intro1Btn4}`}
 
-						onClick={() => { navigate(`/liveList`) }}
+						onClick={() => { navigate(`/feed`) }}
 					>
 						피드 바로가기
 					</button>

@@ -18,7 +18,7 @@
   --border: #f0f0f0;
   --btnColor: #dfe1e2;
   --lovelyBtn:#F48FB1;
-  --naturalBtn:;
+  --naturalBtn:#96e6a1;
   --modernBtn:#81D4FA;
   --sexyBtn:#E91E63;
   --yellow:rgb(254,240,214);
@@ -34,7 +34,6 @@
 
 .App {
   text-align: center;
-  width:100vw; height:100vh;
 }
 
 .App-logo {
