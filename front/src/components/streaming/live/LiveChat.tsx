@@ -30,6 +30,9 @@ const LiveChat = () => {
         Authorization : `Bearer ${token}`,
     };
 
+    //단 1회만 입장 호출
+    const [count,setCount] = useState(0);
+
     //새로운 정보 가공 이미지와 채팅 모두 필요하기 때문
     interface anyChatList{
         nickname:string,
@@ -186,7 +189,10 @@ const LiveChat = () => {
     function subscribe(){
         console.log("현재 2 subscribe이다.");
 
-        // publishInit(); //최초 한 번 init 요청을 보낸다.
+        if(count===0){
+            setCount(1);
+            publishInit(); //최초 한 번 init 요청을 보낸다.
+        }
         
         client.current.subscribe('/sub/roomChat/'+roomCode,(chatMessage)=>{
             const message = JSON.parse(chatMessage.body);
@@ -493,7 +499,6 @@ const LiveChat = () => {
     // 화면 들어올 시 초기화 단 1회
     useEffect(() => {
         // sendImgMessage(`publishInit`);
-        console.log(`22`);
         connect();
 
         // publishInit();

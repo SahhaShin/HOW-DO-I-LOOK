@@ -24,7 +24,7 @@
   height: 40px;
   width: 750px;
   top: 30px;
-  left: 60px;
+  left: 180px;
 }
 
 .leaveButton {
@@ -45,6 +45,9 @@ img {
   margin: 0;
 }
 .activeButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 40px;
   width: 130px;
   border-radius: 10px;
@@ -52,9 +55,13 @@ img {
   background-color: var(--pinkes);
   color: white;
   font-size: 17px;
-  
+  margin-right: 10px;
 }
+
 .disableButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 40px;
   width: 130px;
   border-radius: 10px;
@@ -62,6 +69,7 @@ img {
   background-color: rgb(240, 240, 240);
   color: black;
   font-size: 17px;
+  margin-right: 10px;
 }
 .displayNone {
   display: none;

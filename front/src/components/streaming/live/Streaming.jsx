@@ -379,7 +379,7 @@ class Streaming extends Component {
                       }
                       alt="카메라"
                     />
-                    카메라 {cameraOn ? "끄기" : "켜기"}
+                    &nbsp; 카메라 {cameraOn ? "끄기" : "켜기"}
                   </button>
                 </div>
               ) : null}
@@ -395,7 +395,7 @@ class Streaming extends Component {
                   }
                   alt="마이크"
                 />
-                마이크 {audioOn ? "끄기" : "켜기"}
+                &nbsp;마이크 {audioOn ? "끄기" : "켜기"}
               </button>
               </div>
             </div>

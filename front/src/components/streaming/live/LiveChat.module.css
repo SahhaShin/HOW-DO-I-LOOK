@@ -41,8 +41,19 @@
 
 .mainChatArea{
     /* background-color: salmon; */
-    width: 100%;
     display: flex;
+    width: 100%;
+}
+
+.mainChatArea>div:nth-child(1){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainChatArea>div:nth-child(2){
+    text-align: left;
+    width: 100%;
 }
 
 .chatContent{

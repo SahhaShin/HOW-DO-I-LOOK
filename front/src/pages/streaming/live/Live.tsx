@@ -65,7 +65,6 @@ const Live = () => {
     // 방장이 아닌 사람이 라이브를 나감
     useEffect(()=>{
         if(state_live.exitAlam){
-            console.log("여기 들어 오나?");
             //초기화
             dispatch(changeExitLiveByUser(false));
             dispatch(changeExitRoomNo(null));
@@ -79,7 +78,8 @@ const Live = () => {
         <div className={`${liveStyle.Wrapper}`}>
             {
                 // 사용자 클릭 시 메뉴 모달
-                state_live.menuModalOpen?<div className={`${liveStyle.menuModal}`}><LiveMenuModal/></div>:null
+                String(state_live.selectAdvisor?.id)!==String(loginUser.id)&&state_live.menuModalOpen?
+                <div className={`${liveStyle.menuModal}`}><LiveMenuModal/></div>:null
             }
 
             {
@@ -113,7 +113,7 @@ const Live = () => {
             </div>
 
             {/* 피드블러 */}
-            <div onClick={async()=>{dispatch(changeScoreModalOpen(false));dispatch(changeMenuModalOpen(false));}} style={((state_live.menuModalOpen)||(state_live.scoreModalOpen))?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
+            <div onClick={async()=>{dispatch(changeScoreModalOpen(false));dispatch(changeMenuModalOpen(false));}} style={String(state_live.selectAdvisor?.id)!==String(loginUser.id)&&((state_live.menuModalOpen)||(state_live.scoreModalOpen))?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
         </div>
     );
 }
