@@ -105,7 +105,14 @@ public class BlackListService {
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 BlackList입니다.", 1));
         blackListRepository.deleteById(blackList.getId());
     }
-
+    public boolean checkBlackList(Long userId, Long targetUserId){
+        List<BlackList> blackLists = blackListRepository.checkBlackList(userId, targetUserId);
+        if (blackLists.size() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     public List<BlackListSelectResponseDto> getAllBlackList(Long userId, UserDetails userDetails) {
         String clientEmail = userDetails.getUsername();
 
