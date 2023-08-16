@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {action, changeModalOpen,changeMode} from "../../../store/ClosetSlice";
 import {changeMenuItemNum} from "../../../store/UtilSlice";
 
+
 //컴포넌트
 import OOTDWeather from "../../../components/user/closet/OOTDWeather";
 import OOTDCoordi from "../../../components/user/closet/OOTDCoordi";
