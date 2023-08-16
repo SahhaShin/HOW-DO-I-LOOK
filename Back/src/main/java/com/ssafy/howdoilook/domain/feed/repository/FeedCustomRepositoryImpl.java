@@ -157,6 +157,7 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
                 .from(feed)
                 .distinct()
                 .where(feed.user.notIn(blackListTargetUser))
+                .orderBy(feed.id.desc())
                 .fetch();
         return feedList;
     }
