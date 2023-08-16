@@ -63,7 +63,7 @@ public class ClothesController {
     @GetMapping("list")
     public ResponseEntity<List<ClothesListResponseDto>> findClothesList(@RequestParam(value = "type") String type,
                                                                         @RequestParam(value = "userId") Long userId,
-                                                                        @RequestParam(value = "page") int page,
+                                                                        @RequestParam(value = "page", required = false) Integer page,
                                                                         @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
 
         return ResponseEntity.status(HttpStatus.OK).body(clothesService.findClothesList(type, userId, page, userDetails));
