@@ -86,4 +86,12 @@ public class FollowController {
         return ResponseEntity.ok()
                 .body(followService.getPerfectFollowList());
     }
+
+    @ApiOperation(value = "팔로잉 여부 확인")
+    @GetMapping("/check/following/{userId}/{targetUserId}")
+    public ResponseEntity<?> checkFollowing(@PathVariable Long userId, @PathVariable Long targetUserId) {
+
+        return ResponseEntity.ok()
+                .body(followService.checkFollowing(userId, targetUserId));
+    }
 }

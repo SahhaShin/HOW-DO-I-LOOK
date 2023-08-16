@@ -16,6 +16,7 @@ import com.ssafy.howdoilook.domain.feedPhoto.service.FeedPhotoService;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.entity.FeedPhotoHashtag;
 import com.ssafy.howdoilook.domain.feedPhotoHashtag.service.FeedPhotoHashtagService;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
+import com.ssafy.howdoilook.domain.follow.repository.FollowRepository;
 import com.ssafy.howdoilook.domain.follow.service.FollowService;
 import com.ssafy.howdoilook.domain.hashtag.service.HashTagService;
 import com.ssafy.howdoilook.domain.user.entity.User;
@@ -36,7 +37,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -54,12 +54,47 @@ public class FeedService {
     private final FeedRepository feedRepository;
     private final FeedPhotoRepository feedPhotoRepository;
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
+
+    public List<FeedResponseDto> selectFollowFeedExceptBlackList(Long userId) {
+        User findUser = userRepository.findById(userId).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 User 입니다.", 1));
+
+        List<Follow> followeeList = findUser.getFollowerList();
+
+        List<Feed> feeds = feedRepository.selectFollowingFeedExceptBlackList(followeeList, findUser);
+
+        List<FeedResponseDto> feedResponseDtoList = builder(feeds);
+
+        for (FeedResponseDto feedResponseDto : feedResponseDtoList) {
+            Follow follow = followRepository.findFollowIdByFollowerAndFollowee(userId, feedResponseDto.getUserId());
+
+            if(follow == null)
+                feedResponseDto.setFollowingCheck(false);
+            else
+                feedResponseDto.setFollowingCheck(true);
+        }
+
+        return feedResponseDtoList;
+    }
 
     public List<FeedResponseDto> selectAllExceptBlackList(Long userId){
         User findUser = userRepository.findById(userId).orElseThrow(
                 () -> new EmptyResultDataAccessException("존재하지 않는 User 입니다.", 1));
         List<Feed> feeds = feedRepository.selectFeedExceptBlackList(findUser);
-        return builder(feeds);
+
+        List<FeedResponseDto> feedResponseDtoList = builder(feeds);
+
+        for (FeedResponseDto feedResponseDto : feedResponseDtoList) {
+            Follow follow = followRepository.findFollowIdByFollowerAndFollowee(userId, feedResponseDto.getUserId());
+
+            if(follow == null)
+                feedResponseDto.setFollowingCheck(false);
+            else
+                feedResponseDto.setFollowingCheck(true);
+        }
+
+        return feedResponseDtoList;
     }
     public Page<FeedResponseDto> selectAll(Pageable pageable){
         Page<Feed> feeds = feedRepository.selectFeedAll(pageable);
@@ -191,6 +226,8 @@ public class FeedService {
 
             feedResponseDto.setUserId(feed.getUser().getId());
             feedResponseDto.setUserNickname(feed.getUser().getNickname());
+            feedResponseDto.setUserProfileImg(feed.getUser().getProfileImg());
+            feedResponseDto.setUserGender(feed.getUser().getGender());
             feedResponseDto.setFeedId(feed.getId());
             feedResponseDto.setFeedContent(feed.getContent());
             feedResponseDto.setCommentCount(commentRepository.selectCommentCountByFeedId(feed.getId()));

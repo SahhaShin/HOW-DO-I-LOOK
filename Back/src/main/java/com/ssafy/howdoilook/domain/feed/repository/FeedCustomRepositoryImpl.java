@@ -124,6 +124,29 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
     }
 
     @Override
+    public List<Feed> selectFollowingFeedExceptBlackList(List<Follow> followList, User user) {
+        List<BlackList> blackListList = user.getBlackList();
+
+        List<User> blackListTargetUser = new ArrayList<>();
+
+        for (BlackList blackList : blackListList)
+            blackListTargetUser.add(blackList.getTargetUser());
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        for (Follow follow : followList) {
+            builder.or(feed.user.id.eq(follow.getFollowee().getId()));
+        }
+
+        List<Feed> feedList = jpaQueryFactory.select(feed)
+                .from(feed)
+                .distinct()
+                .where(feed.user.notIn(blackListTargetUser).and(builder))
+                .fetch();
+        return feedList;
+    }
+
+    @Override
     public List<Feed> selectFeedExceptBlackList(User user) {
         List<BlackList> blackListList = user.getBlackList();
         List<User> blackListTargetUser = new ArrayList<>();
@@ -134,6 +157,7 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
                 .from(feed)
                 .distinct()
                 .where(feed.user.notIn(blackListTargetUser))
+                .orderBy(feed.id.desc())
                 .fetch();
         return feedList;
     }
