@@ -12,7 +12,7 @@ import {
   changeManageType,
   changeMenuMode,
   changeFollowModalMode,
-  changeBadgeUpdateModalOpen
+  changeBadgeUpdateModalOpen,
 } from "../../../store/MypageSlice";
 
 import { useParams } from "react-router-dom";
@@ -132,8 +132,25 @@ const MypageHeader = () => {
     }
   };
 
-  //뱃지
-  let currentBadge = JSON.parse(sessionStorage.getItem("loginUser")).showBadgeType;
+  // useEffect(() => {
+  //   dispatch(action_mypage.getTargetUser(Number(watchingUserId)))
+  // }, [])
+
+  // let currentBadge = JSON.parse(sessionStorage.getItem("loginUser")).showBadgeType;
+
+  // useEffect(() => {
+  //   if(state.targetUser.id === 0)
+  //     return;
+
+  //   console.log(state.targetUser.showBadgeType)
+  //   // currentBadge = state.targetUser.showBadgeType;
+  //   dispatch(saveShowBadge(Number(watchingUserId)));
+  //   console.log(state.showBadge)
+  // }, [state.targetUser])
+
+  useEffect(() => {
+    dispatch(action_mypage.getShowBadge(Number(watchingUserId)));
+  }, [])
 
   // 팔로우
   useEffect(
@@ -238,7 +255,8 @@ const MypageHeader = () => {
             <img src={Image} onClick={()=>{fileInput.current.click()}} />
             <input type='file' style={{display:'none'}} accept='image/jpg,image/png,image/jpeg' name='profile_img'
               onChange={(e)=>onChange(e)} ref={fileInput}/>
-          </div>:
+          </div>
+          :
           <div className={`${genderColor(state.targetUser.gender)}`}>
           {/* <div className={`${mypageHeaderStyle.profile}`}> */}
             <img src={Image} />
@@ -246,18 +264,34 @@ const MypageHeader = () => {
 
           {/* 뱃지 */}  
           <div className={`${mypageHeaderStyle.profile_badge}`}>
+            {state.showBadge==="X" && loginUser.id === Number(watchingUserId)?<div onClick={()=>{
+              dispatch(changeBadgeUpdateModalOpen(true))
+            }} className={`${mypageHeaderStyle.noBadge}`}></div>:null}
 
-            {loginUser.id===Number(watchingUserId)&&currentBadge==="X"?<div onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} className={`${mypageHeaderStyle.noBadge}`}></div>:null}
-            {loginUser.id===Number(watchingUserId)&&currentBadge==="LOVELY"?<img onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} />:null}
-            {loginUser.id===Number(watchingUserId)&&currentBadge==="NATURAL"?<img onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} />:null}
-            {loginUser.id===Number(watchingUserId)&&currentBadge==="MODERN"?<img onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`}/>:null}
-            {loginUser.id===Number(watchingUserId)&&currentBadge==="SEXY"?<img onClick={()=>dispatch(changeBadgeUpdateModalOpen(true))} src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`}/>:null}
+            {state.showBadge==="LOVELY"?<img onClick={()=>{
+              if(loginUser.id === Number(watchingUserId)) {
+                dispatch(changeBadgeUpdateModalOpen(true))
+              }
+            }} src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} />:null}
 
-            {loginUser.id!==Number(watchingUserId)&&currentBadge==="X"?<div className={`${mypageHeaderStyle.noBadge}`}></div>:null}
-            {loginUser.id===Number(watchingUserId)&&currentBadge==="LOVELY"?<img src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} />:null}
-            {loginUser.id===Number(watchingUserId)&&currentBadge==="NATURAL"?<img src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} />:null}
-            {loginUser.id===Number(watchingUserId)&&currentBadge==="MODERN"?<img src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`}/>:null}
-            {loginUser.id===Number(watchingUserId)&&currentBadge==="SEXY"?<img src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`}/>:null}
+            {state.showBadge==="NATURAL"?<img onClick={()=>{
+              if(loginUser.id === Number(watchingUserId)) {
+                dispatch(changeBadgeUpdateModalOpen(true))
+              }
+            }} src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} />:null}
+
+            {state.showBadge==="MODERN"?<img onClick={()=>{
+              if(loginUser.id === Number(watchingUserId)) {
+                dispatch(changeBadgeUpdateModalOpen(true))
+              }
+            }} src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`}/>:null}
+
+            {state.showBadge==="SEXY"?<img onClick={()=>{
+              if(loginUser.id === Number(watchingUserId)) {
+                dispatch(changeBadgeUpdateModalOpen(true))
+              }
+            }} src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`}/>:null}
+
           </div>
         </div>
 
@@ -297,7 +331,7 @@ const MypageHeader = () => {
                   }}
                   style={
                     state.menuMode === 3
-                      ? { backgroundColor: "#4570F5", color: "white" }
+                      ? { backgroundColor: "#EAA595", color: "white" }
                       : null
                   }
                 >

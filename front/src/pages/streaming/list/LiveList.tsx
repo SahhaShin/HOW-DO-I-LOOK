@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 //redux
 
 import { useDispatch } from "react-redux";
-
+import {changeMenuItemNum} from "../../../store/UtilSlice";
 import { action_follow } from "../../../store/FollowSlice";
 
 // 컴포넌트
@@ -50,6 +50,7 @@ const LiveList = () => {
   //redux 관리
   let state = useSelector((state: any) => state.live);
   let dispatch = useDispatch();
+  dispatch(changeMenuItemNum(0))
 
   let state_streaming = useSelector((state: any) => state.streaming);
 
@@ -200,7 +201,7 @@ const LiveList = () => {
                   }}
                   style={
                     state.userId == ""
-                      ? { backgroundColor: "#4570F5", color: "white" }
+                      ? { backgroundColor: "#EAA595", color: "white" }
                       : null
                   }
                 >
@@ -212,7 +213,7 @@ const LiveList = () => {
                   }}
                   style={
                     state.userId != ""
-                      ? { backgroundColor: "#4570F5", color: "white" }
+                      ? { backgroundColor: "#EAA595", color: "white" }
                       : null
                   }
                 >

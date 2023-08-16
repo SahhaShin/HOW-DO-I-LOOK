@@ -15,6 +15,7 @@
     /* border */
     border-bottom: 1px solid var(--border);
     box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+    
 
 }
 
@@ -133,12 +134,13 @@
     width: 90px;
     height: 40px;
     border-radius: 30px;
-    background-color: var(--border);
+    background-color: var(--pinkes);
+    color: white;
 }
 
 .enterBnt> button:hover{
     /* 입장버튼 호버 시 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 

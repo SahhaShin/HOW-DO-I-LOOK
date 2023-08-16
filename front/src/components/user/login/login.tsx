@@ -134,7 +134,7 @@ const Login: React.FC = () => {
       </form>
   
       {/* <div className={`${loginStyle.loginline}`}>소셜 로그인은 아래 버튼으로 이용해주세요</div> */}
-      <div className={`${loginStyle.loginsocial}`}>
+      {/* <div className={`${loginStyle.loginsocial}`}>
         <button
           className={`${loginStyle.google}`}
           type="button"
@@ -143,10 +143,10 @@ const Login: React.FC = () => {
           }}
         >
           GOOGLE
-          {/* <img
+          <img
             src={process.env.PUBLIC_URL + `/img/login/google.png`}
             alt="구글 로그인"
-          /> */}
+          />
         </button>
         <button
           className={`${loginStyle.naver}`}
@@ -156,10 +156,10 @@ const Login: React.FC = () => {
           }}
         >
           NAVER
-          {/* <img
+          <img
             src={process.env.PUBLIC_URL + `/img/login/naver.png`}
             alt="네이버 로그인"
-          /> */}
+          />
         </button>
         <button
           className={`${loginStyle.kakao}`}
@@ -169,12 +169,12 @@ const Login: React.FC = () => {
           }}
         >
           KAKAO
-          {/* <img
+          <img
             src={process.env.PUBLIC_URL + `/img/login/kakao.png`}
             alt="카카오 로그인"
-          /> */}
+          />
         </button>
-      </div>
+      </div> */}
 
       <div className={`${loginStyle.registBtn}`}>
         <a href={process.env.REACT_APP_FRONT + `/user/sign-up`} className={`${loginStyle.loginsignin}`}>

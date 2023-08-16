@@ -134,7 +134,7 @@
 
 .sortBtn button:hover {
   /* 컬러 */
-  background-color: var(--signiture);
+  background-color: var(--pinkes);
   color: white;
 }
 .title {
@@ -163,7 +163,7 @@
   font-family: "Pretendard-Regular";
 
   /* 컬러 */
-  background-color: var(--signiture);
+  background-color: var(--pinkes);
   color: white;
 }
 .uploadBtn {
@@ -183,6 +183,6 @@
   height: 50px;
   border-radius: 5%;
   border: 1px solid var(--border);
-  background-color: var(--signiture);
+  background-color: var(--pinkes);
   color: white;
 }

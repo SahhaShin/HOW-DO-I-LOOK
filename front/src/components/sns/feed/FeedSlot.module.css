@@ -97,7 +97,7 @@
 
 .btns> div button:hover{
     /* 입장버튼 호버 시 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -151,7 +151,7 @@
     border-radius: 10px;
     border-color: black;
     margin-right: 1%;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
     font-size: 12px;
 }
@@ -201,7 +201,7 @@
 }
 
 .feedBtns button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 

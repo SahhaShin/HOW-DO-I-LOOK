@@ -36,7 +36,7 @@
 
 .roomCreate > button {
   height: 100%;
-  background-color: rgb( 69,112,245);
+  background-color: var(--pinkes);
   color: white;
 }
 
@@ -48,7 +48,7 @@
 
 .roomCreate button:hover {
   /* 컬러 */
-  background-color: var(--signiture);
+  background-color: var(--pinkes);
   color: white;
 }
 
@@ -73,7 +73,7 @@ input:focus {
   padding: 0;
   margin: 0;
   margin-left: 10%;
-  background-color: rgb(226, 139, 139);
+  background-color: var(--pinkes);
   border: 0;
   font-size: 13px;
   line-height: 1rem;
@@ -113,7 +113,7 @@ p {
 }
 
 .tag button:hover{
-  background-color: var(--signiture);
+  background-color: var(--pinkes);
   color: white;
 }
 

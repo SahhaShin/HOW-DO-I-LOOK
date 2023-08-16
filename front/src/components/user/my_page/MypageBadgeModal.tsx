@@ -79,10 +79,16 @@ const MypageBadgeModal = ()=>{
 
             <div className={`${mypageBadgeModalStyle.btns}`}>
                 <button onClick={()=>dispatch(changeBadgeUpdateModalOpen(false))}>취소</button>
-                <button onClick={()=>dispatch(action_mypage.updateBadge({id:loginUser.id,badge:pick}))}>교체</button>
+                <button onClick = {
+                  () => {
+                    dispatch(action_mypage.updateBadge({id:loginUser.id,badge:pick}))
+                    dispatch(changeBadgeUpdateModalOpen(false))
+                  }
+                }>교체</button>
             </div>
         </div>
     );
+    
 }
 
 

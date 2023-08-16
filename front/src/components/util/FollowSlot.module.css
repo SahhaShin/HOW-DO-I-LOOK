@@ -109,7 +109,7 @@
 
 .enterBnt> button:hover{
     /* 입장버튼 호버 시 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 

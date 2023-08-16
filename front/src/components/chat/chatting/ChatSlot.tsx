@@ -37,7 +37,7 @@ const ChatSlot = (props) => {
                 <div className={`${chatSlotStyle.profile}`}>
                     <div className={`${chatSlotStyle.profileCircle_G}`}>
                         <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
-                        <div className={`${chatSlotStyle.redDot}`}>1</div>
+                        {/* <div className={`${chatSlotStyle.redDot}`}></div> */}
                     </div>
                     
                 </div>

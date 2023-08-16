@@ -140,7 +140,7 @@
 
 .enterBnt> button:hover{
     /* 입장버튼 호버 시 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -163,7 +163,7 @@
     height: 30px;
     color: white;
     border-radius: 1rem;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     margin-right: 10px;
     font-size: 12px;
 }
@@ -171,11 +171,11 @@
 .roomType{
     width: 50px;
     height: 50px;
-    border: 1px solid var(--signiture);
+    border: 1px solid var(--pinkes);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--signiture);
+    color: var(--pinkes);
     border-radius: 1rem;
     margin-left: 30px;
 }

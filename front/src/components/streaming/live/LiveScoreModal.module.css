@@ -43,7 +43,7 @@
     height: 50px;
     font-weight: 900;
 
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -106,7 +106,7 @@
 .btns>button{
     width: 250px;
     height: 40px;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
     border-radius: 1rem;
     margin-left: 5%;
@@ -114,7 +114,7 @@
 
 .pick{
     position:absolute;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
     border-radius: 1rem;
     width: 100px;

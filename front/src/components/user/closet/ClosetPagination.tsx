@@ -7,10 +7,10 @@ import React, { useEffect, useState } from "react";
 import {
   action,changePage,
 
-} from "../../store/LiveSlice";
+} from "../../../store/ClosetSlice";
 
 
-function Pagination({ total, limit, page, setPage }) {
+function Pagination({ totalPage, page, setPage }) {
   const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
 
@@ -18,25 +18,9 @@ function Pagination({ total, limit, page, setPage }) {
   let state = useSelector((state:any)=>state.closet);
   let dispatch = useDispatch();
 
-  useEffect(() => {
-    //리스트 가져오기
-    setPage(state.page)
-    console.log("Pagenation render")
-    dispatch(
-      action.getLiveList({
-        following: (state.userId == "") ?false : true,
-        userId: loginUser.id,
-        type: state.type,
-        search: state.searchInput, 
-        pageNum: page,
-      })
-    );
 
 
-    //회원 follow목록 가져오기
-  }, [state.page]);
-
-  const numPages = Math.ceil(total);
+  const numPages = totalPage;
 
   return (
     <>

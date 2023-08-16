@@ -35,7 +35,7 @@
     width: 50%;
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
 
     /* 동적요소 */
     transition: left 0.3s ease;

@@ -22,7 +22,7 @@
     font-family: 'Pretendard-Regular';
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
     
 }
@@ -69,7 +69,7 @@
 .btns > button{
     width: 100%;
     height: 50px;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 .btns > button:nth-child(1){

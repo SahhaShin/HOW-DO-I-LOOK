@@ -6,13 +6,15 @@ import closetStyle from "./Closet.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action, changeModalOpen,changeMode} from "../../../store/ClosetSlice";
+import {changeMenuItemNum} from "../../../store/UtilSlice";
+
 
 //컴포넌트
 import OOTDWeather from "../../../components/user/closet/OOTDWeather";
 import OOTDCoordi from "../../../components/user/closet/OOTDCoordi";
 import CLOSETMenu from "../../../components/user/closet/CLOSETMenu";
 import CLOSETSlot from "../../../components/user/closet/CLOSETSlot";
-import Pagination from "../../../components/util/Pagination";
+import Pagination from "../../../components/user/closet/ClosetPagination";
 import CLOSETRegist from "../../../components/user/closet/CLOSETRegist";
 import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
@@ -24,6 +26,7 @@ const Closet = () => {
     //redux 관리
     let state = useSelector((state:any)=>state.closet);
     let dispatch = useDispatch();
+    dispatch(changeMenuItemNum(4))
 
     //로그인 유저 정보
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
@@ -31,7 +34,7 @@ const Closet = () => {
     // 페이지네이션, 옷 관리
     let clothesListLen = state.clothesTop?.length;
     const [limit, setLimit] = useState(10);
-    const [page, setPage] = useState(state.page);
+    const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
 
     useEffect(()=>{   
@@ -113,7 +116,7 @@ const Closet = () => {
         if(state.clothesTypeKo==="상의"){
             dispatch(action.getClothesListByType({
                 clothesType: "TOP",
-                pageNum : page,
+                pageNum : state.page,
                 userId:loginUser.id,
             }));
         }
@@ -122,7 +125,7 @@ const Closet = () => {
         else if(state.clothesTypeKo==="하의"){
             dispatch(action.getClothesListByType({
                 clothesType: "BOTTOM",
-                pageNum : page,
+                pageNum : state.page,
                 userId:loginUser.id,
             }));
         }
@@ -130,7 +133,7 @@ const Closet = () => {
         else if(state.clothesTypeKo==="신발"){
             dispatch(action.getClothesListByType({
                 clothesType: "SHOE",
-                pageNum : page,
+                pageNum : state.page,
                 userId:loginUser.id,
             }));
         }
@@ -138,7 +141,7 @@ const Closet = () => {
         else if(state.clothesTypeKo==="악세서리"){
             dispatch(action.getClothesListByType({
                 clothesType: "ACCESSORY",
-                pageNum : page,
+                pageNum : state.page,
                 userId:loginUser.id,
             }));
         }
@@ -146,11 +149,13 @@ const Closet = () => {
         else if(state.clothesTypeKo==="전체"){
             dispatch(action.getClothesListByType({
                 clothesType: "ALL",
-                pageNum : page,
+                pageNum : state.page,
                 userId:loginUser.id,
             }));
         }
-    },[state.clothesTypeEn])
+
+        setPage(state.page)
+    },[state.clothesTypeEn, state.page])
 
     
   
@@ -205,8 +210,8 @@ const Closet = () => {
                         {/* 페이지네이션 20을 {clothes.length}로 바꿔야 함 */}
                         <div className={`${closetStyle.paginationContainer}`}>
                             {clothesListLen!==0?<Pagination
-                                total={3}
-                                limit={limit}
+                                totalPage={state.totalPage}
+                                // limit={8}
                                 page={page}
                                 setPage={setPage}
                             />:null}
