@@ -13,7 +13,7 @@
     /* border */
     border-bottom: 1px solid var(--border);
 
-    background-color: var(--pinkes);
+    /* background-color: var(--pinkes); */
     
 }
 
@@ -27,7 +27,7 @@
     width: 70px;
     margin-right: 0;
     cursor: pointer;
-    color: white;
+    /* color: white; */
 }
 
 .etcMenu > div:hover{
