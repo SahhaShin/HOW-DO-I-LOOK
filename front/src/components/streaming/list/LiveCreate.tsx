@@ -57,12 +57,16 @@ const LiveCreate = () => {
   //방 만들기
   function createRoom() {
     console.log(state.create);
+    console.log(minAge);
+    console.log(maxAge);
+    console.log(minAge > maxAge)
+    console.log(Number(minAge) > Number(maxAge))
     if (state.create) {
       if(title == ""){
         alert("방 타이틀을 입력해 주십시오.")
         return
       }
-      else if (minAge > maxAge){
+      else if (Number(minAge) > Number(maxAge)){
         alert("나이 제한을 잘못 입력하셨습니다.")
         return 
       }

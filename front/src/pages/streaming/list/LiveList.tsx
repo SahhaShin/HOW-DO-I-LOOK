@@ -64,11 +64,12 @@ const LiveList = () => {
   const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
   useEffect(() => {
+    const followingList = (typeof state.userId == "undefined" || state.userId == null || state.userId == "")
     //리스트 가져오기
     setPage(state.page)
     dispatch(
       action.getLiveList({
-        following: (state.userId == "") ?false : true,
+        following: followingList ?false : true,
         userId: loginUser.id,
         type: state.type,
         search: state.search,

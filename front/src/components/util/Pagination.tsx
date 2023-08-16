@@ -22,9 +22,10 @@ function Pagination({ total, limit, page, setPage }) {
     //리스트 가져오기
     setPage(state.page)
     console.log("Pagenation render")
+    const followingList = (typeof state.userId == "undefined" || state.userId == null || state.userId == "")
     dispatch(
       action.getLiveList({
-        following: (state.userId == "") ?false : true,
+        following: followingList ?false : true,
         userId: loginUser.id,
         type: state.type,
         search: state.searchInput, 

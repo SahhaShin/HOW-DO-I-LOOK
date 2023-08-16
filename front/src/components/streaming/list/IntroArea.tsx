@@ -23,10 +23,11 @@ const IntroArea = ( setPage) => {
   function getList() {
     console.log("input : " + searchInput)
     console.log("type : " + type)
+    const followingList = (typeof state.userId == "undefined" || state.userId == null || state.userId == "")
 
     dispatch(
       action.getLiveList({
-        following: (state.userId == "") ?false : true,
+        following: followingList ?false : true,
         userId: loginUser.id,
         type: type,
         search: searchInput,
