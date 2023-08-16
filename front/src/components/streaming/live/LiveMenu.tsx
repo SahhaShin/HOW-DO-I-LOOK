@@ -249,7 +249,7 @@ const LiveMenu = () => {
     return (
       <div className={`${liveMenuStyle.sidebar}`}>
         <div>
-            <button onClick={() => {dispatch(action.getClothesListByType({clothesType:"ALL", userId:hostId, pageNum:10})); handleMenuClick("Menu 1")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu1_closet.png'}/></button>
+            <button onClick={() => {dispatch(action.getClothesListByType({clothesType:"ALL", userId:hostId, pageNum:null})); handleMenuClick("Menu 1")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu1_closet.png'}/></button>
             <button onClick={() => {dispatch(action_feed.hashSearchTotalList()); handleMenuClick("Menu 2")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu2_search.png'}/></button>
             <button onClick={() => {handleMenuClick("Menu 3")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu3_set.png'}/></button>
             <button onClick={() => {dispatch(action_live.getInfo(roomId)); handleMenuClick("Menu 4")}}><img src={process.env.PUBLIC_URL + '/img/menuIcon/menu4_info.png'}/></button>

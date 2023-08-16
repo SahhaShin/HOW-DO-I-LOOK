@@ -12,12 +12,28 @@ export const action = {
     getClothesListByType : createAsyncThunk("ClosetSlice/getClothesListByType", async({clothesType, userId, pageNum}:ClothesListByTypeReq, thunkAPI)=>{
         try{
             const token = await CheckToken();
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,{
-                headers: {
-                  "Authorization" : token
-                }
+
+            console.log(`pagenum! ${pageNum}`);
+
+            // 스트리밍 옷장은 페이지넘버가 없음
+            let response=null;
+
+            if(pageNum===null){
+                response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}`,{
+                    headers: {
+                    "Authorization" : token
+                    }
                 
-              });
+                });
+            }
+            else{
+                response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,{
+                    headers: {
+                    "Authorization" : token
+                    }
+                
+                });
+            }
 
               let data = {
                 type : clothesType,
