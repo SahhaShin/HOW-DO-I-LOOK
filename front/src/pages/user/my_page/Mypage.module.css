@@ -67,9 +67,10 @@
 /* 피드 상세보기 모달 */
 .detailModal{
     position: fixed;
-    margin-top: 5%;
-    margin-left: 20%;
+    margin-top: -10px;
+    margin-left: 0%;
     z-index: 10;
+    background-color: black;
 }
 
 /* 뱃지 모달 */

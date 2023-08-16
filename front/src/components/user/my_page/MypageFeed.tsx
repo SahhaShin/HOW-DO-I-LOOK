@@ -74,14 +74,14 @@ const MypageFeed = () => {
 
 
             {/* 페이지네이션 */}
-            <div className={`${mypageFeedStyle.pagenation}`}>
+            {/* <div className={`${mypageFeedStyle.pagenation}`}>
                 <Pagination
                     total={20}
                     limit={limit}
                     page={page}
                     setPage={setPage}
                 />
-            </div>
+            </div> */}
         </div>
     );
 }

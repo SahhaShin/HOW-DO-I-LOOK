@@ -225,7 +225,7 @@ const StreamingSlice = createSlice({
         icon: 'success',
         title: '마스터 점수 주기 성공!',
         text: '마스터 점수가 제공되었습니다 :)',
-        confirmButtonColor: '#4570F5',
+        confirmButtonColor: '#EAA595',
       })
       
     })
@@ -235,7 +235,7 @@ const StreamingSlice = createSlice({
         icon: 'info',
         title: '마스터 점수를 이미 주셨어요!',
         text: '마스터 점수는 1번만 주실 수 있습니다 :)',
-        confirmButtonColor: '#4570F5',
+        confirmButtonColor: '#EAA595',
       })
       
     })
@@ -245,7 +245,7 @@ const StreamingSlice = createSlice({
       //   icon: 'info',
       //   title: '',
       //   text: '강퇴되었습니다.',
-      //   confirmButtonColor: '#4570F5',
+      //   confirmButtonColor: '#EAA595',
       // })
       console.log(action.payload);
       
@@ -265,7 +265,7 @@ const StreamingSlice = createSlice({
         icon: 'info',
         title: '라이브 종료',
         text: '라이브가 종료되었습니다 :)',
-        confirmButtonColor: '#4570F5',
+        confirmButtonColor: '#EAA595',
       })
       
     })

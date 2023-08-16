@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action_feed, changeFollow, changeDetailModalOpen, calTotalFeedLikes} from "../../../store/FeedSlice";
+import {action_feed, changeFollow,changeDeclarationModalOpen, changeDetailModalOpen, calTotalFeedLikes} from "../../../store/FeedSlice";
 
 const FeedDetail = (props) => {
 
@@ -164,8 +164,8 @@ const FeedDetail = (props) => {
 
                         {/* 우측 : 팔로우 언팔로우 & 신고버튼 */}
                         <div className={`${FeedDetailStyle.btns}`}>
-                            {state.isFollow?<div><button>Unfollow</button></div>:<div><button>Follow</button></div>}  
-                            <div className={`${FeedDetailStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div>
+                            {/* {state.isFollow?<div><button>Unfollow</button></div>:<div><button>Follow</button></div>}   */}
+                            <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${FeedDetailStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div>
                         </div>
                     </div>
 

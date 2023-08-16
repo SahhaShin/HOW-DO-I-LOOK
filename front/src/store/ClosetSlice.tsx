@@ -106,7 +106,7 @@ export const action = {
             icon: 'success',
             title: '등록 완료',
             text: '옷이 성공적으로 등록되었습니다.',
-            confirmButtonColor: '#4570F5',
+            confirmButtonColor: '#EAA595',
         })
 
         return res.data;
@@ -411,7 +411,7 @@ const ClosetSlice = createSlice({
                 icon: 'success',
                 title: '수정 완료',
                 text: '옷이 성공적으로 수정되었습니다.',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
 
         })
@@ -427,7 +427,7 @@ const ClosetSlice = createSlice({
                 icon: 'success',
                 title: '등록 완료',
                 text: 'OOTD를 성공적으로 등록하였습니다.',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
 
         })
