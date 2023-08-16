@@ -42,7 +42,7 @@
 }
 
 .menumiddle>div:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
     font-weight: 900;
 }
@@ -68,7 +68,7 @@
     height: 50px;
     font-weight: 900;
 
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 

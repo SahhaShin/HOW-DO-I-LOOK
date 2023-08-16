@@ -200,7 +200,7 @@ const LiveList = () => {
                   }}
                   style={
                     state.userId == ""
-                      ? { backgroundColor: "#4570F5", color: "white" }
+                      ? { backgroundColor: "#EAA595", color: "white" }
                       : null
                   }
                 >
@@ -212,7 +212,7 @@ const LiveList = () => {
                   }}
                   style={
                     state.userId != ""
-                      ? { backgroundColor: "#4570F5", color: "white" }
+                      ? { backgroundColor: "#EAA595", color: "white" }
                       : null
                   }
                 >

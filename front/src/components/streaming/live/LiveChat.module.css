@@ -14,7 +14,7 @@
     /* 크기 */
     width: 316px;
     height: 40px;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
 
     /* 폰트 */
     font-size: 15px;
@@ -70,7 +70,7 @@
     height: 50px;
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -161,7 +161,7 @@
   }
   
   .chatArea::-webkit-scrollbar-thumb {
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     border-radius: 10px;
     background-clip: padding-box;
     border: 2px solid transparent;

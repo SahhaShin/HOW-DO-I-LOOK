@@ -156,10 +156,10 @@ select{
     border-radius: 5px;
 
     margin: 5%;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 .btns>div>button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }

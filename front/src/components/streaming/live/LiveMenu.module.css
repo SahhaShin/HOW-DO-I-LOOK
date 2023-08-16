@@ -116,20 +116,20 @@ button{
     display: flex;
     width: 70px;
     height: 650px;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
 }
 
 .sidebar > div:nth-child(1){
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
 }
 
 .sidebar > div > button{
     width: 70px;
 
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
 }
 
 .sidebar > div > button > img{
@@ -177,7 +177,7 @@ button{
 
     font-weight: 900;
 
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     border-radius: 1rem;
     color: white;
 }
@@ -283,7 +283,7 @@ button{
     margin-top: -120px;
     margin-left: 5px;
     width: 50px;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     border-radius: 1rem;
     color: white;
 }
@@ -294,7 +294,7 @@ button{
    top:-90%;
    left: -110px;
    width: 50px;
-   background-color: var(--signiture);
+   background-color: var(--pinkes);
    border-radius: 1rem;
    color: white;
 }
@@ -344,7 +344,7 @@ button{
 .search > button{
     width: 50px;
     height: 30px;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     background-color: rgb(210, 179, 161);
     color: white;
     border-radius: 5px;
@@ -584,7 +584,7 @@ button{
   }
   
 .closetList1::-webkit-scrollbar-thumb,.closetList2::-webkit-scrollbar-thumb {
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     border-radius: 10px;
     background-clip: padding-box;
     border: 2px solid transparent;
