@@ -365,38 +365,42 @@ class Streaming extends Component {
               </div>
             ))}
             <div id="session-header" className="buttons">
-              {/* <h1 id="session-title">{mySessionId}</h1> */}
-              {isStreamer ? (
+
+              <div className="title">{sessionStorage.getItem("title")}</div>
+              <div className="micAndSpeak">
+                {/* <h1 id="session-title">{mySessionId}</h1> */}
+                {isStreamer ? (
+                  <div>
+                    <button
+                      className={cameraOn ? "activeButton" : "disableButton"}
+                      onClick={this.toggleCamera}
+                    >
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/img/live/camera${cameraOn ? "-white" : ""}.png`
+                        }
+                        alt="카메라"
+                      />
+                      &nbsp; 카메라 {cameraOn ? "끄기" : "켜기"}
+                    </button>
+                  </div>
+                ) : null}
                 <div>
                   <button
-                    className={cameraOn ? "activeButton" : "disableButton"}
-                    onClick={this.toggleCamera}
+                    className={audioOn ? "activeButton" : "disableButton"}
+                    onClick={this.toggleAudio}
                   >
                     <img
                       src={
                         process.env.PUBLIC_URL +
-                        `/img/live/camera${cameraOn ? "-white" : ""}.png`
+                        `/img/live/audio${audioOn ? "-white" : ""}.png`
                       }
-                      alt="카메라"
+                      alt="마이크"
                     />
-                    &nbsp; 카메라 {cameraOn ? "끄기" : "켜기"}
+                    &nbsp;마이크 {audioOn ? "끄기" : "켜기"}
                   </button>
                 </div>
-              ) : null}
-              <div>
-              <button
-                className={audioOn ? "activeButton" : "disableButton"}
-                onClick={this.toggleAudio}
-              >
-                <img
-                  src={
-                    process.env.PUBLIC_URL +
-                    `/img/live/audio${audioOn ? "-white" : ""}.png`
-                  }
-                  alt="마이크"
-                />
-                &nbsp;마이크 {audioOn ? "끄기" : "켜기"}
-              </button>
               </div>
             </div>
           </div>

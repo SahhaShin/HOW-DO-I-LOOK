@@ -43,11 +43,16 @@ export const action = {
         );
         const roomCode = response.data.roomCode;
         const chatCode = response.data.chatCode;
+
         window.sessionStorage.setItem("roomCode", JSON.stringify(roomCode));
         window.sessionStorage.setItem("chatCode", JSON.stringify(chatCode));
         window.sessionStorage.setItem(
           "hostId",
           JSON.stringify(formdata.hostId)
+        );
+        window.sessionStorage.setItem(
+          "title",
+          formdata.title
         );
           const url =  `${process.env.REACT_APP_FRONT}/live/${responseCreate.data}/${formdata.hostId}`;
           console.log(url)
@@ -166,13 +171,19 @@ export const action = {
             },
           }
         );
+
+        console.log(response.data);
         const roomCode = response.data.roomCode;
         const chatCode = response.data.chatCode;
+        const title = response.data.roomTitle;
         window.sessionStorage.setItem("roomCode", JSON.stringify(roomCode));
         window.sessionStorage.setItem("chatCode", JSON.stringify(chatCode));
         window.sessionStorage.setItem(
           "hostId",
           JSON.stringify(formdata.hostId)
+        );
+        window.sessionStorage.setItem(
+          "title",title
         );
 
         const url = `${process.env.REACT_APP_FRONT}/live/${formdata.roomId}/${formdata.hostId}`;
@@ -267,9 +278,10 @@ const LiveSlice = createSlice({
     });
 
     builder.addCase(action.enterLiveRoom.fulfilled, (state, action) => {
-        window.location.href = action.payload;      
-    });
 
+    window.location.href = action.payload; 
+  });
+  
     builder.addCase(action.changeLiveInfo.fulfilled, (state, action) => {
       state.ModalOpen = false;
       console.log(state.liveList);
