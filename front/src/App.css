@@ -18,8 +18,8 @@
   --border: #f0f0f0;
   --btnColor: #dfe1e2;
   --lovelyBtn:#F48FB1;
-  --naturalBtn:#81D4FA;
-  --modernBtn:#212121;
+  --naturalBtn:;
+  --modernBtn:#81D4FA;
   --sexyBtn:#E91E63;
   --yellow:rgb(254,240,214);
   --pink:rgb(250,207,207);
@@ -34,6 +34,7 @@
 
 .App {
   text-align: center;
+  width:100vw; height:100vh;
 }
 
 .App-logo {
@@ -70,23 +71,4 @@
   100% {
     transform: translateY(0px);
   }
-}
-
-
-/* 스크롤 */
-*::-webkit-scrollbar {
-  width: 12px;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: var(--pinkes);
-  border-radius: 10px;
-  background-clip: padding-box;
-  border: 2px solid transparent;
-}
-
-*::-webkit-scrollbar-track {
-  background-color: lightgrey;
-  border-radius: 10px;
-  box-shadow: inset 0px 0px 5px white;
 }
