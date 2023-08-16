@@ -50,4 +50,9 @@ public class BlackListController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 
+    @GetMapping("/check/{userId}/{targetUserId}")
+    public ResponseEntity<Boolean> blackListCheck(@PathVariable(name = "userId") Long userId, @PathVariable(name = "targetUserId") Long targetUserId) {
+        return ResponseEntity.status(HttpStatus.OK).body(blackListService.checkBlackList(userId, targetUserId));
+    }
+
 }
