@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {action, changeModalOpen,changeMode} from "../../../store/ClosetSlice";
 import {changeMenuItemNum} from "../../../store/UtilSlice";
 
+//param
+import { useParams } from "react-router-dom";
 
 //컴포넌트
 import OOTDWeather from "../../../components/user/closet/OOTDWeather";
@@ -29,7 +31,7 @@ const Closet = () => {
     dispatch(changeMenuItemNum(4))
 
     //로그인 유저 정보
-    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+    const { id } = useParams();
 
     // 페이지네이션, 옷 관리
     let clothesListLen = state.clothesTop?.length;
@@ -60,7 +62,7 @@ const Closet = () => {
     let selectType = {
         clothesType: state.clothesTypeEn,
         pageNum : page,
-        userId:loginUser.id,
+        userId:id,
     }
 
 
@@ -69,7 +71,7 @@ const Closet = () => {
         
         dispatch(action.getClothesListByType({
             clothesType: "TOP",
-            userId:loginUser.id,
+            userId:id,
             pageNum : page,
         }));
         
@@ -78,7 +80,7 @@ const Closet = () => {
        
         dispatch(action.getClothesListByType({
             clothesType: "BOTTOM",
-            userId:loginUser.id,
+            userId:id,
             pageNum : page,
         }));
         
@@ -86,7 +88,7 @@ const Closet = () => {
         
         dispatch(action.getClothesListByType({
             clothesType: "SHOE",
-            userId:loginUser.id,
+            userId:id,
             pageNum : page,
         }));
         
@@ -94,7 +96,7 @@ const Closet = () => {
  
         dispatch(action.getClothesListByType({
             clothesType: "ACCESSORY",
-            userId:loginUser.id,
+            userId:id,
             pageNum : page,
         }));
         
@@ -102,11 +104,11 @@ const Closet = () => {
        
         dispatch(action.getClothesListByType({
             clothesType: "ALL",
-            userId:loginUser.id,
+            userId:id,
             pageNum : page,
         }));
 
-        dispatch(action.OOTDList(loginUser.id));
+        dispatch(action.OOTDList(id));
     
     },[state.clothRegistOk])
 
@@ -117,7 +119,7 @@ const Closet = () => {
             dispatch(action.getClothesListByType({
                 clothesType: "TOP",
                 pageNum : state.page,
-                userId:loginUser.id,
+                userId:id,
             }));
         }
 
@@ -126,7 +128,7 @@ const Closet = () => {
             dispatch(action.getClothesListByType({
                 clothesType: "BOTTOM",
                 pageNum : state.page,
-                userId:loginUser.id,
+                userId:id,
             }));
         }
 
@@ -134,7 +136,7 @@ const Closet = () => {
             dispatch(action.getClothesListByType({
                 clothesType: "SHOE",
                 pageNum : state.page,
-                userId:loginUser.id,
+                userId:id,
             }));
         }
 
@@ -142,7 +144,7 @@ const Closet = () => {
             dispatch(action.getClothesListByType({
                 clothesType: "ACCESSORY",
                 pageNum : state.page,
-                userId:loginUser.id,
+                userId:id,
             }));
         }
 
@@ -150,7 +152,7 @@ const Closet = () => {
             dispatch(action.getClothesListByType({
                 clothesType: "ALL",
                 pageNum : state.page,
-                userId:loginUser.id,
+                userId:id,
             }));
         }
 

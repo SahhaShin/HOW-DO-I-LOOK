@@ -17,6 +17,9 @@ import {
 
 import { useParams } from "react-router-dom";
 
+//api
+import {ifBlackList} from "../../../hook/UserApi"
+
 
 const MypageHeader = () => {
 
@@ -237,8 +240,12 @@ const MypageHeader = () => {
     }else{
         return `${mypageHeaderStyle.profileImgM}`
     }
-}
 
+  }
+
+  let isBlacklist = false
+  ifBlackList(loginUser.id, watchingUserId ).then((res)=>(isBlacklist =res))
+  
   return (
     <div className={`${mypageHeaderStyle.total}`}>
 
@@ -313,6 +320,15 @@ const MypageHeader = () => {
             </button>
             <button>팔로우</button>
             <button>대화</button>
+            <button
+                  onClick={() => {isBlacklist?
+                    window.location.href = `${process.env.REACT_APP_FRONT}/closet/${watchingUserId}`:
+                    alert("접근할 수 없습니다.")
+                  }}
+                  className={ isBlacklist ?`${mypageHeaderStyle.btnsBlackList}`:""}
+                >
+                  옷장 보기 
+                </button>
           </div>
         : <div className={`${mypageHeaderStyle.btns}`}>
             <button
@@ -381,6 +397,16 @@ const MypageHeader = () => {
                   >
                     블랙리스트 등록
                   </button>}
+                  <button
+                  onClick={() => {isBlacklist?
+                    window.location.href = `${process.env.REACT_APP_FRONT}/closet/${watchingUserId}`:
+                    alert("접근할 수 없습니다.")
+                  }}
+                  className={ isBlacklist ?`${mypageHeaderStyle.btnsBlackList}`:""}
+                >
+                  옷장 보기 
+                </button>
+
           </div>}
     </div>
   );
