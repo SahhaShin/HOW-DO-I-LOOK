@@ -144,7 +144,7 @@ const LiveList = () => {
         icon: 'info',
         title: '라이브 종료',
         text: '방장이 라이브를 종료하였습니다 :)',
-        confirmButtonColor: '#4570F5',
+        confirmButtonColor: '#EAA595',
       })
     }
 

@@ -44,7 +44,7 @@ const Live = () => {
                 icon: 'info',
                 title: '강퇴',
                 text: '라이브에서 강퇴당하셨습니다.',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
 
         }

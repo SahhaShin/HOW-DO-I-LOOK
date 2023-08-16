@@ -283,6 +283,12 @@ const MypageHeader = () => {
         formdata.append("s3upload", File);
         
         dispatch(action_mypage.profileUpdate(formdata));
+
+        // 세션에 저장
+        const newLoginuserInfo = loginUser;
+        newLoginuserInfo.profileImg = 
+
+        sessionStorage.setItem();
       }
       else{
           

@@ -141,7 +141,7 @@ const LiveMenu = () => {
                 icon: 'warning',
                 title: '꽉 찼어요!',
                 text: '세트 옷장은 6개까지만 등록 가능합니다 :)',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
             return;
         }
@@ -193,7 +193,7 @@ const LiveMenu = () => {
             showCancelButton: true,
             confirmButtonText: "나가기",
             cancelButtonText: "취소",
-            confirmButtonColor:'#4570F5',
+            confirmButtonColor:'#EAA595',
             customClass: {
                 confirmButton: liveMenuStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
                 cancelButton: liveMenuStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
@@ -220,7 +220,7 @@ const LiveMenu = () => {
             showCancelButton: true,
             confirmButtonText: "종료",
             cancelButtonText: "취소",
-            confirmButtonColor:'#4570F5',
+            confirmButtonColor:'#EAA595',
             customClass: {
                 confirmButton: liveMenuStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
                 cancelButton: liveMenuStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.

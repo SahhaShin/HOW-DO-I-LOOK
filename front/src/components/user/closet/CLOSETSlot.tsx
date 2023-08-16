@@ -39,7 +39,7 @@ const CLOSETSlot = (props) => {
             showCancelButton: true,
             confirmButtonText: "삭제",
             cancelButtonText: "취소",
-            confirmButtonColor:'#4570F5',
+            confirmButtonColor:'#EAA595',
             customClass: {
                 confirmButton: closetSlotStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
                 cancelButton: closetSlotStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
@@ -52,7 +52,7 @@ const CLOSETSlot = (props) => {
                     icon: 'success',
                     title: '삭제 완료',
                     text: '옷이 성공적으로 삭제되었습니다.',
-                    confirmButtonColor: '#4570F5',
+                    confirmButtonColor: '#EAA595',
                 })
             }
             else{
