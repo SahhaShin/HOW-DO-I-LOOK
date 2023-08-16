@@ -52,6 +52,11 @@ interface BlackLists {
   showBadgeType : string | null;
 }
 
+interface userIds {
+  id1 : number;
+  id2 : number;
+}
+
 interface Feeds {
   userId: number;
   feedId: number;
@@ -109,6 +114,7 @@ interface Mypage {
   perfectFollowUsers: PerfectFollow[]; // 맞팔
 
   blackListUsers: BlackLists[]; // 블랙리스트
+  isBlacklist:boolean;
   manageType: number;
   followTempUser: Users;
   targetUser: Users;
@@ -145,6 +151,7 @@ const initialState: Mypage = {
   perfectFollowUsers: [], // 맞팔 리스트
 
   blackListUsers: [], // 블랙리스트
+  isBlacklist : false,
 
   feedList: [],
   likeFeedList: [],
@@ -468,6 +475,49 @@ export const action_mypage = {
     }
   ),
 
+    // 블랙리스트 확인(양방향)
+    checkBlackList: createAsyncThunk(
+      `MypageSlice/checkBlackList`,
+      async (userIds:userIds) => {
+        
+          console.log("blacklist")
+          if(userIds.id1 == userIds.id2){
+            return false
+          }
+          try {
+            const token = await CheckToken();
+                const utBlack = await axios.get(
+                  `${process.env.REACT_APP_SERVER}/api/blacklist/check/${userIds.id1}/${userIds.id2}`,
+                  {
+                    headers: {
+                      Authorization: token,
+                    },
+                  }
+                );
+                const tuBlack = await axios.get(
+                  `${process.env.REACT_APP_SERVER}/api/blacklist/check/${userIds.id2}/${userIds.id1}`,
+                  {
+                    headers: {
+                      Authorization: token,
+                    },
+                  }
+                );
+                console.log("utBlack.date : " + utBlack)
+        
+                console.log("tuBlack.date : " + tuBlack)
+                console.log("|| : " + utBlack.data || tuBlack.data)
+        
+            return utBlack.data || tuBlack.data
+          } 
+          catch (e) {
+            console.log(e);
+            // alert(e.response.data.message);
+            throw e;
+          }
+        }
+      
+    ),
+
   // 맞팔 리스트
   getPerfectFollowList: createAsyncThunk(
     `MypageSlice/getPerfectFollowList`,
@@ -744,6 +794,10 @@ const MypageSlice = createSlice({
 
     builder.addCase(action_mypage.getBlackList.fulfilled, (state, action) => {
       state.blackListUsers = action.payload;
+    });
+
+    builder.addCase(action_mypage.checkBlackList.fulfilled, (state, action) => {
+      state.isBlacklist = action.payload;
     });
 
     builder.addCase(action_mypage.follow.fulfilled, (state, action) => {
