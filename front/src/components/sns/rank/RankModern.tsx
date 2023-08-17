@@ -34,7 +34,7 @@ const RankingModern = () => {
 
     // 성별
     function firstRankGenderColor(gender){
-        console.log(gender)
+
 
         if(gender==="FEMALE"){
             return `${rankingStyle.firstRankProfileImgF}`
@@ -43,7 +43,7 @@ const RankingModern = () => {
         }
     }
     function notFirstRankGenderColor(gender){
-        console.log(gender)
+
 
         if(gender==="FEMALE"){
             return `${rankingStyle.notFirstRankProfileImgF}`
@@ -52,7 +52,7 @@ const RankingModern = () => {
         }
     }
     function subRankGenderColor(gender){
-        console.log(gender)
+
 
         if(gender==="FEMALE"){
             return `${rankingStyle.subRankProfileImgF}`
@@ -62,12 +62,10 @@ const RankingModern = () => {
     }
 
     if (state.partRankingList.length === 0) {
-        console.log("partRankingList")
         return <div>Loading...</div>;
       }
 
     if(state.rankingList.length === 0) {
-        console.log("rankingList")
         return <div>Loading...</div>
     }
 

@@ -23,21 +23,16 @@ const Login: React.FC = () => {
 
   const changeNickname = (value: string) => {
     setNickname(value)
-    console.log("nickname : "+ nickname + " "+ value)
     if(value != ""){
       CheckNickName(value).then((res) => setNicknameNotice(res))
 
     }
-    console.log("check : " + nicknameNotice)
   }
 
 
 
   const socialRegist = async () => {
-    console.log("-- Sign in clicked -- ")
-    console.log("age : " + age)
-    console.log("nickname : " + nickname)
-    console.log("gender: " + gender)
+
     // console.log(getCookie("new_social_user_email"))
 
     if((nicknameNotice) ){

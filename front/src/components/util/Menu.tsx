@@ -28,7 +28,7 @@ const NavigationBar: React.FC = () => {
   };
 
   useEffect(()=>{
-    console.log("state.menuItemNum : " + state.menuItemNum)
+
     setActiveMenu(state.menuItemNum)
   },[state.menuItemNum])
   const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));

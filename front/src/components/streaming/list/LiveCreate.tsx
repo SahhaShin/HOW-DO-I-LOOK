@@ -14,7 +14,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const LiveCreate = () => {
-  console.log("render");
   //redux 관리
   let state = useSelector((state: any) => state.live);
   let dispatch = useDispatch();
@@ -41,7 +40,6 @@ const LiveCreate = () => {
     //리스트 가져오기
     if (!state.create) {
       const liveRoom = JSON.parse(sessionStorage.getItem("liveRoom"));
-      console.log(liveRoom);
       setRoomId(liveRoom.roomId);
       setTitle(liveRoom.title);
       setType(liveRoom.type);
@@ -56,11 +54,6 @@ const LiveCreate = () => {
 
   //방 만들기
   function createRoom() {
-    console.log(state.create);
-    console.log(minAge);
-    console.log(maxAge);
-    console.log(minAge > maxAge)
-    console.log(Number(minAge) > Number(maxAge))
     if (state.create) {
       if(title == ""){
         alert("방 타이틀을 입력해 주십시오.")

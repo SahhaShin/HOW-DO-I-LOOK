@@ -30,8 +30,7 @@ export const action = {
             },
           }
         );
-        console.log("hostId : " + formdata.hostId);
-        console.log("roomId : " + responseCreate.data);
+
         const response = await axios.post(
           `${process.env.REACT_APP_SERVER}/api/roomuser?userId=${formdata.hostId}&roomId=${responseCreate.data}`,
           {},
@@ -55,7 +54,7 @@ export const action = {
           formdata.title
         );
           const url =  `${process.env.REACT_APP_FRONT}/live/${responseCreate.data}/${formdata.hostId}`;
-          console.log(url)
+
         // window.location.href = `${process.env.REACT_APP_FRONT}/live/${responseCreate.data}/${formdata.hostId}`;
         return url;
       } catch (e) {
@@ -70,7 +69,7 @@ export const action = {
   changeLiveInfo: createAsyncThunk(
     "LiveSlice/changeLiveInfo",
     async (formdata: LiveRoom, thunkAPI) => {
-      console.log(formdata.gender);
+
       try {
         const token = await CheckToken();
         const response = await axios.put(
@@ -138,7 +137,7 @@ export const action = {
       if (!(typeof data.search == "undefined" || data.search == null || data.search == "")) {
         url = url + `&search=${data.search}`;
       }
-      console.log(url);
+
       try {
         //리스트 호출 요청문 보내기
         const token = await CheckToken();
@@ -147,7 +146,7 @@ export const action = {
             Authorization: token,
           },
         });
-        console.log(response.data);
+
         return response.data;
       } catch (e) {
         console.log(e);
@@ -172,7 +171,7 @@ export const action = {
           }
         );
 
-        console.log(response.data);
+
         const roomCode = response.data.roomCode;
         const chatCode = response.data.chatCode;
         const title = response.data.roomTitle;
@@ -255,8 +254,7 @@ const LiveSlice = createSlice({
     },
     changePage(state, action) {
       state.page = action.payload;
-      console.log("action.paload : " + action.payload)
-      console.log("changde : " + state.page)
+
     },
     changeModalOpen(state, action) {
       state.ModalOpen = action.payload;
@@ -267,14 +265,14 @@ const LiveSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(action.getLiveList.fulfilled, (state, action) => {
-      console.log(state);
+
       state.pageAll = action.payload.totalPage;
       state.liveList = action.payload.roomList;
     });
 
     builder.addCase(action.createLiveList.fulfilled, (state, action) => {
       state.ModalOpen = false;
-      console.log(state.liveList);
+
         window.location.href = action.payload;      
     });
 
@@ -285,7 +283,7 @@ const LiveSlice = createSlice({
   
     builder.addCase(action.changeLiveInfo.fulfilled, (state, action) => {
       state.ModalOpen = false;
-      console.log(state.liveList);
+
     });
   },
 });

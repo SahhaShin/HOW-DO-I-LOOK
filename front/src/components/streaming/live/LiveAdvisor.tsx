@@ -80,7 +80,7 @@ const LiveAdvisor = () => {
     // 처음에 유저 리스트를 가져와서 보여줌
     useEffect(()=>{
         dispatch(action_live.peopleList({userId:userId, roomId:roomId}));
-        console.log(`길이가 바꼈나? ${state_live.roomPeopleList.length}`);
+
     },[state_live.roomPeopleList.length])
 
     const [advisor, setAdvisor] = useState({
@@ -105,7 +105,6 @@ const LiveAdvisor = () => {
         
     }
 
-    console.log(state_live.roomPeopleList);
     
     return(
         <div className={`${liveAdvisorStyle.total}`}>

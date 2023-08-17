@@ -25,7 +25,7 @@ function Pagination({ totalPage, page, setPage }) {
   return (
     <>
       <Nav>
-        <Button onClick={() => { dispatch(changePage(page - 1));console.log(page)}} disabled={page === 0}>
+        <Button onClick={() => { dispatch(changePage(page - 1));}} disabled={page === 0}>
           &lt;
         </Button>
         {numPages > 0 && Array(numPages)
@@ -33,7 +33,7 @@ function Pagination({ totalPage, page, setPage }) {
           .map((_, i) => (
             <Button
               key={i + 1}
-              onClick={() => {dispatch(changePage(i));console.log(i) }}
+              onClick={() => {dispatch(changePage(i)); }}
               aria-current={page === i ? "page" : null}
             >
               {i + 1}

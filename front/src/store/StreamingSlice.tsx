@@ -41,7 +41,7 @@ export const action_live = {
   // 점수주기 (슬래시를 붙여야 한다.)
   giveScore : createAsyncThunk("FeedSlice/giveScore", async({targetUserId, roomId, type, score}, thunkAPI)=>{
     try{
-      console.log(`${targetUserId}, ${roomId}, ${type}, ${score}`);
+
         const token = await CheckToken();
         const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/userlike/`,{targetUserId, roomId, type, score},{
             headers:{"Authorization":token}
@@ -61,7 +61,7 @@ export const action_live = {
             headers:{"Authorization":token}
         });
 
-        console.log(response.data);
+
         return userId;
     } catch(e){
         console.log(e);
@@ -77,7 +77,7 @@ export const action_live = {
             headers:{"Authorization":token}
         });
 
-        console.log(response.data);
+
         return userId;
     } catch(e){
         console.log(e);
@@ -181,7 +181,7 @@ const StreamingSlice = createSlice({
     },
     changepPickBadge(state,action){
       state.pickBadge=action.payload
-      console.log(action.payload);
+
     },
     setKickUser(state,action){
       state.kickUser=action.payload; //userId, roomId
@@ -215,7 +215,7 @@ const StreamingSlice = createSlice({
     })
 
     builder.addCase(action_live.peopleList.fulfilled,(state,action)=>{
-      console.log(action.payload);
+
       state.roomPeopleList = action.payload; //방 참가자들
       
     })
@@ -247,7 +247,7 @@ const StreamingSlice = createSlice({
       //   text: '강퇴되었습니다.',
       //   confirmButtonColor: '#EAA595',
       // })
-      console.log(action.payload);
+
       
       for(let i=0;i<state.roomPeopleList.length;i++){
         if(state.roomPeopleList?.userId === action.payload){
@@ -256,7 +256,7 @@ const StreamingSlice = createSlice({
         }
       }
 
-      console.log(state.roomPeopleList);
+
       
     })
 

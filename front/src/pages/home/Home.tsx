@@ -27,17 +27,17 @@ function Home() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		console.log("페이지 로드");
+
 
 		//회원정보 가져오기
 		const sEmail = getCookie("new_social_user_email");
 		const bEmail = getCookie("new_basic_user_email");
 		if (!((typeof sEmail == "undefined") || (typeof sEmail === null))) {
-			console.log("sEmail");
+	
 			dispatch(action_user.GetUserInfo(sEmail));
 			window.location.reload();
 		} else if (!((typeof bEmail == "undefined") || (typeof bEmail === null))) {
-			console.log("bEmail");
+	
 			dispatch(action_user.GetUserInfo(bEmail));
 			window.location.reload();
 		} else {

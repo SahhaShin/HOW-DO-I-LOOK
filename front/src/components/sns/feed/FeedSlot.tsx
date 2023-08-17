@@ -68,7 +68,7 @@ const FeedSlot = () => {
       });
 
     const changeFollowingData = (feed) => {
-        console.log(feed)
+
     setFollowingData({
         id: loginUser.id,
         targetId: feed.userId,
@@ -88,7 +88,7 @@ const FeedSlot = () => {
       });
     
       const changeDeleteFollowingData = (feed) => {
-        console.log(feed)
+  
         setDeleteFollowingData({
             id: loginUser.id,
             targetId: feed.userId,
