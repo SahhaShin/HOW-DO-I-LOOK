@@ -31,8 +31,6 @@ const ChatHistory = () => {
         Authorization : `Bearer ${token}`,
     };
 
-    console.log(token);
-    console.log(headers);
     
     interface ChatList{
         "chatRoomId": number,
@@ -125,7 +123,6 @@ const ChatHistory = () => {
                 // chatId: null,
             }
 
-            console.log(message)
 
             dispatch(addChatHistory(addData));
 
