@@ -39,7 +39,8 @@ const Live = () => {
     useEffect(()=>{
         if(state_live.areYouKick){
             dispatch(setKickUser(null));
-            navigate("/liveList");
+            // navigate("/liveList");
+            window.location.href = `${process.env.REACT_APP_FRONT}/livelist`;
             Swal.fire({
                 icon: 'info',
                 title: '강퇴',
@@ -57,7 +58,8 @@ const Live = () => {
     useEffect(()=>{
         if(state_live.liveEndAlert){
             // 리스트 페이지로 이동
-            navigate("/liveList");
+            window.location.href = `${process.env.REACT_APP_FRONT}/livelist`;
+            // navigate("/liveList");
         }
     },[state_live.liveEndAlert])
 
@@ -71,7 +73,8 @@ const Live = () => {
             dispatch(changeExitAlam(false));
 
             // 리스트 페이지로 이동
-            navigate("/liveList");
+            window.location.href = `${process.env.REACT_APP_FRONT}/livelist`;
+            // navigate("/liveList");
         }
     },[state_live.exitAlam])
     return(

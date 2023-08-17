@@ -47,6 +47,30 @@ export const action = {
             throw e;
         }
     }),
+
+    // 순차적인 옷 리스트 -> 라이브에서 씀
+    getClothesListByOrder : createAsyncThunk("ClosetSlice/getClothesListByOrder", async(userId, thunkAPI)=>{
+        try{
+            console.log(userId);
+            const token = await CheckToken();
+
+            // 스트리밍 옷장은 페이지넘버가 없음
+            let response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list/forroom?userId=${userId}`,{
+                headers: {
+                    "Authorization" : token
+                }
+            
+            });
+
+
+            console.log(response.data);
+            return response.data; // clothesId랑 photoLink
+
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }),
     //OOTD O
     //옷 id 같은 것끼리도 저장 가능
     OOTDSave: createAsyncThunk("ClosetSlice/OOTDSave",async ({userId, order, slotIds}:saveOOTD,thunkAPI) =>{
@@ -388,6 +412,19 @@ const ClosetSlice = createSlice({
             state.clothesListByType = [...action.payload.response.clothesList];
 
         })
+
+        builder.addCase(action.getClothesListByOrder.fulfilled,(state,action)=>{
+            // state.totalPage = action.payload.response.totalPage
+            
+            // all
+            state.clothesAll = [...action.payload];
+            
+
+            state.clothesListByType = [...action.payload];
+
+        })
+
+
         builder.addCase(action.getClothInfo.fulfilled, (state, action) => {
             //옷 특정 정보 결과
             state.clothInfo=action.payload;
