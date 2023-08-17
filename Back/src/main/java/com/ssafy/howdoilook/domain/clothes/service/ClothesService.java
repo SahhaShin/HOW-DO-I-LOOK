@@ -4,9 +4,11 @@ import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesSaveRequestDto;
 import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesUpdateDto;
 import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesDetailResponseDto;
 import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesListResponseDto;
+import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesListWithTotalPageDto;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
+import com.ssafy.howdoilook.domain.user.entity.ClosetAccess;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.global.s3upload.ImageService;
@@ -97,26 +99,46 @@ public class ClothesService {
         clothesRepository.deleteById(clothesId);
     }
 
-    public List<ClothesListResponseDto> findClothesList(String type, Long userId, int page, UserDetails userDetails) throws AccessException {
+    public ClothesListWithTotalPageDto findClothesList(String type, Long userId, Integer page, UserDetails userDetails) throws AccessException {
 
-        String clientEmail = userDetails.getUsername();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
 
-        if (!clientEmail.equals(user.getEmail())){
-            throw new AccessException("접근 권한이 없습니다.");
+        if(user.getClosetAccess().equals(ClosetAccess.PRIVATE)) {
+            String clientEmail = userDetails.getUsername();
+
+            if (!clientEmail.equals(user.getEmail())){
+                throw new AccessException("접근 권한이 없습니다.");
+            }
+        }
+        
+        List<ClothesListResponseDto> findClothesListResponseDtoList = new ArrayList<>();
+
+        PageRequest pageRequest;
+
+        if (page != null) {
+            pageRequest = PageRequest.of(page, 8);
+        } else {
+            pageRequest = PageRequest.of(0, Integer.MAX_VALUE);
         }
 
-        List<ClothesListResponseDto> findClothesListResponseDtoList = new ArrayList<>();
-        PageRequest pageRequest = PageRequest.of(page, 8);
 
         if(type.equals("ALL")) {
             System.out.println(userId);
-            List<Clothes> findClothesList = clothesRepository.findByUser_Id(userId);
+            Page<Clothes> findClothesList = clothesRepository.findByUser_Id(userId, pageRequest);
 
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
             }
+
+            int totalPages = findClothesList.getTotalPages();
+            ClothesListWithTotalPageDto result = ClothesListWithTotalPageDto.builder()
+                    .totalPage(totalPages)
+                    .clothesList(findClothesListResponseDtoList)
+                    .build();
+
+            return result;
+
         } else {
             ClothesType clothesType = ClothesType.valueOf(type);
             System.out.println(clothesType);
@@ -125,9 +147,15 @@ public class ClothesService {
             for(Clothes clothes : findClothesList) {
                 findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
             }
-        }
 
-        return findClothesListResponseDtoList;
+            int totalPages = findClothesList.getTotalPages();
+            ClothesListWithTotalPageDto result = ClothesListWithTotalPageDto.builder()
+                    .totalPage(totalPages)
+                    .clothesList(findClothesListResponseDtoList)
+                    .build();
+
+            return result;
+        }
     }
 
     public ClothesDetailResponseDto findClothesDetail(Long clothesId, UserDetails userDetails) throws AccessException {

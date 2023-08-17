@@ -1,5 +1,7 @@
 package com.ssafy.howdoilook.domain.follow.dto.response;
 
+import com.ssafy.howdoilook.domain.user.entity.BadgeType;
+import com.ssafy.howdoilook.domain.user.entity.Gender;
 import lombok.*;
 
 @Getter
@@ -12,10 +14,16 @@ public class FollowerResponseDto {
 
     private String profileImg;
 
+    private Gender gender;
+
+    private BadgeType showBadgeType;
+
     @Builder
-    public FollowerResponseDto(Long id, String nickname, String profileImg) {
+    public FollowerResponseDto(Long id, String nickname, String profileImg, Gender gender, BadgeType showBadgeType) {
         this.id = id;
         this.nickname = nickname;
         this.profileImg = profileImg;
+        this.gender = gender;
+        this.showBadgeType = showBadgeType;
     }
 }

@@ -1,5 +1,7 @@
 package com.ssafy.howdoilook.global.redis.dto.response;
 
+import com.ssafy.howdoilook.domain.user.entity.BadgeType;
+import com.ssafy.howdoilook.domain.user.entity.Gender;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,22 +11,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RankingResponseDto {
 
-    Long userId;
+    private Long userId;
 
-    String email;
+    private String email;
 
-    String nickname;
+    private String nickname;
 
-    Long rank;
+    private Long rank;
 
-    String likeType;
+    private String likeType;
 
-    Long score;
+    private Long score;
 
-    String profileImg;
+    private String profileImg;
+
+    private Gender gender;
+
+    private BadgeType showBadgeType;
 
     @Builder
-    public RankingResponseDto(Long userId, String email, String nickname, Long rank, String likeType, Long score, String profileImg) {
+    public RankingResponseDto(Long userId, String email, String nickname, Long rank, String likeType, Long score, String profileImg, Gender gender, BadgeType showBadgeType) {
         this.userId = userId;
         this.email = email;
         this.nickname = nickname;
@@ -32,5 +38,7 @@ public class RankingResponseDto {
         this.likeType = likeType;
         this.score = score;
         this.profileImg = profileImg;
+        this.gender = gender;
+        this.showBadgeType = showBadgeType;
     }
 }

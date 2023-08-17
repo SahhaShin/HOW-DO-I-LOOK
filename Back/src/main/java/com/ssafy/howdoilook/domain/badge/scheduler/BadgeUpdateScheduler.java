@@ -2,6 +2,8 @@ package com.ssafy.howdoilook.domain.badge.scheduler;
 
 import com.ssafy.howdoilook.domain.badge.service.BadgeService;
 import com.ssafy.howdoilook.domain.user.entity.BadgeType;
+import com.ssafy.howdoilook.domain.user.entity.User;
+import com.ssafy.howdoilook.domain.user.repository.UserRepository;
 import com.ssafy.howdoilook.global.redis.dto.response.RankingResponseDto;
 import com.ssafy.howdoilook.global.redis.service.RedisRankingService;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +22,19 @@ public class BadgeUpdateScheduler {
 
     private final BadgeService badgeService;
 
+    private final UserRepository userRepository;
+
     // 매 시간 발동
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void updateBadge() {
+
         badgeService.deleteAllBadge();
+
+        List<User> userList = userRepository.findAll();
+
+        for (User user : userList) {
+            user.updateShowBadgeType(BadgeType.X);
+        }
 
         List<RankingResponseDto> lovelyBadgeOwnerList = redisRankingService.getBadgeOwnerList(String.valueOf(BadgeType.LOVELY));
         List<RankingResponseDto> sexyBadgeOwnerList = redisRankingService.getBadgeOwnerList(String.valueOf(BadgeType.SEXY));

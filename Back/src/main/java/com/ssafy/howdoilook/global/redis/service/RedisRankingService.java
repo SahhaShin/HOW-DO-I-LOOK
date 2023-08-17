@@ -77,6 +77,8 @@ public class RedisRankingService {
                     .score(valueList.get(i))
                     .nickname(user.getNickname())
                     .profileImg(user.getProfileImg())
+                    .gender(user.getGender())
+                    .showBadgeType(user.getShowBadgeType())
                     .build();
 
             rankingResponseDtoList.add(rankingResponseDto);
@@ -115,6 +117,8 @@ public class RedisRankingService {
                     .score(valueList.get(i))
                     .nickname(user.getNickname())
                     .profileImg(user.getProfileImg())
+                    .gender(user.getGender())
+                    .showBadgeType(user.getShowBadgeType())
                     .build();
 
             rankingResponseDtoList.add(rankingResponseDto);
@@ -145,7 +149,9 @@ public class RedisRankingService {
         List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
 
         for(int i=0; i<rankingList.size(); i++) {
+            System.out.println("랭킹리스트!!!");
             System.out.println(rankingList.get(i));
+            System.out.println(zSetOperations);
             User user = userRepository.findById(Long.parseLong(rankingList.get(i))).get();
 
             RankingResponseDto rankingResponseDto = RankingResponseDto.builder()
@@ -156,6 +162,8 @@ public class RedisRankingService {
                     .score(valueList.get(i))
                     .nickname(user.getNickname())
                     .profileImg(user.getProfileImg())
+                    .gender(user.getGender())
+                    .showBadgeType(user.getShowBadgeType())
                     .build();
 
             rankingResponseDtoList.add(rankingResponseDto);
@@ -212,6 +220,8 @@ public class RedisRankingService {
                     .score(valueList.get(i))
                     .nickname(user.getNickname())
                     .profileImg(user.getProfileImg())
+                    .gender(user.getGender())
+                    .showBadgeType(user.getShowBadgeType())
                     .build();
 
             rankingResponseDtoList.add(rankingResponseDto);
@@ -244,6 +254,8 @@ public class RedisRankingService {
                 .score((long) score)
                 .nickname(user.getNickname())
                 .profileImg(user.getProfileImg())
+                .gender(user.getGender())
+                .showBadgeType(user.getShowBadgeType())
                 .build();
 
         return rankingResponseDto;

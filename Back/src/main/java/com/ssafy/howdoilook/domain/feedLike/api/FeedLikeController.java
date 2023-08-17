@@ -3,6 +3,7 @@ package com.ssafy.howdoilook.domain.feedLike.api;
 import com.ssafy.howdoilook.domain.feedLike.dto.request.FeedLikeDeleteRequestDto;
 import com.ssafy.howdoilook.domain.feedLike.dto.request.FeedLikeSaveRequestDto;
 import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCheckResponseDto;
+import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
 import com.ssafy.howdoilook.domain.feedLike.service.FeedLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,5 +41,10 @@ public class FeedLikeController {
     public ResponseEntity<FeedLikeCheckResponseDto> checkFeedLike(@RequestParam(name = "userId")Long userId, @RequestParam(name = "feedId")Long feedId){
         FeedLikeCheckResponseDto feedLikeCheckResponseDto = feedLikeService.checkFeedLike(userId, feedId);
         return ResponseEntity.status(HttpStatus.OK).body(feedLikeCheckResponseDto);
+    }
+    @GetMapping("/likecount/{feedId}")
+    public ResponseEntity<FeedLikeCountResponseDto> selectLikeCount(@PathVariable(name = "feedId") Long feedId){
+        FeedLikeCountResponseDto feedLikeCountResponseDto = feedLikeService.countFeedLike(feedId);
+        return ResponseEntity.status(HttpStatus.OK).body(feedLikeCountResponseDto);
     }
 }

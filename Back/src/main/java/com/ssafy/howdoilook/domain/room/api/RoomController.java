@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.room.dto.request.RoomAddRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.request.RoomUpdateRequestDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomDetailResponseDto;
 import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.RoomListResponseWithTotalPageDto;
 import com.ssafy.howdoilook.domain.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.expression.AccessException;
@@ -36,15 +37,17 @@ public class RoomController {
     }
 
     @GetMapping("/list/all")
-    public ResponseEntity<List<RoomListResponseDto>> getAllRoomList(@RequestParam(value = "type", required = false) String type,
-                                                                    @RequestParam(value = "page") int page,
-                                                                    @RequestParam(value = "search", required = false) String search) {
+    public ResponseEntity<RoomListResponseWithTotalPageDto> getAllRoomList(@RequestParam(value = "type", required = false) String type,
+                                                                           @RequestParam(value = "page") int page,
+                                                                           @RequestParam(value = "search", required = false) String search,
+                                                                           @RequestParam(value = "userId") Long userId,
+                                                                           @AuthenticationPrincipal UserDetails userDetails) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(roomService.getAllRoomList(type, page, search));
+        return ResponseEntity.status(HttpStatus.OK).body(roomService.getAllRoomList(type, page, search, userId, userDetails));
     }
 
     @GetMapping("/list/following")
-    public ResponseEntity<List<RoomListResponseDto>> getFollowingRoomList(@RequestParam(value = "type", required = false) String type,
+    public ResponseEntity<RoomListResponseWithTotalPageDto> getFollowingRoomList(@RequestParam(value = "type", required = false) String type,
                                                   @RequestParam(value = "page") int page,
                                                   @RequestParam(value = "userId") Long userId,
                                                   @RequestParam(value = "search", required = false) String search,

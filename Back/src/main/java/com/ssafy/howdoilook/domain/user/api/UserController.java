@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.user.api;
 
 import com.ssafy.howdoilook.domain.user.dto.request.*;
+import com.ssafy.howdoilook.domain.user.dto.response.UserUpdateProfileImgResponseDto;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.service.UserService;
 import com.ssafy.howdoilook.global.s3upload.ImageService;
@@ -166,8 +167,17 @@ public class UserController {
                 .body(userService.updateUserInfoAndImage(id, userUpdateIncludeImageRequestDto, multipartFile, userDetails));
     }
 
+    @PutMapping("/update/profileImg/{userId}")
+    public ResponseEntity<UserUpdateProfileImgResponseDto> updateProfileImg(@PathVariable Long userId,
+                                                                            @RequestPart UserUpdateProfileImgDto userUpdateProfileImgDto,
+                                                                            @RequestPart("s3upload") MultipartFile multipartFile,
+                                                                            @AuthenticationPrincipal UserDetails userDetails) throws AccessException, IOException {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(userService.updateProfileImg(userId, userUpdateProfileImgDto, multipartFile, userDetails));
+    }
+
     @Transactional
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/delete/profileImg/{userId}")
     public ResponseEntity<?> deleteProfileImg(@PathVariable Long userId,
                                               @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
 
@@ -182,6 +192,14 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .body(userService.updateShowBadge(id, badge));
+    }
+
+    @ApiOperation(value = "유저 대표 뱃지 출력")
+    @GetMapping("/showBadge/{id}")
+    public ResponseEntity<?> getShowBadgeByUserId(@PathVariable Long id) {
+
+        return ResponseEntity.ok()
+                .body(userService.getShowBadgeByUserId(id));
     }
 
 }

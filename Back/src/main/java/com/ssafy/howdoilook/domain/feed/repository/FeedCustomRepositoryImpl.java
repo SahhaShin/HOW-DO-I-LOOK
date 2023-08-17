@@ -5,6 +5,8 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.howdoilook.domain.blacklist.entity.BlackList;
+import com.ssafy.howdoilook.domain.blacklist.entity.QBlackList;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.entity.QFeed;
 import com.ssafy.howdoilook.domain.feedLike.entity.QFeedLike;
@@ -13,10 +15,14 @@ import com.ssafy.howdoilook.domain.feedPhotoHashtag.entity.QFeedPhotoHashtag;
 import com.ssafy.howdoilook.domain.follow.entity.Follow;
 import com.ssafy.howdoilook.domain.hashtag.entity.QHashtag;
 import com.ssafy.howdoilook.domain.user.entity.QUser;
+import com.ssafy.howdoilook.domain.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.support.Querydsl;
+
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,6 +35,7 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
     QFeedPhotoHashtag feedPhotoHashtag = QFeedPhotoHashtag.feedPhotoHashtag;
     QHashtag hashtag = QHashtag.hashtag;
     QFeedLike feedLike = QFeedLike.feedLike;
+    QBlackList blackList = QBlackList.blackList;
 
     public FeedCustomRepositoryImpl(EntityManager em) {
         this.jpaQueryFactory = new JPAQueryFactory(em);
@@ -101,9 +108,11 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
     public Page<Feed> selectLikedFeed(Long userId, Pageable pageable) {
         JPAQuery<Feed> query = jpaQueryFactory
                 .select(feed)
+                .distinct()
                 .from(feedLike)
                 .leftJoin(feedLike.feed, feed)
                 .on(feedLike.user.id.eq(userId));
+
 
         QueryResults<Feed> results = query
                 .offset(pageable.getOffset())
@@ -112,5 +121,44 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
                 .fetchResults();
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    @Override
+    public List<Feed> selectFollowingFeedExceptBlackList(List<Follow> followList, User user) {
+        List<BlackList> blackListList = user.getBlackList();
+
+        List<User> blackListTargetUser = new ArrayList<>();
+
+        for (BlackList blackList : blackListList)
+            blackListTargetUser.add(blackList.getTargetUser());
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        for (Follow follow : followList) {
+            builder.or(feed.user.id.eq(follow.getFollowee().getId()));
+        }
+
+        List<Feed> feedList = jpaQueryFactory.select(feed)
+                .from(feed)
+                .distinct()
+                .where(feed.user.notIn(blackListTargetUser).and(builder))
+                .fetch();
+        return feedList;
+    }
+
+    @Override
+    public List<Feed> selectFeedExceptBlackList(User user) {
+        List<BlackList> blackListList = user.getBlackList();
+        List<User> blackListTargetUser = new ArrayList<>();
+        for (BlackList blackList : blackListList) {
+            blackListTargetUser.add(blackList.getTargetUser());
+        }
+        List<Feed> feedList = jpaQueryFactory.select(feed)
+                .from(feed)
+                .distinct()
+                .where(feed.user.notIn(blackListTargetUser))
+                .orderBy(feed.id.desc())
+                .fetch();
+        return feedList;
     }
 }

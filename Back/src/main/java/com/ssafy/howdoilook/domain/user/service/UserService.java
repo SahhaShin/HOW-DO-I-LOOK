@@ -5,6 +5,7 @@ import com.ssafy.howdoilook.domain.badge.repository.BadgeRepository;
 import com.ssafy.howdoilook.domain.user.dto.request.*;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSearchResponseDto;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSimpleResponseDto;
+import com.ssafy.howdoilook.domain.user.dto.response.UserUpdateProfileImgResponseDto;
 import com.ssafy.howdoilook.domain.user.entity.BadgeType;
 import com.ssafy.howdoilook.domain.user.entity.ClosetAccess;
 import com.ssafy.howdoilook.domain.user.entity.User;
@@ -227,6 +228,40 @@ public class UserService {
         return user.updateUserInfoAndImage(userUpdateIncludeImageRequestDto, imageService.updateImage(user.getProfileImg(), multipartFile));
     }
 
+    @Transactional
+    public UserUpdateProfileImgResponseDto updateProfileImg(Long userId, UserUpdateProfileImgDto userUpdateProfileImgDto,
+                                                            MultipartFile multipartFile, UserDetails userDetails) throws AccessException, IOException {
+        String clientEmail = userDetails.getUsername();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if (!clientEmail.equals(user.getEmail())){
+            throw new AccessException("접근 권한이 없습니다.");
+        }
+
+        String imageUrl = userUpdateProfileImgDto.getImageUrl();
+
+        if(extractFileNameFromUrl(imageUrl).equals("DefaultProfile")) {
+            user.updateProfileImg(imageService.saveImage(multipartFile));
+            return UserUpdateProfileImgResponseDto.builder()
+                    .profileImg(user.getProfileImg())
+                    .build();
+        }
+
+        imageService.deleteImage(imageUrl);
+        user.updateProfileImg(imageService.updateImage(imageUrl, multipartFile));
+        return UserUpdateProfileImgResponseDto.builder()
+                .profileImg(user.getProfileImg())
+                .build();
+    }
+
+    // URL에서 파일 이름 추출
+    private String extractFileNameFromUrl(String imageUrl) {
+        // URL의 마지막 슬래시 이후의 문자열
+        return imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+    }
+
+    @Transactional
     public void deleteProfileImg(Long userId, UserDetails userDetails) throws AccessException {
         String clientEmail = userDetails.getUsername();
         User user = userRepository.findById(userId)
@@ -238,7 +273,7 @@ public class UserService {
 
         imageService.deleteImage(user.getProfileImg());
 
-        user.updateProfileImg(null);
+        user.updateProfileImage("https://howdobucket.s3.ap-northeast-2.amazonaws.com/DefaultProfile.png");
     }
 
     /*
@@ -287,5 +322,12 @@ public class UserService {
                 .showBadgeType(user.getShowBadgeType())
                 .closetAccess(user.getClosetAccess())
                 .build();
+    }
+
+    public BadgeType getShowBadgeByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하는 유저가 없습니다."));
+
+        return user.getShowBadgeType();
     }
 }

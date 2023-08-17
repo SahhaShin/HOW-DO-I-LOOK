@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.ootd.service;
 
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
+import com.ssafy.howdoilook.domain.clothes.entity.ClothesType;
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.ClothesOotd;
 import com.ssafy.howdoilook.domain.clothesOotd.entity.SlotType;
@@ -110,7 +111,24 @@ public class OotdService {
             Integer order = i;
 
             if (ootd == null) {
-                // ootd를 한번도 설정된 적 없으면 아무것도 반환하지 않는다.
+                List<ClothesTypeListDto> topsList = ootdRepository.findClothesList(0L, userId, "TOP");
+                List<ClothesTypeListDto> bottomsList = ootdRepository.findClothesList(0L, userId, "BOTTOM");
+                List<ClothesTypeListDto> shoesList = ootdRepository.findClothesList(0L, userId, "SHOE");
+                List<ClothesTypeListDto> accessories1List = ootdRepository.findClothesList(0L, userId, "ACCESSORY");
+                List<ClothesTypeListDto> accessories2List = new ArrayList<>(accessories1List);
+                List<ClothesTypeListDto> accessories3List = new ArrayList<>(accessories1List);
+
+                GetOotdListDto getOotdListDto = GetOotdListDto.builder()
+                        .order(order)
+                        .tops(topsList)
+                        .bottoms(bottomsList)
+                        .shoes(shoesList)
+                        .accessories1(accessories1List)
+                        .accessories2(accessories2List)
+                        .accessories3(accessories3List)
+                        .build();
+
+                ootds.add(getOotdListDto);
                 continue;
             }
 
@@ -147,7 +165,7 @@ public class OotdService {
         /**
          * 1번 ootd랑 2번 ootd에 같은 옷이 들어가게 될 때 중복 출력 문제
          */
-        clothesList.addAll(ootdRepository.findClothesList(findClothesOotd.getClothesId(), userId, clothesType, ootdId));
+        clothesList.addAll(ootdRepository.findClothesList(findClothesOotd.getClothesId(), userId, clothesType));
         return clothesList;
     }
 }
