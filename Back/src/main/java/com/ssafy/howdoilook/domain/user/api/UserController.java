@@ -1,6 +1,7 @@
 package com.ssafy.howdoilook.domain.user.api;
 
 import com.ssafy.howdoilook.domain.user.dto.request.*;
+import com.ssafy.howdoilook.domain.user.dto.response.UserUpdateProfileImgResponseDto;
 import com.ssafy.howdoilook.domain.user.entity.User;
 import com.ssafy.howdoilook.domain.user.service.UserService;
 import com.ssafy.howdoilook.global.s3upload.ImageService;
@@ -167,10 +168,10 @@ public class UserController {
     }
 
     @PutMapping("/update/profileImg/{userId}")
-    public ResponseEntity<Long> updateProfileImg(@PathVariable Long userId,
-                                              @RequestPart UserUpdateProfileImgDto userUpdateProfileImgDto,
-                                              @RequestPart("s3upload") MultipartFile multipartFile,
-                                              @AuthenticationPrincipal UserDetails userDetails) throws AccessException, IOException {
+    public ResponseEntity<UserUpdateProfileImgResponseDto> updateProfileImg(@PathVariable Long userId,
+                                                                            @RequestPart UserUpdateProfileImgDto userUpdateProfileImgDto,
+                                                                            @RequestPart("s3upload") MultipartFile multipartFile,
+                                                                            @AuthenticationPrincipal UserDetails userDetails) throws AccessException, IOException {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.updateProfileImg(userId, userUpdateProfileImgDto, multipartFile, userDetails));
     }
