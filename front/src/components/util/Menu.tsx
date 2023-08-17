@@ -34,7 +34,7 @@ const NavigationBar: React.FC = () => {
   const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
 
-  const liveMenuItems = ["라이브", "피드", "채팅", "랭킹", "옷장", "마이페이지"];
+  const liveMenuItems = ["라이브", "피드", "채팅", "랭킹", "옷장", "프로필"];
   const liveMenuLink = ["liveList", "feed", "chatList", "ranking", `closet/${loginUser.id}`,`mypage/${loginUser.id}` ];
 
 
