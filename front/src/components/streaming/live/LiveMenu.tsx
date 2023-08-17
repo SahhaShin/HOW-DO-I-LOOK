@@ -412,7 +412,7 @@ const LiveMenu = () => {
                 </div>
             </div>
 
-            <div className={`${liveMenuStyle.statement_CLOSET}`}>
+            <div className={`${liveMenuStyle.statement_CLOSET}`} style={{marginBottom:"80px", marginTop:"30px"}}>
                 <p>ROOM INFOMATION</p>
             </div>
             <div className={`${liveMenuStyle.closetList4}`}>

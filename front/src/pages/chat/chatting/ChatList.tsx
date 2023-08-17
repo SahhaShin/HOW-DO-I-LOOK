@@ -79,14 +79,14 @@ const ChatList = () => {
                         </div>
                         
                         
-                        <div className={`${chatStyle.paginationContainer}`}>
+                        {/* <div className={`${chatStyle.paginationContainer}`}>
                             <Pagination
                                 total={state.chatList?.length}
                                 limit={limit}
                                 page={page}
                                 setPage={setPage}
                             />
-                        </div>
+                        </div> */}
                         
                     </div>
 

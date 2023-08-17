@@ -109,7 +109,7 @@
     border-radius: 50%;
 }
 
-.profileCircle_G > p{
+.profile  p{
     /* 여자 프로필 border 크기 */
     margin-left: -50%;
     width: 200%;

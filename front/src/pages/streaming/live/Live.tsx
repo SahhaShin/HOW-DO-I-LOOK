@@ -112,8 +112,8 @@ const Live = () => {
                 </div>
             </div>
 
-            {/* 피드블러 */}
-            <div onClick={async()=>{dispatch(changeScoreModalOpen(false));dispatch(changeMenuModalOpen(false));}} style={String(state_live.selectAdvisor?.id)!==String(loginUser.id)&&((state_live.menuModalOpen)||(state_live.scoreModalOpen))?{position:"absolute",zIndex:"9",width:"100%", height:"10000px", backgroundColor:"black", opacity:"0.6", marginTop:"-10000px"}:null}></div>
+            {/* 라이브블러 */}
+            <div onClick={async()=>{dispatch(changeScoreModalOpen(false));dispatch(changeMenuModalOpen(false));}} style={String(state_live.selectAdvisor?.id)!==String(loginUser.id)&&((state_live.menuModalOpen)||(state_live.scoreModalOpen))?{position:"absolute",zIndex:"9",width:"100%", height:"797px", backgroundColor:"black", opacity:"0.6", marginTop:"-700px"}:null}></div>
         </div>
     );
 }
