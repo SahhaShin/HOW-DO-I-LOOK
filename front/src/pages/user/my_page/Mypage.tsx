@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 //css
 import mypageStyle from "./Mypage.module.css";
 
@@ -23,7 +23,7 @@ import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
 import MypageBadgeModal from '../../../components/user/my_page/MypageBadgeModal';
-
+import Swal from "sweetalert2";
 
 const Mypage = () => {
 
@@ -37,9 +37,25 @@ const Mypage = () => {
 
     const { watchingUserId } = useParams();
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         dispatch(action_mypage.getUserById(Number(watchingUserId)));
       }, [])
+
+      if(state.targetUser.id === 0) {
+        return(<div>Loading..</div>);
+      }
+
+      if(loginUser.id !== Number(watchingUserId) && state.targetUser.closetAccess === "PRIVATE") {
+        Swal.fire({
+            icon: 'info',
+            title: '비공개된 프로필입니다!',
+            text: '주인이 공개를 원하지 않습니다:)',
+            confirmButtonColor: '#EAA595',
+          })
+        navigate("/");
+      }
 
     return(
         <>

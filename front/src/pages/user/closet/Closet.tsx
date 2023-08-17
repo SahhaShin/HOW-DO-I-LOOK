@@ -7,6 +7,7 @@ import closetStyle from "./Closet.module.css";
 import { useSelector, useDispatch } from "react-redux"; 
 import {action, changeModalOpen,changeMode} from "../../../store/ClosetSlice";
 import {changeMenuItemNum} from "../../../store/UtilSlice";
+import {action_mypage} from "../../../store/MypageSlice";
 
 //param
 import { useParams } from "react-router-dom";
@@ -22,18 +23,29 @@ import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
 
-
+import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 
 
 const Closet = () => {
 
     //redux 관리
     let state = useSelector((state:any)=>state.closet);
+    let state_mypage = useSelector((state:any)=>state.mypage)
     let dispatch = useDispatch();
     dispatch(changeMenuItemNum(4))
 
     //로그인 유저 정보
+    const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
     const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log(Number(id))
+        dispatch(action_mypage.getUserById(Number(id)));
+        console.log(id)
+      }, [])
+
 
     // 페이지네이션, 옷 관리
     let clothesListLen = state.clothesTop?.length;
@@ -67,6 +79,8 @@ const Closet = () => {
         userId:id,
     }
 
+
+    
 
     //초기 화면 OOTD를 위해 모든 분류의 옷 불러야함 (새로고침 시 재렌더링 될 때만)
     useEffect(()=>{
@@ -162,6 +176,20 @@ const Closet = () => {
     },[state.clothesTypeEn, state.page])
 
     
+    // console.log(state_mypage.targetUser)
+    if(state_mypage.targetUser.id === 0) {
+        return(<div>Loading..</div>);
+      }
+
+      if(loginUser.id !== Number(id) && state_mypage.targetUser.closetAccess === "PRIVATE") {
+        Swal.fire({
+            icon: 'info',
+            title: '비공개된 옷장입니다!',
+            text: '주인이 공개를 원하지 않습니다:)',
+            confirmButtonColor: '#EAA595',
+          })
+        navigate("/");
+      }
   
     return(
         <>

@@ -265,8 +265,7 @@ export const action_mypage = {
     async ({ watchingUserId, userUpdateData }) => {
       try {
         const token = await CheckToken();
-        console.log(watchingUserId)
-        console.log(userUpdateData)
+
         let temp = userUpdateData.age;
         userUpdateData.age = Number(temp);
 
@@ -481,7 +480,6 @@ export const action_mypage = {
       `MypageSlice/checkBlackList`,
       async (userIds:userIds) => {
         
-          console.log("blacklist")
           if(userIds.id1 == userIds.id2){
             return false
           }
@@ -503,15 +501,10 @@ export const action_mypage = {
                     },
                   }
                 );
-                console.log("utBlack.date : " + utBlack)
-        
-                console.log("tuBlack.date : " + tuBlack)
-                console.log("|| : " + utBlack.data || tuBlack.data)
         
             return utBlack.data || tuBlack.data
           } 
           catch (e) {
-            console.log(e);
             // alert(e.response.data.message);
             throw e;
           }
@@ -601,8 +594,6 @@ export const action_mypage = {
         }
       );
 
-      console.log(response.data);
-
       return response.data;
     } catch (e) {
       throw e;
@@ -622,8 +613,6 @@ export const action_mypage = {
           },
         }
       );
-
-      console.log(response.data);
 
       return response.data;
     } catch (e) {
@@ -677,8 +666,6 @@ export const action_mypage = {
 
   updateBadge : createAsyncThunk(`MypageSlice/updateBadge`, async ({id, badge}) => {
     try {
-
-      console.log(`id = ${id}, badge = ${badge}`);
       const token = await CheckToken();
 
       const response = await axios.put(
@@ -721,8 +708,6 @@ export const action_mypage = {
   profileUpdate : createAsyncThunk(`MypageSlice/profileUpdate`, async(formdata) => {
     try {
 
-      console.log(formdata);
-
       const token = await CheckToken();
 
       const user_id = JSON.parse(sessionStorage.getItem("loginUser")).id;
@@ -734,7 +719,6 @@ export const action_mypage = {
         }
       })
 
-      console.log(response.data);
       return response.data; //userId
     } catch(e) {
       throw e;
@@ -798,7 +782,6 @@ const MypageSlice = createSlice({
 
       window.sessionStorage.removeItem("loginUser");
       window.sessionStorage.setItem("loginUser", JSON.stringify(loginUser));
-      console.log(JSON.parse(window.sessionStorage.getItem("loginUser")));
     });
 
     builder.addCase(
@@ -971,13 +954,11 @@ const MypageSlice = createSlice({
 
     builder.addCase(action_mypage.getFeedList.fulfilled, (state, action) => {
       state.feedList = action.payload;
-      console.log(state.feedList);
     });
 
     builder.addCase(
       action_mypage.getLikeFeedList.fulfilled,(state, action) => {
         state.likeFeedList = action.payload;
-        console.log(state.likeFeedList);
       }
     );
 

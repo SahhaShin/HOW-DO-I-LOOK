@@ -283,6 +283,23 @@ export const action_feed = {
         } catch(e) {
             throw e;
         }
+    }),
+
+    getFeedLikeCount : createAsyncThunk("FeedSlice/getFeedLikeCount", async(feed_id) => {
+        try {
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedlike/likecount/${feed_id}`, {
+                headers: {
+                    "Authorization" : token
+                }
+            });
+
+            return response.data;
+        }
+        catch(e) {
+            throw e;
+        }
     })
 
 }
@@ -427,6 +444,12 @@ interface Feed{
     addCommentOk:boolean,
     mypageFeedPic:myPageFeedSearch[],
     feedMode:number,
+    feedLikeCount: {
+        LOVELY: number,
+        SEXY : number,
+        MODERN: number,
+        NATURAL : number
+    }
 }
 
 // 초기화
@@ -459,6 +482,12 @@ const initialState:Feed = {
     addCommentOk:false,
     mypageFeedPic:[],
     feedMode:1, // 1 : ALL, 2 : FOLLOWING, 3 : MY
+    feedLikeCount: {
+        LOVELY: 0,
+        SEXY: 0,
+        MODERN: 0,
+        NATURAL: 0
+    }
 }
 
 
@@ -646,7 +675,10 @@ const FeedSlice = createSlice({
             state.isFollow = action.payload;
         })
 
-
+        builder.addCase(action_feed.getFeedLikeCount.fulfilled, (state, action) => {
+            console.log(action.payload);
+            state.feedLikeCount = action.payload;
+        })
     }
 });
 
