@@ -16,7 +16,7 @@ public interface FeedCustomRepository {
 
     Page<Feed> selectFeedAll(Pageable pageable);
 
-    Page<Feed> selectFeedByHashTag(List<String> hashTagList,Pageable pageable);
+    List<Feed> selectFeedByHashTag(List<String> hashTagList);
 
     Page<Feed> selectByUserFollowee(List<Follow> followList,Pageable pageable);
 
