@@ -59,8 +59,9 @@ function Home() {
 				{loginUser == null ? (
 					<button
 						className={`${styles.button} ${styles.intro1Btn2}`}
+						onClick={() => { navigate(`/user/log-in`) }}
 					>
-						<a href={process.env.REACT_APP_FRONT + `/user/log-in`} className={styles.buttonLink}>시작하러가기</a>
+						시작하러가기
 					</button>
 				) : (
 					<button

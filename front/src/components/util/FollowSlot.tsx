@@ -44,7 +44,11 @@ const FollowSlot = (props) => {
 
                 {/* 우측 : 대화, 라이브 버튼 */}
                 <div className={`${followSlotStyle.enterBnt}`}>
-                    <button>대화</button>
+                    <button onClick={
+                        async() => {
+                            navigate(`/closet/${props.one.id}`);
+                        }
+                    }>옷장</button>
                     <button onClick={
                         async() => {
                             navigate(`/mypage/${props.one.id}`);
