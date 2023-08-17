@@ -232,10 +232,10 @@ const FeedDetail = (props) => {
                 {/* 좋아요 4가지 - 0과 1 구분하는 거 다시하고, 좋아요 저장 삭제도 구현해야함 */}
                 {/* state.totalDetailObjLikes?.lovely */}
                 <div className={`${FeedDetailStyle.likeBtns}`}>
-                    {state.detailObjLikes?.lovelyType!==null?<button onClick={()=>{likeOn("LOVELY", 1)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>:<button onClick={()=>{likeOn("LOVELY", 0)}} className={`${FeedDetailStyle.lovelyOff}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>}
-                    {state.detailObjLikes?.naturalType!==null?<button onClick={()=>{likeOn("NATURAL", 1)}} className={`${FeedDetailStyle.naturalOn}`}>Natural ({state.totalDetailObjLikes?.natural})</button>:<button onClick={()=>{likeOn("NATURAL", 0)}} className={`${FeedDetailStyle.naturalOff}`}>Natural ({state.totalDetailObjLikes?.natural})</button>}
-                    {state.detailObjLikes?.modernType!==null?<button onClick={()=>{likeOn("MODERN", 1)}} className={`${FeedDetailStyle.modernOn}`}>Modern ({state.totalDetailObjLikes?.modern})</button>:<button onClick={()=>{likeOn("MODERN", 0)}} className={`${FeedDetailStyle.modernOff}`}>Modern ({state.totalDetailObjLikes?.modern})</button>}
-                    {state.detailObjLikes?.sexyType!==null?<button onClick={()=>{likeOn("SEXY", 1)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>:<button onClick={()=>{likeOn("SEXY", 0)}} className={`${FeedDetailStyle.sexyOff}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>}
+                    {state.detailObjLikes?.lovelyType!==null?<button onClick={()=>{likeOn("LOVELY", 1)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely</button>:<button onClick={()=>{likeOn("LOVELY", 0)}} className={`${FeedDetailStyle.lovelyOff}`}>Lovely</button>}
+                    {state.detailObjLikes?.naturalType!==null?<button onClick={()=>{likeOn("NATURAL", 1)}} className={`${FeedDetailStyle.naturalOn}`}>Natural</button>:<button onClick={()=>{likeOn("NATURAL", 0)}} className={`${FeedDetailStyle.naturalOff}`}>Natural</button>}
+                    {state.detailObjLikes?.modernType!==null?<button onClick={()=>{likeOn("MODERN", 1)}} className={`${FeedDetailStyle.modernOn}`}>Modern</button>:<button onClick={()=>{likeOn("MODERN", 0)}} className={`${FeedDetailStyle.modernOff}`}>Modern</button>}
+                    {state.detailObjLikes?.sexyType!==null?<button onClick={()=>{likeOn("SEXY", 1)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy</button>:<button onClick={()=>{likeOn("SEXY", 0)}} className={`${FeedDetailStyle.sexyOff}`}>Sexy</button>}
                 </div>
 
 
