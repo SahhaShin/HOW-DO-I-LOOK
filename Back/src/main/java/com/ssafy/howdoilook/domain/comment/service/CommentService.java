@@ -102,6 +102,7 @@ public class CommentService {
                     .commentId(comment.getId())
                     .userId(comment.getUser().getId())
                     .userNickname(comment.getUser().getNickname())
+                    .userProfileImg(comment.getUser().getProfileImg())
                     .modifiedDate(comment.getModifiedDate())
                     .feedId(comment.getFeed().getId())
                     .content(comment.getContent())
@@ -126,6 +127,7 @@ public class CommentService {
                     .feedId(comment.getFeed().getId())
                     .parentCommentId(comment.getParent().getId())
                     .content(comment.getContent())
+                    .userProfileImg(comment.getUser().getProfileImg())
                     .build();
             commentResponseDtoList.add(commentResponseDto);
         }
