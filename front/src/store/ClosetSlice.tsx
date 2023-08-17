@@ -13,7 +13,6 @@ export const action = {
         try{
             const token = await CheckToken();
 
-            console.log(`pagenum! ${pageNum}`);
 
             // 스트리밍 옷장은 페이지넘버가 없음
             let response=null;
@@ -51,7 +50,7 @@ export const action = {
     // 순차적인 옷 리스트 -> 라이브에서 씀
     getClothesListByOrder : createAsyncThunk("ClosetSlice/getClothesListByOrder", async(userId, thunkAPI)=>{
         try{
-            console.log(userId);
+
             const token = await CheckToken();
 
             // 스트리밍 옷장은 페이지넘버가 없음
@@ -63,7 +62,6 @@ export const action = {
             });
 
 
-            console.log(response.data);
             return response.data; // clothesId랑 photoLink
 
         } catch (e) {
