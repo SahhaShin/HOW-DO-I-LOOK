@@ -125,7 +125,6 @@ public class ClothesService {
 
 
         if(type.equals("ALL")) {
-            System.out.println(userId);
             Page<Clothes> findClothesList = clothesRepository.findByUser_Id(userId, pageRequest);
 
             for(Clothes clothes : findClothesList) {
@@ -142,7 +141,7 @@ public class ClothesService {
 
         } else {
             ClothesType clothesType = ClothesType.valueOf(type);
-            System.out.println(clothesType);
+
             Page<Clothes> findClothesList = clothesRepository.findByTypeAndUser_Id(clothesType, userId, pageRequest);
 
             for(Clothes clothes : findClothesList) {

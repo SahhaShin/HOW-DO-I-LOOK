@@ -78,8 +78,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 //        refreshTokenCookie.setSecure(true);
                 httpServletResponse.addCookie(refreshTokenCookie);
 
-                httpServletResponse.sendRedirect("http://localhost:3000/auth2/sign-up"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
-//                httpServletResponse.sendRedirect("https://i9b304.p.ssafy.io/auth2/sign-up");
+//                httpServletResponse.sendRedirect("http://localhost:3000/auth2/sign-up"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
+                httpServletResponse.sendRedirect("https://i9b304.p.ssafy.io/auth2/sign-up");
 
                 Optional<User> findUser = userRepository.findByEmail(oAuth2User.getEmail());
 
@@ -137,8 +137,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         httpServletResponse.addCookie(refreshTokenCookie);
 
 
-        httpServletResponse.sendRedirect("http://localhost:3000");
-//        httpServletResponse.sendRedirect("https://i9b304.p.ssafy.io");
+//        httpServletResponse.sendRedirect("http://localhost:3000");
+        httpServletResponse.sendRedirect("https://i9b304.p.ssafy.io");
     }
 
     public Map<String, String> socialLoginSuccessAndSendTokenToFront() {

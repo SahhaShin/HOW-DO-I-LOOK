@@ -148,10 +148,6 @@ public class UserController {
     @ApiOperation(value = "유저 정보 수정 : only dto 버전")
     @PutMapping("/update/info/{id}")
     public ResponseEntity<?> updateUserInfo(@PathVariable Long id, @RequestBody UserUpdateRequestDto userUpdateRequestDto) throws AccessException, IOException {
-
-        System.out.println("id = " + id);
-        System.out.println("userUpdateRequestDto = " + userUpdateRequestDto.getAge());
-        System.out.println("userUpdateRequestDto = " + userUpdateRequestDto.getNickname());
         
         return ResponseEntity.ok()
                 .body(userService.updateUserInfo(id, userUpdateRequestDto));

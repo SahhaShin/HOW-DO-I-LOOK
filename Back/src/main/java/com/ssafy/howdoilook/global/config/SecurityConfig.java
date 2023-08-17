@@ -103,11 +103,11 @@ public class SecurityConfig {
 //                .requiresChannel() // HTTPS 요구 설정 시작
 //                .anyRequest().requiresSecure(); // 모든 요청에 HTTPS 요구 설정;
 
-        // 스프링 시큐리티 필터 순서 :
-        // LogoutFilter -> JwtAuthenticationProcessingFilter -> CustomJsonUsernamePasswordAuthenticationFilter
-        // 아래 둘 순서 바꾸면 에러
-        httpSecurity.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
-        httpSecurity.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
+                // 스프링 시큐리티 필터 순서 :
+                // LogoutFilter -> JwtAuthenticationProcessingFilter -> CustomJsonUsernamePasswordAuthenticationFilter
+                // 아래 둘 순서 바꾸면 에러
+                httpSecurity.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
+                httpSecurity.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
 
 
         // 로그아웃

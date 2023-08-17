@@ -220,11 +220,10 @@ public class FeedService {
         }
 
         List<String> linkList = feedPhotoRepository.selectLinkListByFeedId(feedId);
-        System.out.println("linkList.size() = " + linkList.size());
-        for (String link : linkList) {
-            System.out.println("하나를 삭제합니다.");
+
+        for (String link : linkList)
             imageService.deleteImage(link);
-        }
+
         feedRepository.delete(findFeed);
     }
 

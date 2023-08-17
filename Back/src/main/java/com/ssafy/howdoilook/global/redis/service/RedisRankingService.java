@@ -59,14 +59,11 @@ public class RedisRankingService {
         for (ZSetOperations.TypedTuple<String> tuple : rankingWithScores)
             valueList.add(tuple.getScore().longValue());
 
-        System.out.println("valueList = " + valueList);
         List<String> rankingList = new ArrayList<>(ranking);
-        System.out.println("rankingList = " + rankingList);
 
         List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
 
         for(int i=0; i<rankingList.size(); i++) {
-            System.out.println(rankingList.get(i));
             User user = userRepository.findById(Long.parseLong(rankingList.get(i))).get();
 
             RankingResponseDto rankingResponseDto = RankingResponseDto.builder()
@@ -99,14 +96,11 @@ public class RedisRankingService {
         for (ZSetOperations.TypedTuple<String> tuple : rankingWithScores)
             valueList.add(tuple.getScore().longValue());
 
-        System.out.println("valueList = " + valueList);
         List<String> rankingList = new ArrayList<>(ranking);
-        System.out.println("rankingList = " + rankingList);
 
         List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
 
         for(int i=0; i<rankingList.size(); i++) {
-            System.out.println(rankingList.get(i));
             User user = userRepository.findById(Long.parseLong(rankingList.get(i))).get();
 
             RankingResponseDto rankingResponseDto = RankingResponseDto.builder()
@@ -142,16 +136,11 @@ public class RedisRankingService {
         for (ZSetOperations.TypedTuple<String> tuple : rankingWithScores)
             valueList.add(tuple.getScore().longValue());
 
-        System.out.println("valueList = " + valueList);
         List<String> rankingList = new ArrayList<>(ranking);
-        System.out.println("rankingList = " + rankingList);
 
         List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
 
         for(int i=0; i<rankingList.size(); i++) {
-            System.out.println("랭킹리스트!!!");
-            System.out.println(rankingList.get(i));
-            System.out.println(zSetOperations);
             User user = userRepository.findById(Long.parseLong(rankingList.get(i))).get();
 
             RankingResponseDto rankingResponseDto = RankingResponseDto.builder()
@@ -184,8 +173,6 @@ public class RedisRankingService {
 
         Set<String> badgeSet = zSetOperations.reverseRange(likeType, 0, badgeCnt - 1);
         Set<ZSetOperations.TypedTuple<String>> rankingWithScores = zSetOperations.reverseRangeWithScores(likeType, 0, -1);
-
-        System.out.println("rankingWithScores = " + rankingWithScores);
         
         List<Long> valueList = new ArrayList<>();
 
@@ -195,12 +182,10 @@ public class RedisRankingService {
         
         
         List<String> badgeList = new ArrayList<>(badgeSet);
-        System.out.println("badgeList = " + badgeList);
         
         List<RankingResponseDto> rankingResponseDtoList = new ArrayList<>();
 
         for(int i=0; i<badgeList.size(); i++) {
-            System.out.println("badgeList.get(i) = " + badgeList.get(i));
 //            User user = userRepository.findById(Long.parseLong(badgeList.get(i))).get();
 
             Optional<User> optionalUser = userRepository.findById(Long.parseLong(badgeList.get(i)));

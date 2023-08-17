@@ -159,7 +159,7 @@ public class ImageService {
     public void deleteImage(String imageUrl) {
         // 이미지가 존재하면 버킷에서 해당 이미지를 삭제
         String existFile = extractFileNameFromUrl(imageUrl);
-        System.out.println(existFile);
+
         try {
             String decodedFileName = URLDecoder.decode(existFile, "UTF-8");
             amazonS3Client.deleteObject(S3Bucket, decodedFileName);
@@ -221,7 +221,6 @@ public class ImageService {
 
     public String processImageAndReturnPath(String imagePath) throws IOException {
 
-        System.out.println("Python Call");
         String[] command = new String[4];
         command[0] = "python";
         command[1] = pythonPath;

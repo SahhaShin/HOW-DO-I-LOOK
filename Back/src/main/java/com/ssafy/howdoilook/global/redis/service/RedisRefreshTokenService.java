@@ -37,7 +37,6 @@ public class RedisRefreshTokenService {
         String refreshToken = valueOperations.get(email);
 
         if(refreshToken == null) {
-            System.out.println("해당 요소(Email, RefreshToken)가 Redis에 존재하지 않아서 삭제할 수 없습니다.");
             return;
         }
 

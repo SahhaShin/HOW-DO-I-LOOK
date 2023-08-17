@@ -36,8 +36,6 @@ public class BlackListController {
     @GetMapping("/list/{userId}")
     public ResponseEntity<?> getAllBlackList(@PathVariable Long userId) {
 
-        System.out.println(userId);
-
         return ResponseEntity.ok()
                 .body(blackListService.getAllBlackList(userId));
     }

@@ -207,8 +207,7 @@ public class UserService {
 //        if (!clientEmail.equals(user.getEmail())){
 //            throw new AccessException("접근 권한이 없습니다.");
 //        }
-        System.out.println("userUpdateRequestDto = " + userUpdateRequestDto.getNickname());
-        System.out.println("userUpdateRequestDto = " + userUpdateRequestDto.getAge());
+
         return user.updateUserInfo(userUpdateRequestDto);
     }
 
