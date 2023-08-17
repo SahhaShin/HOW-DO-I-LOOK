@@ -66,8 +66,8 @@
         - 이미지 배경제거<br>
         - 프론트 메인페이지</td>
     <td>- 역할 뭐했낭ㅇㅇ</td>
-    <td>- 오픈비두<br>
-        - 페이지네이션, 검색 구현<br>
+    <td>- 오픈비두 Api를 활용한 화상회의 구현<br>
+        - 커서를 이용한 페이지네이션 구현, 검색 구현<br>
         - 로그인</td>
     <td>- 프로토타입 제작 및 디자인 (Figma)<br>
         - 컴포넌트 구성 및 API 기능 적용 (Live/Feed/Mypage/옷장/채팅/랭킹)<br>
@@ -85,6 +85,10 @@
 
 ## ⚒️ 개발 환경
 - Front
+    - `TypeScript`
+    - **IDE** : Visual Studio Code
+    - **library** : Redux
+    - **environment** : Node.js(14.21.3)
 - Back
     - **Type** : Gradle - Groovy
     - `Java 11`
