@@ -271,6 +271,10 @@ public class UserService {
             throw new AccessException("접근 권한이 없습니다.");
         }
 
+        if(extractFileNameFromUrl(user.getProfileImg()).equals("DefaultProfile")) {
+            return;
+        }
+
         imageService.deleteImage(user.getProfileImg());
 
         user.updateProfileImage("https://howdobucket.s3.ap-northeast-2.amazonaws.com/DefaultProfile.png");
