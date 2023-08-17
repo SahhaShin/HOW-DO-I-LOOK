@@ -7,12 +7,15 @@ import {action} from "../../../store/ChatSlice";
 
 const ChatSlot = (props) => {
     //oneRoom이 들어옴
-    // interface getChatRoomList{
-    //     id: number,
-    //     userAId: number,
-    //     userBId: number,
-    //     chatroomCode: string,
-    // }
+    // id: number,
+    // userAId: number,
+    // userBId: number,
+    // chatroomCode: string,
+    // userAProfileImg : string|null,
+    // userBProfileImg : string|null,
+    // userAGender : string|null,
+    // userBGender : string|null
+
 
     //redux 관리
     let state = useSelector((state:any)=>state.chat);
@@ -29,15 +32,24 @@ const ChatSlot = (props) => {
     }
 
 
+    function genderSubRankColor(gender){
+
+        if(gender==="FEMALE"){
+            return `${chatSlotStyle.profileImgF}`
+        }else{
+            return `${chatSlotStyle.profileImgM}`
+        }
+    }
+
+
 
     return(
         <div>
             <div className={`${chatSlotStyle.line}`} style={{borderRadius:"1rem"}}>
                 {/* 왼쪽 : 프로필 사진 */}
                 <div className={`${chatSlotStyle.profile}`}>
-                    <div className={`${chatSlotStyle.profileCircle_G}`}>
-                        <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
-                        {/* <div className={`${chatSlotStyle.redDot}`}></div> */}
+                    <div className={`${genderSubRankColor(props.oneRoom.userBGender)}`}>
+                        <img src={props.oneRoom.userBProfileImg}></img>
                     </div>
                     
                 </div>
