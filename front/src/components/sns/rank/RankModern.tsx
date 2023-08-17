@@ -137,8 +137,13 @@ const RankingModern = () => {
                                 {/* <div className={`${rankingStyle.profileImg}`}> */}
                                     <img src={oneUser.profileImg}/>
                                 </div>
-
-                                <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MyModernRank : rankingStyle.blackRank}`}>{oneUser.nickname}</div>
+                                <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MyLovelyRank : rankingStyle.blackRank}`}>{oneUser.nickname} 
+                                {oneUser.showBadgeType === "X" ? null : oneUser.showBadgeType === "LOVELY" ? <img src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} /> 
+                                : oneUser.showBadgeType === "NATURAL" ? <img src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} /> 
+                                : oneUser.showBadgeType === "MODERN" ? <img src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`} /> 
+                                : oneUser.showBadgeType === "SEXY" ? <img src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`} /> 
+                                : null}
+                                </div>
 
                                 <div className={`${oneUser.userId === loginUser.id ? rankingStyle.MyModernRank : rankingStyle.blackRank}`}>{oneUser.score}</div>
                             </div>
