@@ -40,12 +40,18 @@ const Mypage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        dispatch(action_mypage.getBlackList(Number(watchingUserId)));
+    }, [])
+
+    useEffect(() => {
         dispatch(action_mypage.getUserById(Number(watchingUserId)));
       }, [])
 
-      if(state.targetUser.id === 0) {
+      if(state.targetUser.id === 0 || state.blackListUsers == null) {
         return(<div>Loading..</div>);
       }
+
+      console.log(state.blackListUsers)
 
       if(loginUser.id !== Number(watchingUserId) && state.targetUser.closetAccess === "PRIVATE") {
         Swal.fire({
@@ -55,6 +61,22 @@ const Mypage = () => {
             confirmButtonColor: '#EAA595',
           })
         navigate("/");
+      }
+
+      if(state.blackListUsers != null && loginUser.id !== Number(watchingUserId)) {
+        console.log(state.blackListUsers)
+        for(let i=0; i<state.blackListUsers.length; i++) {
+            if(state.blackListUsers[i].targetUserId === loginUser.id) {
+                Swal.fire({
+                    icon: 'info',
+                    title: '비공개된 프로필입니다!',
+                    text: '해당 유저가 블랙 했습니다!',
+                    confirmButtonColor: '#EAA595',
+                })
+
+                navigate("/");
+            }
+          }
       }
 
     return(

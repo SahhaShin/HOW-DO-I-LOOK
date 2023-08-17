@@ -107,17 +107,6 @@ const Ranking = () => {
                             )
                         )
                     )}
-
-                   
-                    {/* 페이지네이션   20을 {clothes.length}로 바꿔야 함 */}
-                    {/* <div className={`${rankingStyle.paginationContainer}`}>
-                        <Pagination
-                            total={20}
-                            limit={limit}
-                            page={page}
-                            setPage={setPage}
-                        />
-                    </div> */}
                 </div>
             </div>
 
