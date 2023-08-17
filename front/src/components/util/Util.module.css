@@ -1,4 +1,4 @@
-.wrapper{
+1.wrapper{
     height: 100%;
 }
 .header_total{
@@ -40,9 +40,9 @@
 }
 
 .header_logo > img{
-    width: 200px;
-    height: 100px;
-    margin-top: -30px;
+    width: 80%;
+    height: 80%;
+    padding: auto;
     margin-left: 10%;
     cursor: pointer;
 }
