@@ -113,15 +113,15 @@ public class BlackListService {
             return true;
         }
     }
-    public List<BlackListSelectResponseDto> getAllBlackList(Long userId, UserDetails userDetails) {
-        String clientEmail = userDetails.getUsername();
+    public List<BlackListSelectResponseDto> getAllBlackList(Long userId) {
+//        String clientEmail = userDetails.getUsername();
 
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new EmptyResultDataAccessException("존재하지 않는 User입니다.",1));
 
-        if (!clientEmail.equals(user.getEmail())) {
-            throw new AccessException("접근 권한이 없습니다.");
-        }
+//        if (!clientEmail.equals(user.getEmail())) {
+//            throw new AccessException("접근 권한이 없습니다.");
+//        }
 
         List<BlackListSelectResponseDto> blackListSelectResponseDtoList = new ArrayList<>();
 

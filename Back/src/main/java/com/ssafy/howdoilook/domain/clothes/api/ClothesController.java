@@ -76,4 +76,11 @@ public class ClothesController {
 
         return ResponseEntity.status(HttpStatus.OK).body(clothesService.findClothesDetail(clothesId, userDetails));
     }
+
+    @GetMapping("list/forroom")
+    public ResponseEntity<List<ClothesListResponseDto>> findClothesListForRoom(@RequestParam(value = "userId") Long userId,
+                                                                         @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
+
+        return ResponseEntity.status(HttpStatus.OK).body(clothesService.findClothesListForRoom(userId, userDetails));
+    }
 }
