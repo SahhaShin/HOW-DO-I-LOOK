@@ -262,15 +262,16 @@ export const action_mypage = {
 
   updateUserInfo: createAsyncThunk(
     `MypageSlice/updateUserInfo`,
-    async ({ targetUserId, userUpdateData }) => {
+    async ({ watchingUserId, userUpdateData }) => {
       try {
         const token = await CheckToken();
-
+        console.log(watchingUserId)
+        console.log(userUpdateData)
         let temp = userUpdateData.age;
         userUpdateData.age = Number(temp);
 
         const response = await axios.put(
-          `${process.env.REACT_APP_SERVER}/api/user/update/info/${targetUserId}`,
+          `${process.env.REACT_APP_SERVER}/api/user/update/info/${watchingUserId}`,
           userUpdateData,
           {
             headers: {
@@ -786,6 +787,18 @@ const MypageSlice = createSlice({
       state.targetUser.name = action.payload.name;
       state.targetUser.nickname = action.payload.nickname;
       state.targetUser.closetAccess = action.payload.closetAccess;
+
+      const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
+
+      loginUser.age = action.payload.age;
+      loginUser.gender = action.payload.gender;
+      loginUser.name = action.payload.name;
+      loginUser.nickname = action.payload.nickname;
+      loginUser.closetAccess = action.payload.closetAccess;
+
+      window.sessionStorage.removeItem("loginUser");
+      window.sessionStorage.setItem("loginUser", JSON.stringify(loginUser));
+      console.log(JSON.parse(window.sessionStorage.getItem("loginUser")));
     });
 
     builder.addCase(
