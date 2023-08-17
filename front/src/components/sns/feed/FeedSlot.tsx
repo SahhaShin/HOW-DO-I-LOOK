@@ -251,8 +251,7 @@ const FeedSlot = () => {
                                 </div>
                                 {oneFeed.userId===loginUser.id?<div className={`${feedSlotStyle.feedBtns}`}>
 
-                                    {/* 수정 기능 임시 폐쇄 */}
-                                    <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId)); dispatch(action_feed.getFeedLikeOnMe({userId:oneFeed.userId,feedId:oneFeed.feedId}));}}>수정</button>
+                                    
                                     <button onClick={()=>deleteFeed(oneFeed.feedId)}>삭제</button>
                                 </div>:null}
                             </div>

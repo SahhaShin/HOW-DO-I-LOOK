@@ -36,6 +36,10 @@ const OOTDCoordi = (props) => {
     let state = useSelector((state: any) => state.closet);
     let dispatch = useDispatch();
 
+    //param
+    let param = useParams();
+    const myId = param.id;
+
 
     // 슬라이더의 현재 인덱스와 이미지 정보를 관리하는 상태
     //1) 상의
@@ -90,6 +94,11 @@ const OOTDCoordi = (props) => {
             ACCESSORY2: currentACC2ImageInfo?.clothesId,
             ACCESSORY3: currentACC3ImageInfo?.clothesId
         }
+
+        // JSON.stringify(currentTOPImageInfo, null, 2)
+
+
+        // 선택되지 않은 옷이 있을 경우 0번 인덱스 값으로 매겨주는 로직
 
         if (slotIds.TOP === undefined) {
             if (props.idx === 1 && state.clothesOOTDTop_1.length >= 1) {
@@ -177,6 +186,7 @@ const OOTDCoordi = (props) => {
     }
 
 
+    console.log(currentBOTTOMImageInfo);
 
     // 화면 단 : 이 부분은 백엔드에서 데이터 넘겨주면 map 형태로 다시 바꿀 것임
     return (
@@ -194,7 +204,7 @@ const OOTDCoordi = (props) => {
                                 setCurrentTOPSlideIndex(newIndex);
 
                                 // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
-                                const currentSlide = state.clothesTop[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                const currentSlide = state.clothesOOTDTop_1[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
                                 setCurrentTOPImageInfo(currentSlide);
                             }}
                         >
@@ -236,7 +246,7 @@ const OOTDCoordi = (props) => {
 
                         {/* <div>
                             <p>현재 보고 있는 이미지 정보:</p>
-                            <pre>{JSON.stringify(currentBOTTOMImageInfo, null, 2)}</pre>
+                            <pre>{JSON.stringify(currentTOPImageInfo, null, 2)}</pre>
                         </div> */}
 
                     </div>
@@ -250,7 +260,7 @@ const OOTDCoordi = (props) => {
                                 setCurrentBOTTOMSlideIndex(newIndex);
 
                                 // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
-                                const currentSlide = state.clothesBottom[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                const currentSlide = state.clothesOOTDBottom_1[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
                                 setCurrentBOTTOMImageInfo(currentSlide);
                             }}
                         >
@@ -273,7 +283,12 @@ const OOTDCoordi = (props) => {
                                     })
                             }
 
+
                         </StyledSlider>
+                        {/* <div>
+                            <p>현재 보고 있는 이미지 정보:</p>
+                            <pre>{JSON.stringify(currentBOTTOMImageInfo, null, 2)}</pre>
+                        </div> */}
 
                     </div>
 
@@ -285,7 +300,7 @@ const OOTDCoordi = (props) => {
                                 setCurrentSHOESlideIndex(newIndex);
 
                                 // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
-                                const currentSlide = state.clothesShoe[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                const currentSlide = state.clothesOOTDShoe_1[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
                                 setCurrentSHOEImageInfo(currentSlide);
                             }}
                         >
@@ -309,6 +324,11 @@ const OOTDCoordi = (props) => {
 
                         </StyledSlider>
 
+                        {/* <div>
+                            <p>현재 보고 있는 이미지 정보:</p>
+                            <pre>{JSON.stringify(currentSHOEImageInfo, null, 1)}</pre>
+                        </div> */}
+
                     </div>
 
                 </div>
@@ -324,7 +344,7 @@ const OOTDCoordi = (props) => {
                                 setCurrentACC1SlideIndex(newIndex);
 
                                 // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
-                                const currentSlide = state.clothesAccessory[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                const currentSlide = state.clothesOOTDAccessory1_1[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
                                 setCurrentACC1ImageInfo(currentSlide);
                             }}
                         >
@@ -348,6 +368,11 @@ const OOTDCoordi = (props) => {
 
                         </StyledSlider>
 
+                        {/* <div>
+                            <p>현재 보고 있는 이미지 정보:</p>
+                            <pre>{JSON.stringify(currentACC1ImageInfo, null, 2)}</pre>
+                        </div> */}
+
                     </div>
 
                     {/* 악세서리2 */}
@@ -358,7 +383,7 @@ const OOTDCoordi = (props) => {
                                 setCurrentACC2SlideIndex(newIndex);
 
                                 // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
-                                const currentSlide = state.clothesAccessory[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                const currentSlide = state.clothesOOTDAccessory2_1[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
                                 setCurrentACC2ImageInfo(currentSlide);
                             }}
                         >
@@ -393,7 +418,7 @@ const OOTDCoordi = (props) => {
                                 setCurrentACC3SlideIndex(newIndex);
 
                                 // 이미지 정보 가져와서 현재 이미지 정보 상태 업데이트
-                                const currentSlide = state.clothesAccessory[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
+                                const currentSlide = state.clothesOOTDAccessory3_1[newIndex]; // slides에는 보여지는 이미지 정보 배열이 있어야 함
                                 setCurrentACC3ImageInfo(currentSlide);
                             }}
                         >
@@ -422,7 +447,12 @@ const OOTDCoordi = (props) => {
 
 
             </div>
-            <div onClick={() => { saveOOTD() }} className={`${coordiStyle.btn} ${coordiStyle.btn__secondary}`}><p>저장</p></div>
+            {
+                String(myId)===String(loginUser.id)?
+                <div onClick={() => { saveOOTD() }} className={`${coordiStyle.btn} ${coordiStyle.btn__secondary}`}>
+                    <p>저장</p>
+                </div>:null
+            }
 
         </div>
 
