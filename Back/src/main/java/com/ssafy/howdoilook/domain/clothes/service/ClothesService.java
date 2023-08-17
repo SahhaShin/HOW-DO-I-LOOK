@@ -119,6 +119,7 @@ public class ClothesService {
         if (page != null) {
             pageRequest = PageRequest.of(page, 8);
         } else {
+            // 스트리밍방에서 옷장 보기는 따로 함수 뺌(이거 이용 안함)
             pageRequest = PageRequest.of(0, Integer.MAX_VALUE);
         }
 
@@ -156,6 +157,33 @@ public class ClothesService {
 
             return result;
         }
+    }
+
+    public List<ClothesListResponseDto> findClothesListForRoom(Long userId, UserDetails userDetails) throws AccessException {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
+
+        if(user.getClosetAccess().equals(ClosetAccess.PRIVATE)) {
+            String clientEmail = userDetails.getUsername();
+
+            if (!clientEmail.equals(user.getEmail())){
+                throw new AccessException("접근 권한이 없습니다.");
+            }
+        }
+
+        List<ClothesListResponseDto> findClothesListResponseDtoList = new ArrayList<>();
+
+        List<Clothes> findClothesList = clothesRepository.findByUser_IdAndType(userId, ClothesType.TOP);
+        findClothesList.addAll(clothesRepository.findByUser_IdAndType(userId, ClothesType.BOTTOM));
+        findClothesList.addAll(clothesRepository.findByUser_IdAndType(userId, ClothesType.SHOE));
+        findClothesList.addAll(clothesRepository.findByUser_IdAndType(userId, ClothesType.ACCESSORY));
+
+        for(Clothes clothes : findClothesList) {
+            findClothesListResponseDtoList.add(new ClothesListResponseDto(clothes));
+        }
+
+        return findClothesListResponseDtoList;
     }
 
     public ClothesDetailResponseDto findClothesDetail(Long clothesId, UserDetails userDetails) throws AccessException {
