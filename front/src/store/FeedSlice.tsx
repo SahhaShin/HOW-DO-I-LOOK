@@ -579,6 +579,8 @@ const FeedSlice = createSlice({
         builder.addCase(action_feed.getFeedTotalList.fulfilled,(state,action)=>{
             state.feedTotalObj = action.payload;
 
+            console.log(`rrrr ${state.feedTotalObj[0]}`);
+
             for(let i=0; i<state.feedTotalObj.length; i++) {
                 state.feedFollowingCheck?.push(action.payload[i].followingCheck);
             }

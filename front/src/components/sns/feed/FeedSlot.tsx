@@ -128,7 +128,7 @@ const FeedSlot = () => {
     })
 
     return(   
-        <>
+        <div>
             {  state.feedTotalObj?.length!==0?
                 state.feedTotalObj?.map((oneFeed, idx)=>{
                     if(state.feedMode === 2 && !state.feedFollowingCheck[idx]) {
@@ -146,9 +146,9 @@ const FeedSlot = () => {
                                 {/* 왼쪽 : 프로필 사진 -- 이미지 아직 저장 안함 */}
                                 <div className={`${feedSlotStyle.profile}`}>
                                     <div className={`${feedSlotStyle.profileCircle_G}`}>
-                                        <img src={loginUser.profileImg}></img>
+                                        <img src={oneFeed.userProfileImg}></img>
                                     </div>
-                                                    
+                            
                                 </div>
                                 {/* 중앙 */}
                                 <div className={`${feedSlotStyle.content}`}>
@@ -202,7 +202,7 @@ const FeedSlot = () => {
                                             // dispatch(action_follow.getMyFollowingList(loginUser.id));
                                         }}>Follow</button>
                                     </div>}   */}
-                                    <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${feedSlotStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div>
+                                    {/* <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${feedSlotStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div> */}
                                 </div>
                             </div>
 
@@ -266,7 +266,7 @@ const FeedSlot = () => {
                 }):<div className={`${feedSlotStyle.noresult}`}>검색 결과가 없습니다.</div>
                 
             }
-        </>     
+        </div>     
     );
 }
 

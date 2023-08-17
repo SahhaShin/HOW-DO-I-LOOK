@@ -165,7 +165,7 @@ const FeedDetail = (props) => {
                         {/* 우측 : 팔로우 언팔로우 & 신고버튼 */}
                         <div className={`${FeedDetailStyle.btns}`}>
                             {/* {state.isFollow?<div><button>Unfollow</button></div>:<div><button>Follow</button></div>}   */}
-                            <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${FeedDetailStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div>
+                            {/* <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${FeedDetailStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div> */}
                         </div>
                     </div>
 
@@ -210,7 +210,7 @@ const FeedDetail = (props) => {
                         {
                             loginUser.id===state.detailObj?.userId?
                             <div className={`${FeedDetailStyle.feedBtns}`}>
-                                <button>수정</button>
+                                {/* <button>수정</button> */}
                                 <button onClick={()=>deleteFeed(state.detailObj?.feedId)}>삭제</button>
                             </div>:null
                         }
@@ -296,7 +296,7 @@ const FeedDetail = (props) => {
 
                                                     <div className={`${FeedDetailStyle.rightBtns}`}>
                                                         {/* <button onClick={()=>{updateComment(one.content)}}>수정</button> */}
-                                                        <button onClick={()=>dispatch(action_feed.deleteComment(one.commentId))}>삭제</button>
+                                                        {one.userId==loginUser.id?<button onClick={()=>dispatch(action_feed.deleteComment(one.commentId))}>삭제</button>:null}
                                                     </div>
                                                 </div>
                                             </div>
