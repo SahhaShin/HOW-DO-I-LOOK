@@ -50,11 +50,16 @@ export const action = {
 
 
 //채팅방 리스트 객체 타입
+// userAProfileImg, userBProfileImg, userAGender, userBGender
 interface getChatRoomList{
     id: number,
     userAId: number,
     userBId: number,
     chatroomCode: string,
+    userAProfileImg : string|null,
+    userBProfileImg : string|null,
+    userAGender : string|null,
+    userBGender : string|null
 }
 
 //방에 들어가면 그 방에 있던 채팅 정보와 상대방 정보가 보임

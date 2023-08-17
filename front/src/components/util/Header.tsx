@@ -35,9 +35,10 @@ const Header = () => {
   }
 
   return (
+    // process.env.PUBLIC_URL
     <div className={`${UtilStyle.wrapper}`}>
       <div className={`${UtilStyle.header_total}`}>
-        <div onClick={()=>{navigate(`/`)}} className={`${UtilStyle.header_logo}`}><img onClick={()=>{navigate(`/`)}} src={process.env.PUBLIC_URL + `/img/BR.png`} alt="HDIL" /></div>
+        <div onClick={()=>{navigate(`/`)}} className={`${UtilStyle.header_logo}`}><img onClick={()=>{navigate(`/`)}} src={`/img/BR.png`} alt="HDIL" /></div>
         { loginUser !== null
         ?
           <div className={`${UtilStyle.etcMenu}`}>

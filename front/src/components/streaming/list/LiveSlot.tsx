@@ -39,7 +39,7 @@ const LiveSlot = (props) => {
     }else{
         return `${liveSlotStyle.profileImgM}`
     }
-}
+  }
 
 
   return (

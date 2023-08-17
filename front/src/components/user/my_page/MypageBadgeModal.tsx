@@ -20,7 +20,6 @@ const MypageBadgeModal = ()=>{
 
     const [pick, setPick] = useState("");
 
-    console.log(pick);
 
     const showBadgeList = () => {
         return state.badgeList.map((badge, index) => {
