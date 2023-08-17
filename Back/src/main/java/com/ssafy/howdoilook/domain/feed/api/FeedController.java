@@ -28,6 +28,11 @@ public class FeedController {
         Page<FeedResponseDto> feedResponseDtos = feedService.selectAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
     }
+    @GetMapping("/one/{feedId}")
+    public ResponseEntity<List<FeedResponseDto>> selectFeedById(@PathVariable(name = "feedId")Long feedId){
+        List<FeedResponseDto> feedResponseDtoList = feedService.selectFeedById(feedId);
+        return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtoList);
+    }
     @GetMapping("/blacklist/{userId}")
     public ResponseEntity<List<FeedResponseDto>> selectAllExceptBlackList(@PathVariable(name = "userId") Long userId){
         List<FeedResponseDto> feedResponseDtoList = feedService.selectAllExceptBlackList(userId);

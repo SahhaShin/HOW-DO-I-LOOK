@@ -37,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -55,6 +56,15 @@ public class FeedService {
     private final FeedPhotoRepository feedPhotoRepository;
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+
+    public List<FeedResponseDto> selectFeedById(Long feedId){
+        Feed findFeed = feedRepository.findById(feedId).orElseThrow(
+                () -> new EmptyResultDataAccessException("존재하지 않는 Feed 입니다.", 1));
+        List<Feed> list = new ArrayList<>();
+        list.add(findFeed);
+        List<FeedResponseDto> feedResponseDtoList = builder(list);
+        return feedResponseDtoList;
+    }
 
     public List<FeedResponseDto> selectFollowFeedExceptBlackList(Long userId) {
         User findUser = userRepository.findById(userId).orElseThrow(
