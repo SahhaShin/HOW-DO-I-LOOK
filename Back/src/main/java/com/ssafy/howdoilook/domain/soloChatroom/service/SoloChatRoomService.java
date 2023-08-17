@@ -98,6 +98,10 @@ public class SoloChatRoomService {
                     .anotherNickName((chatRoom.getUserA().getId() == user.getId()) ? chatRoom.getUserB().getNickname() : chatRoom.getUserA().getNickname())
                     .lastChat((lastChat == null) ? "대화내용이 없습니다.":lastChat.getContent())
                     .lastChatTime((lastChat == null) ? "":lastChat.getTime().toString())
+                    .userAProfileImg(chatRoom.getUserA().getProfileImg())
+                    .userBProfileImg(chatRoom.getUserB().getProfileImg())
+                    .userAGender(chatRoom.getUserA().getGender())
+                    .userBGender(chatRoom.getUserB().getGender())
                     .build();
             chatRoomListNext.add(dto);
         }

@@ -38,8 +38,8 @@ public class ClothesController {
                                             @RequestPart("s3upload") MultipartFile multipartFile,
                                             @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
-//        clothesSaveRequestDto.setPhotoLink(imageService.saveImageAndRemoveBg(multipartFile));
-        clothesSaveRequestDto.setPhotoLink(imageService.saveImage(multipartFile));
+       clothesSaveRequestDto.setPhotoLink(imageService.saveImageAndRemoveBg(multipartFile));
+        // clothesSaveRequestDto.setPhotoLink(imageService.saveImage(multipartFile));
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(clothesService.saveClothes(clothesSaveRequestDto, userDetails));
