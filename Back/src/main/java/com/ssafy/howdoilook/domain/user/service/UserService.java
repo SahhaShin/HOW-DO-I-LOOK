@@ -317,6 +317,7 @@ public class UserService {
                 .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
+                .name(user.getName())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
                 .age(user.getAge())
