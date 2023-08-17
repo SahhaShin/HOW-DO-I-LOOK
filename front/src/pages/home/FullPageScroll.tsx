@@ -32,7 +32,7 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
             if (outerDivRef.current.childElementCount - 1 > currentPage.current)
                 currentPage.current++;
         }
-        console.log(currentPage.current);
+   
         onPageChange(currentPage.current);
         refresh((v) => v + 1);
     };
@@ -51,7 +51,7 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
             }, 500);
             if (currentPage.current > 0) currentPage.current--;
         }
-        console.log(currentPage.current);
+
         onPageChange(currentPage.current);
         refresh((v) => v + 1);
     };
@@ -60,7 +60,7 @@ export const FullPageScroll: React.FC<PFullPageScroll> = ({
         e.preventDefault();
         if (!canScroll.current) return;
         const { deltaY } = e; // +is down -is up
-        console.log("scroll to", outerDivRef.current?.scrollHeight);
+
         if (deltaY > 0 && outerDivRef.current) {
             scrollDown();
         } else if (deltaY < 0 && outerDivRef.current) {

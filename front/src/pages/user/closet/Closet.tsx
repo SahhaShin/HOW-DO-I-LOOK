@@ -41,9 +41,9 @@ const Closet = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(Number(id))
+
         dispatch(action_mypage.getUserById(Number(id)));
-        console.log(id)
+
       }, [])
 
 

@@ -21,12 +21,9 @@ const LiveSlot = (props) => {
   const navigate = useNavigate();
 
   const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
-  // console.log("props : " + props.oneRoom.hostNickname);
-  // console.log("login : " + loginUser.nickname);
 
   function enterLiveRoom() {
-    // console.log(props.oneRoom);
-    // console.log(props.oneRoom.title);
+
     dispatch(
       action.enterLiveRoom({
         userId: loginUser.id,

@@ -151,7 +151,7 @@ export const action_feed = {
 
     //댓글 읽어들이기 O
     getComment : createAsyncThunk("FeedSlice/getComment", async(feedId, thunkAPI)=>{
-        console.log(`${feedId}`);
+
         try{
             const token = await CheckToken();
 
@@ -159,8 +159,7 @@ export const action_feed = {
                 headers:{"Authorization":token}
             });
 
-            console.log(`dddddddd`);
-            console.log(response.data);
+
 
             return response.data;
         } catch(e){
@@ -171,7 +170,7 @@ export const action_feed = {
 
     //댓글 수정 X
     updateComment : createAsyncThunk("FeedSlice/updateComment", async({commentId, comment}, thunkAPI)=>{
-        console.log(`${commentId}`);
+
         try{
             const token = await CheckToken();
 
@@ -242,7 +241,7 @@ export const action_feed = {
     hashSearchImgList : createAsyncThunk("FeedSlice/hashSearchImgList", async({hashtag, size, page}:search, thunkAPI)=>{
         try{
             const token = await CheckToken();
-            console.log(`${process.env.REACT_APP_SERVER}/api/feedphoto/hashtag?${hashtag}`);
+
 
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedphoto/hashtag?${hashtag}`,{
                 headers:{"Authorization":token}
@@ -259,7 +258,7 @@ export const action_feed = {
     hashSearchTotalList : createAsyncThunk("FeedSlice/hashSearchTotalList", async()=>{
         try{
             const token = await CheckToken();
-            console.log(`${process.env.REACT_APP_SERVER}/api/feedphoto`);
+
 
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedphoto`,{
                 headers:{"Authorization":token}
@@ -530,7 +529,7 @@ const FeedSlice = createSlice({
             for(let i=0;i<state.feedTotalObj?.length;i++){
                 if(state.feedTotalObj[i]?.feedId===action.payload){
                     state.detailObj = state.feedTotalObj[i];
-                    console.log(`여기야!! ${i}`);
+
                     break;
                 }
             }
@@ -559,14 +558,14 @@ const FeedSlice = createSlice({
             } 
         },
         changeFollowingCheckToTrue(state, action) {
-            console.log(action.payload);
+
             state.feedFollowingCheck[action.payload] = true;
-            console.log(state.feedFollowingCheck);
+
         },
         changeFollowingCheckToFalse(state, action) {
-            console.log(action.payload);
+     
             state.feedFollowingCheck[action.payload] = false;
-            console.log(state.feedFollowingCheck);
+    
         },
         changeFeedMode(state, action) {
             state.feedMode = action.payload;
@@ -581,7 +580,7 @@ const FeedSlice = createSlice({
         builder.addCase(action_feed.getFeedTotalList.fulfilled,(state,action)=>{
             state.feedTotalObj = action.payload;
 
-            console.log(`rrrr ${state.feedTotalObj[0]}`);
+
 
             for(let i=0; i<state.feedTotalObj.length; i++) {
                 state.feedFollowingCheck?.push(action.payload[i].followingCheck);
@@ -596,7 +595,7 @@ const FeedSlice = createSlice({
                 confirmButtonColor: '#EAA595',
             })
 
-            console.log(action.payload);
+
 
             // 리스트에서 제거
             for(let i=0;i<state.feedTotalObj?.length;i++){
@@ -610,13 +609,13 @@ const FeedSlice = createSlice({
 
         builder.addCase(action_feed.getComment.fulfilled,(state,action)=>{
             state.commentList=action.payload.content;
-            console.log(action.payload.content);
+
         })
 
         builder.addCase(action_feed.deleteComment.fulfilled,(state,action)=>{
 
             //리스트에서 해당 댓글 삭제
-            console.log(action.payload);
+
             for(let i=0;i<state.commentList.length;i++){
                 if(state.commentList[i].commentId == action.payload){
                     console.log(i);
@@ -636,7 +635,7 @@ const FeedSlice = createSlice({
         //댓글달기
         builder.addCase(action_feed.addComment.fulfilled,(state,action)=>{
             //commentPK값 준다.
-            console.log(action.payload);
+  
             if(state.addCommentOk===true) state.addCommentOk=false;
             else state.addCommentOk=true;
         })
@@ -659,29 +658,28 @@ const FeedSlice = createSlice({
         // 해시태그 검색 
         builder.addCase(action_feed.searchHash.fulfilled,(state,action)=>{
             state.feedTotalObj = action.payload;
-            console.log(state.feedTotalObj);
+ 
         })
 
         // 라이브 해시태그 검색 
         builder.addCase(action_feed.hashSearchImgList.fulfilled,(state,action)=>{
-            console.log(action.payload);
+        
             state.mypageFeedPic = action.payload.content;
         })
 
         // 라이브 전체 검색 
         builder.addCase(action_feed.hashSearchTotalList.fulfilled,(state,action)=>{
-            console.log(action.payload);
+        
             state.mypageFeedPic = action.payload.content;
         })
 
         builder.addCase(action_feed.followCheck.fulfilled, (state, action) => {
-            console.log("followCheck")
-            console.log(action.payload);
+
             state.isFollow = action.payload;
         })
 
         builder.addCase(action_feed.getFeedLikeCount.fulfilled, (state, action) => {
-            console.log(action.payload);
+
             state.feedLikeCount = action.payload;
         })
     }

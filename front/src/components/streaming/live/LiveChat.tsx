@@ -132,7 +132,7 @@ const LiveChat = () => {
             // File 혹은 Blob 을 읽은 뒤 base64로 인코딩한 문자열을
             //FileReader 인스턴스의 result라는 속성에 담아줌
             reader.readAsDataURL(file);
-            console.log(`reader = ${reader}`);
+        
 
             return new Promise((resolve) => {
                 reader.onload = () => {       // FileReader가 성공적으로 파일을 읽어들였을 때 트리거 되는 이벤트 핸들러
@@ -187,7 +187,7 @@ const LiveChat = () => {
 
     //2. 채팅방 다대다 구독, 이미지 전송도 가능
     function subscribe(){
-        console.log("현재 2 subscribe이다.");
+   
 
         if(count===0){
             setCount(1);
@@ -197,7 +197,7 @@ const LiveChat = () => {
         client.current.subscribe('/sub/roomChat/'+roomCode,(chatMessage)=>{
             const message = JSON.parse(chatMessage.body);
 
-            console.log(message);
+ 
 
             let addData={
                 nickname:message.nickName,
@@ -206,15 +206,10 @@ const LiveChat = () => {
                 badge:message.badge,
             }
 
-            console.log(message)
-            console.log(addData.nickname);
-            console.log(addData.chatContent);
-            console.log(addData.image)
+
 
             dispatch(pushAnyChatList(addData));
 
-            console.log(`list ${state.anyChatList.chatContent}`);
-            console.log(`list ${state.anyChatList.image}`);
 
             setChatList((_chatList)=>[
                 ..._chatList, addData
@@ -232,7 +227,6 @@ const LiveChat = () => {
                 badge:messageImg.badge,
             }
 
-            console.log(messageImg)
 
             dispatch(pushAnyChatList(addImgData));
 
@@ -251,7 +245,6 @@ const LiveChat = () => {
         client.current.subscribe('/sub/roomChat/user/init/'+roomCode,(chatMessage)=>{
             const messageInit = JSON.parse(chatMessage.body);
 
-            console.log(messageInit);
 
             // {userId: 1, nickName: '산하', badge: 'X', profileImage: 'https://howdobucket.s3.ap-northeast-2.amazonaws.com/DefaultProfile.png'}
 
@@ -266,7 +259,6 @@ const LiveChat = () => {
         client.current.subscribe('/sub/roomChat/user/kick/'+roomCode,(chatMessage)=>{
             const messageKick = JSON.parse(chatMessage.body);
 
-            console.log(messageKick);
 
             // userId : 1,
             // nickName : "하하하"
@@ -288,7 +280,6 @@ const LiveChat = () => {
         client.current.subscribe('/sub/roomChat/user/out/'+roomCode,(chatMessage)=>{
             const messageOut = JSON.parse(chatMessage.body);
 
-            console.log(messageOut);
 
             // {
             //     userId : 1,
@@ -299,7 +290,6 @@ const LiveChat = () => {
 
             //방이 폭파된 경우
             if(messageOut.command==="master"){
-                // console.log(`라이브 종료`);
                 dispatch(changeLiveEndAlert(true)); //모든 유저에게 리스트 페이지로 가면 alert를 주세요.
                 disconnect();
             }
@@ -335,7 +325,6 @@ const LiveChat = () => {
         event.preventDefault();//버튼 눌렀을 때 새로고침 방지
         
         if(chat.trim()!==""){//빈문자열 입력 방지
-            // console.log("현재 3-1 sendMessage이다.");
             publish(chat);
             setChat('');
         }
@@ -350,7 +339,6 @@ const LiveChat = () => {
             publishImg(state.pickList);
         }
         else if(imgSrc!==null){
-            console.log("이미지 사전 셋팅");
             publishImg(state.pickList);//이 때는 이미지 주소를 보낼 것임
         }
     }
@@ -361,17 +349,16 @@ const LiveChat = () => {
     function publishInit(){
 
         if(!client.current.connected){
-            console.log("현재 publishInit 연결되지 않았따!");
             return;
         }
-        console.log("현재 publishInit 연결되었다!");
+
         // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
         client.current.publish({
             destination: '/pub/roomChat/user/init/'+roomCode,
             body: {},
             headers
         });
-        console.log("현재 publishInit publish가 지났따.");
+
     }
 
     //4. 채팅방에 kick 메세지를 보낸다.
@@ -380,10 +367,10 @@ const LiveChat = () => {
         //userId, roomId
 
         if(!client.current.connected){
-            console.log("현재 publishKick 연결되지 않았따!");
+        
             return;
         }
-        console.log("현재 publishKick 연결되었다!");
+     
         // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
         client.current.publish({
             destination: '/pub/roomChat/user/kick/'+roomCode,
@@ -393,7 +380,7 @@ const LiveChat = () => {
             }),
             headers
         });
-        console.log("현재 publishKick publish가 지났따.");
+   
     }
 
 
@@ -403,10 +390,10 @@ const LiveChat = () => {
         //redux -> liveEndRoomNo
 
         if(!client.current.connected){
-            console.log("현재 publishOut 연결되지 않았따!");
+          
             return;
         }
-        console.log("현재 publishOut 연결되었다!");
+    
         // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
         client.current.publish({
             destination: '/pub/roomChat/user/out/'+roomCode,
@@ -415,7 +402,7 @@ const LiveChat = () => {
             }),
             headers
         });
-        console.log("현재 publishOut가 지났따.");
+      
     }
 
 
@@ -425,10 +412,10 @@ const LiveChat = () => {
         //redux -> liveEndRoomNo
 
         if(!client.current.connected){
-            console.log("현재 publishOut2 연결되지 않았따!");
+          
             return;
         }
-        console.log("현재 publishOut2 연결되었다!");
+       
         // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
         client.current.publish({
             destination: '/pub/roomChat/user/out/'+roomCode,
@@ -437,7 +424,7 @@ const LiveChat = () => {
             }),
             headers
         });
-        console.log("현재 publishOut2가 지났따.");
+       
     }
 
 
@@ -445,10 +432,10 @@ const LiveChat = () => {
     function publish(chat:string){
 
         if(!client.current.connected){
-            console.log("현재 4 연결되지 않았따!");
+          
             return;
         }
-        console.log("현재 4 연결되었다!");
+        
         // 일단 나는 유저 1로 고정됨 추후 유동적으로 바꿔야함
         client.current.publish({
             destination: '/pub/roomChat/'+roomCode,
@@ -459,8 +446,7 @@ const LiveChat = () => {
             }),
             headers
         });
-        console.log("현재 4 publish가 지났따.");
-        console.log(`token ${token}`);
+        
 
         setChat('');
     }
@@ -468,7 +454,6 @@ const LiveChat = () => {
     //4. 채팅방에 이미지를 보낸다. (서버전송)
     function publishImg(chatImg:ImgSendSplit){
         if(!client.current.connected){
-            console.log("연결이 안되서 실패한 거 같은데");
 
             return;
         }
@@ -483,7 +468,6 @@ const LiveChat = () => {
             headers
         });
 
-        // dispatch(sendPickListChat(false));//다시 사진 보낼 수 있게 수정
     }
 
     //5. 채팅 종료
@@ -491,17 +475,12 @@ const LiveChat = () => {
         client.current.disconnect();
     };
 
-    //화면 들어올 시 init 요청을 보낸다.
-    // useEffect(()=>{
-        
-    // },[])
 
     // 화면 들어올 시 초기화 단 1회
     useEffect(() => {
-        // sendImgMessage(`publishInit`);
+
         connect();
 
-        // publishInit();
 
 
         return () => {
@@ -521,7 +500,6 @@ const LiveChat = () => {
     useEffect(()=>{
 
         if(state.kickUser!==null){
-            console.log(`state.kickUser: ${state.kickUser}`);
             publishKick();
         }
 
@@ -533,7 +511,6 @@ const LiveChat = () => {
     useEffect(()=>{
 
         if(state.liveEndRoomNo!==null){
-            console.log(`state.liveEndRoomNo: ${state.liveEndRoomNo}`);
             publishOut();
         }
 
@@ -542,13 +519,10 @@ const LiveChat = () => {
 
     //방장이 아닌 유저가 라이브를 나갔을 때 -> redux exitLiveByUser=true
     //roomId를 보내면 됨, 토큰이 유저를 구분함
-    console.log(state.exitRoomNo);
     useEffect(()=>{
 
         if(state.exitRoomNo!==null){
-            console.log(`state.liveEndRoomNo: ${state.exitRoomNo}`);
             publishOutUser();
-            console.log(`들어왓다!!!`);
         }
 
     },[state.exitRoomNo])
@@ -556,7 +530,7 @@ const LiveChat = () => {
 
     // changeColor
     function changeColor(badge){
-        console.log(badge);
+
         if(badge==="X"){
             return `${liveChatStyle.X}`;;
         }
@@ -596,7 +570,7 @@ const LiveChat = () => {
             <div className={`${liveChatStyle.chatArea} ${liveChatStyle.totalChat}`} ref={scrollRef}>
                 {   
                     state.anyChatList?.map((one, index)=>{
-                        console.log(one);
+             
                         return(
                             <div>
                                 <div key={index} className={`${liveChatStyle.mainChatArea}`}>
