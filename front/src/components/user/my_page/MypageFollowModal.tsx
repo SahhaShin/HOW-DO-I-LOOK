@@ -24,7 +24,9 @@ const MypageFollowModal = () => {
         id: 0,
         targetId: 0,
         nickname: "",
-        profileImg: ""
+        profileImg: "",
+        gender: "",
+        showBadgeType : ""
       });
     
       const changeFollowingData = (one) => {
@@ -32,7 +34,9 @@ const MypageFollowModal = () => {
           id: loginUser.id,
           targetId: one.id,
           nickname: one.nickname,
-          profileImg: one.profileImg
+          profileImg: one.profileImg,
+          gender: "",
+          showBadgeType : ""
         });
       };
     
@@ -40,7 +44,9 @@ const MypageFollowModal = () => {
         id: 0,
         targetId: 0,
         nickname: "",
-        profileImg: ""
+        profileImg: "",
+        gender: "",
+        showBadgeType : ""
       });
     
       const changeDeleteFollowingData = (one) => {
@@ -48,7 +54,9 @@ const MypageFollowModal = () => {
           id: loginUser.id,
           targetId: one.id,
           nickname: one.nickname,
-          profileImg: one.profileImg
+          profileImg: one.profileImg,
+          gender: one.gender,
+          showBadgeType : one.showBadgeType
         });
       };
     
@@ -56,7 +64,9 @@ const MypageFollowModal = () => {
         id: 0,
         targetId: 0,
         nickname: "",
-        profileImg: ""
+        profileImg: "",
+        gender: "",
+        showBadgeType : ""
       });
     
       const changeDeleteBlackListData = (one) => {
@@ -64,7 +74,9 @@ const MypageFollowModal = () => {
           id: loginUser.id,
           targetId: one.targetUserId,
           nickname: one.nickname,
-          profileImg: one.profileImg
+          profileImg: one.profileImg,
+          gender: one.gender,
+          showBadgeType : one.showBadgeType
         });
       };
 

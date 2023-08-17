@@ -6,18 +6,19 @@
     /* 위치 */
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 
 /* 채팅 */
 .chatHeader{
     /* 크기 */
-    width: 100%;
-    height: 50px;
-    background-color: var(--signiture);
+    width: 97%;
+    height: 40px;
+    background-color: var(--pinkes);
 
     /* 폰트 */
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 900;
     color: white;
 
@@ -25,13 +26,35 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-left: 10px;
 
-
+    
 }
 
 .chatArea{
     /* 높이 */
-    height: 530px;
+    width: 97%;
+    height: 645px;
+    overflow: auto;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.mainChatArea{
+    /* background-color: salmon; */
+    display: flex;
+    width: 100%;
+}
+
+.mainChatArea>div:nth-child(1){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainChatArea>div:nth-child(2){
+    text-align: left;
+    width: 100%;
 }
 
 .chatContent{
@@ -41,11 +64,11 @@
     /* height: 50px; */
 }
 
-.chatContent>input{
+.chatContent>.sendArea>input{
     /* 크기 */
-    width: 350px;
+    width: 403px;
     height: 50px;
-    padding-left: 3%;
+    padding-left: 10px;
 
     /* border */
     border: none;
@@ -53,17 +76,111 @@
     border: 1px solid var(--border);
 }
 
-.chatContent>button{
+.chatContent>form>button{
     /* 크기 */
     width: 50px;
     height: 50px;
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
-.chatArea > div:nth-child(1){
-    /* 본문 */
-    height: 480px;
+.content{
+    margin-left: 5px;
 }
+
+.chatArea > div{
+    /* 본문 */
+    /* height: 50px; */
+    margin-bottom: 30px;
+}
+
+/* 채팅에 들어간 이미지 */
+.sendImgWrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin-top: 5px;
+    text-align: left;
+}
+.sendImgCLOTHES{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 5px;
+}
+.sendImgCLOTHES>img{
+    width: 100px;
+    height: 100%;
+}
+
+.sendImgFEED{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 5px;
+}
+.sendImgFEED>img{
+    width: 200px;
+    height: 100%;
+}
+
+
+/* 채팅 뱃지에 따른 색깔 */
+.lovelyBadge{
+    width: 100px;
+    border-radius: 1rem;
+    background-color: var(--lovelyBtn);
+    color: white;
+    /* color:var(--lovelyBtn) */
+}
+.naturalBadge{
+    width: 100px;
+    border-radius: 1rem;
+    background-color: var(--naturalBtn);
+    color: white;
+    /* color:var(--naturalBtn) */
+}
+.modernBadge{
+    width: 100px;
+    border-radius: 1rem;
+    background-color: var(--modernBtn);
+    color: white;
+    /* color:var(--modernBtn) */
+}
+.sexyBadge{
+    width: 100px;
+    border-radius: 1rem;
+    background-color: var(--sexyBtn);
+    color: white;
+    /* color:var(--sexyBtn); */
+}
+.X{
+    width: 100px;
+    border-radius: 1rem;
+    background-color: grey;
+    color: white;
+}
+
+
+/* 스크롤 */
+.chatArea::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .chatArea::-webkit-scrollbar-thumb {
+    background-color: var(--pinkes);
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  
+  .chatArea::-webkit-scrollbar-track {
+    background-color: lightgrey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }

@@ -2,6 +2,10 @@
     /* 크기 */
     width: 100%;
     height: 100%;
+    /* background-color: var(--greyLight-2); */
+    /* background-color: var(--border); */
+    /* background-color: var(--blue); */
+    /* background-image: url("../../../../public/img/common/total_bg.jpg"); */
 }
 
 /* 헤더 */
@@ -72,7 +76,7 @@
     height: 50px;
     border-radius: 5%;
     border: 1px solid var(--border);
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -104,7 +108,7 @@
     font-family: 'Pretendard-Regular';
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -126,12 +130,13 @@
 
     /* 위치 */
     margin-left: 3%;
+    
 }
 
 .sortBtn button:hover{
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -198,8 +203,8 @@
 /* 신고 모달 */
 .declarationModal{
     position: fixed;
-    margin-top: 5%;
-    margin-left: 32%;
+    margin-top: 250px;
+    margin-left: 35%;
     z-index: 10;
 }
 

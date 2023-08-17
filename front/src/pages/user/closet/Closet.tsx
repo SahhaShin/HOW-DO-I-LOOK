@@ -6,61 +6,91 @@ import closetStyle from "./Closet.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action, changeModalOpen,changeMode} from "../../../store/ClosetSlice";
+import {changeMenuItemNum} from "../../../store/UtilSlice";
+import {action_mypage} from "../../../store/MypageSlice";
+
+//param
+import { useParams } from "react-router-dom";
 
 //컴포넌트
 import OOTDWeather from "../../../components/user/closet/OOTDWeather";
 import OOTDCoordi from "../../../components/user/closet/OOTDCoordi";
 import CLOSETMenu from "../../../components/user/closet/CLOSETMenu";
 import CLOSETSlot from "../../../components/user/closet/CLOSETSlot";
-import Pagination from "../../../components/util/Pagination";
+import Pagination from "../../../components/user/closet/ClosetPagination";
 import CLOSETRegist from "../../../components/user/closet/CLOSETRegist";
 import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
+
+import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 
 
 const Closet = () => {
 
     //redux 관리
     let state = useSelector((state:any)=>state.closet);
+    let state_mypage = useSelector((state:any)=>state.mypage)
     let dispatch = useDispatch();
+    dispatch(changeMenuItemNum(4))
 
     //로그인 유저 정보
-    const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
+    const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        dispatch(action_mypage.getBlackList(Number(id)));
+    }, [])
+
+    useEffect(() => {
+        dispatch(action_mypage.getUserById(Number(id)));
+      }, [])
+
 
     // 페이지네이션, 옷 관리
     let clothesListLen = state.clothesTop?.length;
     const [limit, setLimit] = useState(10);
-    const [page, setPage] = useState(state.page);
+    const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
 
-    if(state.clothesTypeKo==="상의"){
-        clothesListLen = state.clothesTop?.length;
-    }else if(state.clothesTypeKo==="하의"){
-        clothesListLen = state.clothesBottom?.length;
-    }else if(state.clothesTypeKo==="신발"){
-        clothesListLen = state.clothesShoe?.length;
-    }else if(state.clothesTypeKo==="악세서리"){
-        clothesListLen = state.clothesAccessory?.length;
-    }else if(state.clothesTypeKo==="전체"){
-        clothesListLen = state.clothesAll?.length;
-    }
+    useEffect(()=>{   
+        if(state.clothesTypeKo==="상의"){
+            clothesListLen = state.clothesTop?.length;
+            setPage(clothesListLen);
+        }else if(state.clothesTypeKo==="하의"){
+            clothesListLen = state.clothesBottom?.length;
+            setPage(clothesListLen);
+        }else if(state.clothesTypeKo==="신발"){
+            clothesListLen = state.clothesShoe?.length;
+            setPage(clothesListLen);
+        }else if(state.clothesTypeKo==="악세서리"){
+            clothesListLen = state.clothesAccessory?.length;
+            setPage(clothesListLen);
+        }else if(state.clothesTypeKo==="전체"){
+            clothesListLen = state.clothesAll?.length;
+            setPage(clothesListLen);
+        }
+    },[])
 
     //상의 하의 신발 악세서리 전체에 따른 옷 요청을 위한 변수들
     let selectType = {
         clothesType: state.clothesTypeEn,
-        pageNum : 0,
-        userId:loginUser.id,
+        pageNum : page,
+        userId:id,
     }
 
+
+    
 
     //초기 화면 OOTD를 위해 모든 분류의 옷 불러야함 (새로고침 시 재렌더링 될 때만)
     useEffect(()=>{
         
         dispatch(action.getClothesListByType({
             clothesType: "TOP",
-            userId:loginUser.id,
-            pageNum : 0,
+            userId:id,
+            pageNum : page,
         }));
         
 
@@ -68,33 +98,35 @@ const Closet = () => {
        
         dispatch(action.getClothesListByType({
             clothesType: "BOTTOM",
-            userId:loginUser.id,
-            pageNum : 0,
+            userId:id,
+            pageNum : page,
         }));
         
 
         
         dispatch(action.getClothesListByType({
             clothesType: "SHOE",
-            userId:loginUser.id,
-            pageNum : 0,
+            userId:id,
+            pageNum : page,
         }));
         
 
  
         dispatch(action.getClothesListByType({
             clothesType: "ACCESSORY",
-            userId:loginUser.id,
-            pageNum : 0,
+            userId:id,
+            pageNum : page,
         }));
         
 
        
         dispatch(action.getClothesListByType({
             clothesType: "ALL",
-            userId:loginUser.id,
-            pageNum : 0,
+            userId:id,
+            pageNum : page,
         }));
+
+        dispatch(action.OOTDList(id));
     
     },[state.clothRegistOk])
 
@@ -104,8 +136,8 @@ const Closet = () => {
         if(state.clothesTypeKo==="상의"){
             dispatch(action.getClothesListByType({
                 clothesType: "TOP",
-                pageNum : 0,
-                userId:loginUser.id,
+                pageNum : state.page,
+                userId:id,
             }));
         }
 
@@ -113,37 +145,67 @@ const Closet = () => {
         else if(state.clothesTypeKo==="하의"){
             dispatch(action.getClothesListByType({
                 clothesType: "BOTTOM",
-                pageNum : 0,
-                userId:loginUser.id,
+                pageNum : state.page,
+                userId:id,
             }));
         }
 
         else if(state.clothesTypeKo==="신발"){
             dispatch(action.getClothesListByType({
                 clothesType: "SHOE",
-                pageNum : 0,
-                userId:loginUser.id,
+                pageNum : state.page,
+                userId:id,
             }));
         }
 
         else if(state.clothesTypeKo==="악세서리"){
             dispatch(action.getClothesListByType({
                 clothesType: "ACCESSORY",
-                pageNum : 0,
-                userId:loginUser.id,
+                pageNum : state.page,
+                userId:id,
             }));
         }
 
         else if(state.clothesTypeKo==="전체"){
             dispatch(action.getClothesListByType({
                 clothesType: "ALL",
-                pageNum : 0,
-                userId:loginUser.id,
+                pageNum : state.page,
+                userId:id,
             }));
         }
-    },[state.clothesTypeEn])
 
-    
+        setPage(state.page)
+    },[state.clothesTypeEn, state.page])
+
+
+    if(state_mypage.targetUser.id === 0 || state_mypage.blackListUsers == null) {
+        return(<div>Loading..</div>);
+      }
+
+      if(loginUser.id !== Number(id) && state_mypage.targetUser.closetAccess === "PRIVATE") {
+        Swal.fire({
+            icon: 'info',
+            title: '비공개된 옷장입니다!',
+            text: '주인이 공개를 원하지 않습니다:)',
+            confirmButtonColor: '#EAA595',
+          })
+        navigate("/");
+      }
+
+      if(state_mypage.blackListUsers != null && loginUser.id !== Number(id)) {
+        for(let i=0; i<state_mypage.blackListUsers.length; i++) {
+            if(state_mypage.blackListUsers[i].targetUserId === loginUser.id) {
+                Swal.fire({
+                    icon: 'info',
+                    title: '비공개된 옷장입니다!',
+                    text: '해당 유저가 블랙 했습니다!',
+                    confirmButtonColor: '#EAA595',
+                })
+
+                navigate("/");
+            }
+          }
+      }
   
     return(
         <>
@@ -171,12 +233,21 @@ const Closet = () => {
                         <CLOSETMenu/>
 
                         {/* 추가 버튼 */}
-                        <div className={`${closetStyle.addBtnContainer}`}><button className={`${closetStyle.addBtn}`} onClick={()=>{dispatch(changeMode(1)); dispatch(changeModalOpen(true))}}>추가</button></div>
-
+                        
+                        <div 
+                            className={`${closetStyle.addBtnContainer}`}  
+                            style={(state_mypage.blackListUsers != null && loginUser.id !== Number(id))?{visibility:"hidden"}:null}>
+                            <button 
+                                className={`${closetStyle.addBtn}`} 
+                                onClick={()=>{dispatch(changeMode(1)); dispatch(changeModalOpen(true))}}>추가
+                            </button>
+                        </div>
+ 
                         {/* 옷장 */}
                         <div className={`${closetStyle.closetList}`}>
                             {
-                                state.clothesTypeKo==="상의" && state.clothesTop && state.clothesTop?.length!==0?state.clothesTop?.map((one, idx)=>
+                                state.clothesTypeKo==="상의" && state.clothesTop && state.clothesTop?.length!==0?
+                                state.clothesTop?.map((one, idx)=>
                                     <CLOSETSlot key={idx} one={one}/>
                                 ):
                                 (state.clothesTypeKo==="하의" && state.clothesBottom && state.clothesBottom?.length!==0?state.clothesBottom?.map((one, idx)=>
@@ -195,8 +266,8 @@ const Closet = () => {
                         {/* 페이지네이션 20을 {clothes.length}로 바꿔야 함 */}
                         <div className={`${closetStyle.paginationContainer}`}>
                             {clothesListLen!==0?<Pagination
-                                total={clothesListLen}
-                                limit={limit}
+                                totalPage={state.totalPage}
+                                // limit={8}
                                 page={page}
                                 setPage={setPage}
                             />:null}

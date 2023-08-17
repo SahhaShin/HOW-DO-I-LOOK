@@ -5,7 +5,8 @@ import mypageFeedStyle from "./MypageFeed.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action_mypage,changeFollowModalOpen, changeFollowMode, changeMypageMode} from "../../../store/MypageSlice";
+import {action_mypage} from "../../../store/MypageSlice";
+import {action_feed, changeDetailModalOpen} from "../../../store/FeedSlice";
 
 //컴포넌트
 import MypageFeedMenu from "./MypageFeedMenu";
@@ -17,6 +18,7 @@ const MypageFeed = () => {
 
     //redux 관리
     let state = useSelector((state:any)=>state.mypage);
+    let state_feed = useSelector((state:any)=>state.mypage);
     let dispatch = useDispatch();
 
     // 페이지네이션, 옷 관리
@@ -25,14 +27,13 @@ const MypageFeed = () => {
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
 
-    //피드 리스트
-    let [feedList, setFeedList] = useState<number[]|null>([1,2,3,4,5,6]); 
 
     //로그인 유저
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
     useEffect(()=>{
         dispatch(action_mypage.getFeedList(loginUser.id));
+        dispatch(action_mypage.getLikeFeedList(loginUser.id));
     },[])
 
     return(
@@ -45,10 +46,22 @@ const MypageFeed = () => {
                 <MypageFeedMenu/>
             </div>:null}
 
+
+
+            {/* 피드 리스트 - 내가 올린거/내반응 */}
             {/* 피드 리스트 */}
             <div className={`${mypageFeedStyle.feeds}`}>
                 {
+                    state.feedReadMode===0?
                     state.feedList?.content.map((oneFeed)=>{
+                        return(
+                            <div>
+                                <MyFeedSlot feedInfo={oneFeed}/>
+                            </div>
+
+                        );
+                    }):
+                    state.likeFeedList?.content&&state.likeFeedList?.content.map((oneFeed)=>{
                         return(
                             <div>
                                 <MyFeedSlot feedInfo={oneFeed}/>
@@ -59,15 +72,16 @@ const MypageFeed = () => {
                 }
             </div>
 
+
             {/* 페이지네이션 */}
-            <div className={`${mypageFeedStyle.pagenation}`}>
+            {/* <div className={`${mypageFeedStyle.pagenation}`}>
                 <Pagination
                     total={20}
                     limit={limit}
                     page={page}
                     setPage={setPage}
                 />
-            </div>
+            </div> */}
         </div>
     );
 }

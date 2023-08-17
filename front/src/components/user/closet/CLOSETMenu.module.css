@@ -33,7 +33,7 @@
     width: 20%;
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
 
     /* 동적요소 */
     transition: left 0.3s ease;
@@ -72,7 +72,7 @@
     font-size: 15px;
 
     /* 위치 */
-    padding: 13%;
+    padding: 20%;
 }
     
   

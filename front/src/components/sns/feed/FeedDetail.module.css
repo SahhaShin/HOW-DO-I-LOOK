@@ -130,8 +130,8 @@
     border-radius: 10px;
     margin-right: 10px;
     margin-bottom: 5px;
-    font-size: 15px;
-    background-color: var(--signiture);
+    font-size: 12px;
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -142,7 +142,8 @@
 }
 
 .alarmBtn > img{
-    width: 80%;
+    width: 70%;
+    height: 100%;
     cursor: pointer;
 }
 
@@ -181,14 +182,14 @@
     padding-left: 2%;
 }
 .hashtag button {
-    width: 50px;
+    width: 60px;
     height: 25px;
     border-radius: 10px;
     border-color: black;
     margin-right: 1%;
     font-size: 12px;
 
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -232,7 +233,7 @@
 }
 
 .feedBtns button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -249,6 +250,8 @@
     justify-content:space-between;
     padding: 1%;
     align-items: center;
+    margin-top: 20px;
+    margin-bottom: 9px;
 }
 
 .rightHeader p{
@@ -389,11 +392,11 @@
 
 .btnAndDate{
     /* 크기 */
-    width: 100px;
+    width: 100%;
 
     /* 위치 */
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-self: flex-end;
     align-items: center;
 
@@ -410,7 +413,9 @@
     text-align: center;
     align-self: center;
     height: 20px;
+    width: 200px;
     margin-top: 5px;
+    margin-left: 10px;
 }
 
 .rightBtns{
@@ -419,6 +424,7 @@
     justify-content: center;
     width: 80px;
     height: 20px;
+    margin-left: 300px;
 }
 .rightBtns button{
     
@@ -427,9 +433,10 @@
     background-color: var(--border);
     width: 50px;
     height: 20px;
+    border-radius: 1rem;
 }
 .rightBtns button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -505,7 +512,7 @@
     height: 53px;
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -528,7 +535,7 @@
 }
 
 .reply button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -625,7 +632,7 @@
 }
 
 .repleBtns button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -644,6 +651,7 @@
     /* 기타 확인 버튼에 원하는 스타일을 추가하세요. */
     width: 100px;
     height: 50px;
+    background-color: var(--pinkes);
   }
   
   .cancelButton {
@@ -651,4 +659,25 @@
     /* 기타 취소 버튼에 원하는 스타일을 추가하세요. */
     width: 100px;
     height: 50px;
+    background-color: var(--pinkes);
+  }
+
+
+
+/* 스크롤 */
+.oneComment::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .oneComment::-webkit-scrollbar-thumb {
+    background-color: var(--pinkes);
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  
+  .oneComment::-webkit-scrollbar-track {
+    background-color: lightgrey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
   }

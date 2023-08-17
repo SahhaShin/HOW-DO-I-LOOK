@@ -4,6 +4,8 @@ import rankingStyle from "./Ranking.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action_ranking, changeRankMode} from "../../../store/RankingSlice";
+import {changeMenuItemNum} from "../../../store/UtilSlice";
+
 
 
 // 컴포넌트
@@ -23,6 +25,7 @@ const Ranking = () => {
     //redux 관리
     let state = useSelector((state: any) => state.rank);
     let dispatch = useDispatch();
+    dispatch(changeMenuItemNum(3))
 
 
 
@@ -33,18 +36,6 @@ const Ranking = () => {
         dispatch(action_ranking.getRankingList("MODERN"))
     }, [])
 
-    // 로딩 컴포넌트 필요함
-    // if (state.rankingList.length === 0) {
-    //     return <div>Loading...</div>;
-    // }
-
-    // useMemo(() => {
-    //     return dispatch(action_ranking.getRankingList("LOVELY"))
-    // }, [state.rankingList])
-
-    console.log(state.rankingList)
-    console.log(state.rankingList[0])
-    console.log(state.rankingList[0]?.nickname)
     //select 값 유지
     const [likeSelect, setLikeSelect] = useState<string>("lovely");
 
@@ -108,10 +99,6 @@ const Ranking = () => {
                     <div>{year}/{month}/{day} {hours}:{minutes}:{seconds}</div> 
                 </div>
 
-                {/* 내 순위 */}
-                <div>
-                    <div><MyRank></MyRank></div>
-                </div>
 
                     {state.rankMode==="lovely"?<RankingLovely/>:(
                         state.rankMode==="natural"?<RankingNatural/>:(
@@ -120,16 +107,6 @@ const Ranking = () => {
                             )
                         )
                     )}
-                   
-                    {/* 페이지네이션   20을 {clothes.length}로 바꿔야 함 */}
-                    {/* <div className={`${rankingStyle.paginationContainer}`}>
-                        <Pagination
-                            total={20}
-                            limit={limit}
-                            page={page}
-                            setPage={setPage}
-                        />
-                    </div> */}
                 </div>
             </div>
 

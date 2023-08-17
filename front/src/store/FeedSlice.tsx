@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import {CheckToken} from "../hook/UserApi"
 
 // axios
-export const action = {
+export const action_feed = {
 
     // 새로운 피드 등록
     addFeed : createAsyncThunk("FeedSlice/addFeed", async(newFeed, thunkAPI)=>{
@@ -23,7 +23,7 @@ export const action = {
             icon: 'success',
             title: '등록 완료',
             text: '피드가 성공적으로 등록되었습니다.',
-            confirmButtonColor: '#4570F5',
+            confirmButtonColor: '#EAA595',
         })
 
         // return res.data;
@@ -33,17 +33,32 @@ export const action = {
 
 
     //피드 전체 리스트 가져오기 O
-    getFeedTotalList : createAsyncThunk("FeedSlice/getFeedList", async({size, page}, thunkAPI)=>{
+    getFeedTotalList : createAsyncThunk("FeedSlice/getFeedTotalList", async(user_id, thunkAPI)=>{
         try{
             const token = await CheckToken();
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed?size=${size}&page=${page}`,{
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/blacklist/${user_id}`,{
                 headers:{"Authorization":token}
             });
 
-            console.log(response.data);
+        
             return response.data;
         } catch(e){
             console.log(e);
+            throw e;
+        }
+    }),
+
+    // 내가 팔로우한 유저 피드 전체 리스트 가져오기
+    getFollowingFeedTotalList : createAsyncThunk("FeedSlice/getFollowingFeedTotalList", async(user_id, thunkAPI) => {
+        try {
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/follow/blacklist/${user_id}`, {
+                headers:{"Authorization" : token}
+            });
+
+            return response.data;
+        } catch(e) {
             throw e;
         }
     }),
@@ -83,7 +98,7 @@ export const action = {
 
     //내가 피드를 눌렀을 때 내가 누른 좋아요 상황을 가져온다. X
     getFeedLikeOnMe : createAsyncThunk("FeedSlice/getFeedLikeOnMe", async({userId, feedId}, thunkAPI)=>{
-        console.log(`${userId} ${feedId}`);
+ 
         try{
             const token = await CheckToken();
             // http://localhost:8081/api/feedlike?userId=1&feedId=3
@@ -92,7 +107,7 @@ export const action = {
                 headers:{"Authorization":token}
             });
 
-            console.log(`내가 조아한다고!! ${response.data}`);
+         
             return response.data;
         } catch(e){
             console.log(e);
@@ -103,7 +118,7 @@ export const action = {
 
     // 피드 좋아요 등록 post O
     feedLike : createAsyncThunk("FeedSlice/feedLike", async({feedId, userId, type}:registLike, thunkAPI)=>{
-        console.log(`post ${feedId} ${userId} ${type}`);
+
         const token = await CheckToken();
         await axios.post(`${process.env.REACT_APP_SERVER}/api/feedlike`, {feedId, userId, type}, {
         headers: {
@@ -118,7 +133,7 @@ export const action = {
 
     // 피드 좋아요 취소 delete O
     deleteLike : createAsyncThunk("FeedSlice/feedNoLike", async({feedId, userId, type}:registLike, thunkAPI)=>{
-       console.log(`delete ${feedId} ${userId} ${type}`);
+    
         try{
             const token = await CheckToken();
             const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feedlike`,{
@@ -136,13 +151,15 @@ export const action = {
 
     //댓글 읽어들이기 O
     getComment : createAsyncThunk("FeedSlice/getComment", async(feedId, thunkAPI)=>{
-        console.log(`${feedId}`);
+
         try{
             const token = await CheckToken();
 
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/comment/${feedId}?size=20&page=0`,{
                 headers:{"Authorization":token}
             });
+
+
 
             return response.data;
         } catch(e){
@@ -153,7 +170,7 @@ export const action = {
 
     //댓글 수정 X
     updateComment : createAsyncThunk("FeedSlice/updateComment", async({commentId, comment}, thunkAPI)=>{
-        console.log(`${commentId}`);
+
         try{
             const token = await CheckToken();
 
@@ -207,9 +224,9 @@ export const action = {
     searchHash : createAsyncThunk("FeedSlice/searchHash", async({hashtag, size, page}:search, thunkAPI)=>{
         try{
             const token = await CheckToken();
-            console.log(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}&size=${size}&page=${page}`);
+         
 
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}&size=${size}&page=${page}`,{
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}`,{
                 headers:{"Authorization":token}
             });
 
@@ -219,6 +236,73 @@ export const action = {
             throw e;
         }
     }),
+
+    // (마이페이지용) 피드 해시태그 검색 시 이미지 리스트만 나오게 하기
+    hashSearchImgList : createAsyncThunk("FeedSlice/hashSearchImgList", async({hashtag, size, page}:search, thunkAPI)=>{
+        try{
+            const token = await CheckToken();
+
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedphoto/hashtag?${hashtag}`,{
+                headers:{"Authorization":token}
+            });
+
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
+    // (마이페이지용) 피드 해시태그 검색 전 전체 리스트 나오게 하기
+    hashSearchTotalList : createAsyncThunk("FeedSlice/hashSearchTotalList", async()=>{
+        try{
+            const token = await CheckToken();
+
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedphoto`,{
+                headers:{"Authorization":token}
+            });
+
+            return response.data;
+        } catch(e){
+            console.log(e);
+            throw e;
+        }
+    }),
+
+    followCheck : createAsyncThunk("FeedSlice/followCheck", async({user_id, target_user_id}) => {
+        try {
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/follow/check/following/${user_id}/${target_user_id}`, {
+                headers: {
+                    "Authorization" : token
+                }
+            });
+
+            return response.data;
+        } catch(e) {
+            throw e;
+        }
+    }),
+
+    getFeedLikeCount : createAsyncThunk("FeedSlice/getFeedLikeCount", async(feed_id) => {
+        try {
+            const token = await CheckToken();
+
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feedlike/likecount/${feed_id}`, {
+                headers: {
+                    "Authorization" : token
+                }
+            });
+
+            return response.data;
+        }
+        catch(e) {
+            throw e;
+        }
+    })
 
 }
 
@@ -297,61 +381,46 @@ interface specificFeed{
         }
 }
 interface totalFeed{
-    content: [
-        {
-            userId: number,
-            feedId: number,
-            feedContent: string,
-            feedCreatedDate: string,
-            feedUpdateDate: string,
-            photoResponseDtoList: [
-                {
-                    id: number,
-                    link: string,
-                    hashtagList: string[]
-                },
 
-            ],
-            feedLikeCountResponseDto: {
-                natural: number,
-                modern: number,
-                lovely: number,
-                sexy: number
-            }
-        }
-    ],
-    pageable: {
-        sort: {
-            empty: boolean,
-            unsorted : boolean,
-            sorted: boolean
+    userId: number,
+    userNickname: string | null,
+    userProfileImg: string | null,
+    userGender: string | null,
+    followingCheck : boolean | null,
+    feedId: number,
+    feedContent: string,
+    commentCount: number | null,
+    feedCreatedDate: string,
+    feedUpdateDate: string,
+    photoResponseDtoList: [
+        {
+            id: number,
+            link: string,
+            hashtagList: string[]
         },
-        offset: number,
-        pageSize: number,
-        pageNumber: number,
-        paged: boolean,
-        unpaged: boolean
-    },
-    last: boolean,
-    totalElements: number,
-    totalPages: number,
-    size: number,
-    number: number,
-    sort: {
-        empty: boolean,
-        unsorted: boolean,
-        sorted: boolean
-    },
-    first: boolean,
-    numberOfElements: number,
-    empty: boolean
+
+    ],
+    feedLikeCountResponseDto: {
+        natural: number,
+        modern: number,
+        lovely: number,
+        sexy: number
+    }
 }
 interface comment{
     "commentId": number,
     "userId": number,
     "feedId": number,
     "parentCommentId": number|null, //대댓글일 때만 작성
-    "content": string
+    "content": string,
+    "userProfileImg":string|null,
+}
+
+interface myPageFeedSearch{
+    id:number,
+    link:string,
+    hashtagList:string[],
+    pick:boolean|null,
 }
 
 
@@ -364,7 +433,8 @@ interface Feed{
     uploadHashtags:string[],
     uploadPictures:string[],
     declarationModalOpen:boolean,
-    feedTotalObj:totalFeed|null,
+    feedTotalObj:totalFeed[]|null,
+    feedFollowingCheck:boolean[]|null,
     detailFeedId : number,
     detailObj:specificFeed|null, //특정 피드 정보
     detailObjLikes:specificFeedLikes|null,
@@ -374,7 +444,15 @@ interface Feed{
     commentList: comment[],
     feedAddOk:boolean,
     likeOk:boolean,
-    addCommentOk:boolean
+    addCommentOk:boolean,
+    mypageFeedPic:myPageFeedSearch[],
+    feedMode:number,
+    feedLikeCount: {
+        LOVELY: number,
+        SEXY : number,
+        MODERN: number,
+        NATURAL : number
+    }
 }
 
 // 초기화
@@ -393,7 +471,8 @@ const initialState:Feed = {
     uploadHashtags:[],
     uploadPictures:[],
     declarationModalOpen:false,
-    feedTotalObj:null,
+    feedTotalObj:[],
+    feedFollowingCheck:[],
     detailFeedId:0,
     detailObj:null,
     detailObjLikes:null,
@@ -404,6 +483,14 @@ const initialState:Feed = {
     feedAddOk:false, //피드 등록 시 ok라는 신호를 보내는 용도
     likeOk:false,
     addCommentOk:false,
+    mypageFeedPic:[],
+    feedMode:1, // 1 : ALL, 2 : FOLLOWING, 3 : MY
+    feedLikeCount: {
+        LOVELY: 0,
+        SEXY: 0,
+        MODERN: 0,
+        NATURAL: 0
+    }
 }
 
 
@@ -411,9 +498,7 @@ const FeedSlice = createSlice({
     name:'FeedSlice',
     initialState,
     reducers:{
-        changeFollow(state, action){
-            state.isFollow = action.payload;
-        },
+        
         changeDetailModalOpen(state, action){
             state.detailModalOpen = action.payload;
         },
@@ -441,10 +526,10 @@ const FeedSlice = createSlice({
             state.detailFeedId=action.payload;
 
             //세부피드 오브젝트도 채워준다. -> 이미 피드창 들어올 때 리스트는 채워져있음
-            for(let i=0;i<state.feedTotalObj?.content.length;i++){
-                if(state.feedTotalObj?.content[i].feedId===action.payload){
-                    state.detailObj = state.feedTotalObj?.content[i];
-                    console.log(`여기야!! ${i}`);
+            for(let i=0;i<state.feedTotalObj?.length;i++){
+                if(state.feedTotalObj[i]?.feedId===action.payload){
+                    state.detailObj = state.feedTotalObj[i];
+
                     break;
                 }
             }
@@ -460,49 +545,80 @@ const FeedSlice = createSlice({
         },
         calTotalFeedLikes(state){
             state.totalDetailObjLikes = state.detailObj?.feedLikeCountResponseDto;
-            console.log(state.totalDetailObjLikes);
+        },
+
+        changePick_feed(state, action){
+            //action.payload에서 clothes id가 오는데
+            //id랑 맞는 것을 골라 pick true or false로 바꿔줌
+            for(let i=0;i<state.mypageFeedPic?.length;i++){
+                if(state.mypageFeedPic[i]?.id===action.payload){
+                    if(state.mypageFeedPic[i].pick===true)state.mypageFeedPic[i].pick=false;
+                    else state.mypageFeedPic[i].pick=true;
+                }
+            } 
+        },
+        changeFollowingCheckToTrue(state, action) {
+
+            state.feedFollowingCheck[action.payload] = true;
+
+        },
+        changeFollowingCheckToFalse(state, action) {
+     
+            state.feedFollowingCheck[action.payload] = false;
+    
+        },
+        changeFeedMode(state, action) {
+            state.feedMode = action.payload;
         }
     },
     extraReducers:(builder) => {
-        builder.addCase(action.addFeed.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.addFeed.fulfilled,(state,action)=>{
             state.createModalOpen=false;
             state.feedAddOk = true;
         })
 
-        builder.addCase(action.getFeedTotalList.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.getFeedTotalList.fulfilled,(state,action)=>{
             state.feedTotalObj = action.payload;
+
+
+
+            for(let i=0; i<state.feedTotalObj.length; i++) {
+                state.feedFollowingCheck?.push(action.payload[i].followingCheck);
+            }
         })
 
-        builder.addCase(action.deleteFeed.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.deleteFeed.fulfilled,(state,action)=>{
             Swal.fire({
                 icon: 'success',
                 title: '삭제 완료',
                 text: '피드가 삭제되었습니다.',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
 
-            console.log(action.payload);
+
 
             // 리스트에서 제거
-            for(let i=0;i<state.feedTotalObj?.content.length;i++){
-                if(state.feedTotalObj?.content[i].feedId==action.payload){
-                    state.feedTotalObj?.content.splice(i,1);
-                    console.log(i);
+            for(let i=0;i<state.feedTotalObj?.length;i++){
+                if(state.feedTotalObj[i]?.feedId == action.payload){
+                    state.feedTotalObj?.splice(i,1);
+                    state.feedFollowingCheck?.splice(i,1);
+              
                 }
             }
         })
 
-        builder.addCase(action.getComment.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.getComment.fulfilled,(state,action)=>{
             state.commentList=action.payload.content;
+
         })
 
-        builder.addCase(action.deleteComment.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.deleteComment.fulfilled,(state,action)=>{
 
             //리스트에서 해당 댓글 삭제
-            console.log(action.payload);
+
             for(let i=0;i<state.commentList.length;i++){
                 if(state.commentList[i].commentId == action.payload){
-                    console.log(i);
+             
                     state.commentList.splice(i,1);
                     break;
                 }
@@ -512,43 +628,62 @@ const FeedSlice = createSlice({
                 icon: 'success',
                 title: '삭제 완료',
                 text: '댓글이 삭제되었습니다.',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
         })
 
         //댓글달기
-        builder.addCase(action.addComment.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.addComment.fulfilled,(state,action)=>{
             //commentPK값 준다.
-            console.log(action.payload);
+  
             if(state.addCommentOk===true) state.addCommentOk=false;
             else state.addCommentOk=true;
         })
 
 
-        builder.addCase(action.getFeedLikeOnMe.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.getFeedLikeOnMe.fulfilled,(state,action)=>{
             state.detailObjLikes = action.payload; //내가 누른 좋아요 정보
-            console.log(`네기 젛이힌디거!! 2 ${action.payload.sexyType}`);
         })
 
-        builder.addCase(action.feedLike.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.feedLike.fulfilled,(state,action)=>{
             if(state.likeOk===true) state.likeOk = false;
             else state.likeOk = true;
         })
 
-        builder.addCase(action.deleteLike.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.deleteLike.fulfilled,(state,action)=>{
             if(state.likeOk===true) state.likeOk = false;
             else state.likeOk = true;
         })
 
         // 해시태그 검색 
-        builder.addCase(action.searchHash.fulfilled,(state,action)=>{
+        builder.addCase(action_feed.searchHash.fulfilled,(state,action)=>{
             state.feedTotalObj = action.payload;
-            console.log(state.feedTotalObj);
+ 
         })
 
-       
+        // 라이브 해시태그 검색 
+        builder.addCase(action_feed.hashSearchImgList.fulfilled,(state,action)=>{
+        
+            state.mypageFeedPic = action.payload.content;
+        })
+
+        // 라이브 전체 검색 
+        builder.addCase(action_feed.hashSearchTotalList.fulfilled,(state,action)=>{
+        
+            state.mypageFeedPic = action.payload.content;
+        })
+
+        builder.addCase(action_feed.followCheck.fulfilled, (state, action) => {
+
+            state.isFollow = action.payload;
+        })
+
+        builder.addCase(action_feed.getFeedLikeCount.fulfilled, (state, action) => {
+
+            state.feedLikeCount = action.payload;
+        })
     }
 });
 
-export let {calTotalFeedLikes, changeModifyModalOpen,changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen} = FeedSlice.actions;
+export let {changePick_feed, calTotalFeedLikes, changeModifyModalOpen,changeDetailFeedId,changeFollow, changeDetailModalOpen, changeSortType, changeCreateModalOpen, changeCreateType, changeDeclarationModalOpen, changeFollowingCheckToTrue, changeFollowingCheckToFalse, changeFeedMode} = FeedSlice.actions;
 export default FeedSlice.reducer;

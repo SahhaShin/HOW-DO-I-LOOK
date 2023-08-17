@@ -138,9 +138,21 @@
   margin-right: 30px;
 }
 
-.first > img,
-.notFirst > img,
+.profileImg{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .profileImg > img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.first > img,
+.notFirst > img{
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -291,7 +303,11 @@
 }
 
 .MyModernRank {
-  color: #29323c;
+  color: #8799aa;
+}
+.MyModernRank >div:nth-child(1){
+  background-color: lightgrey;
+  font-weight: 900;
 }
 
 .blackRank {
@@ -313,4 +329,79 @@
 
   /* 위치 */
   margin-top: 10%;
+}
+
+
+.subRankProfileImgF{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  border: 3px solid pink;
+}
+
+.subRankProfileImgM{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  border: 3px solid lightskyblue;
+}
+
+.subRankProfileImgF>img, .subRankProfileImgM>img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.firstRankProfileImgF{
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background-color: white;
+  border: 3px solid pink;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.firstRankProfileImgM{
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background-color: white;
+  border: 3px solid lightskyblue;
+  margin-left: 40px;
+  margin-right: 40px;
+  
+}
+
+.firstRankProfileImgF>img, .firstRankProfileImgM>img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.notFirstRankProfileImgF{
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: white;
+  border: 3px solid pink;
+}
+
+.notFirstRankProfileImgM{
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: white;
+  border: 3px solid lightskyblue;
+}
+
+.notFirstRankProfileImgF>img, .notFirstRankProfileImgM>img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }

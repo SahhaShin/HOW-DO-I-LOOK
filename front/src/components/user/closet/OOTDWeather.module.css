@@ -1,0 +1,106 @@
+/* 날씨 컨테이너*/
+
+.weatherContainer{
+
+    /* 전체 크기 */
+    width: 100%;
+
+    /* 위치조정 */
+    position: relative;
+    margin : 0 auto;
+    margin-top : 3%;
+}
+
+.weatherImg{
+
+    /* 전체 크기 */
+    width: 800px;
+    height: 150px;
+    border-radius: 1rem;
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white); 
+    /* margin-left: 1%; */
+
+
+    /* 배경 */
+    background-color: black;
+    background-image: url(../../../../public/img/weather_bg.jpg);  
+    filter: brightness(80%); /*사진을 까만색 투명으로 입혀줌*/
+    background-size: 100%;
+
+    vertical-align:middle;
+}
+
+.weatherContent{
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    /* font-size: 30px; */
+    /* font-weight: 900; */
+    color: white;
+    text-shadow: 2px 2px 2px gray;
+
+
+    /* 위치조정 */
+    position: absolute;
+    text-align: center;
+    transform: translate(-50px, -35px);
+
+
+    /* 크기조정 */
+    width: 500px;
+}
+
+.weatherContent > div > p:nth-child(1){
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    font-size: 25px;
+    font-weight: 900;
+    color: white;
+
+
+    /* 위치조정 */
+    position: absolute;
+    text-align: center;
+    transform: translate(110px, -50px);
+
+
+    /* 크기조정 */
+    width: 300px;
+}
+
+.weatherContent > div > p:nth-child(2){
+    /* 폰트 */
+    font-family: 'Pretendard-Regular';
+    font-size: 40px;
+    font-weight: 900;
+    color: white;
+
+
+    /* 위치조정 */
+    position: absolute;
+    text-align: center;
+    transform: translate(0px, -10px);
+
+
+    /* 크기조정 */
+    width: 100%;
+}
+
+.rain{
+    font-family: 'Pretendard-Regular';
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    font-size: 40px;
+    transform: translate(700px, -55px);
+}
+.rain>div:nth-child(2){
+    /* position: absolute; */
+    transform: translate(50px, 40px);
+    font-size: 50px;
+}
+.rain>img{
+    position: absolute;
+    /* width: 70px; */
+    height: 100%;
+    transform: translate(120px, -10px);
+}

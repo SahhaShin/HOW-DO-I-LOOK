@@ -3,6 +3,8 @@ import loginStyle from './login.module.css';
 
 //cookie
 import { getCookie, setCookie } from "../../../hook/Cookie";
+import {  CheckNickName } from "../../../hook/UserApi";
+
 
 
 //redux
@@ -12,30 +14,48 @@ import {action_user, setId} from "../../../store/UserSlice";
 const Login: React.FC = () => {
 
   //redux 관리
-  let state = useSelector((state:any)=>state.closet);
   let dispatch = useDispatch();
 
   const [nickname, setNickname] = useState('')
   const [gender, setGender] = useState('')
   const [age, setAge] = useState('')
+  const [nicknameNotice, setNicknameNotice] = useState(false);
+
+  const changeNickname = (value: string) => {
+    setNickname(value)
+    if(value != ""){
+      CheckNickName(value).then((res) => setNicknameNotice(res))
+
+    }
+  }
+
 
 
   const socialRegist = async () => {
-    console.log("-- Sign in clicked -- ")
-    console.log("age : " + age)
-    console.log("nickname : " + nickname)
-    console.log("gender: " + gender)
+
     // console.log(getCookie("new_social_user_email"))
 
+    if((nicknameNotice) ){
+      alert("입력한 정보를 다시 확인해 주시기 바랍니다.")
+      return //유효성 검사
+    }
+    else if(!((gender != "")&&(age != ""))){
+      alert("입력한 정보를 다시 확인해 주시기 바랍니다.")
+      return //정보 공백 검사 
+    }
+    else { 
+
+      //소셜 회원가입 추가정보 요청
+      dispatch(
+        action_user.SocialSignin({
+          nickname: nickname,
+          gender: gender,
+          age: age,
+        })
+        );
+    }
+
     
-    //소셜 회원가입 추가정보 요청
-    dispatch(
-      action_user.SocialSignin({
-        nickname: nickname,
-        gender: gender,
-        age: age,
-      })
-    );
 
     // window.location.href = "http://localhost:8081/login/oauth2/code/kakao"
     //window.location.href = "http://localhost:8081/oauth2/authorization/kakao"
@@ -51,7 +71,8 @@ const Login: React.FC = () => {
         <div>
           <div>
             <label htmlFor="nickname" className={`${loginStyle.lable}`}><p>닉네임</p></label>
-            <input type="text" id="nickname" value={nickname} onChange={(e)=>setNickname(e.target.value)} placeholder="사용하실 닉네임을 입력해주세요" className={`${loginStyle.input}`}/>
+            <input type="text" id="nickname" value={nickname} onChange={(e)=>changeNickname(e.target.value)} placeholder="사용하실 닉네임을 입력해주세요" className={`${loginStyle.input}`}/>
+            {nicknameNotice && <div>사용하실 수 없는 닉네임입니다.</div>}
           </div>
           <div>
             <label htmlFor="gender" className={`${loginStyle.lable}`}><p>성별</p></label>

@@ -35,7 +35,7 @@ const CLOSETRegist = () => {
             // File 혹은 Blob 을 읽은 뒤 base64로 인코딩한 문자열을
             //FileReader 인스턴스의 result라는 속성에 담아줌
             reader.readAsDataURL(file);
-            console.log(`reader = ${reader}`);
+            // console.log(`reader = ${reader}`);
 
             return new Promise((resolve) => {
                 reader.onload = () => {       // FileReader가 성공적으로 파일을 읽어들였을 때 트리거 되는 이벤트 핸들러
@@ -136,9 +136,6 @@ const CLOSETRegist = () => {
             setClothesBrand(state.clothInfo?.brand);
             setSpecialContent(state.clothInfo?.info);
 
-            console.log(state.clothInfo?.name);
-            console.log(state.clothInfo?.brand);
-            console.log(state.clothInfo?.info);
         }
     }, [state.mode, state.clothInfo]);
 

@@ -1,0 +1,91 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.StreamingComponent {
+  height: 510px;
+  width: 77px;
+  position: relative;
+}
+.micAndSpeak{
+  display: flex;
+  justify-content:space-around;
+}
+.title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--pinkes);
+  height: 40px;
+  width: 300px;
+  color: white;
+  border-radius: 1rem;
+  margin-left: -90px;
+}
+/* 버튼을 둘러싼 div */
+.buttons {
+  /* width: 50%; */
+  position: absolute;
+  /* top: 100%;
+  left: 100%;
+  transform: translate(-100%, -100%); */
+  justify-content: flex-end;
+  display: flex;
+  justify-content: space-between;
+  /* flex: auto; */
+  text-align: center;
+  z-index: 1;
+  height: 40px;
+  width: 750px;
+  top: 30px;
+  left: 600px;
+}
+
+.leaveButton {
+  position: absolute;
+  top: 420px;
+  left: 0px;
+  height: 40px;
+  width: 150px;
+  
+  /* z-index: 1000; */
+}
+
+img {
+  height: 20px;
+  /* width: 60px; */
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.activeButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 130px;
+  border-radius: 10px;
+  /* margin: auto 0 ; */
+  background-color: var(--pinkes);
+  color: white;
+  font-size: 17px;
+  margin-right: 10px;
+}
+
+.disableButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 130px;
+  border-radius: 10px;
+  /* margin: auto 0 ; */
+  background-color: rgb(240, 240, 240);
+  color: black;
+  font-size: 17px;
+  margin-right: 10px;
+}
+.displayNone {
+  display: none;
+}

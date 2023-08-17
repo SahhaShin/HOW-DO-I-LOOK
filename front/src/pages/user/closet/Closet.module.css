@@ -62,7 +62,7 @@
     font-family: 'Pretendard-Regular';
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
     
 }
@@ -85,7 +85,7 @@
     height: 100%;
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color:white;
     /* 커서 */
     cursor: pointer;

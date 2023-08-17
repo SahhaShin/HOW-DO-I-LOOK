@@ -127,7 +127,7 @@
     border-radius: 5px;
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -182,7 +182,7 @@
     margin-bottom: 10px;
 
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 
     /* 폰트 */
@@ -239,7 +239,7 @@
 
 .rightBtns > button{
     height: 100%;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -253,7 +253,7 @@
 
 .rightBtns button:hover{
     /* 컬러 */
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 

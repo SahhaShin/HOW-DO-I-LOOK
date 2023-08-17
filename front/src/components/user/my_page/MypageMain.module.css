@@ -1,0 +1,134 @@
+.total{
+    /* 크기 */
+    width: 1000px;
+    height: 700px;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 50px;
+}
+
+
+.title{
+    /* 사이즈 */
+    width: 120px;
+    height: 30px;
+    border-radius: 2rem;
+    
+    /* 위치 조정 */
+    line-height: 30px;
+    margin-bottom: 5%;
+
+    /* 폰트 */
+    font-size: 15px;
+    font-weight: 900;
+    font-family: 'Pretendard-Regular';
+
+    /* 컬러 */
+    background-color: var(--pinkes);
+    color: white;
+    
+}
+
+/* 팔로우 피드 정보 */
+.followFeedInfo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100px;
+
+    /* background-color: aqua; */
+}
+
+.follower, .follow, .feed{
+    /* 폰트 */
+    font-size: 20px;
+    font-weight: 900;
+
+    /* 위치 */
+    margin-right: 3%;
+    margin-bottom: 5%;
+
+    /* 커서 */
+    cursor: pointer;
+}
+
+.follower>div:nth-child(2),
+.follow>div:nth-child(2),
+.feed>div:nth-child(2){
+    color: grey;
+    margin-top: 5px;
+}
+
+/* 4가지 반응 */
+.likes{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5%;
+
+    /* 크기 */
+    width: 100%;
+    height: 100px;
+
+    /* background-color: aqua; */
+}
+
+.Lovely, .Natural, .Modern, .Sexy{
+    /* 폰트 */
+    font-size: 20px;
+    font-weight: 900;
+
+    /* 위치 */
+    margin-right: 3%;
+}
+
+.Lovely>div:nth-child(2), 
+.Natural>div:nth-child(2),
+.Modern>div:nth-child(2),
+.Sexy>div:nth-child(2){
+    color: grey;
+    margin-top: 5px;
+}
+
+/* 뱃지 */
+.badge{
+    margin-top: 10%;
+}
+
+.badges{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+
+}
+
+
+.LovelyBadge,
+.NaturalBadge,
+.ModernBadge,
+.SexyBadge{
+    width: 300px;
+    height: 50%;
+}
+
+.LovelyBadge>img,
+.NaturalBadge>img,
+.ModernBadge>img,
+.SexyBadge>img{
+    width: 30%;
+    height: 30%;
+}
+
+
+.LovelyBadge>div,
+.NaturalBadge>div,
+.ModernBadge>div,
+.SexyBadge>div{
+    font-weight: 900;
+    color: grey;
+}

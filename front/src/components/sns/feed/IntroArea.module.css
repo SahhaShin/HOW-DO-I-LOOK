@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* background-image: url("../../../../public/img/common/total_bg.jpg"); */
 }
 
 .firstArea{
@@ -46,7 +47,7 @@
     width: 80px;
     height: 30px;
     border-radius:10px;
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 
@@ -61,7 +62,7 @@
     height: 10px;
 
     /* 컬러 */
-    background-color: pink;
+    background-color: var(--yellow);
 
     /* radius */
     border-radius: 1rem;
@@ -87,7 +88,7 @@
 }
 
 .tag button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }
 

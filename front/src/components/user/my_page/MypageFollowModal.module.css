@@ -67,6 +67,12 @@
     border-radius: 50%;
     background-color: grey;
 }
+.profileImg>img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
 .nickname{
     width: 180px;
     text-align: left;
@@ -86,9 +92,12 @@
     width: 60px;
     height: 30px;
     margin-right: 3px;
-    border: 1px solid var(--border);
+    background-color: var(--pinkes);
+    border: 1px solid var(--pinkes);
+    color: white;
 }
+
 .followBtn > button:hover{
-    background-color: var(--signiture);
+    background-color: var(--pinkes);
     color: white;
 }

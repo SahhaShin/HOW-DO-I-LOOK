@@ -1,7 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import {useParams, useNavigate} from 'react-router-dom';
 import axios from 'axios';
+
+// 소켓 통신
+import SockJS from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
+
+import { getCookie } from "../../../hook/Cookie";
 
 //css
 import chatHistoryStyle from "./ChatHistory.module.css";
@@ -19,6 +24,13 @@ const ChatHistory = () => {
     const navigate = useNavigate();
     
     const params = useParams();
+
+    let token = getCookie("Authorization");
+
+    const headers = {
+        Authorization : `Bearer ${token}`,
+    };
+
     
     interface ChatList{
         "chatRoomId": number,
@@ -55,17 +67,29 @@ const ChatHistory = () => {
     });
 
 
+
+
     // 1. 서버와 소켓 연결
     function connect(){
-        // 클라이언트 소켓 생성
-        client.current = new StompJs.Client({
-            brokerURL : 'ws://localhost:8081/ws',
-            onConnect: () => {
-                subscribe();
-            }
-        });
+        //SOCK JS 클라이언트를 만든다.
+        // const socket = new SockJS('http://localhost:8081/ws');
+        const socket = new SockJS('https://i9b304.p.ssafy.io:8081/ws');
 
-        client.current.activate();
+        client.current = StompJs.Stomp.over(socket); //연결 요청
+
+        // 클라이언트 소켓 생성
+        // client.current = new StompJs.Client({
+        //     brokerURL : 'ws://localhost:8081/ws',
+        //     onConnect: () => {
+        //         subscribe();
+        //     }
+        // });
+
+        client.current.connect(headers,()=>{
+            subscribe();
+        })
+
+        // client.current.activate();
     }
 
     //2. 채팅방 1:1 구독
@@ -100,7 +124,6 @@ const ChatHistory = () => {
                 // chatId: null,
             }
 
-            console.log(message)
 
             dispatch(addChatHistory(addData));
 
@@ -133,9 +156,8 @@ const ChatHistory = () => {
                 chatContent:chat,
                 roomId: params.roomId,
                 userId: myId,
-            })
-
-            
+            }),
+            headers
         });
 
         setChat('');
@@ -144,7 +166,7 @@ const ChatHistory = () => {
 
     //5. 채팅 종료
     function disconnect() {
-        client.current.deactivate();
+        client.current.disconnect();
     };
 
 

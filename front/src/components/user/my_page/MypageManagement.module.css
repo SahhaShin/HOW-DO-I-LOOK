@@ -1,0 +1,165 @@
+.total{
+    /* 크기 */
+    width: 1000px;
+    height: 500px;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-left: 50px;
+}
+
+/* 비밀번호 인증 */
+.auth{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 500px;
+    height: 300px;
+}
+
+.auth>div{
+    margin-bottom: 5%;
+}
+
+.auth > div > input{
+    /* 크기 */
+    width: 300px;
+    height: 35px;
+    padding-left: 2%;
+
+    /* border */
+    border-radius: 1rem;
+    border: 1px solid grey;
+    outline: none;
+
+    /* 컬러 */
+    background-color: var(--border);
+
+    /* 폰트 */
+    font-weight: 900;
+}
+
+/* 정보 읽기 */
+.read{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.read > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 가운데 맞춤 */
+    margin-right: 60px;
+}
+
+.read > div > p{
+    width: 180px;
+    font-weight: 900;
+}
+
+.read > div > input{
+    /* 크기 */
+    width: 260px;
+    height: 35px;
+    padding-left: 2%;
+    margin-bottom: 2%;
+
+    /* border */
+    border-radius: 1rem;
+    border: 1px solid grey;
+    outline: none;
+
+    /* 컬러 */
+    background-color: var(--border);
+
+    /* 폰트 */
+    font-weight: 900;
+}
+
+/* 정보 수정 */
+.modify{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.modify > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 가운데 맞춤 */
+    margin-right: 50px;
+}
+
+.modify > div > p{
+    width: 180px;
+    font-weight: 900;
+}
+
+.modify > div > input{
+    /* 크기 */
+    width: 260px;
+    height: 35px;
+    padding-left: 2%;
+    margin-bottom: 2%;
+
+    /* border */
+    border-radius: 1rem;
+    border: 1px solid grey;
+    outline: none;
+
+    /* 컬러 */
+    background-color: var(--border);
+
+    /* 폰트 */
+    font-weight: 900;
+}
+
+select{
+    /* 크기 */
+    width: 300px;
+    height: 40px;
+    padding-left: 2%;
+    margin-bottom: 2%;
+
+    /* border */
+    border-radius: 1rem;
+    border: 1px solid grey;
+    outline: none;
+
+    /* 컬러 */
+    background-color: var(--border);
+
+    /* 폰트 */
+    font-weight: 900;
+}
+
+
+.btns > div{
+    display: flex;
+    justify-content: center;
+
+    width: 500px;
+    margin-top: 5%;
+}
+
+.btns>div>button{
+    width: 130px;
+    height: 40px;
+    border-radius: 5px;
+
+    margin: 5%;
+    background-color: var(--pinkes);
+    color: white;
+}
+.btns>div>button:hover{
+    background-color: var(--pinkes);
+    color: white;
+}

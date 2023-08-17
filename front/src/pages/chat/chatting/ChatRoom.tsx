@@ -7,6 +7,8 @@ import chatRoomStyle from "./ChatRoom.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action} from "../../../store/ChatSlice";
+import {changeMenuItemNum} from "../../../store/UtilSlice";
+
 
 //컴포넌트
 import ChatHistory from "../../../components/chat/chatting/ChatHistory";
@@ -20,6 +22,7 @@ const ChatRoom = () => {
     //redux 관리
     let state = useSelector((state:any)=>state.chat);
     let dispatch = useDispatch();
+    dispatch(changeMenuItemNum(2))
 
     const navigate = useNavigate();
 

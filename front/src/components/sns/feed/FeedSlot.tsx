@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //css
 import feedSlotStyle from './FeedSlot.module.css';
@@ -11,7 +11,8 @@ import 'slick-carousel/slick/slick-theme.css';
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, calTotalFeedLikes, changeModifyModalOpen, changeDetailFeedId, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen} from "../../../store/FeedSlice";
+import {action_feed, changeModifyModalOpen, changeDetailFeedId, changeFollow, changeDetailModalOpen,changeDeclarationModalOpen, changeFollowingCheckToTrue, changeFollowingCheckToFalse} from "../../../store/FeedSlice";
+import {action_follow} from "../../../store/FollowSlice";
 
 // alert창
 import Swal from "sweetalert2";
@@ -42,14 +43,14 @@ const FeedSlot = () => {
             showCancelButton: true,
             confirmButtonText: "삭제",
             cancelButtonText: "취소",
-            confirmButtonColor:'#4570F5',
+            confirmButtonColor:'#EAA595',
             customClass: {
                 confirmButton: feedSlotStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
                 cancelButton: feedSlotStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
               }
         }).then((res) => {
             if (res.isConfirmed) {
-                dispatch(action.deleteFeed(feedId));
+                dispatch(action_feed.deleteFeed(feedId));
             }
             else{
                 
@@ -57,19 +58,87 @@ const FeedSlot = () => {
         });
     }
 
+    // 팔로잉 데이터
+    const [followingData, setFollowingData] = useState({
+        id: 0,
+        targetId: 0,
+        nickname: "",
+        profileImg: "",
+        gender: ""
+      });
 
-    //피드 수정 버튼을 누르면 피드 수정 창이 뜬다.
-    //피드 수정 창은 create 창과 같다.
-    function modifyFeed(){
+    const changeFollowingData = (feed) => {
 
-    }
+    setFollowingData({
+        id: loginUser.id,
+        targetId: feed.userId,
+        nickname: feed.userNickname,
+        profileImg: feed.userProfileImg,
+        gender: feed.userGender
+    });
+    };
+
+    // 언팔로잉 데이터
+    const [deleteFollowingData, setDeleteFollowingData] = useState({
+        id: 0,
+        targetId: 0,
+        nickname: "",
+        profileImg: "",
+        gender: ""
+      });
     
+      const changeDeleteFollowingData = (feed) => {
+  
+        setDeleteFollowingData({
+            id: loginUser.id,
+            targetId: feed.userId,
+            nickname: feed.userNickname,
+            profileImg: feed.userProfileImg,
+            gender: feed.userGender
+        });
+      };
+
+    // 팔로우
+    useEffect(
+        () => {
+        if (followingData.id === 0 || followingData.targetId === 0) return;
+
+        dispatch(action_follow.follow(followingData));
+        },
+        [followingData]
+    );
+
+    // 팔로우 끊기
+    useEffect(
+        () => {
+        if (deleteFollowingData.id === 0 || deleteFollowingData.targetId === 0)
+            return;
+
+        dispatch(action_follow.unfollow(deleteFollowingData));
+        },
+        [deleteFollowingData]
+    );
+
+    const changeFollowingCheckFalse = ((idx) => {
+        dispatch(changeFollowingCheckToFalse(idx));
+    })
+
+    const changeFollowingCheckTrue = ((idx) => {
+        dispatch(changeFollowingCheckToTrue(idx));
+    })
 
     return(   
-        <>
-            {  state.feedTotalObj?.content.length!==0?
-                state.feedTotalObj?.content.map((oneFeed, idx)=>{
-                    
+        <div>
+            {  state.feedTotalObj?.length!==0?
+                state.feedTotalObj?.map((oneFeed, idx)=>{
+                    if(state.feedMode === 2 && !state.feedFollowingCheck[idx]) {
+                        return null;
+                    }
+
+                    if(state.feedMode === 3 && oneFeed.userId !== loginUser.id) {
+                        return null;
+                    }
+
                     return(
                         <div key={idx} className={`${feedSlotStyle.card}`}>
                             {/* header */}
@@ -77,9 +146,9 @@ const FeedSlot = () => {
                                 {/* 왼쪽 : 프로필 사진 -- 이미지 아직 저장 안함 */}
                                 <div className={`${feedSlotStyle.profile}`}>
                                     <div className={`${feedSlotStyle.profileCircle_G}`}>
-                                        <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
+                                        <img src={oneFeed.userProfileImg}></img>
                                     </div>
-                                                    
+                            
                                 </div>
                                 {/* 중앙 */}
                                 <div className={`${feedSlotStyle.content}`}>
@@ -88,11 +157,52 @@ const FeedSlot = () => {
                                         <p>{oneFeed.userNickname}</p>
                                     </div>
                                 </div>
-
                                 {/* 우측 : 팔로우 언팔로우 & 신고버튼 */}
                                 <div className={`${feedSlotStyle.btns}`}>
-                                    {state.isFollow?<div><button onClick={async()=>{dispatch(changeFollow(false))}}>Unfollow</button></div>:<div><button onClick={async()=>{dispatch(changeFollow(true))}}>Follow</button></div>}  
-                                    <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${feedSlotStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div>
+                                    
+                                    {oneFeed.userId === loginUser.id
+                                    ?
+                                    null
+                                    :
+                                    state.feedFollowingCheck[idx]?
+                                    // state.feedTotalObj[idx].followingCheck?
+                                    <div>
+                                        <button onClick={async()=>{
+                                            changeFollowingCheckFalse(idx);
+                                            changeDeleteFollowingData(oneFeed)
+                                            // dispatch(action_follow.followCheck(false))
+                                            dispatch(action_follow.getMyFollowingList(loginUser.id));
+                                        }}>Unfollow</button>
+                                    </div>
+                                    :
+                                    <div>
+                                        <button onClick={async()=>{
+                                            changeFollowingCheckTrue(idx);
+                                            changeFollowingData(oneFeed)
+                                            // dispatch(changeFollow(true))
+                                            dispatch(action_follow.getMyFollowingList(loginUser.id));
+                                        }}>Follow</button>
+                                    </div>
+                                    }
+                                    
+                                    
+                                    {/* {state.oneFeed.followingCheck?
+                                    <div>
+                                        <button onClick={async()=>{
+                                            changeDeleteFollowingData(oneFeed)
+                                            // dispatch(action_follow.followCheck(false))
+                                            // dispatch(action_follow.getMyFollowingList(loginUser.id));
+                                        }}>Unfollow</button>
+                                    </div>
+                                    :
+                                    <div>
+                                        <button onClick={async()=>{
+                                            changeFollowingData(oneFeed)
+                                            // dispatch(changeFollow(true))
+                                            // dispatch(action_follow.getMyFollowingList(loginUser.id));
+                                        }}>Follow</button>
+                                    </div>}   */}
+                                    {/* <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${feedSlotStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div> */}
                                 </div>
                             </div>
 
@@ -140,7 +250,8 @@ const FeedSlot = () => {
                                     <p>{oneFeed.commentCount}</p>
                                 </div>
                                 {oneFeed.userId===loginUser.id?<div className={`${feedSlotStyle.feedBtns}`}>
-                                    <button onClick={()=>{dispatch(changeModifyModalOpen(true));dispatch(changeDetailFeedId(oneFeed.feedId)); dispatch(action.getFeedLikeOnMe({userId:oneFeed.userId,feedId:oneFeed.feedId}));}}>수정</button>
+
+                                    
                                     <button onClick={()=>deleteFeed(oneFeed.feedId)}>삭제</button>
                                 </div>:null}
                             </div>
@@ -155,7 +266,7 @@ const FeedSlot = () => {
                 }):<div className={`${feedSlotStyle.noresult}`}>검색 결과가 없습니다.</div>
                 
             }
-        </>     
+        </div>     
     );
 }
 
@@ -167,12 +278,12 @@ const StyledSlider = styled(Slider)`
   .slick-prev {
     z-index: 1;
     left: 30px;
-    top: 35%;
+    top: 200px;
   }
 
   .slick-next {
     right: 40px;
-    top: 35%;
+    top: 200px;
   }
 
   .slick-prev:before,
@@ -185,7 +296,7 @@ const StyledSlider = styled(Slider)`
   .slick-dots {
     display: flex;
     justify-content: center;
-    bottom: 200px;
+    bottom: 70px;
     color: black;
 
     li button:before {

@@ -39,30 +39,18 @@ const MypageMain = () => {
   // 최초 1회 실행
   useEffect(
     () => {
-      // if(loginUser.id !== Number(watchingUserId))
-      //   return;
-
       dispatch(action_mypage.getMyFollowerList(loginUser.id));
     },[])
 
   useEffect(() => {
-    // if(loginUser.id !== Number(watchingUserId))
-    //     return;
-
     dispatch(action_mypage.getMyFollowingList(loginUser.id));
   }, [])
 
   useEffect(() => {
-    // if(loginUser.id === Number(watchingUserId))
-    //     return;
-
     dispatch(action_mypage.getYourFollowerList(Number(watchingUserId)));
   }, [])
 
   useEffect(() => {
-    // if(loginUser.id === Number(watchingUserId))
-    //     return;
-
     dispatch(action_mypage.getYourFollowingList(Number(watchingUserId)));
   }, [])
 
@@ -112,14 +100,14 @@ const MypageMain = () => {
       } else if (badge.badgeType === "MODERN") {
         return (
           <div key={index} className={`${mypageMainStyle.ModernBadge}`}>
-            <img src={process.env.PUBLIC_URL + `/img/badge/Modern_Uncolored.png`} />
+            <img src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`} />
             <div>Modern Master</div>
           </div>
         );
       } else if (badge.badgeType === "NATURAL") {
         return (
           <div key={index} className={`${mypageMainStyle.NaturalBadge}`}>
-            <img src={process.env.PUBLIC_URL + `/img/badge/Natural_Uncolored.png`} />
+            <img src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} />
             <div>Natural Master</div>
           </div>
         );
@@ -161,7 +149,7 @@ const MypageMain = () => {
 
         <div
           onClick={() => {
-            dispatch(changeMenuMode(2));
+            dispatch(changeMenuMode(2));dispatch(action_mypage.getFeedList(loginUser.id)); dispatch(action_mypage.getLikeFeedList(loginUser.id))
           }}
           className={`${mypageMainStyle.feed}`}
         >
@@ -176,22 +164,22 @@ const MypageMain = () => {
       <div className={`${mypageMainStyle.likes}`}>
         <div className={`${mypageMainStyle.Lovely}`}>
           <div>Lovely</div>
-          <div>{state.likeScore.lovelyScore}</div>
+          <div>{state.likeScore?.lovelyScore}</div>
         </div>
 
         <div className={`${mypageMainStyle.Natural}`}>
           <div>Natural</div>
-          <div>{state.likeScore.naturalScore}</div>
+          <div>{state.likeScore?.naturalScore}</div>
         </div>
 
         <div className={`${mypageMainStyle.Modern}`}>
           <div>Modern</div>
-          <div>{state.likeScore.modernScore}</div>
+          <div>{state.likeScore?.modernScore}</div>
         </div>
 
         <div className={`${mypageMainStyle.Sexy}`}>
           <div>Sexy</div>
-          <div>{state.likeScore.sexyScore}</div>
+          <div>{state.likeScore?.sexyScore}</div>
         </div>
       </div>
 

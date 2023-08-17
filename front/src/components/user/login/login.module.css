@@ -1,80 +1,173 @@
-.info {
+@font-face {
+    font-family: 'KCCPakKyongni';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCPakKyongni.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+.totalWrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.title{
+    font-family: 'KCCPakKyongni';
+    color: white;
+    text-shadow: 2px 3px 5px grey;
+    font-size: 70px;
+    
+}
+
+.title > .HELLO{
+    display: inline;
+    font-family: 'KCCPakKyongni';
+    color: white;
+    text-shadow: 2px 3px 5px grey;
+    font-size: 60px;
+}
+
+.title > .H{
+    display: inline;
+    font-family: 'KCCPakKyongni';
+    color: pink;
+    text-shadow: 2px 3px 5px grey;
+    font-size: 60px;
+}
+
+.title > .D{
+    display: inline;
+    font-family: 'KCCPakKyongni';
+    color: rgb(253, 241, 187);
+    text-shadow: 2px 3px 5px grey;
+    font-size: 70px;
+    
+}
+
+.title > .I{
+    display: inline;
+    font-family: 'KCCPakKyongni';
+    color: rgb(183, 190, 210);
+    text-shadow: 2px 3px 5px grey;
+    font-size: 70px;
+    
+}
+
+.title > .Look{
+    display: inline;
+    font-family: 'KCCPakKyongni';
+    color: rgb(205, 226, 235);
+    text-shadow: 2px 3px 5px grey;
+    font-size: 70px;
     
 }
 
 .login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: left;
-    background-color: white;
+    /* background-color: white; */
     width: 100%;
 }
 
-.input { 
-    width: 100%;
-    height: 40px;
-    background-color: white;
+.logininput { 
+    width: 500px;
+    height: 50px;
+    /* background-color: white; */
     border: none;
     font-size: 20px;
-    border-bottom: 1px solid lightgrey;
+    /* border-bottom: 1px solid lightgrey; */
+    border-radius: 1rem;
+    padding-left: 3%;
 }
 
 input:focus {
     /* outline:1px solid #6d5dfc; */
-    border-bottom: 1px solid grey;
+    /* border-bottom: 1px solid grey; */
     outline: 0;
 }
 
-.lable { 
+.loginlable { 
+    width: 50px;
+    height: 50px;
     padding: 0;
     margin: 0;
     margin-left: 10%;
-    background-color: rgb(226, 139, 139);
+    /* background-color: rgb(226, 139, 139); */
     border: 0;
     font-size: 13px;
 }
 
-.submit{
-    width: 100%;
-    height: 40px;
-    font-size: 20px;
-    background-color: #6d5dfc;
-    border: 0;
+.loginlable >p { 
+
+    background-color: rgb(183, 190, 210);
+    line-height: 30px;
+    text-align: center;
     color: white;
+    text-shadow: 1px 0px 0px #bdbdbd;
+
+    width: 50px;
+    height: 30px;
+    border-radius: 1rem;
+    border: 0;
+    font-size: 13px;
+    margin-bottom: 10px;
 }
 
-.rememberID { 
+.loginsubmit{
+    margin-top: 80px;
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+    background-color: rgb(226, 139, 139);
+    border: 0;
+    border-radius: 1rem;
+    color: white;
+    cursor: pointer;
+}
+
+
+.loginrememberID { 
+    width: 100%;
+    height: 20px;
     display: flex;
+    
     text-align: right;
     text-decoration: none;
     color:black;
 }
-.rememberID a{
+.loginrememberID a{
     text-decoration: none;
     text-decoration-color: none;
 }
 
-.signin { 
+.loginsignin { 
     text-align: center;
     color: #9baacf;
     font-size: 13px;
 
 }
 
-.findInfo { 
+.loginfindInfo { 
     display: flex;
     text-align: center;
     margin: 20px, 10px;
 }
 
-.line{
+.loginline{
     display: flex;
-    flex-basis: 100%;
     align-items: center;
     color: gray;
     font-size: 14px;
     margin: 8px, 0px;
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-bottom: 10px;
 }
-.line::after{
+.loginline::after{
     content:"";
     flex-grow: 1;
     margin: 0px, 16px;
@@ -94,17 +187,90 @@ input:focus {
     font-size: 0px;
     line-height: 0px;
 }
-.social button{
+.loginsocial{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+.loginsocial button{
     margin: 0;
     padding: 0;
-    height: 45px;
-    width: 300px;
-    background-color: white;
+    height: 40px;
+    width: 50px;
+    border-radius: 1rem;
+    /* background-color: white; */
+
 
 }
-.social img{
-    width: 300px;
-    height: 45px;
+/* .loginsocial img{
+    width: 50px;
+    height: 100%;
     margin: 0;
     padding: 0;
+} */
+
+.registBtn{
+    margin-top: 30px;
 }
+
+.loginsocial>.google{
+    width: 90px;
+    background: #FE2E2E;
+    color:white;
+}
+
+.loginsocial>.naver{
+    width: 90px;
+    background: #1bb100;
+    color:white;
+}
+
+.loginsocial>.kakao{
+    width: 90px;
+    background: #FFBF00;
+    color:white;
+}
+
+
+/* fade in */
+.fadeInBox {
+    display: inline-block;
+    padding: 10px;
+    animation: fadein 1s;
+    -moz-animation: fadein 1s; /* Firefox */
+    -webkit-animation: fadein 1s; /* Safari and Chrome */
+    -o-animation: fadein 1s; /* Opera */
+  }
+  @keyframes fadein {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+  @-moz-keyframes fadein { /* Firefox */
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+  @-webkit-keyframes fadein { /* Safari and Chrome */
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+  @-o-keyframes fadein { /* Opera */
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {action_ranking} from "../../../store/RankingSlice";
 
 //css
-import mypageMainStyle from "../../user/my_page/MypageMain.module.css";
+import myRankStyle from "./MyRank.module.css";
 
 const MyRank = () => {
 
@@ -41,30 +41,30 @@ const MyRank = () => {
         return state_mypage.badgeList.map((badge, index) => {
           if (badge.badgeType === "LOVELY") {
             return (
-              <div key={index} className={`${mypageMainStyle.LovelyBadge}`}>
+              <div key={index} className={`${myRankStyle.LovelyBadge}`} className={`${myRankStyle.badges}`}>
                 <img src={process.env.PUBLIC_URL + `/img/badge/Lovely_colored.png`} />
-                <div>Lovely Master</div>
+              
               </div>
             );
           } else if (badge.badgeType === "SEXY") {
             return (
-              <div key={index} className={`${mypageMainStyle.SexyBadge}`}>
+              <div key={index} className={`${myRankStyle.SexyBadge}`} className={`${myRankStyle.badges}`}>
                 <img src={process.env.PUBLIC_URL + `/img/badge/Sexy_colored.png`} />
-                <div>Sexy Master</div>
+                
               </div>
             );
           } else if (badge.badgeType === "MODERN") {
             return (
-              <div key={index} className={`${mypageMainStyle.ModernBadge}`}>
-                <img src={process.env.PUBLIC_URL + `/img/badge/Modern_Uncolored.png`} />
-                <div>Modern Master</div>
+              <div key={index} className={`${myRankStyle.ModernBadge}`} className={`${myRankStyle.badges}`}>
+                <img src={process.env.PUBLIC_URL + `/img/badge/Modern_colored.png`} />
+                
               </div>
             );
           } else if (badge.badgeType === "NATURAL") {
             return (
-              <div key={index} className={`${mypageMainStyle.NaturalBadge}`}>
-                <img src={process.env.PUBLIC_URL + `/img/badge/Natural_Uncolored.png`} />
-                <div>Natural Master</div>
+              <div key={index} className={`${myRankStyle.NaturalBadge}`} className={`${myRankStyle.badges}`}>
+                <img src={process.env.PUBLIC_URL + `/img/badge/Natural_colored.png`} />
+                
               </div>
             );
           }
@@ -74,16 +74,19 @@ const MyRank = () => {
     }
 
     return(
-        <div>
-            <div>
-                이미지 : <img src={loginUser.profileImg} /> <br></br>
-                {loginUser.nickname}님의 랭킹 정보
+        <div className={`${myRankStyle.myrankWrapper}`}>
+            
+            <div className={`${myRankStyle.rank}`}>{state.myRank.score}위</div>
+
+            <div className={`${myRankStyle.profileImg}`}>
+                <img src={loginUser.profileImg} /> <br></br>
             </div>
-            <div>{type} Score : {state.myRank.score}위</div>
-            <div>순위 : {state.myRank.rank}</div>
-            <div>보유 뱃지 : </div>
-            <div className={`${mypageMainStyle.badges}`}>
-                {showBadgeList()}
+
+            <div>
+              <div>보유 뱃지 : </div>
+              <div className={`${myRankStyle.badgeWrapper}`}>
+                  {showBadgeList()}
+              </div>
             </div>
         </div>
     );

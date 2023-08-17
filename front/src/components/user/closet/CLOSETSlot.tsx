@@ -13,15 +13,12 @@ import Swal from "sweetalert2";
 //closet 옷장 슬롯 1개 -> closet page에서 map돌려서 여러 개 뜨는 구조임
 const CLOSETSlot = (props) => {
 
-    console.log(props.one);
-
     //부모(Closet)에서 준 props에는 one으로 clothesId와 photoLink가 있음
 
     
     //redux 관리
     let state = useSelector((state:any)=>state.closet);
     let dispatch = useDispatch();
-    // console.log(state.clothesTop[props.idx].photoLink);
 
     // 마우스 hover시 정보/수정/삭제 버튼 등장 여부
     let [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -42,7 +39,7 @@ const CLOSETSlot = (props) => {
             showCancelButton: true,
             confirmButtonText: "삭제",
             cancelButtonText: "취소",
-            confirmButtonColor:'#4570F5',
+            confirmButtonColor:'#EAA595',
             customClass: {
                 confirmButton: closetSlotStyle.confirmButton, // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
                 cancelButton: closetSlotStyle.cancelButton // 모듈화된 CSS 파일에 정의된 클래스 이름을 사용합니다.
@@ -55,7 +52,7 @@ const CLOSETSlot = (props) => {
                     icon: 'success',
                     title: '삭제 완료',
                     text: '옷이 성공적으로 삭제되었습니다.',
-                    confirmButtonColor: '#4570F5',
+                    confirmButtonColor: '#EAA595',
                 })
             }
             else{

@@ -17,11 +17,10 @@ import Swal from "sweetalert2";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, changeFollow, changeDetailModalOpen, calTotalFeedLikes} from "../../../store/FeedSlice";
+import {action_feed, changeFollow,changeDeclarationModalOpen, changeDetailModalOpen, calTotalFeedLikes} from "../../../store/FeedSlice";
 
 const FeedDetail = (props) => {
 
-    console.log(props.feedId);
 
     //redux 관리
     let state = useSelector((state:any)=>state.feed);
@@ -59,17 +58,7 @@ const FeedDetail = (props) => {
         content:string,
     }
 
-    let [subCmt, setSubCmt] = useState<comment[]|null>([
-        {
-            mainCmtNo:1,
-            subCmtNo:1,
-            dateTime:"23.07.19 09:10",
-            id:"user3",
-            nickname:"user3",
-            // profile:null,
-            content:"그쵸 ㅠㅠ",
-        },
-    ]);
+
 
 
     //개인 like 표시에 따른 요청
@@ -77,15 +66,15 @@ const FeedDetail = (props) => {
         //state.detailObjLikes.lovely
 
         if(status===0){
-            dispatch(action.feedLike({feedId:props.feedId, userId:loginUser.id, type:type}));
+            dispatch(action_feed.feedLike({feedId:props.feedId, userId:loginUser.id, type:type}));
         }else{
-            dispatch(action.deleteLike({feedId:props.feedId, userId:loginUser.id, type:type}));
+            dispatch(action_feed.deleteLike({feedId:props.feedId, userId:loginUser.id, type:type}));
         }
     }
 
     //댓글 등록 
     function addComment(){
-        dispatch(action.addComment({
+        dispatch(action_feed.addComment({
             userId:loginUser.id,
             feedId:state.detailObj.feedId,
             parentId:null,
@@ -119,7 +108,7 @@ const FeedDetail = (props) => {
               }
         }).then((res) => {
             if (res.isConfirmed) {
-                dispatch(action.deleteFeed(feedId));
+                dispatch(action_feed.deleteFeed(feedId));
             }
             else{
                 
@@ -129,13 +118,13 @@ const FeedDetail = (props) => {
 
     useEffect(()=>{
         // 내 좋아요 기록
-        dispatch(action.getFeedLikeOnMe({userId:loginUser.id, feedId:props.feedId}));
+        dispatch(action_feed.getFeedLikeOnMe({userId:loginUser.id, feedId:props.feedId}));
 
         // 전체 피드 가져옴 (갯수가 있어서)
         let data = {size:0, page:0};
-        dispatch(action.getFeedTotalList(data));
+        dispatch(action_feed.getFeedTotalList(loginUser.id));
         
-    },[state.likeOk])
+    },[state.likeOk, state.totalDetailObjLikes])
 
     useEffect(()=>{
         // 전체 피드 가져오면 그 안에 like 만 추출해서 계산
@@ -144,11 +133,9 @@ const FeedDetail = (props) => {
 
     useEffect(()=>{
         // 댓글 가져오기
-        dispatch(action.getComment(props.feedId));
-    },[state.addCommentOk])
+        dispatch(action_feed.getComment(props.feedId));
+    },[state.addCommentOk, state.totalDetailObjLikes])
 
-    console.log(`state.detailObjLikes ${state.detailObjLikes?.lovelyType}`);
-    console.log(state.totalDetailObjLikes);
 
     return(
         <div className={`${FeedDetailStyle.container}`}>
@@ -160,7 +147,8 @@ const FeedDetail = (props) => {
                         {/* 왼쪽 : 프로필 사진 */}
                         <div className={`${FeedDetailStyle.profile}`}>
                             <div className={`${FeedDetailStyle.profileCircle_G}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
+                    
+                                <img src={state.detailObj?.userProfileImg}></img>
                             </div>
                                             
                         </div>
@@ -174,8 +162,8 @@ const FeedDetail = (props) => {
 
                         {/* 우측 : 팔로우 언팔로우 & 신고버튼 */}
                         <div className={`${FeedDetailStyle.btns}`}>
-                            {state.isFollow?<div><button>Unfollow</button></div>:<div><button>Follow</button></div>}  
-                            <div className={`${FeedDetailStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div>
+                            {/* {state.isFollow?<div><button>Unfollow</button></div>:<div><button>Follow</button></div>}   */}
+                            {/* <div onClick={()=>{dispatch(changeDeclarationModalOpen(true))}} className={`${FeedDetailStyle.alarmBtn}`}><img src={process.env.PUBLIC_URL+`/img/feed/alarm.png`}/></div> */}
                         </div>
                     </div>
 
@@ -220,7 +208,7 @@ const FeedDetail = (props) => {
                         {
                             loginUser.id===state.detailObj?.userId?
                             <div className={`${FeedDetailStyle.feedBtns}`}>
-                                <button>수정</button>
+                                {/* <button>수정</button> */}
                                 <button onClick={()=>deleteFeed(state.detailObj?.feedId)}>삭제</button>
                             </div>:null
                         }
@@ -242,10 +230,10 @@ const FeedDetail = (props) => {
                 {/* 좋아요 4가지 - 0과 1 구분하는 거 다시하고, 좋아요 저장 삭제도 구현해야함 */}
                 {/* state.totalDetailObjLikes?.lovely */}
                 <div className={`${FeedDetailStyle.likeBtns}`}>
-                    {state.detailObjLikes?.lovelyType!==null?<button onClick={()=>{likeOn("LOVELY", 1)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>:<button onClick={()=>{likeOn("LOVELY", 0)}} className={`${FeedDetailStyle.lovelyOff}`}>Lovely ({state.totalDetailObjLikes?.lovely})</button>}
-                    {state.detailObjLikes?.naturalType!==null?<button onClick={()=>{likeOn("NATURAL", 1)}} className={`${FeedDetailStyle.naturalOn}`}>Natural ({state.totalDetailObjLikes?.natural})</button>:<button onClick={()=>{likeOn("NATURAL", 0)}} className={`${FeedDetailStyle.naturalOff}`}>Natural ({state.totalDetailObjLikes?.natural})</button>}
-                    {state.detailObjLikes?.modernType!==null?<button onClick={()=>{likeOn("MODERN", 1)}} className={`${FeedDetailStyle.modernOn}`}>Modern ({state.totalDetailObjLikes?.modern})</button>:<button onClick={()=>{likeOn("MODERN", 0)}} className={`${FeedDetailStyle.modernOff}`}>Modern ({state.totalDetailObjLikes?.modern})</button>}
-                    {state.detailObjLikes?.sexyType!==null?<button onClick={()=>{likeOn("SEXY", 1)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>:<button onClick={()=>{likeOn("SEXY", 0)}} className={`${FeedDetailStyle.sexyOff}`}>Sexy ({state.totalDetailObjLikes?.sexy})</button>}
+                    {state.detailObjLikes?.lovelyType!==null?<button onClick={()=>{likeOn("LOVELY", 1)}} className={`${FeedDetailStyle.lovelyOn}`}>Lovely</button>:<button onClick={()=>{likeOn("LOVELY", 0)}} className={`${FeedDetailStyle.lovelyOff}`}>Lovely</button>}
+                    {state.detailObjLikes?.naturalType!==null?<button onClick={()=>{likeOn("NATURAL", 1)}} className={`${FeedDetailStyle.naturalOn}`}>Natural</button>:<button onClick={()=>{likeOn("NATURAL", 0)}} className={`${FeedDetailStyle.naturalOff}`}>Natural</button>}
+                    {state.detailObjLikes?.modernType!==null?<button onClick={()=>{likeOn("MODERN", 1)}} className={`${FeedDetailStyle.modernOn}`}>Modern</button>:<button onClick={()=>{likeOn("MODERN", 0)}} className={`${FeedDetailStyle.modernOff}`}>Modern</button>}
+                    {state.detailObjLikes?.sexyType!==null?<button onClick={()=>{likeOn("SEXY", 1)}} className={`${FeedDetailStyle.sexyOn}`}>Sexy</button>:<button onClick={()=>{likeOn("SEXY", 0)}} className={`${FeedDetailStyle.sexyOff}`}>Sexy</button>}
                 </div>
 
 
@@ -270,7 +258,7 @@ const FeedDetail = (props) => {
                                                     {/* 왼쪽 : 프로필 사진 */}
                                                     <div className={`${FeedDetailStyle.profile2}`}>
                                                         <div className={`${FeedDetailStyle.profileCircle_G2}`}>
-                                                            <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
+                                                            <img src={one.userProfileImg}></img>
                                                         </div>
                                                         {/* 백에서 바꿔주면 nickName으로 고쳐야함 */}
                                                         <p style={{width:"100px"}}>{one.userNickname}</p>
@@ -288,48 +276,56 @@ const FeedDetail = (props) => {
                                             
                                             <div className={`${FeedDetailStyle.etcBtns}`}>
                                                 {/* 답글 달기 보기 */}
-                                                <div className={`${FeedDetailStyle.reply}`}>
+                                                {/* <div className={`${FeedDetailStyle.reply}`}>
                                                     <button>답글 달기</button>
                                                     <button>답글 보기</button>
-                                                </div>
+                                                </div> */}
 
                                                 {/* 수정 삭제 시간 */}
                                                 <div className={`${FeedDetailStyle.btnAndDate}`}>
+                                                    <div className={`${FeedDetailStyle.btnDate}`}>
+                                                        {one.modifiedDate?.split("T")[0].split("-")[0][2]}{one.modifiedDate?.split("T")[0].split("-")[0][3]}.
+                                                        {one.modifiedDate?.split("T")[0].split("-")[1]}.
+                                                        {one.modifiedDate?.split("T")[0].split("-")[2]} &nbsp;   
+                                                        {/* {Number(one.modifiedDate?.split("T")[1].split(":")[0])<12?"오전 ":"오후 "} */}
+                                                        {one.modifiedDate?.split("T")[1].split(":")[0]}:
+                                                        {one.modifiedDate?.split("T")[1].split(":")[1]}   
+                                                    </div>
+
                                                     <div className={`${FeedDetailStyle.rightBtns}`}>
                                                         {/* <button onClick={()=>{updateComment(one.content)}}>수정</button> */}
-                                                        <button onClick={()=>dispatch(action.deleteComment(one.commentId))}>삭제</button>
+                                                        {one.userId==loginUser.id?<button onClick={()=>dispatch(action_feed.deleteComment(one.commentId))}>삭제</button>:null}
                                                     </div>
-                                                    <div className={`${FeedDetailStyle.btnDate}`}>수정 시간 필요</div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className={`${FeedDetailStyle.replyTotal}`}>
-                                            {/* 대댓글 map */}
+                                        {/* 대댓글 map */}
+                                        {/* <div className={`${FeedDetailStyle.replyTotal}`}>
                                             {
                                                 subCmt?.map((oneReple)=>{
                                                     return(
                                                         oneReple.mainCmtNo===one.mainCmtNo?
                                                         <div className={`${FeedDetailStyle.oneReplyTotal}`}>
                                                             <div className={`${FeedDetailStyle.oneReplyStyle}`}>
-                                                
+                                                 */}
                                                                 {/* 대댓글 유저 정보 */}
-                                                                <div className={`${FeedDetailStyle.profile3}`}>
+                                                                {/* <div className={`${FeedDetailStyle.profile3}`}> */}
                                                                     {/* 왼쪽 : 프로필 사진 */}
-                                                                    <div className={`${FeedDetailStyle.profile3}`}>
+                                                                    {/* <div className={`${FeedDetailStyle.profile3}`}>
                                                                         <div className={`${FeedDetailStyle.profileCircle_G3}`}>
                                                                             <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
                                                                         </div>
                                                                         <p>{one.nickname}</p>
                                                                     </div>
-                                                                </div>
+                                                                </div> */}
 
                                                                 {/* 대댓글 내용 */}
-                                                                <div className={`${FeedDetailStyle.replyContent}`}>{oneReple.content}</div>
-                                                            </div>
+                                                                {/* <div className={`${FeedDetailStyle.replyContent}`}>{oneReple.content}</div>
+                                                            </div> */}
 
                                                             {/* 수정 삭제 시간 */}
-                                                            <div className={`${FeedDetailStyle.repleBtnsAndTime}`}>
+                                                            {/* <div className={`${FeedDetailStyle.repleBtnsAndTime}`}>
                                                                 <div className={`${FeedDetailStyle.repleBtns}`}>
                                                                     <button>수정</button>
                                                                     <button>삭제</button>
@@ -343,7 +339,7 @@ const FeedDetail = (props) => {
                                                 })
                                             }
                                                         
-                                        </div>
+                                        </div> */}
 
                                         
                                     </div>

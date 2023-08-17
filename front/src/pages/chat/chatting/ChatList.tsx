@@ -9,6 +9,7 @@ import chatStyle from "./ChatList.module.css";
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
 import {action} from "../../../store/ChatSlice";
+import {changeMenuItemNum} from "../../../store/UtilSlice";
 
 //컴포넌트
 import ChatSlot from "../../../components/chat/chatting/ChatSlot";
@@ -17,7 +18,7 @@ import FollowSlot from "../../../components/util/FollowSlot";
 import Header from "../../../components/util/Header";
 import Menu from "../../../components/util/Menu";
 import Footer from "../../../components/util/Footer";
-import ChatFollow from "../../../components/chat/chatting/ChatFollow"
+import ChatFollow from "../../../components/sns/feed/FeedFollow"
 
 const ChatList = () => {
 
@@ -27,6 +28,8 @@ const ChatList = () => {
     //redux 관리
     let state = useSelector((state:any)=>state.chat);
     let dispatch = useDispatch();
+
+    dispatch(changeMenuItemNum(2))
 
     // 페이지네이션
     const [len, setLen] = useState(0);
@@ -76,14 +79,14 @@ const ChatList = () => {
                         </div>
                         
                         
-                        <div className={`${chatStyle.paginationContainer}`}>
+                        {/* <div className={`${chatStyle.paginationContainer}`}>
                             <Pagination
                                 total={state.chatList?.length}
                                 limit={limit}
                                 page={page}
                                 setPage={setPage}
                             />
-                        </div>
+                        </div> */}
                         
                     </div>
 

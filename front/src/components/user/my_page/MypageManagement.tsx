@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //css
 import mypageManagementStyle from "./MypageManagement.module.css";
@@ -18,7 +18,11 @@ const MypageManagement = () => {
   // 일단 로그인한 유저의 아이디
   const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
   // 내가 보고있는 유저의 아이디
-  const { targetUserId } = useParams();
+  const { watchingUserId } = useParams();
+
+  useEffect(() => {
+
+  }, [])
 
   const [userUpdateData, setUserUpdateData] = useState({
     name: state.targetUser.name,
@@ -199,7 +203,7 @@ const MypageManagement = () => {
                 <button
                   onClick={() => {
                     dispatch(
-                      action_mypage.updateUserInfo({ targetUserId, userUpdateData })
+                      action_mypage.updateUserInfo({ watchingUserId, userUpdateData })
                     );
 
                     dispatch(changeManageType(2));

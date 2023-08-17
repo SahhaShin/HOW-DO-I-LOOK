@@ -11,14 +11,28 @@ export const action = {
     // 옷 분야별 리스트 O
     getClothesListByType : createAsyncThunk("ClosetSlice/getClothesListByType", async({clothesType, userId, pageNum}:ClothesListByTypeReq, thunkAPI)=>{
         try{
-            console.log(`${clothesType} ${userId} ${pageNum}`);
             const token = await CheckToken();
-            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,{
-                headers: {
-                  "Authorization" : token
-                }
+
+
+            // 스트리밍 옷장은 페이지넘버가 없음
+            let response=null;
+
+            if(pageNum===null){
+                response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}`,{
+                    headers: {
+                    "Authorization" : token
+                    }
                 
-              });
+                });
+            }
+            else{
+                response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list?type=${clothesType}&userId=${userId}&page=${pageNum}`,{
+                    headers: {
+                    "Authorization" : token
+                    }
+                
+                });
+            }
 
               let data = {
                 type : clothesType,
@@ -32,11 +46,33 @@ export const action = {
             throw e;
         }
     }),
+
+    // 순차적인 옷 리스트 -> 라이브에서 씀
+    getClothesListByOrder : createAsyncThunk("ClosetSlice/getClothesListByOrder", async(userId, thunkAPI)=>{
+        try{
+
+            const token = await CheckToken();
+
+            // 스트리밍 옷장은 페이지넘버가 없음
+            let response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/list/forroom?userId=${userId}`,{
+                headers: {
+                    "Authorization" : token
+                }
+            
+            });
+
+
+            return response.data; // clothesId랑 photoLink
+
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }),
     //OOTD O
     //옷 id 같은 것끼리도 저장 가능
     OOTDSave: createAsyncThunk("ClosetSlice/OOTDSave",async ({userId, order, slotIds}:saveOOTD,thunkAPI) =>{
         try{
-            console.log(`${userId} ${order} ${slotIds.ACCESSORY1}`);
             const token = await CheckToken();
             const response = await axios.post(`${process.env.REACT_APP_SERVER}/api/ootd`,{userId,order,slotIds},{
                 headers: {
@@ -58,6 +94,25 @@ export const action = {
             throw e;
         }
     }),
+
+    //OOTD 리스트 불러오기 -> 진행중
+    OOTDList: createAsyncThunk("ClosetSlice/OOTDList",async (userId,thunkAPI) =>{
+        try{
+            const token = await CheckToken();
+            const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/ootd/list/${userId}`,{
+                headers: {
+                  "Authorization" : token
+                }
+                
+            });
+
+            return response.data;
+
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }),
  
     // 새로운 옷 등록 O
     saveClothes : createAsyncThunk("ClosetSlice/saveClothes", async(formdata, thunkAPI)=>{
@@ -73,7 +128,7 @@ export const action = {
             icon: 'success',
             title: '등록 완료',
             text: '옷이 성공적으로 등록되었습니다.',
-            confirmButtonColor: '#4570F5',
+            confirmButtonColor: '#EAA595',
         })
 
         return res.data;
@@ -84,7 +139,6 @@ export const action = {
     getClothInfo : createAsyncThunk("ClosetSlice/getClothInfo", async(clothesId, thunkAPI)=>{
 
         try{
-            console.log(clothesId);
             const token = await CheckToken();
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/clothes/detail/${clothesId}`,{
                 headers: {
@@ -92,7 +146,6 @@ export const action = {
                 }
             });
             
-            console.log(response.data);
             return response.data; // 액션의 payload로 값을 반환해야 합니다.
         } catch (e) {
             console.log(e);
@@ -104,14 +157,12 @@ export const action = {
     updateClothInfo : createAsyncThunk("ClosetSlice/updateClothInfo", async({userId,type,name,brand,info,clothesId}, thunkAPI)=>{
 
         try{
-            console.log(userId);
             const token = await CheckToken();
             const response = await axios.put(`${process.env.REACT_APP_SERVER}/api/clothes/${clothesId}`,{userId,type,name,brand,info},{
                 headers: {
                   "Authorization" : token,
                 }
             });
-            console.log(response.data);
             return response.data; // 액션의 payload로 값을 반환해야 합니다.
         } catch (e) {
             console.log(e);
@@ -150,7 +201,14 @@ interface ClothesListByTypeReq{ //response
 
 interface ClothesListByTypeRes{ //response
     clothesId : number,
-    photoLink : string
+    photoLink : string,
+    pick:boolean|null,
+}
+
+interface ClothesOOTDList{
+    clothesId:number,
+    clothesPhotoLink:string,
+    clothesOotdId:number
 }
 
 // 유저가 옷을 등록하려고 입력한 정보들
@@ -198,12 +256,27 @@ interface closet{
     // 옷 타입과 리스트
     clothesTypeKo:string,
     clothesTypeEn:string,
+
     clothesListByType:ClothesListByTypeRes[],
     clothesTop:ClothesListByTypeRes[],
     clothesBottom:ClothesListByTypeRes[],
     clothesShoe:ClothesListByTypeRes[],
     clothesAccessory:ClothesListByTypeRes[],
     clothesAll:ClothesListByTypeRes[],
+
+    clothesOOTDTop_1:ClothesOOTDList[],
+    clothesOOTDBottom_1:ClothesOOTDList[],
+    clothesOOTDShoe_1:ClothesOOTDList[],
+    clothesOOTDAccessory1_1:ClothesOOTDList[],
+    clothesOOTDAccessory2_1:ClothesOOTDList[],
+    clothesOOTDAccessory3_1:ClothesOOTDList[],
+
+    clothesOOTDTop_2:ClothesOOTDList[],
+    clothesOOTDBottom_2:ClothesOOTDList[],
+    clothesOOTDShoe_2:ClothesOOTDList[],
+    clothesOOTDAccessory1_2:ClothesOOTDList[],
+    clothesOOTDAccessory2_2:ClothesOOTDList[],
+    clothesOOTDAccessory3_2:ClothesOOTDList[],
 
     // 옷 id, link
     clothesId : number,
@@ -213,6 +286,7 @@ interface closet{
 
     // 페이지네이션
     page:number,
+    totalPage : number,
 
     clothRegistOk:boolean,
 
@@ -229,17 +303,34 @@ const initialState:closet = {
     clothesTypeKo : "상의",
     clothesTypeEn : "TOP",
     clothesListByType : [],
+
     clothesTop:[],
     clothesBottom:[],
     clothesShoe:[],
     clothesAccessory:[],
     clothesAll:[],
 
+    clothesOOTDTop_1:[],
+    clothesOOTDBottom_1:[],
+    clothesOOTDShoe_1:[],
+    clothesOOTDAccessory1_1:[],
+    clothesOOTDAccessory2_1:[],
+    clothesOOTDAccessory3_1:[],
+
+    clothesOOTDTop_2:[],
+    clothesOOTDBottom_2:[],
+    clothesOOTDShoe_2:[],
+    clothesOOTDAccessory1_2:[],
+    clothesOOTDAccessory2_2:[],
+    clothesOOTDAccessory3_2:[],
+
+
     clothesId : 0,
     clothesLink : "",
 
     clothInfo : null,
     page:0,
+    totalPage : 0,
 
     clothRegistOk : false,
 
@@ -265,14 +356,19 @@ const ClosetSlice = createSlice({
 
             if(state.clothesTypeKo==="상의"){
                 state.clothesTypeEn="TOP";
+                state.page = 0
             }else if(state.clothesTypeKo==="하의"){
                 state.clothesTypeEn="BOTTOM";
+                state.page = 0
             }else if(state.clothesTypeKo==="신발"){
                 state.clothesTypeEn="SHOE";
+                state.page = 0
             }else if(state.clothesTypeKo==="악세서리"){
                 state.clothesTypeEn="ACCESSORY";
+                state.page = 0
             }else{
                 state.clothesTypeEn="ALL";
+                state.page = 0
             }
         },
         changePage(state, action){
@@ -283,28 +379,50 @@ const ClosetSlice = createSlice({
         },
         changeClothesLink(state, action){
             state.clothesLink = action.payload;
+        },
+        changePick(state, action){
+            //action.payload에서 clothes id가 오는데
+            //id랑 맞는 것을 골라 pick true or false로 바꿔줌
+            for(let i=0;i<state.clothesAll?.length;i++){
+                if(state.clothesAll[i]?.clothesId===action.payload){
+                    if(state.clothesAll[i].pick===true)state.clothesAll[i].pick=false;
+                    else state.clothesAll[i].pick=true;
+                }
+            } 
         }
     },
     extraReducers:(builder) => {
         builder.addCase(action.getClothesListByType.fulfilled,(state,action)=>{
-            console.log(`!!!${action.payload.type}`);
+            state.totalPage = action.payload.response.totalPage
             if(action.payload?.type==="TOP"){
-                state.clothesTop = [...action.payload.response];
+                state.clothesTop = [...action.payload.response.clothesList];
             }else if(action.payload?.type==="BOTTOM"){
-                state.clothesBottom = [...action.payload.response];
+                state.clothesBottom = [...action.payload.response.clothesList];
             }else if(action.payload?.type==="SHOE"){
-                state.clothesShoe = [...action.payload.response];
+                state.clothesShoe = [...action.payload.response.clothesList];
             }else if(action.payload?.type==="ACCESSORY"){
-                state.clothesAccessory = [...action.payload.response];
+                state.clothesAccessory = [...action.payload.response.clothesList];
             }else{
                 // all
-                state.clothesAll = [...action.payload.response];
+                state.clothesAll = [...action.payload.response.clothesList];
             }
 
-            state.clothesListByType = [...action.payload.response];
+            state.clothesListByType = [...action.payload.response.clothesList];
 
-            console.log(state.clothesTop.length);
         })
+
+        builder.addCase(action.getClothesListByOrder.fulfilled,(state,action)=>{
+            // state.totalPage = action.payload.response.totalPage
+            
+            // all
+            state.clothesAll = [...action.payload];
+            
+
+            state.clothesListByType = [...action.payload];
+
+        })
+
+
         builder.addCase(action.getClothInfo.fulfilled, (state, action) => {
             //옷 특정 정보 결과
             state.clothInfo=action.payload;
@@ -328,7 +446,7 @@ const ClosetSlice = createSlice({
                 icon: 'success',
                 title: '수정 완료',
                 text: '옷이 성공적으로 수정되었습니다.',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
 
         })
@@ -344,8 +462,34 @@ const ClosetSlice = createSlice({
                 icon: 'success',
                 title: '등록 완료',
                 text: 'OOTD를 성공적으로 등록하였습니다.',
-                confirmButtonColor: '#4570F5',
+                confirmButtonColor: '#EAA595',
             })
+
+        })
+
+        builder.addCase(action.OOTDList.fulfilled, (state, action) => {
+
+            //옷장 1개씩 돔
+            for(let i=0;i<action.payload.length;i++){
+                
+                if(i==0){
+                    state.clothesOOTDTop_1 = action.payload[i].tops;
+                    state.clothesOOTDBottom_1 = action.payload[i].bottoms;
+                    state.clothesOOTDShoe_1 = action.payload[i].shoes;
+                    state.clothesOOTDAccessory1_1 = action.payload[i].accessories1;
+                    state.clothesOOTDAccessory2_1 = action.payload[i].accessories2;
+                    state.clothesOOTDAccessory3_1 = action.payload[i].accessories3;
+                }
+
+                else if(i==1){
+                    state.clothesOOTDTop_2 = action.payload[i].tops;
+                    state.clothesOOTDBottom_2 = action.payload[i].bottoms;
+                    state.clothesOOTDShoe_2 = action.payload[i].shoes;
+                    state.clothesOOTDAccessory1_2 = action.payload[i].accessories1;
+                    state.clothesOOTDAccessory2_2 = action.payload[i].accessories2;
+                    state.clothesOOTDAccessory3_2 = action.payload[i].accessories3;
+                }
+            }
 
         })
 
@@ -353,5 +497,5 @@ const ClosetSlice = createSlice({
     }
 });
 
-export let {changeModalOpen, changeMode,changeClothesType,changePage, changeClothesId, changeClothesLink} = ClosetSlice.actions;
+export let {changePick,changeModalOpen, changeMode,changeClothesType,changePage, changeClothesId, changeClothesLink} = ClosetSlice.actions;
 export default ClosetSlice.reducer;

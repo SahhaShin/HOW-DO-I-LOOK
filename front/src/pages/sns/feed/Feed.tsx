@@ -3,8 +3,8 @@ import feedStyle from "./Feed.module.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux"; 
-import {action, calTotalFeedLikes, changeModifyModalOpen,changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen} from "../../../store/FeedSlice";
-
+import {action_feed, calTotalFeedLikes, changeModifyModalOpen,changeDetailModalOpen,changeSortType, changeCreateModalOpen, changeDeclarationModalOpen, changeFeedMode} from "../../../store/FeedSlice";
+import {changeMenuItemNum} from "../../../store/UtilSlice";
 import { action_follow } from '../../../store/FollowSlice';
 
 // 컴포넌트
@@ -25,15 +25,17 @@ const Feed = () => {
     let state = useSelector((state:any)=>state.feed);
     let state_follow = useSelector((state:any)=>state.follow);
     let dispatch = useDispatch();
+    dispatch(changeMenuItemNum(1))
 
     // 등록된 피드 전체 불러오기
     // function getFeedTotalList(state,action){
         
     // }
 
+    const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
+
     useEffect(()=>{
-        let data = {size:0, page:0};
-        dispatch(action.getFeedTotalList(data));
+        dispatch(action_feed.getFeedTotalList(loginUser.id));
     },[state.feedAddOk, state.likeOk, state.addCommentOk, state.commentList])
 
     useEffect(()=>{
@@ -89,8 +91,18 @@ const Feed = () => {
                         <div className={`${feedStyle.title}`}>
                             <div>Feed</div>
                             <div className={`${feedStyle.sortBtn}`}>
-                                <button onClick={async()=>{dispatch(changeSortType(1))}} style={state.sortType===1?{backgroundColor:"#4570F5", color:"white"}:null}>ALL</button>
-                                <button onClick={async()=>{dispatch(changeSortType(2))}} style={state.sortType===2?{backgroundColor:"#4570F5", color:"white"}:null}>FLOWING</button>
+                                <button onClick={async()=>{
+                                    dispatch(changeSortType(1))
+                                    dispatch(changeFeedMode(1));
+                                    }} style={state.sortType===1?{backgroundColor:"#EAA595", color:"white"}:null}>ALL</button>
+                                <button onClick={async()=>{
+                                    dispatch(changeSortType(2))
+                                    dispatch(changeFeedMode(2));
+                                    }} style={state.sortType===2?{backgroundColor:"#EAA595", color:"white"}:null}>FOLLOWING</button>
+                                <button onClick={async()=>{
+                                    dispatch(changeSortType(3))
+                                    dispatch(changeFeedMode(3));
+                                    }} style={state.sortType===3?{backgroundColor:"#EAA595", color:"white"}:null}>MY</button>
                             </div>
                         </div>
 
