@@ -25,7 +25,7 @@ public class BadgeUpdateScheduler {
     private final UserRepository userRepository;
 
     // 매 시간 발동
-    @Scheduled(cron = "0 30 1 * * *")
+    @Scheduled(cron = "0 10 2 * * *")
     public void updateBadge() {
 
         badgeService.deleteAllBadge();
