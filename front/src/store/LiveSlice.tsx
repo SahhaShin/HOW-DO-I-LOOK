@@ -176,6 +176,7 @@ export const action = {
         const roomCode = response.data.roomCode;
         const chatCode = response.data.chatCode;
         const title = response.data.roomTitle;
+
         window.sessionStorage.setItem("roomCode", JSON.stringify(roomCode));
         window.sessionStorage.setItem("chatCode", JSON.stringify(chatCode));
         window.sessionStorage.setItem(
