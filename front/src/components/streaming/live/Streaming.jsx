@@ -367,9 +367,9 @@ class Streaming extends Component {
             <div id="session-header" className="buttons">
 
               {/* 제목이 표시 가능한 경우에만 표시 */}
-              {sessionStorage.getItem("title") !== null ? (
+              {/* {sessionStorage.getItem("title") !== null ? (
                 <div className="title">{sessionStorage.getItem("title")}</div>
-              ) : null}
+              ) : null} */}
               <div className="micAndSpeak">
                 {/* <h1 id="session-title">{mySessionId}</h1> */}
                 {isStreamer ? (

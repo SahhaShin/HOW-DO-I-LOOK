@@ -87,7 +87,7 @@ const LiveMenuModal = ()=>{
             <p>{loginUser.nickname}님 메뉴를 선택해주세요!</p>
             
             <div className={`${liveMenuModalStyle.menumiddle}`}>
-                <div onClick={()=>{dispatch(changeClosetOpenAndSendAdvisor());dispatch(action.getClothesListByType({clothesType:"ALL", userId:state_live.selectAdvisor.id, pageNum:null})); dispatch(changeOtherClosetOpen(true));dispatch(changeMenuModalOpen(false))}} className={`${liveMenuModalStyle.menu}`}>
+                <div onClick={()=>{dispatch(changeClosetOpenAndSendAdvisor());dispatch(action.getClothesListByOrder(state_live.selectAdvisor.id)); dispatch(changeOtherClosetOpen(true));dispatch(changeMenuModalOpen(false))}} className={`${liveMenuModalStyle.menu}`}>
                     <div><img src={process.env.PUBLIC_URL + '/img/live/laundry.png'}/></div>
                     <div>옷장보기</div>
                 </div>
