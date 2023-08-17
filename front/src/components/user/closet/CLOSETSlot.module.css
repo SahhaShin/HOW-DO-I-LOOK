@@ -1,0 +1,91 @@
+:root {
+    --primary-light: #8abdff;
+    --primary: #6d5dfc;
+    --primary-dark: #5b0eeb;
+    --white: #ffffff;
+    --greyLight-1: #e4ebf5;
+    --greyLight-2: #c8d0e7;
+    --greyLight-3: #bec8e4;
+    --greyDark: #9baacf;
+    --signiture: #4570F5;
+}
+
+.slots{
+    display: flex;
+}
+
+.slot{
+    /* 크기 */
+    width: 170px;
+    height: 170px;
+    border-radius: 1rem;
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+
+    /* 컬러 */
+    background-color: white;
+
+    /* 위치 */
+    margin-right: 30px;
+}
+
+.slot > img{
+    width: 100%;
+    height: 100%;
+    object-fit:contain;
+}
+
+.bgColor{
+    /* 위치 */
+    position: absolute;
+    z-index: 2;
+
+    /* 크기 */
+    width: 170px;
+    height: 170px;
+    border-radius: 1rem;
+}
+
+.bgColor2{
+    /* 위치 */
+    position: absolute;
+
+    /* 크기 */
+    width: 170px;
+    height: 170px;
+    border-radius: 1rem;
+
+    /* 컬러 */
+    background-color: black;
+    opacity: 0.6;
+}
+
+.btn{
+    /* 크기 */
+    width: 50px;
+    height: 30px;
+
+    /* 위치 */
+    margin-left: 1%;
+    margin-top: 70px;
+    z-index: 5;
+}
+
+.btn:hover{
+    background-color: var(--pinkes);
+    color:white;
+}
+
+
+.confirmButton {
+    font-size: 16px; /* 확인 버튼에 원하는 폰트 크기를 설정하세요. */
+    /* 기타 확인 버튼에 원하는 스타일을 추가하세요. */
+    width: 100px;
+    height: 50px;
+  }
+  
+  .cancelButton {
+    font-size: 16px; /* 취소 버튼에 원하는 폰트 크기를 설정하세요. */
+    /* 기타 취소 버튼에 원하는 스타일을 추가하세요. */
+    width: 100px;
+    height: 50px;
+  }

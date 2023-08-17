@@ -1,3 +1,37 @@
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+:root {
+  --primary-light: #8abdff;
+  --primary: #6d5dfc;
+  --primary-dark: #5b0eeb;
+  --white: #ffffff;
+  --greyLight-1: #e4ebf5;
+  --greyLight-2: #c8d0e7;
+  --greyLight-3: #bec8e4;
+  --greyDark: #9baacf;
+  --signiture: #FAD4AE;
+  --border: #f0f0f0;
+  --btnColor: #dfe1e2;
+  --lovelyBtn:#F48FB1;
+  --naturalBtn:#96e6a1;
+  --modernBtn:#81D4FA;
+  --sexyBtn:#E91E63;
+  --yellow:rgb(254,240,214);
+  --pink:rgb(250,207,207);
+  --purple:rgb(217,207,207);
+  --blue:rgb(210,218,233);
+  --lightpurple:rgb(231,228,241);
+  --babypink:rgb(245,230,235);
+  --signiture2:#FAD4AE;
+  --pinkes:#EAA595;
+}
+
+
 .App {
   text-align: center;
 }
@@ -37,3 +71,23 @@
     transform: translateY(0px);
   }
 }
+
+
+
+  /* 스크롤 */
+*::-webkit-scrollbar, .closetList2::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+*::-webkit-scrollbar-thumb,.closetList2::-webkit-scrollbar-thumb {
+    background-color: var(--pinkes);
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+  
+*::-webkit-scrollbar-track,.closetList2::-webkit-scrollbar-track {
+    background-color: lightgrey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }

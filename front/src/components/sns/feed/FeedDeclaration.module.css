@@ -1,0 +1,46 @@
+.modal{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 300px;
+    background-color: grey;
+}
+
+.statement{
+    padding: 5%;
+}
+.statement>p{
+    font-weight: 900;
+    margin: 0 auto;
+    color: white;
+}
+
+.input{
+    width: 100%;
+    height: 350px;
+}
+.input>textarea{
+    width: 70%;
+    height: 50%;
+    padding: 5%;
+}
+.btns{
+    display: flex;
+}
+
+.btns>button{
+    width: 100%;
+    height: 40px;
+    border-top: 1px solid lightgrey;
+    background-color: var(--pinkes);
+    color: white;
+}
+
+.btns>button:nth-child(1){
+    border-right: 1px solid lightgrey;
+}
+
+.btns>button:hover{
+    background-color: var(--pinkes);
+    color: white;
+}

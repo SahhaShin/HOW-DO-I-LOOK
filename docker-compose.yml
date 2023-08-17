@@ -1,0 +1,35 @@
+version: '3'
+services:
+  front:
+    image: parkseyun/howdoilook:front
+    container_name: front
+    ports:
+      - "3000:3000"
+    depends_on:
+      - back
+
+  back:
+    image: parkseyun/howdoilook:back
+    container_name: back
+    ports:
+      - "8081:8081"
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6000:6000
+    command: redis-server --port 6000
+    restart: always
+    hostname: redis
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /jenkins:/var/jenkins_home
+    ports:
+      - "9090:8080"
+
