@@ -40,9 +40,9 @@ public class FeedController {
     }
 
     @GetMapping("/hashtag")
-    public ResponseEntity<Page<FeedResponseDto>> selectByHashTag(@RequestParam(name = "hashtag") List<String> list, Pageable pageable){
-        Page<FeedResponseDto> feedResponseDtos = feedService.selectByHashTag(list, pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
+    public ResponseEntity<List<FeedResponseDto>> selectByHashTag(@RequestParam(name = "hashtag") List<String> list){
+        List<FeedResponseDto> feedResponseDtoList = feedService.selectByHashTag(list);
+        return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtoList);
     }
 
     //Following버튼 누르면 나오는 피드들

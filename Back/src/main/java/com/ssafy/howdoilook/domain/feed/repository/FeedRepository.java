@@ -12,8 +12,7 @@ import java.util.Optional;
 
 public interface FeedRepository extends JpaRepository<Feed, Long>,FeedCustomRepository {
 
-    @Override
-    Page<Feed> selectFeedByHashTag(List<String> hashTagList, Pageable pageable);
+
 
     @Override
     <S extends Feed> S save(S entity);
