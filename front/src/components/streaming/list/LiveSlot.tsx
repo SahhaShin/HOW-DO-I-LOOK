@@ -36,7 +36,6 @@ const LiveSlot = (props) => {
     );
   }
   function genderSubRankColor(gender){
-    console.log(gender)
 
     if(gender==="FEMALE"){
         return `${liveSlotStyle.profileImgF}`

@@ -159,6 +159,9 @@ export const action_feed = {
                 headers:{"Authorization":token}
             });
 
+            console.log(`dddddddd`);
+            console.log(response.data);
+
             return response.data;
         } catch(e){
             console.log(e);
@@ -410,7 +413,8 @@ interface comment{
     "userId": number,
     "feedId": number,
     "parentCommentId": number|null, //대댓글일 때만 작성
-    "content": string
+    "content": string,
+    "userProfileImg":string|null,
 }
 
 interface myPageFeedSearch{
@@ -541,9 +545,7 @@ const FeedSlice = createSlice({
             }
         },
         calTotalFeedLikes(state){
-            console.log(state.detailObj)
             state.totalDetailObjLikes = state.detailObj?.feedLikeCountResponseDto;
-            console.log(state.totalDetailObjLikes);
         },
 
         changePick_feed(state, action){
@@ -608,6 +610,7 @@ const FeedSlice = createSlice({
 
         builder.addCase(action_feed.getComment.fulfilled,(state,action)=>{
             state.commentList=action.payload.content;
+            console.log(action.payload.content);
         })
 
         builder.addCase(action_feed.deleteComment.fulfilled,(state,action)=>{

@@ -14,7 +14,6 @@ const FollowSlot = (props) => {
 
     // 성별
     function genderSubRankColor(gender){
-        console.log(gender)
 
         if(gender==="FEMALE"){
             return `${followSlotStyle.profileImgF}`

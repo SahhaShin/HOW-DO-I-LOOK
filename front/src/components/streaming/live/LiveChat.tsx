@@ -299,7 +299,7 @@ const LiveChat = () => {
 
             //방이 폭파된 경우
             if(messageOut.command==="master"){
-                console.log(`라이브 종료`);
+                // console.log(`라이브 종료`);
                 dispatch(changeLiveEndAlert(true)); //모든 유저에게 리스트 페이지로 가면 alert를 주세요.
                 disconnect();
             }
@@ -335,7 +335,7 @@ const LiveChat = () => {
         event.preventDefault();//버튼 눌렀을 때 새로고침 방지
         
         if(chat.trim()!==""){//빈문자열 입력 방지
-            console.log("현재 3-1 sendMessage이다.");
+            // console.log("현재 3-1 sendMessage이다.");
             publish(chat);
             setChat('');
         }
