@@ -241,7 +241,7 @@ public class UserService {
 
         String imageUrl = userUpdateProfileImgDto.getImageUrl();
 
-        if(extractFileNameFromUrl(imageUrl).equals("DefaultProfile")) {
+        if(extractFileNameFromUrl(imageUrl).equals("DefaultProfile.png")) {
             user.updateProfileImg(imageService.saveImage(multipartFile));
             return UserUpdateProfileImgResponseDto.builder()
                     .profileImg(user.getProfileImg())
@@ -271,7 +271,7 @@ public class UserService {
             throw new AccessException("접근 권한이 없습니다.");
         }
 
-        if(extractFileNameFromUrl(user.getProfileImg()).equals("DefaultProfile")) {
+        if(extractFileNameFromUrl(user.getProfileImg()).equals("DefaultProfile.png")) {
             return;
         }
 
