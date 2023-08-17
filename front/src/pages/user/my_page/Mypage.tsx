@@ -51,7 +51,7 @@ const Mypage = () => {
         return(<div>Loading..</div>);
       }
 
-      console.log(state.blackListUsers)
+
 
       if(loginUser.id !== Number(watchingUserId) && state.targetUser.closetAccess === "PRIVATE") {
         Swal.fire({
@@ -64,7 +64,7 @@ const Mypage = () => {
       }
 
       if(state.blackListUsers != null && loginUser.id !== Number(watchingUserId)) {
-        console.log(state.blackListUsers)
+      
         for(let i=0; i<state.blackListUsers.length; i++) {
             if(state.blackListUsers[i].targetUserId === loginUser.id) {
                 Swal.fire({

@@ -21,9 +21,7 @@ const MypageManagement = () => {
   const { watchingUserId } = useParams();
 
   useEffect(() => {
-    console.log("!!!!!!")
-    console.log(watchingUserId)
-    console.log(Number(watchingUserId))
+
   }, [])
 
   const [userUpdateData, setUserUpdateData] = useState({

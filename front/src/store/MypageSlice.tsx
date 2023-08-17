@@ -411,7 +411,7 @@ export const action_mypage = {
         }
       );
 
-      console.log("!!!!!!!!!!!!!!!!!!!")
+
 
       return response.data;
     } catch (e) {
@@ -816,7 +816,6 @@ const MypageSlice = createSlice({
 
     builder.addCase(action_mypage.getBlackList.fulfilled, (state, action) => {
       state.blackListUsers = action.payload;
-      console.log(state.blackListUsers)
     });
 
     builder.addCase(action_mypage.checkBlackList.fulfilled, (state, action) => {

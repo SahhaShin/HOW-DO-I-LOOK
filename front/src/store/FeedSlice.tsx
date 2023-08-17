@@ -40,7 +40,7 @@ export const action_feed = {
                 headers:{"Authorization":token}
             });
 
-            console.log(response.data);
+        
             return response.data;
         } catch(e){
             console.log(e);
@@ -98,7 +98,7 @@ export const action_feed = {
 
     //내가 피드를 눌렀을 때 내가 누른 좋아요 상황을 가져온다. X
     getFeedLikeOnMe : createAsyncThunk("FeedSlice/getFeedLikeOnMe", async({userId, feedId}, thunkAPI)=>{
-        console.log(`${userId} ${feedId}`);
+ 
         try{
             const token = await CheckToken();
             // http://localhost:8081/api/feedlike?userId=1&feedId=3
@@ -107,7 +107,7 @@ export const action_feed = {
                 headers:{"Authorization":token}
             });
 
-            console.log(`내가 조아한다고!! ${response.data}`);
+         
             return response.data;
         } catch(e){
             console.log(e);
@@ -118,7 +118,7 @@ export const action_feed = {
 
     // 피드 좋아요 등록 post O
     feedLike : createAsyncThunk("FeedSlice/feedLike", async({feedId, userId, type}:registLike, thunkAPI)=>{
-        console.log(`post ${feedId} ${userId} ${type}`);
+
         const token = await CheckToken();
         await axios.post(`${process.env.REACT_APP_SERVER}/api/feedlike`, {feedId, userId, type}, {
         headers: {
@@ -133,7 +133,7 @@ export const action_feed = {
 
     // 피드 좋아요 취소 delete O
     deleteLike : createAsyncThunk("FeedSlice/feedNoLike", async({feedId, userId, type}:registLike, thunkAPI)=>{
-       console.log(`delete ${feedId} ${userId} ${type}`);
+    
         try{
             const token = await CheckToken();
             const response = await axios.delete(`${process.env.REACT_APP_SERVER}/api/feedlike`,{
@@ -224,7 +224,7 @@ export const action_feed = {
     searchHash : createAsyncThunk("FeedSlice/searchHash", async({hashtag, size, page}:search, thunkAPI)=>{
         try{
             const token = await CheckToken();
-            console.log(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}`);
+         
 
             const response = await axios.get(`${process.env.REACT_APP_SERVER}/api/feed/hashtag?${hashtag}`,{
                 headers:{"Authorization":token}
@@ -602,7 +602,7 @@ const FeedSlice = createSlice({
                 if(state.feedTotalObj[i]?.feedId == action.payload){
                     state.feedTotalObj?.splice(i,1);
                     state.feedFollowingCheck?.splice(i,1);
-                    console.log(i);
+              
                 }
             }
         })
@@ -618,7 +618,7 @@ const FeedSlice = createSlice({
 
             for(let i=0;i<state.commentList.length;i++){
                 if(state.commentList[i].commentId == action.payload){
-                    console.log(i);
+             
                     state.commentList.splice(i,1);
                     break;
                 }

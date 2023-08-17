@@ -132,12 +132,12 @@ const MypageHeader = () => {
     if (e.target.files[0]) {
       setFile(e.target.files[0]);
 
-      console.log(e.target.files[0]);
+   
 
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result);
-        console.log(reader.result)
+  
       };
       reader.readAsDataURL(e.target.files[0]);
 
@@ -182,21 +182,7 @@ const MypageHeader = () => {
     }
   };
 
-  // useEffect(() => {
-  //   dispatch(action_mypage.getTargetUser(Number(watchingUserId)))
-  // }, [])
-
-  // let currentBadge = JSON.parse(sessionStorage.getItem("loginUser")).showBadgeType;
-
-  // useEffect(() => {
-  //   if(state.targetUser.id === 0)
-  //     return;
-
-  //   console.log(state.targetUser.showBadgeType)
-  //   // currentBadge = state.targetUser.showBadgeType;
-  //   dispatch(saveShowBadge(Number(watchingUserId)));
-  //   console.log(state.showBadge)
-  // }, [state.targetUser])
+ 
 
   useEffect(() => {
     dispatch(action_mypage.getShowBadge(Number(watchingUserId)));
@@ -253,7 +239,7 @@ const MypageHeader = () => {
   };
 
   const checkBlackList = () => {
-    console.log(state.blackListUsers);
+
 
     for (let i = 0; i < state.blackListUsers.length; i++) {
       if (Number(watchingUserId) === state.blackListUsers[i].targetUserId) {
@@ -282,7 +268,7 @@ const MypageHeader = () => {
 
   // 성별
   function genderColor(gender){
-    console.log(gender)
+
 
     if(gender==="FEMALE"){
         return `${mypageHeaderStyle.profileImgF}`
