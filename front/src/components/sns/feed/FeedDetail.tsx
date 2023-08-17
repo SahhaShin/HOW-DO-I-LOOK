@@ -137,6 +137,15 @@ const FeedDetail = (props) => {
     },[state.addCommentOk, state.totalDetailObjLikes])
 
 
+    function genderSubRankColor(gender){
+
+        if(gender==="FEMALE"){
+            return `${FeedDetailStyle.profileImgF}`
+        }else{
+            return `${FeedDetailStyle.profileImgM}`
+        }
+    }
+
     return(
         <div className={`${FeedDetailStyle.container}`}>
             {/* 왼쪽 페이지 */}
@@ -146,7 +155,7 @@ const FeedDetail = (props) => {
                     <div className={`${FeedDetailStyle.header}`}>
                         {/* 왼쪽 : 프로필 사진 */}
                         <div className={`${FeedDetailStyle.profile}`}>
-                            <div className={`${FeedDetailStyle.profileCircle_G}`}>
+                            <div className={`${genderSubRankColor(state.detailObj?.userGender)}`}>
                     
                                 <img src={state.detailObj?.userProfileImg}></img>
                             </div>
@@ -257,7 +266,7 @@ const FeedDetail = (props) => {
                                                 <div className={`${FeedDetailStyle.userInfo}`}>
                                                     {/* 왼쪽 : 프로필 사진 */}
                                                     <div className={`${FeedDetailStyle.profile2}`}>
-                                                        <div className={`${FeedDetailStyle.profileCircle_G2}`}>
+                                                        <div className={`${genderSubRankColor(one?.userGender)}`}>
                                                             <img src={one.userProfileImg}></img>
                                                         </div>
                                                         {/* 백에서 바꿔주면 nickName으로 고쳐야함 */}
