@@ -316,6 +316,8 @@ const MypageHeader = () => {
 
   }
 
+  //유저 아이디가 바뀔 때마다 유저 정보 새로 가져오기
+
 
   
   return (
@@ -331,14 +333,15 @@ const MypageHeader = () => {
           {loginUser.id===Number(watchingUserId)?
           <div className={`${genderColor(state.targetUser.gender)}`}>
           {/* <div className={`${mypageHeaderStyle.profile}`}> */}
-            <img src={Image} onClick={()=>{fileInput.current.click()}} />
+            <img src={state.targetUser.profileImg} onClick={()=>{fileInput.current.click()}} />
             <input type='file' style={{display:'none'}} accept='image/jpg,image/png,image/jpeg' name='profile_img'
               onChange={(e)=>{onChange(e);}} ref={fileInput}/>
           </div>
           :
           <div className={`${genderColor(state.targetUser.gender)}`}>
           {/* <div className={`${mypageHeaderStyle.profile}`}> */}
-            <img src={Image} />
+            <img src={state.targetUser.profileImg
+            } />
           </div>}
 
           {/* 뱃지 */}  

@@ -31,7 +31,7 @@ const NavigationBar: React.FC = () => {
     <div className={`${mypageFeedMenuStyle.navbarContainer}`}>
       <div className={`${mypageFeedMenuStyle.navbar}`}>
         {menuItems.map((menuItem, index) => (
-          <button key={index} onClick={() => {handleMenuClick(index); dispatch(changeFeedReadMode(index)); dispatch(action_mypage.getFeedList(loginUser.id)); dispatch(action_mypage.getLikeFeedList(loginUser.id))}}>
+          <button key={index} onClick={() => {handleMenuClick(index); dispatch(changeFeedReadMode(index)); dispatch(action_mypage.getFeedList(state.targetUser.id)); dispatch(action_mypage.getLikeFeedList(state.targetUser.id))}}>
             {menuItem}
           </button>
         ))}

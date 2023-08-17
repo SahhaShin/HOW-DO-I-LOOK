@@ -18,7 +18,7 @@ const MypageFeed = () => {
 
     //redux 관리
     let state = useSelector((state:any)=>state.mypage);
-    let state_feed = useSelector((state:any)=>state.mypage);
+    let state_feed = useSelector((state:any)=>state.feed);
     let dispatch = useDispatch();
 
     // 페이지네이션, 옷 관리
@@ -32,9 +32,11 @@ const MypageFeed = () => {
     const loginUser = JSON.parse(sessionStorage.getItem("loginUser"));
 
     useEffect(()=>{
-        dispatch(action_mypage.getFeedList(loginUser.id));
-        dispatch(action_mypage.getLikeFeedList(loginUser.id));
+        dispatch(action_mypage.getFeedList(state.targetUser.id));
+        dispatch(action_mypage.getLikeFeedList(state.targetUser.id));
     },[])
+
+    console.log(state.targetUser.id);
 
     return(
         <div className={`${mypageFeedStyle.total}`}>
