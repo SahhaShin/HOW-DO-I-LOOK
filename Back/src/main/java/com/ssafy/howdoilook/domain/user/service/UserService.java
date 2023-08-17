@@ -5,6 +5,7 @@ import com.ssafy.howdoilook.domain.badge.repository.BadgeRepository;
 import com.ssafy.howdoilook.domain.user.dto.request.*;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSearchResponseDto;
 import com.ssafy.howdoilook.domain.user.dto.response.UserSimpleResponseDto;
+import com.ssafy.howdoilook.domain.user.dto.response.UserUpdateProfileImgResponseDto;
 import com.ssafy.howdoilook.domain.user.entity.BadgeType;
 import com.ssafy.howdoilook.domain.user.entity.ClosetAccess;
 import com.ssafy.howdoilook.domain.user.entity.User;
@@ -228,8 +229,8 @@ public class UserService {
     }
 
     @Transactional
-    public Long updateProfileImg(Long userId, UserUpdateProfileImgDto userUpdateProfileImgDto,
-                                 MultipartFile multipartFile, UserDetails userDetails) throws AccessException, IOException {
+    public UserUpdateProfileImgResponseDto updateProfileImg(Long userId, UserUpdateProfileImgDto userUpdateProfileImgDto,
+                                                            MultipartFile multipartFile, UserDetails userDetails) throws AccessException, IOException {
         String clientEmail = userDetails.getUsername();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EmptyResultDataAccessException("해당 유저가 존재하지 않습니다", 1));
@@ -241,11 +242,17 @@ public class UserService {
         String imageUrl = userUpdateProfileImgDto.getImageUrl();
 
         if(extractFileNameFromUrl(imageUrl).equals("DefaultProfile")) {
-            return user.updateProfileImg(imageService.saveImage(multipartFile));
+            user.updateProfileImg(imageService.saveImage(multipartFile));
+            return UserUpdateProfileImgResponseDto.builder()
+                    .profileImg(user.getProfileImg())
+                    .build();
         }
 
         imageService.deleteImage(imageUrl);
-        return user.updateProfileImg(imageService.updateImage(imageUrl, multipartFile));
+        user.updateProfileImg(imageService.updateImage(imageUrl, multipartFile));
+        return UserUpdateProfileImgResponseDto.builder()
+                .profileImg(user.getProfileImg())
+                .build();
     }
 
     // URL에서 파일 이름 추출
@@ -315,5 +322,12 @@ public class UserService {
                 .showBadgeType(user.getShowBadgeType())
                 .closetAccess(user.getClosetAccess())
                 .build();
+    }
+
+    public BadgeType getShowBadgeByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하는 유저가 없습니다."));
+
+        return user.getShowBadgeType();
     }
 }

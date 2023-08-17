@@ -220,4 +220,10 @@ public class User extends BaseTimeEntity {
 
         return this.id;
     }
+
+    public Long updateShowBadgeType(BadgeType badgeType) {
+        this.showBadgeType = badgeType;
+
+        return this.id;
+    }
 }

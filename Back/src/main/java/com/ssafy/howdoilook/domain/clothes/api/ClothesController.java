@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesSaveRequestDto;
 import com.ssafy.howdoilook.domain.clothes.dto.request.ClothesUpdateDto;
 import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesDetailResponseDto;
 import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesListResponseDto;
+import com.ssafy.howdoilook.domain.clothes.dto.response.ClothesListWithTotalPageDto;
 import com.ssafy.howdoilook.domain.clothes.entity.Clothes;
 import com.ssafy.howdoilook.domain.clothes.repository.ClothesRepository;
 import com.ssafy.howdoilook.domain.clothes.service.ClothesService;
@@ -61,10 +62,10 @@ public class ClothesController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<List<ClothesListResponseDto>> findClothesList(@RequestParam(value = "type") String type,
-                                                                        @RequestParam(value = "userId") Long userId,
-                                                                        @RequestParam(value = "page") int page,
-                                                                        @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
+    public ResponseEntity<ClothesListWithTotalPageDto> findClothesList(@RequestParam(value = "type") String type,
+                                                                       @RequestParam(value = "userId") Long userId,
+                                                                       @RequestParam(value = "page", required = false) Integer page,
+                                                                       @AuthenticationPrincipal UserDetails userDetails) throws AccessException {
 
         return ResponseEntity.status(HttpStatus.OK).body(clothesService.findClothesList(type, userId, page, userDetails));
     }

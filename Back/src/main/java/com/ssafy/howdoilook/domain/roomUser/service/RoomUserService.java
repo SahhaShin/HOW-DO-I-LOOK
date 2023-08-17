@@ -62,6 +62,7 @@ public class RoomUserService {
                 findRoomUser.get().updateStatus(RoomUserType.JOIN);
 
                 RoomUserAddResponseDto roomUserAddResponseDto = RoomUserAddResponseDto.builder()
+                        .roomTitle(room.getTitle())
                         .roomCode(room.getCode())
                         .chatCode(room.getChatCode())
                         .build();
