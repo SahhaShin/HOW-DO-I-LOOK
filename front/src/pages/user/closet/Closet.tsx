@@ -41,9 +41,11 @@ const Closet = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(Number(id))
+        dispatch(action_mypage.getBlackList(Number(id)));
+    }, [])
+
+    useEffect(() => {
         dispatch(action_mypage.getUserById(Number(id)));
-        console.log(id)
       }, [])
 
 
@@ -175,9 +177,8 @@ const Closet = () => {
         setPage(state.page)
     },[state.clothesTypeEn, state.page])
 
-    
-    // console.log(state_mypage.targetUser)
-    if(state_mypage.targetUser.id === 0) {
+
+    if(state_mypage.targetUser.id === 0 || state_mypage.blackListUsers == null) {
         return(<div>Loading..</div>);
       }
 
@@ -189,6 +190,21 @@ const Closet = () => {
             confirmButtonColor: '#EAA595',
           })
         navigate("/");
+      }
+
+      if(state_mypage.blackListUsers != null && loginUser.id !== Number(id)) {
+        for(let i=0; i<state_mypage.blackListUsers.length; i++) {
+            if(state_mypage.blackListUsers[i].targetUserId === loginUser.id) {
+                Swal.fire({
+                    icon: 'info',
+                    title: '비공개된 옷장입니다!',
+                    text: '해당 유저가 블랙 했습니다!',
+                    confirmButtonColor: '#EAA595',
+                })
+
+                navigate("/");
+            }
+          }
       }
   
     return(
