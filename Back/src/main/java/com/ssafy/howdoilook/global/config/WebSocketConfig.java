@@ -1,0 +1,45 @@
+    package com.ssafy.howdoilook.global.config;
+
+    import com.ssafy.howdoilook.global.WebSocket.ChatHandler;
+    import lombok.RequiredArgsConstructor;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.messaging.simp.config.ChannelRegistration;
+    import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+    import org.springframework.web.socket.config.annotation.*;
+
+    @Configuration
+    @EnableWebSocketMessageBroker
+    @RequiredArgsConstructor
+    public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+        private final ChatHandler chatHandler;
+
+//        private final ChatHandler chatHandler; //웹 소켓 jwt 처리를 위한 핸들러
+
+        //엔드포인트 /ws 에 등록 + 모든 접근 허용 => /ws를 통해 웹소켓 연결
+        @Override
+        public void registerStompEndpoints(StompEndpointRegistry registry) {
+            registry.addEndpoint("/ws")
+                    .setAllowedOriginPatterns("*")
+                    .withSockJS()
+            ;
+            //setAllowedOrigin은 spring4.2버전에, SetAllowedOriginPatterns는 5.2버전에서 등장한 메서드
+            // Patterns가 더 강력한 메서드
+        }
+
+
+        // /sub/room1 => room1 입장
+        // /pub/room1 => room1 메시지 전송
+        @Override
+        public void configureMessageBroker(MessageBrokerRegistry registry) {
+            registry.enableSimpleBroker("/sub");
+            registry.setApplicationDestinationPrefixes("/pub");
+        }
+
+        //웹소켓 통신에서 처리하는 인터셉터 추가
+        @Override
+        public void configureClientInboundChannel(ChannelRegistration registration) {
+            registration.interceptors(chatHandler);
+        }
+
+
+    }

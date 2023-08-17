@@ -1,0 +1,228 @@
+*{
+    font-family: 'Pretendard-Regular';
+}
+
+.total{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.totalChat{
+    /* 위치 */
+    padding: 3%;
+    overflow: auto;
+    height: 700px;
+    margin-top: 5%;
+}
+
+
+/* 메세지 보내기 영역 */
+.sendArea{
+    /* 위치 */
+    display: flex;
+    justify-content: center;
+
+    /* 크기 */
+    width: 100%;
+    height: 70px;
+}
+
+.sendArea>input{
+    /* 크기 */
+    width: 100%;
+    border: 1px solid lightgrey;
+    padding-left: 3%;
+    outline: none;
+}
+
+.sendArea>button{
+    /* 크기 */
+    width: 50px;
+    height: 100%;
+
+    /* 컬러 */
+    background-color: var(--pinkes);
+    color: white;
+}
+
+/* 상대방 채팅 */
+.oneChat{
+    /* 위치 */
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1%;
+
+    /* 크기 */
+    width: 700px;
+    height: 100%;
+}
+
+.profile{
+    /* 공간배당 */
+    flex-shrink: 1;
+
+
+    /* 위치 */
+    justify-content: center;
+    margin-right: 8px;
+}
+
+.mid{
+    /* 공간 배당 */
+    flex-shrink: 3;
+
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.time{
+    /* 공간 배당 */
+    flex-shrink: 1;
+    
+    /* 위치 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    /* 폰트 */
+    font-size: 10px;
+    color: grey;
+}
+
+
+.mid>div{
+    /* 위치 */
+    margin: 0;
+    text-align: left;
+}
+
+.mid>div:nth-child(1){
+    /* 닉네임 */
+    /* 폰트 */
+    font-size: 12px;
+    color: grey;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.mid>div:nth-child(2){
+    /* 내용/시간 */
+    display: flex;
+    
+    /* 폰트 */
+    font-size: 15px;
+
+    /* 크기 */
+    width : 400px;
+    border: 10px;
+}
+
+.midContent{
+    /* 내용*/
+
+    /* 컬러 */
+    background-color: white;
+    border: 1px solid var(--pinkes);
+    color: var(--pinkes);
+
+    /* 채팅 내용에 맞게 띄어쓰기 해줌 */
+    word-wrap: break-word;
+    width: 200px;
+
+    /* 크기 */
+    border-radius: 1rem;
+    padding: 3%;
+
+    /* 폰트 */
+    font-size: 15px;
+}
+.midTime{
+    /* 시간 */
+    width: 50px;
+
+    /* 폰트 */
+    font-size: 10px;
+    color: grey;
+
+    /* 위치 */
+    align-self: flex-end;
+}
+
+/* 좌측 프로필 */
+.profileCircle_G{
+    /* 여자 프로필 이미지 */
+
+    /* 위치 */
+    width: 40px;
+    height: 40px;
+
+    /* 크기 */
+    border-radius: 10rem;
+
+    /* 컬러 */
+    background-color: white;
+
+    /* border 색상 */
+    border-style: solid;
+    border-color: pink;
+}
+
+.profileCircle_G > img{
+    /* 여자 프로필 border 크기 */
+    width: 100%;
+    height: 100%;
+}
+
+.profile{
+    /* 프로필 위치 */
+    display: flex;
+    justify-content: center;
+    padding-top: 3%;
+    align-items: center;
+}
+
+
+/* 나의 채팅 */
+.oneChat2{
+    /* 위치 */
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1%;
+
+    /* 크기 */
+    width: 900px;
+    height: 100%;
+}
+
+.mid2{
+    display: flex;
+    flex-direction:row;
+}
+.mid2>div{
+    text-align: left;
+}
+
+.date{
+    /* 크기 */
+    width: 950px;
+    height: 100%;
+    text-align: -webkit-center;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.date > div{
+    width: 200px;
+    
+    /* 컬러 */
+    background-color: lightgrey;
+    color: white;
+    border-radius: 1rem;
+}
