@@ -164,7 +164,8 @@ const LiveChat = () => {
     // 1. 서버와 소켓 연결 - jwt 토큰을 넣어야함
     function connect(){
         //SOCK JS 클라이언트를 만든다.
-        const socket = new SockJS('http://localhost:8081/ws');
+        // const socket = new SockJS('http://localhost:8081/ws');
+        const socket = new SockJS('https://i9b304.p.ssafy.io/ws');
 
         client.current = StompJs.Stomp.over(socket); //연결 요청
 
