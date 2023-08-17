@@ -233,8 +233,16 @@ const Closet = () => {
                         <CLOSETMenu/>
 
                         {/* 추가 버튼 */}
-                        <div className={`${closetStyle.addBtnContainer}`}><button className={`${closetStyle.addBtn}`} onClick={()=>{dispatch(changeMode(1)); dispatch(changeModalOpen(true))}}>추가</button></div>
-
+                        
+                        <div 
+                            className={`${closetStyle.addBtnContainer}`}  
+                            style={(state_mypage.blackListUsers != null && loginUser.id !== Number(id))?{visibility:"hidden"}:null}>
+                            <button 
+                                className={`${closetStyle.addBtn}`} 
+                                onClick={()=>{dispatch(changeMode(1)); dispatch(changeModalOpen(true))}}>추가
+                            </button>
+                        </div>
+ 
                         {/* 옷장 */}
                         <div className={`${closetStyle.closetList}`}>
                             {
