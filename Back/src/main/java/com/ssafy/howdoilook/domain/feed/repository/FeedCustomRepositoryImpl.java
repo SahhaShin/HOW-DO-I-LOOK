@@ -54,12 +54,12 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
     }
 
     @Override
-    public Page<Feed> selectFeedByHashTag(List<String> hashTagList, Pageable pageable) {
+    public List<Feed> selectFeedByHashTag(List<String> hashTagList) {
         BooleanBuilder builder = new BooleanBuilder();
         for (String s : hashTagList) {
             builder.or(hashtag.content.eq(s));
         }
-        QueryResults<Feed> results = jpaQueryFactory.select(feed)
+        List<Feed> feedList = jpaQueryFactory.select(feed)
                 .from(feed)
                 .leftJoin(feed.feedPhotoList, feedPhoto)
                 .leftJoin(feedPhoto.feedPhotoHashtagList, feedPhotoHashtag)
@@ -67,11 +67,10 @@ public class FeedCustomRepositoryImpl implements FeedCustomRepository {
                 .where(builder)
                 .distinct()
                 .orderBy(feed.id.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-        return new PageImpl(results.getResults(), pageable, results.getTotal());
+                .fetch();
+        return feedList;
     }
+
 
     @Override
     public  Page<Feed> selectByUserFollowee(List<Follow> followList, Pageable pageable) {
