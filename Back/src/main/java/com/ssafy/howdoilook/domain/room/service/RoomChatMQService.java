@@ -3,8 +3,8 @@ package com.ssafy.howdoilook.domain.room.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.howdoilook.domain.room.dto.ImageChatDto;
-import com.ssafy.howdoilook.domain.room.dto.response.RoomChatImageResponseDto;
-import com.ssafy.howdoilook.domain.room.dto.response.RoomChatResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.WebSocket.RoomChatImageResponseDto;
+import com.ssafy.howdoilook.domain.room.dto.response.WebSocket.RoomChatResponseDto;
 import com.ssafy.howdoilook.domain.room.entity.ImageType;
 import com.ssafy.howdoilook.domain.room.entity.RoomChat;
 import com.ssafy.howdoilook.domain.room.entity.RoomChatImage;
@@ -13,6 +13,7 @@ import com.ssafy.howdoilook.domain.room.repository.ChatRepository.RoomChatReposi
 import com.ssafy.howdoilook.global.handler.SerializationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@EnableScheduling
 public class RoomChatMQService {
     private final RedisTemplate<String,String> redisTemplate;
     private final RoomChatRepository roomChatRepository;
@@ -38,7 +40,6 @@ public class RoomChatMQService {
     }
 
     public void imageEnqueue(RoomChatImageResponseDto responseDto){
-        System.out.println("33333333333333333333");
         try{
             String chatContent = objectMapper.writeValueAsString(responseDto);
             redisTemplate.opsForList().leftPush(IMAGE_QUEUE_KEY, chatContent);
@@ -71,13 +72,11 @@ public class RoomChatMQService {
         return null;
     }
 
-    @Scheduled(fixedRate = 100)
+    @Scheduled(fixedRate = 1000)
     public void processRoomChatMessageQueue(){
-
         RoomChatResponseDto chatMessage = chatDequeue();
 
         if(chatMessage != null){
-
             //몽고db에 저장
             roomChatRepository.save(
                     RoomChat.builder()
@@ -90,7 +89,7 @@ public class RoomChatMQService {
         }
     }
 
-    @Scheduled(fixedRate = 100)
+    @Scheduled(fixedRate = 1000)
     public void processRoomImageMessageQueue(){
         RoomChatImageResponseDto chatMessage = imageDequeue();
 

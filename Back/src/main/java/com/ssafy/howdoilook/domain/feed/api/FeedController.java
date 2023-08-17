@@ -4,6 +4,7 @@ import com.ssafy.howdoilook.domain.feed.dto.request.FeedSaveRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.FeedUpdateRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.response.FeedResponseDto;
 import com.ssafy.howdoilook.domain.feed.service.FeedService;
+import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,16 @@ public class FeedController {
         Page<FeedResponseDto> feedResponseDtos = feedService.selectAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
     }
+    @GetMapping("/one/{feedId}")
+    public ResponseEntity<List<FeedResponseDto>> selectFeedById(@PathVariable(name = "feedId")Long feedId){
+        List<FeedResponseDto> feedResponseDtoList = feedService.selectFeedById(feedId);
+        return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtoList);
+    }
+    @GetMapping("/blacklist/{userId}")
+    public ResponseEntity<List<FeedResponseDto>> selectAllExceptBlackList(@PathVariable(name = "userId") Long userId){
+        List<FeedResponseDto> feedResponseDtoList = feedService.selectAllExceptBlackList(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtoList);
+    }
 
     @GetMapping("/hashtag")
     public ResponseEntity<Page<FeedResponseDto>> selectByHashTag(@RequestParam(name = "hashtag") List<String> list, Pageable pageable){
@@ -40,6 +51,15 @@ public class FeedController {
         Page<FeedResponseDto> feedResponseDtos = feedService.selectByUserFollowee(userId, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(feedResponseDtos);
     }
+
+    // Following 버튼 누르면서 블랙리스트는 거르면서 페이징은 아닌 피드 리스트
+    @GetMapping("/follow/blacklist/{userId}")
+    public ResponseEntity<?> selectFollowFeedExceptBlackList(@PathVariable Long userId) {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(feedService.selectFollowFeedExceptBlackList(userId));
+    }
+
     //특정 user의 피드를 불러오는 기능
     @GetMapping("/{userId}")
     public ResponseEntity<Page<FeedResponseDto>> selectUserFeed(@PathVariable(name = "userId")Long userId, Pageable pageable){

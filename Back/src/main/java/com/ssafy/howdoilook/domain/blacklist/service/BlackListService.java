@@ -49,6 +49,8 @@ public class BlackListService {
                     .targetUserId(targetUser.getId())
                     .nickname(targetUser.getNickname())
                     .profileImg(targetUser.getProfileImg())
+                    .gender(targetUser.getGender())
+                    .showBadgeType(targetUser.getShowBadgeType())
                     .build();
             blackListSelectResponseDtoList.add(blacklistdto);
         }
@@ -62,6 +64,10 @@ public class BlackListService {
 
         if (!clientEmail.equals(user.getEmail())) {
             throw new AccessException("접근 권한이 없습니다.");
+        }
+
+        if(blackListSaveRequestDto.getUserId() == blackListSaveRequestDto.getTargetUserId()) {
+            throw new IllegalArgumentException("자기 자신은 블랙리스트 처리할 수 없습니다.");
         }
 
         Optional<BlackList> blackList = blackListRepository.selectBlackListByUserIdTargetUserId(blackListSaveRequestDto.getUserId(),
@@ -99,7 +105,14 @@ public class BlackListService {
                 .orElseThrow(() -> new EmptyResultDataAccessException("존재하지 않는 BlackList입니다.", 1));
         blackListRepository.deleteById(blackList.getId());
     }
-
+    public boolean checkBlackList(Long userId, Long targetUserId){
+        List<BlackList> blackLists = blackListRepository.checkBlackList(userId, targetUserId);
+        if (blackLists.size() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     public List<BlackListSelectResponseDto> getAllBlackList(Long userId, UserDetails userDetails) {
         String clientEmail = userDetails.getUsername();
 
@@ -120,12 +133,13 @@ public class BlackListService {
                     .nickname(black.getTargetUser().getNickname())
                     .profileImg(black.getTargetUser().getProfileImg())
                     .targetUserId(black.getTargetUser().getId())
+                    .gender(black.getTargetUser().getGender())
+                    .showBadgeType(black.getTargetUser().getShowBadgeType())
                     .build();
 
             blackListSelectResponseDtoList.add(blackListSelectResponseDto);
         }
 
         return blackListSelectResponseDtoList;
-
     }
 }

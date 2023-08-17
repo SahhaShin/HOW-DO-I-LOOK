@@ -12,4 +12,6 @@ public interface BlackListCustomRepository {
     public Optional<BlackList> selectBlackListByUserIdTargetUserId(Long userId, Long targetUserId);
 
     public List<BlackList> getAllBlackList(Long userId);
+
+    public List<BlackList> checkBlackList(Long userId, Long targetUserId);
 }

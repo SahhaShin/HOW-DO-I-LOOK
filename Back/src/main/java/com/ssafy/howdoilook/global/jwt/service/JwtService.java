@@ -68,7 +68,6 @@ public class JwtService {
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod)) // 만료시간 설정
                 .withClaim(EMAIL_CLAIM, email)
-                .withClaim("nickname", user.getNickname())
                 .sign(Algorithm.HMAC512(secretKey)); // HMAC512 알고리즘 사용, SecretKey로 암호화
     }
 
@@ -121,23 +120,7 @@ public class JwtService {
                 .filter(accessToken -> accessToken.startsWith(BEARER))
                 .map(accessToken -> accessToken.replace(BEARER, ""));
     }
-
-    /*
-    * AccessToken에서 nickName 추출
-     */
-    public Optional<String> extractNickName(String accessToken){
-        try {
-            return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey)) // Token 유효성 검증기
-                    .build() // JWT verifier 생성
-                    .verify(accessToken) // accessToken 검증 -> 비유효 : 예외 발생
-                    .getClaim("nickname") // claim에서 nickname 추출
-                    .asString());
-        } catch(Exception e) {
-            e.printStackTrace();
-
-            return Optional.empty();
-        }
-    }
+    
 
     /*
     * AccessToken에서 Email 추출

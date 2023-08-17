@@ -2,6 +2,7 @@ package com.ssafy.howdoilook.domain.feed.dto.response;
 
 
 import com.ssafy.howdoilook.domain.feedLike.dto.response.FeedLikeCountResponseDto;
+import com.ssafy.howdoilook.domain.user.entity.Gender;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,9 @@ import java.util.List;
 public class FeedResponseDto {
     private Long userId;
     private String userNickname;
+    private String userProfileImg;
+    private Gender userGender;
+    private boolean followingCheck;
     private Long feedId;
     private String feedContent;
     private Long commentCount;
@@ -22,10 +26,12 @@ public class FeedResponseDto {
     private FeedLikeCountResponseDto feedLikeCountResponseDto;
 
     @Builder
-
-    public FeedResponseDto(Long userId, String userNickname, Long feedId, String feedContent, Long commentCount, LocalDateTime feedCreatedDate, LocalDateTime feedUpdateDate, List<PhotoResponseDto> photoResponseDtoList, FeedLikeCountResponseDto feedLikeCountResponseDto) {
+    public FeedResponseDto(Long userId, String userNickname, String userProfileImg, Gender userGender, boolean followingCheck, Long feedId, String feedContent, Long commentCount, LocalDateTime feedCreatedDate, LocalDateTime feedUpdateDate, List<PhotoResponseDto> photoResponseDtoList, FeedLikeCountResponseDto feedLikeCountResponseDto) {
         this.userId = userId;
         this.userNickname = userNickname;
+        this.userProfileImg = userProfileImg;
+        this.userGender = userGender;
+        this.followingCheck = followingCheck;
         this.feedId = feedId;
         this.feedContent = feedContent;
         this.commentCount = commentCount;

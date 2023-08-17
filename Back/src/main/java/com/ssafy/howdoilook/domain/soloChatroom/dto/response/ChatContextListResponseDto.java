@@ -10,10 +10,11 @@ import java.util.List;
 public class ChatContextListResponseDto {
     private List<ChatDto> chatContext;
     private String ChatRoomCode;
-
+    private long chatRoomId;
     @Builder
-    public ChatContextListResponseDto(List<ChatDto> chatContext, String chatRoomCode) {
+    public ChatContextListResponseDto(List<ChatDto> chatContext, String chatRoomCode, long chatRoomId) {
         this.chatContext = chatContext;
         ChatRoomCode = chatRoomCode;
+        this.chatRoomId = chatRoomId;
     }
 }

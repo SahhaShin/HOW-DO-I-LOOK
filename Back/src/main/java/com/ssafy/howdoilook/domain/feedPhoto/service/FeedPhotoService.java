@@ -2,6 +2,7 @@ package com.ssafy.howdoilook.domain.feedPhoto.service;
 
 import com.ssafy.howdoilook.domain.feed.dto.request.PhotoSaveRequestDto;
 import com.ssafy.howdoilook.domain.feed.dto.request.PhotoUpdateRequestDto;
+import com.ssafy.howdoilook.domain.feed.dto.response.PhotoResponseDto;
 import com.ssafy.howdoilook.domain.feed.entity.Feed;
 import com.ssafy.howdoilook.domain.feed.repository.FeedRepository;
 import com.ssafy.howdoilook.domain.feedPhoto.entity.FeedPhoto;
@@ -12,8 +13,13 @@ import com.ssafy.howdoilook.domain.feedPhotoHashtag.service.FeedPhotoHashtagServ
 import com.ssafy.howdoilook.domain.hashtag.service.HashTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,7 +34,21 @@ public class FeedPhotoService {
     private final FeedPhotoHashtagService feedPhotoHashtagService;
 
 
+    public Page<PhotoResponseDto> selectPhotoByHashtag(List<String> hashtagList, Pageable pageable){
+        Page<FeedPhoto> feedPhotos = feedPhotoRepository.selectPhotoByHashtag(hashtagList, pageable);
+        List<FeedPhoto> feedPhotoList = feedPhotos.getContent();
 
+
+        List<PhotoResponseDto> photoResponseDtoList = builder(feedPhotoList);
+        return new PageImpl<>(photoResponseDtoList, feedPhotos.getPageable(), feedPhotos.getTotalElements());
+    }
+    public Page<PhotoResponseDto> selectPhoto(Pageable pageable){
+        Page<FeedPhoto> feedPhotos = feedPhotoRepository.selectPhoto(pageable);
+        List<FeedPhoto> feedPhotoList = feedPhotos.getContent();
+
+        List<PhotoResponseDto> photoResponseDtoList = builder(feedPhotoList);
+        return new PageImpl<>(photoResponseDtoList, feedPhotos.getPageable(), feedPhotos.getTotalElements());
+    }
 
 
     @Transactional
@@ -84,5 +104,22 @@ public class FeedPhotoService {
         return feedPhoto.getId();
     }
 
+    private List<PhotoResponseDto> builder(List<FeedPhoto> list){
+        List<PhotoResponseDto> photoResponseDtoList = new ArrayList<>();
+        for (FeedPhoto feedPhoto : list) {
+            PhotoResponseDto photoResponseDto = new PhotoResponseDto();
 
+            photoResponseDto.setId(feedPhoto.getId());
+            photoResponseDto.setLink(feedPhoto.getLink());
+            photoResponseDto.setHashtagList(new ArrayList<>());
+
+            List<FeedPhotoHashtag> feedPhotoHashtagList = feedPhoto.getFeedPhotoHashtagList();
+
+            for (FeedPhotoHashtag feedPhotoHashtag : feedPhotoHashtagList) {
+                photoResponseDto.getHashtagList().add(feedPhotoHashtag.getHashtag().getContent());
+            }
+            photoResponseDtoList.add(photoResponseDto);
+        }
+        return photoResponseDtoList;
+    }
 }
