@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -159,7 +160,18 @@ public class ImageService {
         // 이미지가 존재하면 버킷에서 해당 이미지를 삭제
         String existFile = extractFileNameFromUrl(imageUrl);
         System.out.println(existFile);
-        amazonS3Client.deleteObject(S3Bucket, existFile);
+        try {
+            String decodedFileName = URLDecoder.decode(existFile, "UTF-8");
+            amazonS3Client.deleteObject(S3Bucket, decodedFileName);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // URL에서 파일 이름 추출
+    private String extractFileNameFromUrl(String imageUrl) {
+        // URL의 마지막 슬래시 이후의 문자열
+        return imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
     }
 
     /**
@@ -206,12 +218,6 @@ public class ImageService {
 //
 //        return processedImagePath;
 //    }
-
-    // URL에서 파일 이름 추출
-    private String extractFileNameFromUrl(String imageUrl) {
-        // URL의 마지막 슬래시 이후의 문자열
-        return imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-    }
 
     public String processImageAndReturnPath(String imagePath) throws IOException {
 
