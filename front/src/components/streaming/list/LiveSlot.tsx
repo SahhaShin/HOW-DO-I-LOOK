@@ -35,6 +35,15 @@ const LiveSlot = (props) => {
       })
     );
   }
+  function genderSubRankColor(gender){
+    console.log(gender)
+
+    if(gender==="FEMALE"){
+        return `${liveSlotStyle.profileImgF}`
+    }else{
+        return `${liveSlotStyle.profileImgM}`
+    }
+}
 
 
   return (
@@ -59,7 +68,8 @@ const LiveSlot = (props) => {
 
         {/* 오른쪽 : 프로필 사진 */}
         <div className={`${liveSlotStyle.profile}`}>
-          <div className={`${liveSlotStyle.profileCircle_G}`}>
+          <div className={`${genderSubRankColor(props.oneRoom.hostGender)}`}>
+          {/* <div className={`${liveSlotStyle.profileCircle_G}` }> */}
             <img
               src={props.oneRoom.hostProfileImg}
             ></img>
