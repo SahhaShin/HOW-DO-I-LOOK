@@ -21,7 +21,6 @@ import {action_feed, changeFollow,changeDeclarationModalOpen, changeDetailModalO
 
 const FeedDetail = (props) => {
 
-    console.log(props.feedId);
 
     //redux 관리
     let state = useSelector((state:any)=>state.feed);
@@ -137,8 +136,6 @@ const FeedDetail = (props) => {
         dispatch(action_feed.getComment(props.feedId));
     },[state.addCommentOk, state.totalDetailObjLikes])
 
-    console.log(`state.detailObjLikes ${state.detailObjLikes?.lovelyType}`);
-    console.log(state.totalDetailObjLikes);
 
     return(
         <div className={`${FeedDetailStyle.container}`}>
@@ -150,7 +147,8 @@ const FeedDetail = (props) => {
                         {/* 왼쪽 : 프로필 사진 */}
                         <div className={`${FeedDetailStyle.profile}`}>
                             <div className={`${FeedDetailStyle.profileCircle_G}`}>
-                                <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
+                    
+                                <img src={state.detailObj?.userProfileImg}></img>
                             </div>
                                             
                         </div>
@@ -260,7 +258,7 @@ const FeedDetail = (props) => {
                                                     {/* 왼쪽 : 프로필 사진 */}
                                                     <div className={`${FeedDetailStyle.profile2}`}>
                                                         <div className={`${FeedDetailStyle.profileCircle_G2}`}>
-                                                            <img src={process.env.PUBLIC_URL+`/img/user/profileImg.png`}></img>
+                                                            <img src={one.userProfileImg}></img>
                                                         </div>
                                                         {/* 백에서 바꿔주면 nickName으로 고쳐야함 */}
                                                         <p style={{width:"100px"}}>{one.userNickname}</p>

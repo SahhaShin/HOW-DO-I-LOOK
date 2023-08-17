@@ -21,22 +21,15 @@ const Login: React.FC = () => {
   const [rememberID, setRememberID] = useState(false);
 
   useEffect(() => {
-    console.log("로그인 페이지 로드");
 
     //회원정보 가져오기
     const rememberedID = getCookie("rememberID");
     if (!((typeof rememberedID == "undefined") || (typeof rememberedID === null))) {
-      console.log("remember ID : " + rememberedID);
       setemail(rememberedID)
       setRememberID(true)
     }
   }, []);
   const loginClick = () => {
-
-
-    console.log("회원 로그인");
-    console.log("email : " + email);
-    console.log("password : " + password);
 
     //email또는 비밀번호를 전부 입력하지 않았을 경우 사용자에게 알림
     if(email == ""){
@@ -70,8 +63,6 @@ const Login: React.FC = () => {
   };
 
   const socialLoginClick = (brand) => {
-    console.log("브랜드 로그인");
-    console.log("brand : " + brand);
     // socialLogin(brand);
 
     const ApiUrl = "http://localhost:8081/oauth2/authorization/";

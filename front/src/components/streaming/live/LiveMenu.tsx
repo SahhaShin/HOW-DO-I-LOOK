@@ -112,17 +112,13 @@ const LiveMenu = () => {
                 if(count===0){
                     hashquery = target;
                     count++;
-                    console.log(`3 ${hashquery}`);
                 }
                 else {
                     hashquery = hashquery+"&"+target;
                     count++;
-                    console.log(`4 ${hashquery}`);
                 }
              }
         }
-
-        console.log(hashquery);
 
 
         let info = {
@@ -148,7 +144,6 @@ const LiveMenu = () => {
         setPickList({type:type, photoLink:link});
         dispatch(addPickList({type:type, photoLink:link}));
 
-        console.log(`1111 ${pickList.length}`);
     }
 
 
@@ -239,7 +234,6 @@ const LiveMenu = () => {
 
     //세트로 선택한 아이템 삭제
     function removeItem(idx){
-        console.log(state_live.pickList);
         const updatedPickList = [...state_live.pickList]; // Create a copy of the pickList array
         updatedPickList.splice(idx, 1); // Remove the item at the specified index
 
@@ -314,7 +308,6 @@ const LiveMenu = () => {
             <div className={`${liveMenuStyle.closetList2}`}>
                 {
                     state_feed.mypageFeedPic.length>0?state_feed.mypageFeedPic?.map((item)=>{
-                        console.log(item);
                         return(
                             <div className={`${liveMenuStyle.clothItem2}`}>
                                 <img style={item.pick===true?{border: "1px solid #4570F5"}:null} onClick={()=>{dispatch(changePick_feed(item.id));sendPickList(item.link, "FEED")}} src={item.link}/>

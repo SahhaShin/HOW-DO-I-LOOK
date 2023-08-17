@@ -21,8 +21,6 @@ const IntroArea = ( setPage) => {
   const [type, setType] = useState("");
 
   function getList() {
-    console.log("input : " + searchInput)
-    console.log("type : " + type)
     const followingList = (typeof state.userId == "undefined" || state.userId == null || state.userId == "")
 
     dispatch(
@@ -35,11 +33,9 @@ const IntroArea = ( setPage) => {
       })
     );
     dispatch(changePage(0));
-    console.log(state.page)
   }
 
   function clickH(hash:String){
-    console.log(searchInput)
     if(type == hash){
       setType("")
     }
@@ -58,9 +54,6 @@ const IntroArea = ( setPage) => {
     dispatch(changePage(0));
     dispatch(setListType((type == hash)? "" : hash));
     dispatch(setSearch(searchInput));
-    console.log("area state : " + state.page)
-    console.log("type state : " + state.type)
-    console.log("searchInput state : " + state.searchInput)
   }
 
   function typeIn(e){
@@ -81,9 +74,6 @@ const IntroArea = ( setPage) => {
     dispatch(changePage(0));
     dispatch(setListType(type));
     dispatch(setSearch(searchInput));
-    console.log("area state : " + state.page)
-    console.log("type state : " + state.type)
-    console.log("searchInput state : " + state.searchInput)
   }
 
   return (

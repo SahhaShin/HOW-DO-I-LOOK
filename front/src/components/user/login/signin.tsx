@@ -30,63 +30,50 @@ const Login: React.FC = () => {
 
   const changeEmail = (value: string) => {
     setEmail(value)
-    console.log("email : "+ email + " "+ value)
+
     if(value != ""){
       CheckEmail(value).then((res) => setEmailNotice(res))
 
     }
-    console.log("check : " + emailNotice)
+
   }
 
   const changeNickname = (value: string) => {
     setNickname(value)
-    console.log("nickname : "+ nickname + " "+ value)
+
     if(value != ""){
       CheckNickName(value).then((res) => setNicknameNotice(res))
 
     }
-    console.log("check : " + nicknameNotice)
+
   }
 
   const changePassword = (value: string) => {
     setPassword(value)
-    console.log("password : "+ password + " "+ value)
+
     if(value != passworda){
       setPwNotice(true)
     }
     else{
       setPwNotice(false)
     }
-    console.log("check : " + pwNotice)
+
   }
 
   const changePassworda = (value: string) => {
     setPassworda(value)
-    console.log("passworda : "+ passworda + " "+ value)
+
     if(value != password){
       setPwNotice(true)
     }
     else{
       setPwNotice(false)
     }
-    console.log("check : " + pwNotice)
+
   }
 
   const signinClick = () => {
-    console.log("일반 회원가입");
-    console.log("name : " + name);
-    console.log("email : " + email);
-    console.log("nickname : " + nickname);
-    console.log("password : " + password);
-    console.log("passworda : " + passworda);
-    console.log("gender : " + gender);
-    console.log("age : " + age);
-    console.log("agree : " + agree);
 
-    console.log()
-    console.log("emailNotice : " + emailNotice)
-    console.log("pwNotice : " + pwNotice)
-    console.log("nicknameNotice : " + nicknameNotice)
     //이메일 확인
     // const ntf = dispatch(action.CheckNickName({nickname}))
     // .then((res) =>{

@@ -64,7 +64,6 @@ const FeedCreate = () => {
             //이전으로 이동한 페이지가 0보다 작지 않으면,
             //이전에 등록했던 사진과 해시태그가 있다면 셋팅해준다.
             if(page>=0){
-                // console.log(page);//0
                 setImgSrc(imageSrcList[page-1]);
                 setHashtags(objectListHash[page-1].hashtagList); //null 문제
             }
@@ -90,7 +89,7 @@ const FeedCreate = () => {
                     const newImageSrcList = [...imageSrcList];
                     newImageSrcList.splice(page,1,imgSrc);
                     setImageSrcList(newImageSrcList);
-                    console.log(newImageSrcList);
+
                 }
 
                 if(imgFile!==null){
@@ -98,7 +97,7 @@ const FeedCreate = () => {
                     const newImageFileList = [...imageFileList];
                     newImageFileList.splice(page,1,imgFile);
                     setImageFileList(newImageFileList);
-                    console.log(newImageFileList);
+
 
 
                     // 해시태그 리스트에 등록 -> 리스트에 객체 형식으로 들어가야함
@@ -106,18 +105,17 @@ const FeedCreate = () => {
                     const newObjectListHash = [...objectListHash];
                     newObjectListHash.splice(page,1,{hashtagList:hashtags});
                     setObjectListHash(newObjectListHash);
-                    console.log(`현재 내가 지우는 페이지는! ${page}`);
-                    console.log(newObjectListHash);
+
                 }
 
   
-                // console.log(page); //1
+
 
                 //다음페이지 정보 가져오기
                 if(imageSrcList.length>page+1){
                     setUploadEnd(false);
                     setImgSrc(imageSrcList[page+1]);
-                    console.log(imageSrcList[page+1]);
+
                     setHashtags(objectListHash[page+1].hashtagList); //null 문제 주의
                 }else{
                     setImgSrc('');
@@ -253,10 +251,6 @@ const FeedCreate = () => {
         // 이미지 폼데이터로 저장
         const formdata = new FormData();
 
-        console.log(imageFileList);
-        console.log(objectListHash);
-        console.log(statement);
-        console.log(newFeed.feedSaveRequestDto);
 
         if(newFeed.feedSaveRequestDto.photoSaveRequestDtoList.length>0){
             formdata.append("feedSaveRequestDto", new Blob([JSON.stringify(newFeed.feedSaveRequestDto)],{type: "application/json"}));
@@ -265,7 +259,6 @@ const FeedCreate = () => {
             for (let i = 0; i < imageFileList.length; i++) {
                 const file = imageFileList[i];
                 if (file instanceof File) {
-                    console.log(file);
                     formdata.append("s3upload", file);
                 }
             }
@@ -274,14 +267,14 @@ const FeedCreate = () => {
             // 폼 객체 key 와 value 값을 순회.
             let entries = formdata.entries();
             for (const pair of entries) {
-                console.log(pair[0]+ ', ' + pair[1]); 
+
             }
             sendFormdata(formdata);
         }
     }
 
     async function sendFormdata(formdata){
-        console.log(formdata);
+ 
         dispatch(action_feed.addFeed(formdata));
 
         let data = {size:0, page:0};
@@ -292,7 +285,7 @@ const FeedCreate = () => {
 
 
     useEffect(()=>{
-        // console.log("render");
+  
     },[page, uploadEnd, hashtags])
 
 

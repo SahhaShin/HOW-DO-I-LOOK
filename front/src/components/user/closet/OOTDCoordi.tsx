@@ -186,7 +186,6 @@ const OOTDCoordi = (props) => {
     }
 
 
-    console.log(currentBOTTOMImageInfo);
 
     // 화면 단 : 이 부분은 백엔드에서 데이터 넘겨주면 map 형태로 다시 바꿀 것임
     return (

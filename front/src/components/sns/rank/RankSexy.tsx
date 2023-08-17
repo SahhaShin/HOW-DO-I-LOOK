@@ -37,7 +37,6 @@ const RankingSexy = () => {
 
     // 성별
     function firstRankGenderColor(gender){
-        console.log(gender)
 
         if(gender==="FEMALE"){
             return `${rankingStyle.firstRankProfileImgF}`
@@ -46,7 +45,6 @@ const RankingSexy = () => {
         }
     }
     function notFirstRankGenderColor(gender){
-        console.log(gender)
 
         if(gender==="FEMALE"){
             return `${rankingStyle.notFirstRankProfileImgF}`
@@ -55,7 +53,6 @@ const RankingSexy = () => {
         }
     }
     function subRankGenderColor(gender){
-        console.log(gender)
 
         if(gender==="FEMALE"){
             return `${rankingStyle.subRankProfileImgF}`

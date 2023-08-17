@@ -1005,11 +1005,9 @@ const MypageSlice = createSlice({
 
 
     builder.addCase(action_mypage.profileUpdate.fulfilled, (state, action) => {
-      console.log(action.payload);
       const loginUser = JSON.parse(window.sessionStorage.getItem("loginUser"));
       loginUser.profileImg = action.payload.profileImg;
 
-      console.log(action.payload.profileImg);
       
       sessionStorage.setItem("loginUser", JSON.stringify(loginUser));
     });

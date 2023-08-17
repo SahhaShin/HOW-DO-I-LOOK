@@ -17,9 +17,9 @@ class Streaming extends Component {
     const user = JSON.parse(sessionStorage.getItem("loginUser"));
     const hostId = window.sessionStorage.getItem("hostId");
     // const sessionid = "session2"; //window.sessionStorage.getItem("sessionid")
-    console.log(user);
-    console.log("userId : " + user.id);
-    console.log("hostID : " + hostId);
+    // console.log(user);
+    // console.log("userId : " + user.id);
+    // console.log("hostID : " + hostId);
     //가져온 user정보를 this.state에 입력
     //
     // These properties are in the state's component in order to re-render the HTML whenever their values change
@@ -121,9 +121,9 @@ class Streaming extends Component {
     //Openvidu 객체 생성 하는 코드
     this.OV = new OpenVidu();
     const isStreamer = this.state.myUserName == this.state.mySessionId;
-    console.log("isStreamer : " + isStreamer);
-    console.log(this.state.myUserName);
-    console.log(this.state.mySessionId);
+    // console.log("isStreamer : " + isStreamer);
+    // console.log(this.state.myUserName);
+    // console.log(this.state.mySessionId);
 
     //세션을 설정하는 부분
     this.setState(
@@ -142,8 +142,8 @@ class Streaming extends Component {
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = [...this.state.subscribers];
           subscribers.push(subscriber);
-          console.log("test-subscribers");
-          console.log(subscribers);
+          // console.log("test-subscribers");
+          // console.log(subscribers);
 
           this.setState({
             subscribers: subscribers,
@@ -191,7 +191,6 @@ class Streaming extends Component {
               mySession.publish(publisher);
 
               if (isStreamer) {
-                console.log("Is Streamer! ");
 
                 //사용가능한 오디오 및 비디오 디바이스 목록 가져옵니다.
                 var devices = await this.OV.getDevices();
@@ -295,9 +294,9 @@ class Streaming extends Component {
 
   //카메라 끄기/켜기
   async toggleCamera(e) {
-    console.log("Camera ON/Off");
+    // console.log("Camera ON/Off");
 
-    console.log(this.subscribers);
+    // console.log(this.subscribers);
 
     const newCameraOn = !this.state.cameraOn; // 카메라 토글
     const newPublisher = this.state.publisher;
@@ -312,7 +311,7 @@ class Streaming extends Component {
 
   //오디오(마이크) 끄기/켜기
   async toggleAudio(e) {
-    console.log("Audio ON/Off");
+    // console.log("Audio ON/Off");
     const newAudioOn = !this.state.audioOn; //마이크토글
 
     const newPublisher = this.state.publisher;
@@ -444,7 +443,7 @@ class Streaming extends Component {
         },
       }
     );
-    console.log(response.data);
+    // console.log(response.data);
     return response.data; // The sessionId
   }
 

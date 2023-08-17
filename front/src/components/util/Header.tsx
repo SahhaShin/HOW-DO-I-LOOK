@@ -24,10 +24,7 @@ const Header = () => {
 
   const logout = () => {
     // const user2 = useSelector((state:any)=>state.user);
-    console.log("user")
-    console.log(user)
 
-    console.log(loginUser)
     
     //로그아웃
     if(loginUser !== null && loginUser.id != 0){

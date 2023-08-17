@@ -11,7 +11,6 @@ export const action_user = {
   Signin: createAsyncThunk(
     `UserSlice/Signin`,
     async (formdata: SigninInfo, thunkAPI) => {
-      console.log(formdata);
       return await axios({
         method: "post",
         url: `${process.env.REACT_APP_SERVER}/api/user/signup`,
@@ -32,7 +31,7 @@ export const action_user = {
   SocialSignin: createAsyncThunk(
     `UserSlice/SocialSignin`,
     async (formdata: SocialSigninInfo, thunkAPI) => {
-      console.log("`UserSlice/SocialSignin`,");
+
       const nickname = formdata.nickname;
       const gender = formdata.gender;
       const age = formdata.age;
@@ -59,7 +58,7 @@ export const action_user = {
         headers: { Authorization: token },
       })
         .then((response) => {
-          console.log(response.data);
+
 
           //성공시 home으로 다이랙트
           window.location.href = `${process.env.REACT_APP_FRONT}`;
@@ -81,17 +80,13 @@ export const action_user = {
         data: formdata,
       })
         .then((response) => {
-          // console.log(response.data);
-          // console.log(response.headers);
-          // console.log(
-          //   "header : " + response.headers.get("Authorization-Refresh")
-          // );
+
           const refresh = response.headers.get("Authorization-Refresh");
           setCookie("Authorization-Refresh", refresh, {
             path: "/",
             maxAge: 3600 * 24 * 2 * 7,
           });
-          // console.log("header : " + response.headers.get("authorization"));
+     
           const authorization = response.headers.get("Authorization");
           setCookie("Authorization", authorization, {
             path: "/",
@@ -108,8 +103,7 @@ export const action_user = {
           return response.data; //return을 꼭 해줘야 extraReducer에서 에러가 안난다.
         })
         .catch((e) => {
-          console.log("error");
-          console.log(e.response.data);
+
           alert(e.response.data);
         });
     }
@@ -138,16 +132,13 @@ export const action_user = {
       })
         .then((response) => {
           const result = response.data;
-          // console.log("res.data : " + result);
-          // console.log(
-          //   "header : " + response.headers.get("Authorization-Refresh")
-          // );
+
           const refresh = response.headers.get("Authorization-Refresh");
           setCookie("Authorization-Refresh", refresh, {
             path: "/",
             maxAge: 3600 * 24 * 2 * 7,
           });
-          // console.log("header : " + response.headers.get("authorization"));
+          
           const authorization = response.headers.get("Authorization");
           setCookie("Authorization", authorization, {
             path: "/",
@@ -163,7 +154,7 @@ export const action_user = {
 
   // 로그아웃  api
   Logout: createAsyncThunk(`UserSlice/Logout`, async (id: string, thunkAPI) => {
-    // let Token = "Bearer " + getCookie("Authorization");
+  
     const token = await CheckToken();
 
     return await axios({
@@ -202,11 +193,10 @@ export const action_user = {
         headers: { Authorization: Token },
       })
         .then((response) => {
-          // console.log("res.data from Action : ");
-          // console.log(response.data);
+          
           removeCookie("new_basic_user_email", { path: "/" });
           removeCookie("new_social_user_email", { path: "/" });
-          console.log("res.data from Session : ");
+ 
 
           window.sessionStorage.setItem(
             "loginUser",
@@ -287,8 +277,7 @@ const UserSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(action_user.GetUserInfo.fulfilled, (state, action_user) => {
-      console.log("res.data from exRedux : ");
-      console.log(action_user.payload);
+
       state.id = action_user.payload.id;
       state.age = action_user.payload.age;
       state.email = action_user.payload.email;
@@ -302,8 +291,7 @@ const UserSlice = createSlice({
       state.socialType = action_user.payload.socialType;
     });
     builder.addCase(action_user.Logout.fulfilled, (state, action_user) => {
-      console.log("logout !  ");
-      console.log(action_user.payload);
+
       Object.assign(state, initialState);
     });
   },
