@@ -34,13 +34,12 @@ public class BlackListController {
     }
 
     @GetMapping("/list/{userId}")
-    public ResponseEntity<?> getAllBlackList(@PathVariable Long userId, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<?> getAllBlackList(@PathVariable Long userId) {
 
         System.out.println(userId);
-        System.out.println(userDetails);
 
         return ResponseEntity.ok()
-                .body(blackListService.getAllBlackList(userId, userDetails));
+                .body(blackListService.getAllBlackList(userId));
     }
 
     @DeleteMapping("")
