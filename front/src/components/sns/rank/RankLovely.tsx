@@ -207,7 +207,7 @@ const Button = styled.button`
   }
 
   &[aria-current] {
-    background: #4570F5;
+    background: #EAA595;
     font-weight: bold;
     cursor: revert;
     transform: revert;

@@ -113,7 +113,7 @@ interface Mypage {
 
   perfectFollowUsers: PerfectFollow[]; // 맞팔
 
-  blackListUsers: BlackLists[]; // 블랙리스트
+  blackListUsers: BlackLists[] | null; // 블랙리스트
   isBlacklist:boolean;
   manageType: number;
   followTempUser: Users;
@@ -150,7 +150,7 @@ const initialState: Mypage = {
 
   perfectFollowUsers: [], // 맞팔 리스트
 
-  blackListUsers: [], // 블랙리스트
+  blackListUsers: null, // 블랙리스트
   isBlacklist : false,
 
   feedList: [],
@@ -410,6 +410,8 @@ export const action_mypage = {
           },
         }
       );
+
+      console.log("!!!!!!!!!!!!!!!!!!!")
 
       return response.data;
     } catch (e) {
@@ -814,6 +816,7 @@ const MypageSlice = createSlice({
 
     builder.addCase(action_mypage.getBlackList.fulfilled, (state, action) => {
       state.blackListUsers = action.payload;
+      console.log(state.blackListUsers)
     });
 
     builder.addCase(action_mypage.checkBlackList.fulfilled, (state, action) => {
