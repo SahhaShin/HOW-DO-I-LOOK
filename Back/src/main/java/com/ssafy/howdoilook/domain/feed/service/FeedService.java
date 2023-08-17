@@ -112,11 +112,10 @@ public class FeedService {
         List<FeedResponseDto> feedResponseDtoList = builder(feedList);
         return new PageImpl<>(feedResponseDtoList, feeds.getPageable(), feeds.getTotalElements());
     }
-    public Page<FeedResponseDto> selectByHashTag(List<String> hashtagList,Pageable pageable){
-        Page<Feed> feeds = feedRepository.selectFeedByHashTag(hashtagList, pageable);
-        List<Feed> feedList = feeds.getContent();
-        List<FeedResponseDto> feedResponseDtoList = builder(feedList);
-        return new PageImpl<>(feedResponseDtoList, feeds.getPageable(), feeds.getTotalElements());
+    public List<FeedResponseDto> selectByHashTag(List<String> hashtagList){
+        List<Feed> feeds = feedRepository.selectFeedByHashTag(hashtagList);
+        List<FeedResponseDto> feedResponseDtoList = builder(feeds);
+        return feedResponseDtoList;
     }
     public Page<FeedResponseDto> selectByUserFollowee(Long userId,Pageable pageable){
         User findUser = userRepository.findById(userId).orElseThrow(
