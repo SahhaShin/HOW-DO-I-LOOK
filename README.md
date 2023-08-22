@@ -98,7 +98,7 @@
     - **ORM** : JPA
 
 ## ⚙️ 프로젝트 구조
-![기술소개](./assets/기술소개.png)
+![기술소개](./exec/기술소개.png)
 
 <br>
 
@@ -183,7 +183,7 @@
 ### figma
 - [figma](https://www.figma.com/file/3BwC0XBTPb3MhTY9zYYa6F/Prototype?type=design&node-id=95-1536&mode=design&t=d6VnqvyfoMQECuEa-0)
 ### ERD 설계
-![ERD](./assets/ERD.png)
+![ERD](./exec/ERD.png)
 ### API 명세서
 - [API 명세서](https://triangular-printer-aad.notion.site/API-cf99cb16a24b4f989c4d2616c88523fe)
 ### 협업 관리
@@ -193,7 +193,4 @@
 
 
 ## 👀 시연영상
-### 메인페이지
-### 피드
-### 채팅
-### 옷장
+[여기](./exec/demonstration)를 클릭하면 시연영상을 확인해 볼 수 있습니다.
