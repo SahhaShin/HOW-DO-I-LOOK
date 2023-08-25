@@ -64,44 +64,27 @@
   </tr>
   <tr>
     <td>
-    - 프로토타입 제작 및 디자인 (Figma)</br>
-    - 컴포넌트 구성 및 API 기능 적용 (Live/Feed/Mypage/옷장/채팅/랭킹)</br>
-    - 웹 소켓 통신을 이용한 채팅(1:1 / M:N) / 방입장 / 방퇴장 / 블랙리스트 구현</br>
-    - 기상청 API를 활용한 OOTD 서비스 제작</br>
+    - 프로토타입 제작 및 디자인 (Figma)<br>
+    - 컴포넌트 구성 및 API 기능 적용 (Live/Feed/Mypage/옷장/채팅/랭킹)<br>
+    - 웹 소켓 통신을 이용한 채팅(1:1 / M:N) / 방입장 / 방퇴장 / 블랙리스트 구현<br>
+    - 기상청 API를 활용한 OOTD 서비스 제작<br>
     </td>
     <td>
-    - (Infra) Docker를 활용한 프로젝트 수동 배포</br>
-    - (Back) Spring Security를 활용한 인증 / 인가 (JWT 토큰 방식)</br>
-    - (Back) Redis를 활용한 실시간 Ranking 서비스</br>
-    - (Back) Scheduler를 활용하여 일정 주기별 특정 서비스 제공</br>
-    - (Back) User, Ranking, Badge 기반 Backend API</br>
-    - (Front) 마이페이지, 랭킹 페이지 구현</br>
-    - (Front) 팔로우 기반 서비스 구현</br>
+    - (Infra) Docker를 활용한 프로젝트 수동 배포<br>
+    - (Back) Spring Security를 활용한 인증 / 인가 (JWT 토큰 방식)<br>
+    - (Back) Redis를 활용한 실시간 Ranking 서비스<br>
+    - (Back) Scheduler를 활용하여 일정 주기별 특정 서비스 제공<br>
+    - (Back) User, Ranking, Badge 기반 Backend API<br>
+    - (Front) 마이페이지, 랭킹 페이지 구현<br>
+    - (Front) 팔로우 기반 서비스 구현<br>
     </td>
     <td>
-    - 오픈비두 Api를 활용한 화상회의 컴포넌트 구현(카메라, 오디오 설정 포함)</br></br>
-    - 페이지네이션 구현, 검색 구현(동기화를 이용한 실시간 목록 갱신 방식)</br>
-    - 로그인 컴포넌트 및 API 적용</br>
+    - 오픈비두 Api를 활용한 화상회의 컴포넌트 구현(카메라, 오디오 설정 포함)<br>
+    - 페이지네이션 구현, 검색 구현(동기화를 이용한 실시간 목록 갱신 방식)<br>
+    - 로그인 컴포넌트 및 API 적용<br>
     </td>
   </tr>
 </table>
-
-| **신산하**   |  **박세윤**     |  **손정민** |
-|----------|:-------------:|------:|
-| Team Leader / Front |  Team Leader / Front | Front |
-| - 프로토타입 제작 및 디자인 (Figma)
-- 컴포넌트 구성 및 API 기능 적용 (Live/Feed/Mypage/옷장/채팅/랭킹)
-- 웹 소켓 통신을 이용한 채팅(1:1 / M:N) / 방입장 / 방퇴장 / 블랙리스트 구현
-- 기상청 API를 활용한 OOTD 서비스 제작 |    - (Infra) Docker를 활용한 프로젝트 수동 배포
-- (Back) Spring Security를 활용한 인증 / 인가 (JWT 토큰 방식)
-- (Back) Redis를 활용한 실시간 Ranking 서비스
-- (Back) Scheduler를 활용하여 일정 주기별 특정 서비스 제공
-- (Back) User, Ranking, Badge 기반 Backend API
-- (Front) 마이페이지, 랭킹 페이지 구현
-- (Front) 팔로우 기반 서비스 구현   |   - 오픈비두 Api를 활용한 화상회의 컴포넌트 구현(카메라, 오디오 설정 포함)
-- 페이지네이션 구현, 검색 구현(동기화를 이용한 실시간 목록 갱신 방식)
-- 로그인 컴포넌트 및 API 적용 |
-| col 3 is | right-aligned |    $1 |
 
 <table style="text-align: center;">
   <tr>
