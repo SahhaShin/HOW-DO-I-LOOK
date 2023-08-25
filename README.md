@@ -1,16 +1,17 @@
 # How Do I Look
 
+<br>
 
 ## 🖥️ 프로젝트 소개
 
-</br>
+<br>
 
 ### 개요
 
 - 한줄 소개 : WebRTC 화상 채팅을 이용한 코디 조언 서비스
 - 서비스 명 : **`HOW Do I Look`**
 
-</br>
+<br>
 
 ### 타겟 🎯
 
@@ -19,17 +20,17 @@
 
   👉  **옷에 관심을 가지고있는 모든 사람들** 
 
-</br></br>
+<br><br>
 
 ## 👗기획 배경
 
-</br>
+<br>
 
 ### 목적
 
 - 옷에 관심이 있는 사람들이 소통할 수 있는 커뮤니티의 장 마련
 
-</br>
+<br>
 
 ### 기대효과
 
@@ -38,12 +39,12 @@
 - 패션에 관심이 많은 사람들이 모인 사이트이므로 유저들이 올린 피드를 통해 다양한 옷에 대한 정보 수집가능
 - 자신의 옷을 온라인으로 간편하게 코디 혹은 관리 가능
 
-<br></br>
+<br><br>
 
 ## 🕰️ 개발 기간
 * 2023.07.04일 - 2023.08.18일 (약 7주)
 
-</br></br>
+<br><br>
 
 ## 🧑‍🤝‍🧑 맴버구성
 <table style="text-align: center;">
@@ -103,18 +104,18 @@
     <td>Back</td>
   </tr>
   <tr>
-    <td>- 옷장, 스트리밍, 이미지 관련 API</br>
-        - 이미지 배경제거</br>
+    <td>- 옷장, 스트리밍, 이미지 관련 API<br>
+        - 이미지 배경제거<br>
         - 프론트 메인페이지</td>
-    <td>- 피드, 댓글, 블랙리스트, 팔로우 API</br>
+    <td>- 피드, 댓글, 블랙리스트, 팔로우 API<br>
         - UCC 총 감독, 주연배우</td>
-    <td>- 웹 소켓 프로토콜 관련 기능</br>
-        - 채팅 API</br>
+    <td>- 웹 소켓 프로토콜 관련 기능<br>
+        - 채팅 API<br>
         - 발표</td>
   </tr>
 </table>
 
-</br></br>
+<br><br>
 
 ## ⚒️ 개발 환경
 - Front
@@ -130,12 +131,12 @@
     - **Database** : MySql(8.0.33)
     - **ORM** : JPA
 
-</br></br>
+<br><br>
 
 ## ⚙️ 프로젝트 구조
 ![기술소개](./exec/기술소개.png)
 
-</br></br>
+<br><br>
 
 ## 📌 주요 기능
 <details>
@@ -208,33 +209,33 @@
 </div>
 </details>
 
-</br></br>
+<br><br>
 
 ## 🎁 설계 산출물
 
-</br>
+<br>
 
 ### 요구사항 정의서
 - [요구사항 정의서](https://docs.google.com/spreadsheets/d/1NvqENkNIhlGdF_9zhgCSmFZBL0I4IAqds_iyspejK20/edit#gid=1465296996)
 
-</br>
+<br>
 
 ### figma
 - [figma](https://www.figma.com/file/3BwC0XBTPb3MhTY9zYYa6F/Prototype?type=design&node-id=95-1536&mode=design&t=d6VnqvyfoMQECuEa-0)
 
-</br>
+<br>
 
 
 ### ERD 설계
 ![ERD](./exec/ERD.png)
 
-</br>
+<br>
 
 
 ### API 명세서
 - [API 명세서](https://triangular-printer-aad.notion.site/API-cf99cb16a24b4f989c4d2616c88523fe)
 
-</br>
+<br>
 
 
 ### 협업 관리
@@ -242,11 +243,11 @@
 - 지라 : private
 - 코드 컨벤션 : [바로가기](https://triangular-printer-aad.notion.site/4-6fa2c73aa08843f9a23e61d548609074)
 
-</br></br>
+<br><br>
 
 ## 👀 시연
 
-</br>
+<br>
 
 ### 📌 메인 페이지 / 로그인
 
@@ -258,7 +259,7 @@
 
 - 회원가입 / 로그인 / 로그아웃 
 
-</br>
+<br>
 
 ### 📌 나만의 옷장
 
@@ -272,7 +273,7 @@
  	
     - 블랙리스트에 등록되어 있거나, 옷장 접근 권한을 PRIVATE으로 제한한 경우에는 접속할 수 없습니다.
   
-</br>
+<br>
 
 ### 📌 OOTD(나만의 코디)
 
@@ -282,7 +283,7 @@
 
 - 현재 날씨를 통해 어떤 의류를 선택할 지 도움을 받을 수 있습니다.
 
-</br>
+<br>
 
 ### 📌 피드
 
@@ -304,7 +305,7 @@
 	
     - 만약 해당 유저의 블랙리스트 명단에 올랐거나, 해당 유저가 옷장 / 프로필 공개를 PRIVATE로 설정했다면, 볼 수 없습니다.
 
-</br>
+<br>
 
 ### 📌 프로필
 
@@ -332,7 +333,7 @@
 	
     - 대표 뱃지로 선정하면, 스트리밍 방에서 해당 뱃지 색으로 표시가 되는 등의 이점이 있습니다.
 
-</br>
+<br>
 
 ### 📌 랭킹
 
@@ -344,7 +345,7 @@
     
 - 실시간 반영되는 랭킹과 점수를 활용하여 매일 12시에 상위 10%에 한해서 뱃지를 제공합니다.
 
-</br>
+<br>
 
 ### 📌 스트리밍 방 만들기
 
@@ -384,20 +385,18 @@
     - 닉네임의 색이 대표뱃지에 따라 변합니다.
     - 사진을 채팅에 올릴 수 있습니다.
     
-</br>
+<br>
 
 ### 📌 강퇴하고 스트리밍 종료하기 (스트리밍 생성자 시점)
 
 ![](https://velog.velcdn.com/images/yun12343/post/35e04f92-4112-4190-86a1-459cd3537ac3/image.gif)
 
 
-</br>
+<br>
 
 ### 📌 강퇴당하기 (스트리밍 참여자 시점)
 
-![업로드중..](blob:https://velog.io/fa5cbbdd-c742-4dfd-b471-c0f7dc837848)
 
 
-</br>
 
-</br></br>
+<br><br>
