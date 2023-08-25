@@ -119,18 +119,49 @@
 
 ## ⚒️ 개발 환경
 
+- Co-Op Tools
+  
+  - Notion
+  - Mattermost
+  - Discord
+
+<br>
+
 - Front
-    - `TypeScript`
-    - **IDE** : Visual Studio Code
-    - **library** : Redux
-    - **environment** : Node.js(14.21.3)
+  
+  - IDE : Visual Studio Code
+  - React.js
+  - Redux Toolkit
+  - TypeScript
+  - Styled-Components
+
+<br>
+
 - Back
-    - **Type** : Gradle - Groovy
-    - `Java 11`
-    - **IDE** : IntelliJ IDEA
-    - **Framework** : Springboot(2.7.14)
-    - **Database** : MySql(8.0.33)
-    - **ORM** : JPA
+  
+  - IDE : IntelliJ
+  - SpringBoot
+  - Spring Security
+  - WebSocket
+  - Stomp
+
+<br>
+
+- DB
+  
+  - MySQL
+  - Redis
+  - MongoDB
+
+<br>
+
+- Infra
+  
+  - SSH Tool : MobaXterm
+  - AWS EC2
+  - Docker
+  - Nginx
+  - AWS S3
 
 <br><br>
 
