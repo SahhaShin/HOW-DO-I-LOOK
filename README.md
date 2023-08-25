@@ -35,7 +35,7 @@
 ### 기대효과
 
 - 기존의 옷을 고르고 입는데에 고민을 가진 사람들이 실시간으로 조언을 받을 수 있어 상황별로 맞춤 옷을 선정하는데에 도움을 받음
-- 옷에 관심이 많은 사람들은 다른 사람들에게 조언을 하며 재미를 느끼고 배찌를 얻기 위해 적극적으로 사이트를 이용함으로써 양질의 조언을 받을 수 있는 사람들이 늘어남
+- 옷에 관심이 많은 사람들은 다른 사람들에게 조언을 하며 재미를 느끼고 뱃지를 얻기 위해 적극적으로 사이트를 이용함으로써 양질의 조언을 받을 수 있는 사람들이 늘어남
 - 패션에 관심이 많은 사람들이 모인 사이트이므로 유저들이 올린 피드를 통해 다양한 옷에 대한 정보 수집가능
 - 자신의 옷을 온라인으로 간편하게 코디 혹은 관리 가능
 
@@ -46,7 +46,7 @@
 
 <br><br>
 
-## 🧑‍🤝‍🧑 맴버구성
+## 🧑‍🤝‍🧑 멤버구성
 <table style="text-align: center;">
   <tr>
     <th>신산하</th>
@@ -118,6 +118,7 @@
 <br><br>
 
 ## ⚒️ 개발 환경
+
 - Front
     - `TypeScript`
     - **IDE** : Visual Studio Code
@@ -135,79 +136,6 @@
 
 ## ⚙️ 프로젝트 구조
 ![기술소개](./exec/기술소개.png)
-
-<br><br>
-
-## 📌 주요 기능
-<details>
-  <summary><span style="font-size: 17px;">회원관리</span></summary>
-  <div>
-
-  - 로그인
-  - 회원가입
-
-  </div>
-</details>
-
-<details>
-  <summary><span style="font-size: 17px;">마이페이지</span></summary>
-  <div>
-
-  - 팔로워, 팔로잉 관리
-  - 내 피드 관리
-  - 좋아요 관리
-  - 배찌 관리
-  - 블랙리스트 관리
-
-  </div>
-</details>
-
-<details>
-  <summary><span style="font-size: 17px;">옷장 관리 서비스</span></summary>
-  <div>
-
-  - 옷 저장, 수정, 삭제, 분류
-  - 옷 사진 저장 시 해당 이미지 배경 제거
-  - 저장한 옷 이미지들을 이용한 코디
-  - 기상청 API 를 이용한 현재 날씨 공유
-
-  </div>
-</details>
-
-<details>
-  <summary><span style="font-size: 17px;">커뮤니티 서비스</span></summary>
-  <div>
-
-  - 피드 저장, 수정, 삭제 
-  - 해시태그를 통한 검색
-  - 4가지 종류의 좋아요 운영
-  - 댓글
-  </div>
-</details>
-  
-<details>
-<summary><span style="font-size: 17px;">스트리밍 서비스</span></summary>
-<div>
-
-- 방 생성, 수정, 삭제, 입장
-- WebSocket, Stomp, SockJS 프로토콜을 이용한 그룹 채팅 ( 문자열 채팅 및 이미지 채팅)
-- 레디스의 메시지큐를 사용하여 부하분산
-- 이미지 검색 및 옷 데이터 읽기
-- 강퇴, 블랙리스트, 점수 부여
-- WebRTC를 이용한 화상회의
-
-</div>
-</details>
-
-<details>
-<summary><span style="font-size: 17px;">랭킹 서비스</span></summary>
-<div>
-
-- 피드 좋아요, 스트리밍을 통해 부여받은 점수를 취합한 4가지 종류의 랭킹
-- 각 랭킹의 상위 10% 배찌 부여
-
-</div>
-</details>
 
 <br><br>
 
