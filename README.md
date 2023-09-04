@@ -172,8 +172,6 @@
 
 ## 🎁 설계 산출물
 
-<br>
-
 ### 요구사항 정의서
 - [요구사항 정의서](https://docs.google.com/spreadsheets/d/1NvqENkNIhlGdF_9zhgCSmFZBL0I4IAqds_iyspejK20/edit#gid=1465296996)
 
