@@ -220,7 +220,7 @@
 
 ### 📌 나만의 옷장
 
-  ![옷장](/uploads/ca67c5b4a27ee36e658d7de49de3b7ee/옷장.gif)
+![2_옷장](https://github.com/SahhaShin/HOW-DO-I-LOOK/assets/33896511/e362554c-bf05-41af-88d2-d24a309f8fd4)
 
  - 나만의 옷장에 내가 가진 의류를 간단한 설명과 카테고리 분류와 함께 **등록**합니다.
   
@@ -234,7 +234,7 @@
 
 ### 📌 OOTD(나만의 코디)
 
-![옷_코디](/uploads/18c34626f83089b430086549d3681626/옷_코디.gif)
+![3_옷_코디](https://github.com/SahhaShin/HOW-DO-I-LOOK/assets/33896511/5b3b52a6-9da1-4e4c-bba5-94046307f594)
 
 - 옷장에 등록한 옷들 중, **자주 입는 코디 조합을 저장**해 놓고 언제든지 확인할 수 있습니다.
 
@@ -266,7 +266,7 @@
 
 ### 📌 프로필
 
-![마이페이지](/uploads/091b4b2f15e4221e1ae979ca1de7649b/마이페이지.gif)
+![5_마이페이지](https://github.com/SahhaShin/HOW-DO-I-LOOK/assets/33896511/1e73ceed-343f-4cc8-aaf8-8a42c599b826)
 
 - 정보를 수정하는 등의 행위는 내 프로필에서만 이루어집니다. 타인의 프로필에서는 ReadOnly 상태입니다.
 
@@ -294,7 +294,7 @@
 
 ### 📌 랭킹
 
-![랭킹](/uploads/a1780136343d5d261f6fa67e52604c52/랭킹.gif)
+![6_랭킹](https://github.com/SahhaShin/HOW-DO-I-LOOK/assets/33896511/d0d36ba0-43f7-454a-b78f-e10888af760c)
 
 - 네 가지 좋아요 종류 별 점수 **랭킹**을 확인할 수 있습니다.
 	
@@ -306,7 +306,7 @@
 
 ### 📌 스트리밍 방 만들기
 
-![방만들기](/uploads/e6dc454fd53f01a1a1c24b0b7029b7ab/방만들기.gif)
+![8_방만들기](https://github.com/SahhaShin/HOW-DO-I-LOOK/assets/33896511/ae655b7b-9c90-42c3-86c6-76a56b450ab6)
 
 - 스트리밍 리스트 페이지에서 스트리밍 방을 **생성**할 수 있습니다. 
 	
@@ -346,7 +346,7 @@
 
 ### 📌 강퇴하고 스트리밍 종료하기 (스트리밍 생성자 시점)
 
-![강퇴하고_스트리밍_종료하기](/uploads/5945f68030e4622a83367e2b18bfc8d9/강퇴하고_스트리밍_종료하기.gif)
+![9_강퇴하고_스트리밍_종료하기](https://github.com/SahhaShin/HOW-DO-I-LOOK/assets/33896511/df89c7bd-48ff-4172-a307-82db78b5a738)
 
 
 <br>
